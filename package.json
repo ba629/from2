@@ -1,0 +1,16 @@
+{
+  "name": "larkbase-sales-form",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.62.1",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "multer": "latest"
+  }
+}

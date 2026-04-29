@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มบันทึกยอดขายรายวัน</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #fdfaf5;
+        }
+        .header-bg { 
+            background-color: #d1c7bd;
+            color: #4a3f35;
+        }
+        .section-bg { 
+            background-color: #f4eee8; 
+        }
+        .gold-accent {
+            border-color: #c5a059;
+        }
+        .gold-text {
+            color: #a67c00;
+        }
+        .btn-gold {
+            background-color: #c5a059;
+            color: white;
+        }
+        .btn-gold:hover {
+            background-color: #b38f4d;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input, select, textarea {
+            border-color: #d1c7bd !important;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #c5a059 !important;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: sepia(50%) saturate(1000%) hue-rotate(350deg) brightness(90%);
+        }
+
+        select optgroup {
+            font-weight: 700;
+            color: #a67c00;
+            background-color: #f4eee8;
+        }
+        select option {
+            font-weight: 400;
+            color: #4a3f35;
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="p-2 md:p-4 text-[#4a3f35]">
+    <div class="max-w-full mx-auto bg-white border border-[#d1c7bd] shadow-md p-4 md:p-6 rounded-lg">
+        
+        <!-- Header Section -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6 border-b border-[#f4eee8] pb-6">
+            <div class="md:col-span-5 flex flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 border-2 gold-accent flex items-center justify-center font-bold rounded-lg shadow-sm bg-white flex-shrink-0">
+                        <svg class="w-10 h-10 text-[#c5a059]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z"></path>
+                            <path d="M12 12L20 7.5"></path>
+                            <path d="M12 12V21"></path>
+                            <path d="M12 12L4 7.5"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-grow space-y-2">
+                        <select id="branch" name="branch" required class="w-full border p-1.5 bg-[#fdfaf5] text-sm font-semibold rounded focus:ring-1 focus:ring-[#c5a059]">
+                            <option value="">-- เลือกสาขา --</option>
+                            <optgroup label="สาขาในกรุงเทพฯ และปริมณฑล">
+                                <option value="SUITCUBE R3 SIGNATURE">SUITCUBE R3 SIGNATURE</option>
+                                <option value="SUITCUBE RCD">SUITCUBE RCD (รัชดา-สุทธิสาร)</option>
+                                <option value="SUITCUBE SIAM">SUITCUBE SIAM (สยามสแควร์วัน)</option>
+                                <option value="SUITCUBE T21">SUITCUBE T21 (เทอร์มินอล 21 อโศก)</option>
+                                <option value="SUITCUBE PM">SUITCUBE PM (เดอะพรอมานาด)</option>
+                                <option value="SUITCUBE SC">SUITCUBE SC (ซีคอนสแควร์ ศรีนครินทร์)</option>
+                                <option value="SUITCUBE FP">SUITCUBE FP (ฟิวเจอร์พาร์ค รังสิต)</option>
+                                <option value="SUITCUBE SILOM COMPLEX">SUITCUBE SILOM COMPLEX (สีลมคอมเพล็กซ์)</option>
+                                <option value="SUITCUBE NW">SUITCUBE NW (เดอะมอลล์ งามวงศ์วาน)</option>
+                                <option value="SUITCUBE CC">SUITCUBE CC (เดอะเซอร์เคิล ราชพฤกษ์)</option>
+                                <option value="SUITCUBE BP">SUITCUBE BP (เดอะมอลล์ บางกะปิ)</option>
+                            </optgroup>
+                            <optgroup label="สาขาต่างจังหวัด">
+                                <option value="SUITCUBE CM">SUITCUBE CM (เชียงใหม่ - One Nimman)</option>
+                                <option value="SUITCUBE KR">SUITCUBE KR (นครราชสีมา - เดอะมอลล์ โคราช)</option>
+                                <option value="SUITCUBE PK">SUITCUBE PK (ภูเก็ต - Bukis Phuket)</option>
+                                <option value="SUITCUBE KK">SUITCUBE KK (ขอนแก่น - ถนนเทพารักษ์)</option>
+                            </optgroup>
+                        </select>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-bold whitespace-nowrap">บันทึกยอดขายของวันที่ :</label>
+                            <input type="date" id="sale_date" name="sale_date" required class="w-full border p-1.5 text-center text-sm rounded bg-[#fdfaf5] focus:ring-1 focus:ring-[#c5a059]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-7 text-right">
+                <h1 class="text-2xl font-bold gold-text">แบบฟอร์มบันทึกยอดขายรายวัน</h1>
+                <p class="text-xs mt-2 text-gray-500">กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ แบบฟอร์มสำหรับหน้าร้าน แอดมิน และบัญชี <br><span class="text-red-400 font-semibold">**เงินสดในลิ้นชักห้ามมีเกิน 2,000 บาท ถ้าต้องเหลือมากกว่า 2,000 บาท ต้องโทรขออนุมัติ**</span></p>
+            </div>
+        </div>
+
+        <form id="dailySalesForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                
+                <!-- Column 1: Payment Channels -->
+                <div class="md:col-span-4 space-y-4">
+                    <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-md shadow-sm">ช่องทางการรับชำระเงิน</div>
+                    <div class="section-bg p-4 space-y-2 text-xs rounded-b-md border border-[#d1c7bd]/30 shadow-inner">
+                        <div class="grid grid-cols-2 gap-2 items-center">
+                            <label class="text-right pr-2">QR-CODE AUTO :</label>
+                            <input type="number" name="pay_qr" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            
+                            <label class="text-right pr-2">GHL :</label>
+                            <input type="number" name="pay_ghl" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            
+                            <label class="text-right pr-2 leading-tight">เครื่องรูดบัตร (สำรอง) TTB :</label>
+                            <input type="number" name="pay_ttb_spare" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            
+                            <label class="text-right pr-2">We chat Alipay :</label>
+                            <input type="number" name="pay_wechat" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            
+                            <label class="text-right pr-2">รับช่องทาง KTB พี่กวาง :</label>
+                            <input type="number" name="pay_ktb" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            
+                            <label class="text-right pr-2">ไทยพาณิชย์ 0198 :</label>
+                            <input type="number" name="pay_scb" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            
+                            <label class="text-right pr-2">(งานองค์กร) TTB 6417 :</label>
+                            <input type="number" name="pay_ttb_org" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            
+                            <label class="text-right pr-2 font-bold gold-text">เงินสด :</label>
+                            <input type="number" name="pay_cash" step="0.01" id="cash-payment" class="border p-1 payment-input rounded bg-white font-bold">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 items-center pt-4 border-t border-[#d1c7bd]">
+                            <label class="text-right pr-2 font-bold uppercase gold-text">ยอดขายทั้งหมด :</label>
+                            <div id="total-sales-display" class="border-2 gold-accent p-1 text-right bg-white min-h-[28px] font-bold text-lg rounded">0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-4">
+                        <div class="flex items-center gap-2 text-xs">
+                            <label class="w-24">ไฟล์แนบ GHL:</label>
+                            <input type="file" name="ghl_file" class="flex-grow text-[10px]">
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <label class="w-24">ชื่อผู้บันทึก :</label>
+                            <input type="text" name="recorder_name" required class="flex-grow border-b border-[#d1c7bd] bg-transparent outline-none focus:border-[#c5a059]">
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <label class="w-24">ภาพถ่ายยืนยัน :</label>
+                            <input type="file" name="confirm_photo" class="flex-grow text-[10px]">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Cash Check & Voucher -->
+                <div class="md:col-span-3 space-y-4">
+                    <div>
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-md shadow-sm">ตรวจยอดขายเงินสด</div>
+                        <div class="border border-[#d1c7bd]/30 p-4 space-y-3 text-xs bg-white rounded-b-md shadow-inner">
+                            <div class="grid grid-cols-2 gap-2 items-center">
+                                <div class="col-span-2 text-center bg-[#d1c7bd] text-white p-1 font-bold mb-1 rounded">ยอดเงินสดในมือ</div>
+                                <label>เงินสดตั้งต้น :</label>
+                                <input type="number" id="cash-start" name="cash_start" class="border p-1 cash-calc rounded">
+                                <label>เงินสดรับมา :</label>
+                                <input type="number" id="cash-received" name="cash_received" class="border p-1 cash-calc bg-[#fdfaf5] rounded font-semibold text-[#c5a059]" readonly title="อัปเดตอัตโนมัติตามช่องทางชำระเงิน">
+                                <label>ฝากเงินสด :</label>
+                                <input type="number" id="cash-deposit" name="cash_deposit" class="border p-1 cash-calc rounded">
+                                <label class="font-bold gold-text">เงินสดคงเหลือ :</label>
+                                <div id="cash-balance-display" class="border p-1 text-right bg-gray-50 font-bold rounded">0.00</div>
+                                <label>สลิปฝากเงินสด :</label>
+                                <div class="border border-dashed border-[#d1c7bd] p-2 text-center text-[10px] text-gray-400 cursor-pointer relative rounded hover:bg-[#f4eee8] transition">
+                                    แนบไฟล์สลิป
+                                    <input type="file" name="cash_deposit_slip" class="absolute inset-0 opacity-0 cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-md shadow-sm">Voucher</div>
+                        <div class="border border-[#d1c7bd]/30 p-4 space-y-4 text-xs bg-white rounded-b-md">
+                            <div class="space-y-1">
+                                <label>Voucher 500 (จำนวนใบ)</label>
+                                <input type="number" name="voucher_500" class="w-full border p-1 rounded">
+                            </div>
+                            <div class="space-y-1">
+                                <label>Voucher 1000 (จำนวนใบ)</label>
+                                <input type="number" name="voucher_1000" class="w-full border p-1 rounded">
+                            </div>
+                            <div class="space-y-1">
+                                <label>คูปองอื่นๆ / บัตรห้าง</label>
+                                <div class="border border-dashed border-[#d1c7bd] p-2 text-center text-[10px] text-gray-400 cursor-pointer relative rounded hover:bg-[#fdfaf5] transition">
+                                    แนบไฟล์รูปคูปอง
+                                    <input type="file" name="voucher_photo" class="absolute inset-0 opacity-0 cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3: Items & Note -->
+                <div class="md:col-span-5 space-y-4">
+                    <div>
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-md shadow-sm">รายการขายเงินสด</div>
+                        <div class="border border-[#d1c7bd]/30 rounded-b-md overflow-hidden shadow-sm">
+                            <table class="w-full text-[10px]">
+                                <thead class="bg-[#f4eee8] text-[#4a3f35]">
+                                    <tr>
+                                        <th class="border-b border-[#d1c7bd] p-1.5 w-8">#</th>
+                                        <th class="border-b border-[#d1c7bd] p-1.5 text-center">SKU</th>
+                                        <th class="border-b border-[#d1c7bd] p-1.5 text-center">Size</th>
+                                        <th class="border-b border-[#d1c7bd] p-1.5 text-center">ราคา</th>
+                                        <th class="border-b border-[#d1c7bd] p-1.5 w-8"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="items-body" class="bg-white">
+                                    <tr>
+                                        <td class="border-b border-[#f4eee8] p-1 text-center">1</td>
+                                        <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-sku" placeholder="รหัสสินค้า"></td>
+                                        <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-size"></td>
+                                        <td class="border-b border-[#f4eee8] p-0"><input type="number" step="0.01" class="w-full p-1 text-right outline-none item-price" placeholder="0.00"></td>
+                                        <td class="border-b border-[#f4eee8] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition font-bold">✕</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="p-2 flex justify-between items-center bg-[#fdfaf5] text-[10px]">
+                                <button type="button" onclick="addItemRow()" class="text-[#c5a059] border border-[#c5a059] px-2 py-1 rounded font-bold hover:bg-[#c5a059] hover:text-white transition">+ เพิ่มรายการ</button>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold gold-text uppercase">รวมขายเงินสด :</span>
+                                    <div id="total-cash-items" class="bg-white border gold-accent px-4 py-1 min-w-[75px] text-right font-bold rounded">0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-md shadow-sm">หมายเหตุเพิ่มเติม</div>
+                        <div class="border border-[#d1c7bd]/30 p-2 min-h-[180px] bg-white rounded-b-md shadow-inner">
+                            <textarea name="remarks" class="w-full h-full min-h-[160px] outline-none text-xs text-[#4a3f35] leading-relaxed bg-transparent" 
+                                placeholder="ระบุรายละเอียดเพิ่มเติม...&#10;- ส่วนลดพิเศษ&#10;- รายการมัดจำ (Deposit)&#10;- รายละเอียดการใช้ Voucher"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 mt-6 border-t border-[#f4eee8] pt-6">
+                <div class="space-y-3 max-w-lg">
+                    <label class="flex items-start gap-2 text-[10px] leading-snug cursor-pointer group">
+                        <input type="checkbox" name="privacy_consent" required class="mt-1 accent-[#c5a059]">
+                        <span class="group-hover:text-[#c5a059] transition">ข้าพเจ้าได้อ่านและ "ให้ความยินยอม" ในการเก็บรวบรวมและใช้ข้อมูลภาพถ่ายเพื่อวัตถุประสงค์ข้างต้น</span>
+                    </label>
+                    <label class="flex items-start gap-2 text-[10px] leading-snug cursor-pointer font-semibold group">
+                        <input type="checkbox" name="cash_policy_ack" required class="mt-1 accent-[#c5a059]">
+                        <span class="group-hover:text-[#c5a059] transition text-red-500/80">เงินสดในลิ้นชักห้ามเกิน 2,000 บาท หากเกินต้องนำฝากในวันถัดไป และขอรับรองว่าข้อมูลเป็นความจริง</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-xs font-bold cursor-pointer group">
+                        <input type="checkbox" name="shipment_confirmed" class="accent-[#c5a059]">
+                        <span class="group-hover:text-[#c5a059] transition">ยืนยันการรับ Shipment ใน Salesforce ครบถ้วน</span>
+                    </label>
+                </div>
+                
+                <div class="flex gap-2">
+                    <button type="button" onclick="window.location.reload()" class="bg-gray-100 text-gray-500 px-6 py-2 text-sm font-bold rounded shadow-sm hover:bg-gray-200 transition">ล้างข้อมูล</button>
+                    <button type="submit" class="btn-gold px-12 py-2 text-sm font-bold rounded shadow-md transition transform active:scale-95">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Set default date to today
+        window.onload = () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('sale_date').value = today;
+        };
+
+        const cashPaymentInput = document.getElementById('cash-payment');
+        const cashReceivedInput = document.getElementById('cash-received');
+        const totalSalesDisplay = document.getElementById('total-sales-display');
+        const cashBalanceDisplay = document.getElementById('cash-balance-display');
+
+        function updateTotals() {
+            cashReceivedInput.value = cashPaymentInput.value;
+
+            let totalSales = 0;
+            document.querySelectorAll('.payment-input').forEach(input => {
+                totalSales += parseFloat(input.value) || 0;
+            });
+            totalSalesDisplay.textContent = totalSales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+            const start = parseFloat(document.getElementById('cash-start').value) || 0;
+            const received = parseFloat(cashReceivedInput.value) || 0;
+            const deposit = parseFloat(document.getElementById('cash-deposit').value) || 0;
+            const balance = (start + received) - deposit;
+            cashBalanceDisplay.textContent = balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+            if (balance > 2000) {
+                cashBalanceDisplay.className = "border p-1 text-right bg-red-50 font-bold rounded text-red-600";
+            } else {
+                cashBalanceDisplay.className = "border p-1 text-right bg-gray-50 font-bold rounded";
+            }
+
+            let itemTotal = 0;
+            document.querySelectorAll('.item-price').forEach(input => {
+                itemTotal += parseFloat(input.value) || 0;
+            });
+            document.getElementById('total-cash-items').textContent = itemTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        document.addEventListener('input', (e) => {
+            if (e.target.matches('input[type="number"]')) {
+                updateTotals();
+            }
+        });
+
+        function addItemRow() {
+            const tbody = document.getElementById('items-body');
+            const rowCount = tbody.rows.length + 1;
+            const tr = document.createElement('tr');
+            tr.className = "bg-white";
+            tr.innerHTML = `
+                <td class="border-b border-[#f4eee8] p-1 text-center">${rowCount}</td>
+                <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-sku" placeholder="รหัสสินค้า"></td>
+                <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-size"></td>
+                <td class="border-b border-[#f4eee8] p-0"><input type="number" step="0.01" class="w-full p-1 text-right outline-none item-price" placeholder="0.00"></td>
+                <td class="border-b border-[#f4eee8] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 font-bold transition">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function removeRow(btn) {
+            btn.closest('tr').remove();
+            reorderRows();
+            updateTotals();
+        }
+
+        function reorderRows() {
+            const tbody = document.getElementById('items-body');
+            Array.from(tbody.rows).forEach((row, index) => {
+                row.cells[0].textContent = index + 1;
+            });
+        }
+
+        function collectSkuRows() {
+            return Array.from(document.querySelectorAll('#items-body tr')).map((row, index) => {
+                return {
+                    no: index + 1,
+                    sku: row.querySelector('.item-sku')?.value || '',
+                    size: row.querySelector('.item-size')?.value || '',
+                    price: parseFloat(row.querySelector('.item-price')?.value || '0') || 0
+                };
+            }).filter(item => item.sku || item.size || item.price);
+        }
+
+        // Submit handler — ส่งข้อมูลไป backend Lark Base
+        document.getElementById('dailySalesForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!document.getElementById('sale_date').value) {
+                alert('กรุณาเลือกวันที่ขาย');
+                return;
+            }
+            if (!document.getElementById('branch').value) {
+                alert('กรุณาเลือกสาขา');
+                return;
+            }
+
+            const balanceText = cashBalanceDisplay.textContent.replace(/,/g, '');
+            const balance = parseFloat(balanceText) || 0;
+            if (balance > 2000) {
+                if(!confirm("คำเตือน: เงินสดคงเหลือเกิน 2,000 บาท (ยอดปัจจุบัน: " + cashBalanceDisplay.textContent + ") คุณได้รับการอนุมัติแล้วใช่หรือไม่?")) return;
+            }
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const oldText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'กำลังบันทึก...';
+
+            try {
+                const formData = new FormData(e.target);
+                
+                const totalSales = parseFloat(totalSalesDisplay.textContent.replace(/,/g, '')) || 0;
+                const skuTotal = parseFloat(document.getElementById('total-cash-items').textContent.replace(/,/g, '')) || 0;
+                
+                formData.append('totalSales', totalSales.toFixed(2));
+                formData.append('cash_balance', balance.toFixed(2));
+                formData.append('skuTotal', skuTotal.toFixed(2));
+                formData.append('skuItems', JSON.stringify(collectSkuRows()));
+
+                const response = await fetch('/submit-sales', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (!response.ok || !result.ok) {
+                    throw new Error(result.message || 'บันทึกไม่สำเร็จ');
+                }
+
+                const modal = document.createElement('div');
+                modal.className = "fixed inset-0 bg-[#4a3f35]/60 flex items-center justify-center p-4 z-50 backdrop-blur-sm";
+                modal.innerHTML = `
+                    <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full text-center border-t-4 border-[#c5a059]">
+                        <div class="text-[#c5a059] mb-4 flex justify-center">
+                            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-[#4a3f35]">บันทึกสำเร็จ</h3>
+                        <p class="text-sm text-gray-500 mb-6">ระบบได้บันทึกข้อมูลลง Lark Base เรียบร้อยแล้ว</p>
+                        <button onclick="this.closest('.fixed').remove(); window.location.reload();" class="btn-gold px-6 py-2 rounded-full w-full font-bold shadow-lg uppercase">ตกลง</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                
+            } catch (err) {
+                console.error(err);
+                alert('เกิดข้อผิดพลาด: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = oldText;
+            }
+        });
+    </script>
+</body>
+</html>
