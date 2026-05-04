@@ -32,6 +32,7 @@
             background-color: #b38f4d;
         }
 
+        /* ซ่อนลูกศรขึ้นลงของ input number ดั้งเดิม (ถ้ามีหลงเหลือ) */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -40,11 +41,27 @@
         
         input, select, textarea {
             border-color: #d1c7bd !important;
+            transition: all 0.2s ease-in-out;
         }
-        input:focus, select:focus {
+        
+        /* CSS สวยๆ สำหรับช่องกรอกตัวเลขโดยเฉพาะ */
+        .num-input {
+            font-variant-numeric: tabular-nums; /* ทำให้ความกว้างตัวเลขเท่ากันทุกตัว */
+            text-align: right;
+        }
+        .num-input:focus {
+            background-color: #fffaf0 !important; /* พื้นหลังสีทองอ่อนๆ ตอนคลิกกรอก */
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2) !important;
+            border-color: #c5a059 !important;
+            outline: none;
+        }
+
+        input:focus:not(.num-input), select:focus {
             outline: none;
             border-color: #c5a059 !important;
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1) !important;
         }
+
         input[type="date"]::-webkit-calendar-picker-indicator {
             cursor: pointer;
             filter: sepia(50%) saturate(1000%) hue-rotate(350deg) brightness(90%);
@@ -78,7 +95,7 @@
                         </svg>
                     </div>
                     <div class="flex-grow space-y-2">
-                        <select id="branch" name="branch" required class="w-full border p-1.5 bg-[#fdfaf5] text-sm font-semibold rounded focus:ring-1 focus:ring-[#c5a059]">
+                        <select id="branch" name="branch" required class="w-full border p-1.5 bg-[#fdfaf5] text-sm font-semibold rounded cursor-pointer">
                             <option value="">-- เลือกสาขา --</option>
                             <optgroup label="สาขาในกรุงเทพฯ และปริมณฑล">
                                 <option value="SUITCUBE R3 SIGNATURE">SUITCUBE R3 SIGNATURE</option>
@@ -103,7 +120,7 @@
                         </select>
                         <div class="flex items-center gap-2">
                             <label class="text-xs font-bold whitespace-nowrap">บันทึกยอดขายของวันที่ :</label>
-                            <input type="date" id="sale_date" name="sale_date" required class="w-full border p-1.5 text-center text-sm rounded bg-[#fdfaf5] focus:ring-1 focus:ring-[#c5a059]">
+                            <input type="date" id="sale_date" name="sale_date" required class="w-full border p-1.5 text-center text-sm rounded bg-[#fdfaf5]">
                         </div>
                     </div>
                 </div>
@@ -121,34 +138,35 @@
                 <div class="md:col-span-4 space-y-4">
                     <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-md shadow-sm">ช่องทางการรับชำระเงิน</div>
                     <div class="section-bg p-4 space-y-2 text-xs rounded-b-md border border-[#d1c7bd]/30 shadow-inner">
+                        <!-- เปลี่ยน type="text" + inputmode="decimal" เพื่อแป้นพิมพ์มือถือ และใส่คลาส num-input -->
                         <div class="grid grid-cols-2 gap-2 items-center">
                             <label class="text-right pr-2">QR-CODE AUTO :</label>
-                            <input type="number" name="pay_qr" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            <input type="text" inputmode="decimal" name="pay_qr" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
                             <label class="text-right pr-2">GHL :</label>
-                            <input type="number" name="pay_ghl" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            <input type="text" inputmode="decimal" name="pay_ghl" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
                             <label class="text-right pr-2 leading-tight">เครื่องรูดบัตร (สำรอง) TTB :</label>
-                            <input type="number" name="pay_ttb_spare" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            <input type="text" inputmode="decimal" name="pay_ttb_spare" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
                             <label class="text-right pr-2">We chat Alipay :</label>
-                            <input type="number" name="pay_wechat" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            <input type="text" inputmode="decimal" name="pay_wechat" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
                             <label class="text-right pr-2">รับช่องทาง KTB พี่กวาง :</label>
-                            <input type="number" name="pay_ktb" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            <input type="text" inputmode="decimal" name="pay_ktb" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
                             <label class="text-right pr-2">ไทยพาณิชย์ 0198 :</label>
-                            <input type="number" name="pay_scb" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            <input type="text" inputmode="decimal" name="pay_scb" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
                             <label class="text-right pr-2">(งานองค์กร) TTB 6417 :</label>
-                            <input type="number" name="pay_ttb_org" step="0.01" class="border p-1 payment-input rounded bg-white">
+                            <input type="text" inputmode="decimal" name="pay_ttb_org" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
                             <label class="text-right pr-2 font-bold gold-text">เงินสด :</label>
-                            <input type="number" name="pay_cash" step="0.01" id="cash-payment" class="border p-1 payment-input rounded bg-white font-bold">
+                            <input type="text" inputmode="decimal" name="pay_cash" id="cash-payment" class="border p-1 payment-input num-input rounded bg-white font-bold text-[#c5a059]" placeholder="0.00">
                         </div>
                         <div class="grid grid-cols-2 gap-2 items-center pt-4 border-t border-[#d1c7bd]">
                             <label class="text-right pr-2 font-bold uppercase gold-text">ยอดขายทั้งหมด :</label>
-                            <div id="total-sales-display" class="border-2 gold-accent p-1 text-right bg-white min-h-[28px] font-bold text-lg rounded">0.00</div>
+                            <div id="total-sales-display" class="border-2 gold-accent p-1 text-right bg-white min-h-[28px] font-bold text-lg rounded num-input">0.00</div>
                         </div>
                     </div>
 
@@ -176,15 +194,19 @@
                             <div class="grid grid-cols-2 gap-2 items-center">
                                 <div class="col-span-2 text-center bg-[#d1c7bd] text-white p-1 font-bold mb-1 rounded">ยอดเงินสดในมือ</div>
                                 <label>เงินสดตั้งต้น :</label>
-                                <input type="number" id="cash-start" name="cash_start" class="border p-1 cash-calc rounded">
+                                <input type="text" inputmode="decimal" id="cash-start" name="cash_start" class="border p-1 cash-calc num-input rounded" placeholder="0.00">
+                                
                                 <label>เงินสดรับมา :</label>
-                                <input type="number" id="cash-received" name="cash_received" class="border p-1 cash-calc bg-[#fdfaf5] rounded font-semibold text-[#c5a059]" readonly title="อัปเดตอัตโนมัติตามช่องทางชำระเงิน">
+                                <input type="text" inputmode="decimal" id="cash-received" name="cash_received" class="border p-1 cash-calc num-input bg-[#fdfaf5] rounded font-semibold text-[#c5a059] outline-none" readonly title="อัปเดตอัตโนมัติตามช่องทางชำระเงิน" placeholder="0.00">
+                                
                                 <label>ฝากเงินสด :</label>
-                                <input type="number" id="cash-deposit" name="cash_deposit" class="border p-1 cash-calc rounded">
+                                <input type="text" inputmode="decimal" id="cash-deposit" name="cash_deposit" class="border p-1 cash-calc num-input rounded" placeholder="0.00">
+                                
                                 <label class="font-bold gold-text">เงินสดคงเหลือ :</label>
-                                <div id="cash-balance-display" class="border p-1 text-right bg-gray-50 font-bold rounded">0.00</div>
-                                <label>สลิปฝากเงินสด :</label>
-                                <div class="border border-dashed border-[#d1c7bd] p-2 text-center text-[10px] text-gray-400 cursor-pointer relative rounded hover:bg-[#f4eee8] transition">
+                                <div id="cash-balance-display" class="border p-1 text-right bg-gray-50 font-bold rounded num-input">0.00</div>
+                                
+                                <label class="col-span-2 mt-2">สลิปฝากเงินสด :</label>
+                                <div class="col-span-2 border border-dashed border-[#d1c7bd] p-2 text-center text-[10px] text-gray-400 cursor-pointer relative rounded hover:bg-[#f4eee8] transition">
                                     แนบไฟล์สลิป
                                     <input type="file" name="cash_deposit_slip" class="absolute inset-0 opacity-0 cursor-pointer">
                                 </div>
@@ -197,11 +219,11 @@
                         <div class="border border-[#d1c7bd]/30 p-4 space-y-4 text-xs bg-white rounded-b-md">
                             <div class="space-y-1">
                                 <label>Voucher 500 (จำนวนใบ)</label>
-                                <input type="number" name="voucher_500" class="w-full border p-1 rounded">
+                                <input type="text" inputmode="numeric" name="voucher_500" class="w-full border p-1 rounded num-input" placeholder="0">
                             </div>
                             <div class="space-y-1">
                                 <label>Voucher 1000 (จำนวนใบ)</label>
-                                <input type="number" name="voucher_1000" class="w-full border p-1 rounded">
+                                <input type="text" inputmode="numeric" name="voucher_1000" class="w-full border p-1 rounded num-input" placeholder="0">
                             </div>
                             <div class="space-y-1">
                                 <label>คูปองอื่นๆ / บัตรห้าง</label>
@@ -234,7 +256,7 @@
                                         <td class="border-b border-[#f4eee8] p-1 text-center">1</td>
                                         <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-sku" placeholder="รหัสสินค้า"></td>
                                         <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-size"></td>
-                                        <td class="border-b border-[#f4eee8] p-0"><input type="number" step="0.01" class="w-full p-1 text-right outline-none item-price" placeholder="0.00"></td>
+                                        <td class="border-b border-[#f4eee8] p-0"><input type="text" inputmode="decimal" class="w-full p-1 text-right outline-none item-price num-input" placeholder="0.00"></td>
                                         <td class="border-b border-[#f4eee8] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition font-bold">✕</button></td>
                                     </tr>
                                 </tbody>
@@ -243,7 +265,7 @@
                                 <button type="button" onclick="addItemRow()" class="text-[#c5a059] border border-[#c5a059] px-2 py-1 rounded font-bold hover:bg-[#c5a059] hover:text-white transition">+ เพิ่มรายการ</button>
                                 <div class="flex items-center gap-2">
                                     <span class="font-bold gold-text uppercase">รวมขายเงินสด :</span>
-                                    <div id="total-cash-items" class="bg-white border gold-accent px-4 py-1 min-w-[75px] text-right font-bold rounded">0.00</div>
+                                    <div id="total-cash-items" class="bg-white border gold-accent px-4 py-1 min-w-[75px] text-right font-bold rounded num-input">0.00</div>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +274,7 @@
                     <div>
                         <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-md shadow-sm">หมายเหตุเพิ่มเติม</div>
                         <div class="border border-[#d1c7bd]/30 p-2 min-h-[180px] bg-white rounded-b-md shadow-inner">
-                            <textarea name="remarks" class="w-full h-full min-h-[160px] outline-none text-xs text-[#4a3f35] leading-relaxed bg-transparent" 
+                            <textarea name="remarks" class="w-full h-full min-h-[160px] outline-none text-xs text-[#4a3f35] leading-relaxed bg-transparent resize-none" 
                                 placeholder="ระบุรายละเอียดเพิ่มเติม...&#10;- ส่วนลดพิเศษ&#10;- รายการมัดจำ (Deposit)&#10;- รายละเอียดการใช้ Voucher"></textarea>
                         </div>
                     </div>
@@ -312,9 +334,9 @@
             cashBalanceDisplay.textContent = balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
             if (balance > 2000) {
-                cashBalanceDisplay.className = "border p-1 text-right bg-red-50 font-bold rounded text-red-600";
+                cashBalanceDisplay.className = "border p-1 text-right bg-red-50 font-bold rounded text-red-600 num-input";
             } else {
-                cashBalanceDisplay.className = "border p-1 text-right bg-gray-50 font-bold rounded";
+                cashBalanceDisplay.className = "border p-1 text-right bg-gray-50 font-bold rounded num-input";
             }
 
             let itemTotal = 0;
@@ -324,8 +346,20 @@
             document.getElementById('total-cash-items').textContent = itemTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
+        // --- เพิ่มระบบกรองให้พิมพ์ได้แค่ตัวเลขและจุด ---
         document.addEventListener('input', (e) => {
-            if (e.target.matches('input[type="number"]')) {
+            if (e.target.classList.contains('num-input') && !e.target.readOnly) {
+                let val = e.target.value;
+                // อนุญาตแค่ตัวเลข 0-9 และจุด
+                val = val.replace(/[^0-9.]/g, ''); 
+                
+                // ห้ามพิมพ์จุดเกิน 1 ตัว
+                const parts = val.split('.');
+                if (parts.length > 2) {
+                    val = parts[0] + '.' + parts.slice(1).join('');
+                }
+                
+                e.target.value = val;
                 updateTotals();
             }
         });
@@ -335,11 +369,12 @@
             const rowCount = tbody.rows.length + 1;
             const tr = document.createElement('tr');
             tr.className = "bg-white";
+            // อัปเดต HTML ของแถวที่เพิ่มใหม่ให้เป็นแบบ text + inputmode="decimal"
             tr.innerHTML = `
                 <td class="border-b border-[#f4eee8] p-1 text-center">${rowCount}</td>
                 <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-sku" placeholder="รหัสสินค้า"></td>
                 <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-size"></td>
-                <td class="border-b border-[#f4eee8] p-0"><input type="number" step="0.01" class="w-full p-1 text-right outline-none item-price" placeholder="0.00"></td>
+                <td class="border-b border-[#f4eee8] p-0"><input type="text" inputmode="decimal" class="w-full p-1 text-right outline-none item-price num-input" placeholder="0.00"></td>
                 <td class="border-b border-[#f4eee8] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 font-bold transition">✕</button></td>
             `;
             tbody.appendChild(tr);
@@ -369,7 +404,7 @@
             }).filter(item => item.sku || item.size || item.price);
         }
 
-        // Submit handler — ส่งข้อมูลไป backend Lark Base
+        // Submit handler
         document.getElementById('dailySalesForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
