@@ -9,27 +9,27 @@
     <style>
         body {
             font-family: 'Sarabun', sans-serif;
-            background-color: #fdfaf5;
+            background-color: #F5F5F5;
         }
         .header-bg { 
-            background-color: #d1c7bd;
-            color: #4a3f35;
+            background-color: #303030;
+            color: #D9AE5D;
         }
         .section-bg { 
-            background-color: #f4eee8; 
+            background-color: #FAFAFA; 
         }
         .gold-accent {
-            border-color: #c5a059;
+            border-color: #D9AE5D;
         }
         .gold-text {
-            color: #a67c00;
+            color: #D9AE5D;
         }
         .btn-gold {
-            background-color: #c5a059;
-            color: white;
+            background-color: #D9AE5D;
+            color: #303030;
         }
         .btn-gold:hover {
-            background-color: #b38f4d;
+            background-color: #c49d54;
         }
 
         input[type="number"]::-webkit-inner-spin-button,
@@ -39,7 +39,7 @@
         }
         
         input, select, textarea {
-            border-color: #d1c7bd !important;
+            border-color: #E5E5E5 !important;
             transition: all 0.2s ease-in-out;
         }
         
@@ -49,18 +49,18 @@
         }
         .num-input:focus {
             background-color: #fffaf0 !important; 
-            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2) !important;
-            border-color: #c5a059 !important;
+            box-shadow: 0 0 0 3px rgba(217, 174, 93, 0.2) !important;
+            border-color: #D9AE5D !important;
             outline: none;
         }
 
-        input:focus:not(.num-input), select:focus {
+        input:focus:not(.num-input), select:focus, textarea:focus {
             outline: none;
-            border-color: #c5a059 !important;
-            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1) !important;
+            border-color: #D9AE5D !important;
+            box-shadow: 0 0 0 3px rgba(217, 174, 93, 0.1) !important;
         }
 
-        /* แต่ง UI ปฏิทินใหม่ให้ดูพรีเมียม */
+        /* แต่ง UI ปฏิทินใหม่ */
         input[type="date"] {
             position: relative;
         }
@@ -70,39 +70,38 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            background-color: #f4eee8;
+            background-color: #F0F0F0;
             padding: 4px;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: all 0.2s ease;
-            filter: sepia(50%) saturate(1000%) hue-rotate(350deg) brightness(90%);
         }
         input[type="date"]::-webkit-calendar-picker-indicator:hover {
-            background-color: #eaddd0;
+            background-color: #E5E5E5;
             transform: translateY(-50%) scale(1.05);
         }
 
         select optgroup {
             font-weight: 700;
-            color: #a67c00;
-            background-color: #f4eee8;
+            color: #D9AE5D;
+            background-color: #303030;
         }
         select option {
             font-weight: 400;
-            color: #4a3f35;
+            color: #303030;
             background-color: white;
         }
     </style>
 </head>
-<body class="p-2 md:p-4 text-[#4a3f35]">
-    <div class="max-w-full mx-auto bg-white border border-[#d1c7bd] shadow-md p-4 md:p-6 rounded-2xl">
+<body class="p-2 md:p-4 text-[#303030]">
+    <div class="max-w-full mx-auto bg-white border border-[#E5E5E5] shadow-md p-4 md:p-6 rounded-2xl">
         
         <!-- Header Section -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6 border-b border-[#f4eee8] pb-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6 border-b border-[#E5E5E5] pb-6">
             <div class="md:col-span-5 flex flex-col gap-4">
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 border-2 gold-accent flex items-center justify-center font-bold rounded-2xl shadow-sm bg-white flex-shrink-0">
-                        <svg class="w-10 h-10 text-[#c5a059]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <div class="w-16 h-16 border-2 gold-accent flex items-center justify-center font-bold rounded-2xl shadow-sm bg-[#303030] flex-shrink-0">
+                        <svg class="w-10 h-10 text-[#D9AE5D]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z"></path>
                             <path d="M12 12L20 7.5"></path>
                             <path d="M12 12V21"></path>
@@ -110,7 +109,7 @@
                         </svg>
                     </div>
                     <div class="flex-grow space-y-2">
-                        <select id="branch" name="branch" required class="w-full border p-1.5 bg-[#fdfaf5] text-sm font-semibold rounded-lg cursor-pointer">
+                        <select id="branch" name="branch" required class="w-full border p-1.5 bg-[#F9F9F9] text-[#303030] text-sm font-semibold rounded-lg cursor-pointer">
                             <option value="">-- เลือกสาขา --</option>
                             <optgroup label="สาขาในกรุงเทพฯ และปริมณฑล">
                                 <option value="SUITCUBE R3 SIGNATURE">SUITCUBE R3 SIGNATURE</option>
@@ -135,14 +134,14 @@
                         </select>
                         <div class="flex items-center gap-2">
                             <label class="text-xs font-bold whitespace-nowrap">บันทึกยอดขายของวันที่ :</label>
-                            <input type="date" id="sale_date" name="sale_date" required class="w-full border p-1.5 text-center text-sm rounded-lg bg-[#fdfaf5] cursor-pointer">
+                            <input type="date" id="sale_date" name="sale_date" required class="w-full border p-1.5 text-center text-sm rounded-lg bg-[#F9F9F9] cursor-pointer">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="md:col-span-7 text-right">
                 <h1 class="text-2xl font-bold gold-text">แบบฟอร์มบันทึกยอดขายรายวัน</h1>
-                <p class="text-xs mt-2 text-gray-500">กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ แบบฟอร์มสำหรับหน้าร้าน แอดมิน และบัญชี <br><span class="text-red-400 font-semibold">**เงินสดในลิ้นชักห้ามมีเกิน 2,000 บาท ถ้าต้องเหลือมากกว่า 2,000 บาท ต้องโทรขออนุมัติ**</span></p>
+                <p class="text-xs mt-2 text-gray-500">กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ แบบฟอร์มสำหรับหน้าร้าน แอดมิน และบัญชี <br><span class="text-red-500 font-semibold">**เงินสดในลิ้นชักห้ามมีเกิน 2,000 บาท ถ้าต้องเหลือมากกว่า 2,000 บาท ต้องโทรขออนุมัติ**</span></p>
             </div>
         </div>
 
@@ -151,8 +150,8 @@
                 
                 <!-- Column 1: Payment Channels -->
                 <div class="md:col-span-4 space-y-4">
-                    <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm">ช่องทางการรับชำระเงิน</div>
-                    <div class="section-bg p-4 space-y-2 text-xs rounded-b-xl border border-[#d1c7bd]/30 shadow-inner">
+                    <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm tracking-wide">ช่องทางการรับชำระเงิน</div>
+                    <div class="section-bg p-4 space-y-2 text-xs rounded-b-xl border border-[#E5E5E5] shadow-inner">
                         <div class="grid grid-cols-2 gap-2 items-center">
                             <label class="text-right pr-2">QR-CODE AUTO :</label>
                             <input type="text" inputmode="decimal" name="pay_qr" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
@@ -175,48 +174,46 @@
                             <label class="text-right pr-2">(งานองค์กร) TTB 6417 :</label>
                             <input type="text" inputmode="decimal" name="pay_ttb_org" class="border p-1 payment-input num-input rounded bg-white" placeholder="0.00">
                             
-                            <label class="text-right pr-2 font-bold gold-text">เงินสด :</label>
-                            <input type="text" inputmode="decimal" name="pay_cash" id="cash-payment" class="border p-1 payment-input num-input rounded bg-white font-bold text-[#c5a059]" placeholder="0.00">
+                            <label class="text-right pr-2 font-bold text-[#303030]">เงินสด :</label>
+                            <input type="text" inputmode="decimal" name="pay_cash" id="cash-payment" class="border p-1 payment-input num-input rounded bg-white font-bold text-[#D9AE5D]" placeholder="0.00">
                         </div>
-                        <div class="grid grid-cols-2 gap-2 items-center pt-4 border-t border-[#d1c7bd]">
-                            <label class="text-right pr-2 font-bold uppercase gold-text">ยอดขายทั้งหมด :</label>
-                            <div id="total-sales-display" class="border-2 gold-accent p-1 text-right bg-white min-h-[28px] font-bold text-lg rounded-lg num-input">0.00</div>
+                        <div class="grid grid-cols-2 gap-2 items-center pt-4 border-t border-[#E5E5E5]">
+                            <label class="text-right pr-2 font-bold uppercase text-[#303030]">ยอดขายทั้งหมด :</label>
+                            <div id="total-sales-display" class="border-2 border-[#303030] p-1 text-right bg-white min-h-[28px] font-bold text-lg rounded-lg num-input text-[#303030]">0.00</div>
                         </div>
                     </div>
 
                     <div class="space-y-3 pt-4">
-                        <!-- UI แนบไฟล์ GHL แบบใหม่ -->
                         <div class="flex items-center gap-2 text-xs">
-                            <label class="w-20 font-bold text-[#4a3f35]">ไฟล์แนบ GHL:</label>
-                            <div class="relative flex-grow h-10 border-2 border-dashed border-[#d1c7bd] hover:border-[#c5a059] bg-white rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
+                            <label class="w-20 font-bold text-[#303030]">ไฟล์แนบ GHL:</label>
+                            <div class="relative flex-grow h-10 border-2 border-dashed border-[#E5E5E5] hover:border-[#D9AE5D] bg-white rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
                                 <input type="file" name="ghl_file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
                                 <div class="upload-placeholder flex items-center justify-center gap-1 z-10 transition duration-300">
-                                    <svg class="w-4 h-4 text-gray-400 group-hover:text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                    <span class="text-[10px] text-gray-500 group-hover:text-[#c5a059]">แนบไฟล์</span>
+                                    <svg class="w-4 h-4 text-gray-400 group-hover:text-[#D9AE5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    <span class="text-[10px] text-gray-500 group-hover:text-[#D9AE5D]">แนบไฟล์</span>
                                 </div>
                                 <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                <div class="preview-overlay absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-1">
+                                <div class="preview-overlay absolute inset-0 bg-[#303030]/60 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-1">
                                     <span class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex items-center gap-2 text-xs">
-                            <label class="w-20 font-bold text-[#4a3f35]">ชื่อผู้บันทึก :</label>
-                            <input type="text" name="recorder_name" required class="flex-grow h-8 border-b border-[#d1c7bd] bg-transparent outline-none focus:border-[#c5a059] px-2">
+                            <label class="w-20 font-bold text-[#303030]">ชื่อผู้บันทึก :</label>
+                            <input type="text" name="recorder_name" required class="flex-grow h-8 border-b border-[#E5E5E5] bg-transparent outline-none focus:border-[#D9AE5D] px-2 text-[#303030]">
                         </div>
 
-                        <!-- UI ภาพถ่ายยืนยัน แบบใหม่ -->
                         <div class="flex items-center gap-2 text-xs">
-                            <label class="w-20 font-bold text-[#4a3f35]">ภาพยืนยัน :</label>
-                            <div class="relative flex-grow h-10 border-2 border-dashed border-[#d1c7bd] hover:border-[#c5a059] bg-white rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
+                            <label class="w-20 font-bold text-[#303030]">ภาพยืนยัน :</label>
+                            <div class="relative flex-grow h-10 border-2 border-dashed border-[#E5E5E5] hover:border-[#D9AE5D] bg-white rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
                                 <input type="file" name="confirm_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
                                 <div class="upload-placeholder flex items-center justify-center gap-1 z-10 transition duration-300">
-                                    <svg class="w-4 h-4 text-gray-400 group-hover:text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                    <span class="text-[10px] text-gray-500 group-hover:text-[#c5a059]">แนบรูปถ่าย</span>
+                                    <svg class="w-4 h-4 text-gray-400 group-hover:text-[#D9AE5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <span class="text-[10px] text-gray-500 group-hover:text-[#D9AE5D]">แนบรูปถ่าย</span>
                                 </div>
                                 <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                <div class="preview-overlay absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-1">
+                                <div class="preview-overlay absolute inset-0 bg-[#303030]/60 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-1">
                                     <span class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
                                 </div>
                             </div>
@@ -227,32 +224,31 @@
                 <!-- Column 2: Cash Check & Voucher -->
                 <div class="md:col-span-3 space-y-4">
                     <div>
-                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm">ตรวจยอดขายเงินสด</div>
-                        <div class="border border-[#d1c7bd]/30 p-4 space-y-3 text-xs bg-white rounded-b-xl shadow-inner">
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm tracking-wide">ตรวจยอดขายเงินสด</div>
+                        <div class="border border-[#E5E5E5] p-4 space-y-3 text-xs bg-white rounded-b-xl shadow-inner">
                             <div class="grid grid-cols-2 gap-2 items-center">
-                                <div class="col-span-2 text-center bg-[#d1c7bd] text-white p-1 font-bold mb-1 rounded-md">ยอดเงินสดในมือ</div>
+                                <div class="col-span-2 text-center bg-[#303030] text-[#D9AE5D] p-1.5 font-bold mb-1 rounded-md tracking-wider">ยอดเงินสดในมือ</div>
                                 <label>เงินสดตั้งต้น :</label>
                                 <input type="text" inputmode="decimal" id="cash-start" name="cash_start" class="border p-1 cash-calc num-input rounded" placeholder="0.00">
                                 
                                 <label>เงินสดรับมา :</label>
-                                <input type="text" inputmode="decimal" id="cash-received" name="cash_received" class="border p-1 cash-calc num-input bg-[#fdfaf5] rounded font-semibold text-[#c5a059] outline-none" readonly title="อัปเดตอัตโนมัติตามช่องทางชำระเงิน" placeholder="0.00">
+                                <input type="text" inputmode="decimal" id="cash-received" name="cash_received" class="border p-1 cash-calc num-input bg-[#F9F9F9] rounded font-semibold text-[#D9AE5D] outline-none" readonly title="อัปเดตอัตโนมัติตามช่องทางชำระเงิน" placeholder="0.00">
                                 
                                 <label>ฝากเงินสด :</label>
                                 <input type="text" inputmode="decimal" id="cash-deposit" name="cash_deposit" class="border p-1 cash-calc num-input rounded" placeholder="0.00">
                                 
-                                <label class="font-bold gold-text">เงินสดคงเหลือ :</label>
+                                <label class="font-bold text-[#303030]">เงินสดคงเหลือ :</label>
                                 <div id="cash-balance-display" class="border p-1 text-right bg-gray-50 font-bold rounded num-input">0.00</div>
                                 
-                                <label class="col-span-2 mt-2">สลิปฝากเงินสด :</label>
-                                <!-- UI สลิปฝากเงิน แบบใหม่ -->
-                                <div class="col-span-2 relative h-16 border-2 border-dashed border-[#d1c7bd] hover:border-[#c5a059] bg-[#fdfaf5] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
+                                <label class="col-span-2 mt-2 font-bold text-[#303030]">สลิปฝากเงินสด :</label>
+                                <div class="col-span-2 relative h-16 border-2 border-dashed border-[#E5E5E5] hover:border-[#D9AE5D] bg-[#F9F9F9] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
                                     <input type="file" name="cash_deposit_slip" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
                                     <div class="upload-placeholder flex flex-col items-center justify-center z-10 transition duration-300">
-                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                        <span class="text-[10px] text-gray-500 mt-1 group-hover:text-[#c5a059]">อัปโหลดสลิป</span>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-[#D9AE5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                        <span class="text-[10px] text-gray-500 mt-1 group-hover:text-[#D9AE5D]">อัปโหลดสลิป</span>
                                     </div>
                                     <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                    <div class="preview-overlay absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
+                                    <div class="preview-overlay absolute inset-0 bg-[#303030]/60 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
                                         <span class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
                                     </div>
                                 </div>
@@ -261,8 +257,8 @@
                     </div>
 
                     <div>
-                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm">Voucher</div>
-                        <div class="border border-[#d1c7bd]/30 p-4 space-y-4 text-xs bg-white rounded-b-xl shadow-inner">
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm tracking-wide">Voucher</div>
+                        <div class="border border-[#E5E5E5] p-4 space-y-4 text-xs bg-white rounded-b-xl shadow-inner">
                             <div class="space-y-1">
                                 <label>Voucher 500 (จำนวนใบ)</label>
                                 <input type="text" inputmode="numeric" name="voucher_500" class="w-full border p-1 rounded num-input" placeholder="0">
@@ -272,15 +268,14 @@
                                 <input type="text" inputmode="numeric" name="voucher_1000" class="w-full border p-1 rounded num-input" placeholder="0">
                             </div>
                             <div class="space-y-1">
-                                <label>คูปองอื่นๆ / บัตรห้าง</label>
-                                <!-- UI คูปอง แบบใหม่ -->
-                                <div class="relative h-16 border-2 border-dashed border-[#d1c7bd] hover:border-[#c5a059] bg-[#fdfaf5] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
+                                <label class="font-bold text-[#303030]">คูปองอื่นๆ / บัตรห้าง</label>
+                                <div class="relative h-16 border-2 border-dashed border-[#E5E5E5] hover:border-[#D9AE5D] bg-[#F9F9F9] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
                                     <input type="file" name="voucher_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
                                     <div class="upload-placeholder flex flex-col items-center justify-center z-10 transition duration-300">
-                                        <span class="text-[10px] text-gray-500 group-hover:text-[#c5a059]">+ แนบรููปคูปอง</span>
+                                        <span class="text-[10px] text-gray-500 group-hover:text-[#D9AE5D]">+ แนบรูปคูปอง</span>
                                     </div>
                                     <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                    <div class="preview-overlay absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
+                                    <div class="preview-overlay absolute inset-0 bg-[#303030]/60 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
                                         <span class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
                                     </div>
                                 </div>
@@ -292,42 +287,42 @@
                 <!-- Column 3: Items & Note -->
                 <div class="md:col-span-5 space-y-4">
                     <div>
-                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm">รายการขายเงินสด</div>
-                        <div class="border border-[#d1c7bd]/30 rounded-b-xl overflow-hidden shadow-sm">
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm tracking-wide">รายการขายเงินสด</div>
+                        <div class="border border-[#E5E5E5] rounded-b-xl overflow-hidden shadow-sm">
                             <table class="w-full text-[10px]">
-                                <thead class="bg-[#f4eee8] text-[#4a3f35]">
+                                <thead class="bg-[#F5F5F5] text-[#303030]">
                                     <tr>
-                                        <th class="border-b border-[#d1c7bd] p-1.5 w-8">#</th>
-                                        <th class="border-b border-[#d1c7bd] p-1.5 text-center">SKU</th>
-                                        <th class="border-b border-[#d1c7bd] p-1.5 text-center">Size</th>
-                                        <th class="border-b border-[#d1c7bd] p-1.5 text-center">ราคา</th>
-                                        <th class="border-b border-[#d1c7bd] p-1.5 w-8"></th>
+                                        <th class="border-b border-[#E5E5E5] p-1.5 w-8">#</th>
+                                        <th class="border-b border-[#E5E5E5] p-1.5 text-center">SKU</th>
+                                        <th class="border-b border-[#E5E5E5] p-1.5 text-center">Size</th>
+                                        <th class="border-b border-[#E5E5E5] p-1.5 text-center">ราคา</th>
+                                        <th class="border-b border-[#E5E5E5] p-1.5 w-8"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="items-body" class="bg-white">
                                     <tr>
-                                        <td class="border-b border-[#f4eee8] p-1 text-center">1</td>
-                                        <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-sku" placeholder="รหัสสินค้า"></td>
-                                        <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-size"></td>
-                                        <td class="border-b border-[#f4eee8] p-0"><input type="text" inputmode="decimal" class="w-full p-1 text-right outline-none item-price num-input" placeholder="0.00"></td>
-                                        <td class="border-b border-[#f4eee8] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition font-bold">✕</button></td>
+                                        <td class="border-b border-[#F5F5F5] p-1 text-center">1</td>
+                                        <td class="border-b border-[#F5F5F5] p-0"><input type="text" class="w-full p-1 outline-none item-sku" placeholder="รหัสสินค้า"></td>
+                                        <td class="border-b border-[#F5F5F5] p-0"><input type="text" class="w-full p-1 outline-none item-size"></td>
+                                        <td class="border-b border-[#F5F5F5] p-0"><input type="text" inputmode="decimal" class="w-full p-1 text-right outline-none item-price num-input" placeholder="0.00"></td>
+                                        <td class="border-b border-[#F5F5F5] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition font-bold">✕</button></td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="p-2 flex justify-between items-center bg-[#fdfaf5] text-[10px]">
-                                <button type="button" onclick="addItemRow()" class="text-[#c5a059] border border-[#c5a059] px-2 py-1 rounded font-bold hover:bg-[#c5a059] hover:text-white transition">+ เพิ่มรายการ</button>
+                            <div class="p-2 flex justify-between items-center bg-[#F9F9F9] text-[10px] border-t border-[#E5E5E5]">
+                                <button type="button" onclick="addItemRow()" class="text-[#D9AE5D] border border-[#D9AE5D] px-2 py-1 rounded font-bold hover:bg-[#D9AE5D] hover:text-[#303030] transition">+ เพิ่มรายการ</button>
                                 <div class="flex items-center gap-2">
-                                    <span class="font-bold gold-text uppercase">รวมขายเงินสด :</span>
-                                    <div id="total-cash-items" class="bg-white border gold-accent px-4 py-1 min-w-[75px] text-right font-bold rounded num-input">0.00</div>
+                                    <span class="font-bold text-[#303030] uppercase">รวมขายเงินสด :</span>
+                                    <div id="total-cash-items" class="bg-white border gold-accent px-4 py-1 min-w-[75px] text-right font-bold rounded num-input text-[#303030]">0.00</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div>
-                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm">หมายเหตุเพิ่มเติม</div>
-                        <div class="border border-[#d1c7bd]/30 p-2 min-h-[180px] bg-white rounded-b-xl shadow-inner">
-                            <textarea name="remarks" class="w-full h-full min-h-[160px] outline-none text-xs text-[#4a3f35] leading-relaxed bg-transparent resize-none" 
+                        <div class="header-bg text-xs font-bold p-1.5 px-3 rounded-t-xl shadow-sm tracking-wide">หมายเหตุเพิ่มเติม</div>
+                        <div class="border border-[#E5E5E5] p-2 min-h-[180px] bg-white rounded-b-xl shadow-inner">
+                            <textarea name="remarks" class="w-full h-full min-h-[160px] outline-none text-xs text-[#303030] leading-relaxed bg-transparent resize-none" 
                                 placeholder="ระบุรายละเอียดเพิ่มเติม...&#10;- ส่วนลดพิเศษ&#10;- รายการมัดจำ (Deposit)&#10;- รายละเอียดการใช้ Voucher"></textarea>
                         </div>
                     </div>
@@ -335,24 +330,24 @@
             </div>
 
             <!-- Footer -->
-            <div class="flex flex-col md:flex-row justify-between items-end gap-6 mt-6 border-t border-[#f4eee8] pt-6">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 mt-6 border-t border-[#E5E5E5] pt-6">
                 <div class="space-y-3 max-w-lg">
                     <label class="flex items-start gap-2 text-[10px] leading-snug cursor-pointer group">
-                        <input type="checkbox" name="privacy_consent" required class="mt-1 accent-[#c5a059] w-4 h-4 rounded">
-                        <span class="group-hover:text-[#c5a059] transition">ข้าพเจ้าได้อ่านและ "ให้ความยินยอม" ในการเก็บรวบรวมและใช้ข้อมูลภาพถ่ายเพื่อวัตถุประสงค์ข้างต้น</span>
+                        <input type="checkbox" name="privacy_consent" required class="mt-1 accent-[#D9AE5D] w-4 h-4 rounded">
+                        <span class="group-hover:text-[#D9AE5D] transition">ข้าพเจ้าได้อ่านและ "ให้ความยินยอม" ในการเก็บรวบรวมและใช้ข้อมูลภาพถ่ายเพื่อวัตถุประสงค์ข้างต้น</span>
                     </label>
                     <label class="flex items-start gap-2 text-[10px] leading-snug cursor-pointer font-semibold group">
-                        <input type="checkbox" name="cash_policy_ack" required class="mt-1 accent-[#c5a059] w-4 h-4 rounded">
-                        <span class="group-hover:text-[#c5a059] transition text-red-500/80">เงินสดในลิ้นชักห้ามเกิน 2,000 บาท หากเกินต้องนำฝากในวันถัดไป และขอรับรองว่าข้อมูลเป็นความจริง</span>
+                        <input type="checkbox" name="cash_policy_ack" required class="mt-1 accent-[#D9AE5D] w-4 h-4 rounded">
+                        <span class="group-hover:text-[#D9AE5D] transition text-red-500/80">เงินสดในลิ้นชักห้ามเกิน 2,000 บาท หากเกินต้องนำฝากในวันถัดไป และขอรับรองว่าข้อมูลเป็นความจริง</span>
                     </label>
                     <label class="flex items-center gap-2 text-xs font-bold cursor-pointer group">
-                        <input type="checkbox" name="shipment_confirmed" class="accent-[#c5a059] w-4 h-4 rounded">
-                        <span class="group-hover:text-[#c5a059] transition">ยืนยันการรับ Shipment ใน Salesforce ครบถ้วน</span>
+                        <input type="checkbox" name="shipment_confirmed" class="accent-[#D9AE5D] w-4 h-4 rounded">
+                        <span class="group-hover:text-[#D9AE5D] transition">ยืนยันการรับ Shipment ใน Salesforce ครบถ้วน</span>
                     </label>
                 </div>
                 
                 <div class="flex gap-2">
-                    <button type="button" onclick="window.location.reload()" class="bg-gray-100 text-gray-500 px-6 py-2 text-sm font-bold rounded-xl shadow-sm hover:bg-gray-200 transition">ล้างข้อมูล</button>
+                    <button type="button" onclick="window.location.reload()" class="bg-white border border-[#E5E5E5] text-[#303030] px-6 py-2 text-sm font-bold rounded-xl shadow-sm hover:bg-[#F5F5F5] transition">ล้างข้อมูล</button>
                     <button type="submit" class="btn-gold px-12 py-2 text-sm font-bold rounded-xl shadow-md transition transform active:scale-95">บันทึกข้อมูล</button>
                 </div>
             </div>
@@ -360,10 +355,8 @@
     </div>
 
     <script>
-        // เซ็ตวันที่เป็นวันนี้ และ ล็อกห้ามเลือกวันอื่น (Min/Max)
         window.onload = () => {
             const now = new Date();
-            // จัด Format YYYY-MM-DD แบบตรงกับ Timezone เครื่องเป๊ะๆ
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
@@ -371,11 +364,10 @@
 
             const dateInput = document.getElementById('sale_date');
             dateInput.value = todayLocal;
-            dateInput.min = todayLocal; // ห้ามเลือกย้อนหลัง
-            dateInput.max = todayLocal; // ห้ามเลือกอนาคต (บังคับแค่วันนี้วันเดียว)
+            dateInput.min = todayLocal; 
+            dateInput.max = todayLocal; 
         };
 
-        // --- ฟังก์ชันพรีวิวภาพและชื่อไฟล์ ---
         function previewFile(input) {
             const wrapper = input.parentElement;
             const placeholder = wrapper.querySelector('.upload-placeholder');
@@ -397,19 +389,17 @@
                     }
                     reader.readAsDataURL(file);
                 } else {
-                    // กรณีไม่ใช่ไฟล์รูป
                     img.classList.add('opacity-0');
                     overlay.classList.remove('opacity-0');
                     placeholder.classList.add('opacity-0');
                     overlayText.textContent = file.name;
-                    overlay.classList.replace('bg-black/50', 'bg-[#c5a059]/90');
+                    overlay.classList.replace('bg-[#303030]/60', 'bg-[#D9AE5D]/90');
                 }
             } else {
-                // กรณีเคลียร์ไฟล์
                 img.classList.add('opacity-0');
                 overlay.classList.add('opacity-0');
                 placeholder.classList.remove('opacity-0');
-                overlay.classList.replace('bg-[#c5a059]/90', 'bg-black/50');
+                overlay.classList.replace('bg-[#D9AE5D]/90', 'bg-[#303030]/60');
                 img.src = "";
             }
         }
@@ -443,7 +433,7 @@
             if (balance > 2000) {
                 cashBalanceDisplay.className = "border p-1 text-right bg-red-50 font-bold rounded num-input text-red-600";
             } else {
-                cashBalanceDisplay.className = "border p-1 text-right bg-gray-50 font-bold rounded num-input";
+                cashBalanceDisplay.className = "border p-1 text-right bg-gray-50 font-bold rounded num-input text-[#303030]";
             }
 
             let itemTotal = 0;
@@ -479,11 +469,11 @@
             const tr = document.createElement('tr');
             tr.className = "bg-white";
             tr.innerHTML = `
-                <td class="border-b border-[#f4eee8] p-1 text-center">${rowCount}</td>
-                <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-sku" placeholder="รหัสสินค้า"></td>
-                <td class="border-b border-[#f4eee8] p-0"><input type="text" class="w-full p-1 outline-none item-size"></td>
-                <td class="border-b border-[#f4eee8] p-0"><input type="text" inputmode="decimal" class="w-full p-1 text-right outline-none item-price num-input" placeholder="0.00"></td>
-                <td class="border-b border-[#f4eee8] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 font-bold transition">✕</button></td>
+                <td class="border-b border-[#F5F5F5] p-1 text-center">${rowCount}</td>
+                <td class="border-b border-[#F5F5F5] p-0"><input type="text" class="w-full p-1 outline-none item-sku text-[#303030]" placeholder="รหัสสินค้า"></td>
+                <td class="border-b border-[#F5F5F5] p-0"><input type="text" class="w-full p-1 outline-none item-size text-[#303030]"></td>
+                <td class="border-b border-[#F5F5F5] p-0"><input type="text" inputmode="decimal" class="w-full p-1 text-right outline-none item-price num-input text-[#303030]" placeholder="0.00"></td>
+                <td class="border-b border-[#F5F5F5] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 font-bold transition">✕</button></td>
             `;
             tbody.appendChild(tr);
         }
@@ -563,15 +553,15 @@
                 }
 
                 const modal = document.createElement('div');
-                modal.className = "fixed inset-0 bg-[#4a3f35]/60 flex items-center justify-center p-4 z-50 backdrop-blur-sm";
+                modal.className = "fixed inset-0 bg-[#303030]/80 flex items-center justify-center p-4 z-50 backdrop-blur-sm";
                 modal.innerHTML = `
-                    <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center border-t-4 border-[#c5a059]">
-                        <div class="text-[#c5a059] mb-4 flex justify-center">
+                    <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center border-t-4 border-[#D9AE5D]">
+                        <div class="text-[#D9AE5D] mb-4 flex justify-center">
                             <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 text-[#4a3f35]">บันทึกสำเร็จ</h3>
+                        <h3 class="text-xl font-bold mb-2 text-[#303030]">บันทึกสำเร็จ</h3>
                         <p class="text-sm text-gray-500 mb-6">ระบบได้บันทึกข้อมูลลง Lark Base เรียบร้อยแล้ว</p>
-                        <button onclick="this.closest('.fixed').remove(); window.location.reload();" class="btn-gold px-6 py-2 rounded-full w-full font-bold shadow-lg uppercase">ตกลง</button>
+                        <button onclick="this.closest('.fixed').remove(); window.location.reload();" class="btn-gold px-6 py-2 rounded-full w-full font-bold shadow-lg uppercase tracking-wide">ตกลง</button>
                     </div>
                 `;
                 document.body.appendChild(modal);
