@@ -650,21 +650,22 @@ if (canvas) {
   canvas.addEventListener("mouseup", endDraw);
   canvas.addEventListener("mouseleave", endDraw);
 
-  canvas.addEventListener("touchstart", startDraw, { passive: false });
-  canvas.addEventListener("touchmove", draw, { passive: false });
-  canvas.addEventListener("touchend", endDraw);
+              canvas.addEventListener("touchstart", startDraw, { passive: false });
+              canvas.addEventListener("touchmove", draw, { passive: false });
+              canvas.addEventListener("touchend", endDraw);
 
-  window.clearSignature = function () {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    document.getElementById("signature_data").value = "";
-  };
-}
-</script>
+                window.clearSignature = function () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.getElementById("signature_data").value = "";
+              };
+            }
+        </script>
 
     <script>
 const saleDate = document.getElementById("sale_date");
 
 if (saleDate) {
+
   function formatLocalDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -680,11 +681,28 @@ if (saleDate) {
   const todayStr = formatLocalDate(today);
   const yesterdayStr = formatLocalDate(yesterday);
 
+  // default
   saleDate.value = todayStr;
+
+  // limit picker
   saleDate.min = yesterdayStr;
   saleDate.max = todayStr;
+
+  // force validation (iPad/Safari)
+  saleDate.addEventListener("change", () => {
+
+    const selected = saleDate.value;
+
+    if (selected < yesterdayStr || selected > todayStr) {
+
+      alert("เลือกได้เฉพาะวันนี้และเมื่อวานเท่านั้น");
+
+      saleDate.value = todayStr;
+    }
+  });
 }
 </script>
+   
     
     
 </body>
