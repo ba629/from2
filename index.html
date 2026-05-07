@@ -660,6 +660,26 @@ if (canvas) {
   };
 }
 </script>
+
+            <script>
+                    const saleDate = document.getElementById("sale_date");
+                    if (saleDate) {
+                    const today = new Date(); // วันนี้
+                        
+                    const todayStr = today.toISOString().split("T")[0]; // เมื่อวาน
+                    const yesterday = new Date();
+                    yesterday.setDate(today.getDate() - 1);
+                    const yesterdayStr = yesterday.toISOString().split("T")[0];
+                     // default = วันนี้
+                    saleDate.value = todayStr;
+
+                  // เลือกย้อนหลังได้แค่เมื่อวาน
+                  saleDate.min = yesterdayStr;
+
+                  // ห้ามเลือกวันอนาคต
+                  saleDate.max = todayStr;
+                }
+            </script>
     
 </body>
 </html>
