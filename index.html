@@ -276,19 +276,7 @@
                                 <label>Voucher 1000 (จำนวนใบ)</label>
                                 <input type="text" inputmode="numeric" name="voucher_1000" class="w-full border p-1 rounded num-input shadow-sm" placeholder="0">
                             </div>
-                            <div class="space-y-1">
-                                <label class="font-bold text-white">คูปองอื่นๆ / บัตรห้าง</label>
-                                <div class="relative h-16 border-2 border-dashed border-[#555] hover:border-[#D9AE5D] bg-[#3A3A3A] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all shadow-sm">
-                                    <input type="file" name="voucher_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
-                                    <div class="upload-placeholder flex flex-col items-center justify-center z-10 transition duration-300">
-                                        <span class="text-[10px] text-gray-400 group-hover:text-[#D9AE5D]">+ แนบรูปคูปอง</span>
-                                    </div>
-                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                    <div class="preview-overlay absolute inset-0 bg-[#1A1A1A]/70 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
-                                        <span class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
-                                    </div>
-                                </div>
-                            </div>
+                          
                         </div>
                     </div>
                 </div>
@@ -336,6 +324,19 @@
                             <textarea name="remarks" class="w-full h-full min-h-[150px] outline-none text-xs leading-relaxed rounded-lg p-3 resize-none shadow-sm" 
                                 placeholder="ระบุรายละเอียดเพิ่มเติม...&#10;- ส่วนลดพิเศษ&#10;- รายการมัดจำ (Deposit)&#10;- รายละเอียดการใช้ Voucher"></textarea>
                         </div>
+                          <div class="space-y-1">
+                                <label class="font-bold text-white">คูปองอื่นๆ / บัตรห้าง</label>
+                                <div class="relative h-16 border-2 border-dashed border-[#555] hover:border-[#D9AE5D] bg-[#3A3A3A] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all shadow-sm">
+                                    <input type="file" name="voucher_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
+                                    <div class="upload-placeholder flex flex-col items-center justify-center z-10 transition duration-300">
+                                        <span class="text-[10px] text-gray-400 group-hover:text-[#D9AE5D]">+ แนบรูปคูปอง</span>
+                                    </div>
+                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
+                                    <div class="preview-overlay absolute inset-0 bg-[#1A1A1A]/70 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
+                                        <span class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
