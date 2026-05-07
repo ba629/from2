@@ -661,25 +661,31 @@ if (canvas) {
 }
 </script>
 
-            <script>
-                    const saleDate = document.getElementById("sale_date");
-                    if (saleDate) {
-                    const today = new Date(); // วันนี้
-                        
-                    const todayStr = today.toISOString().split("T")[0]; // เมื่อวาน
-                    const yesterday = new Date();
-                    yesterday.setDate(today.getDate() - 1);
-                    const yesterdayStr = yesterday.toISOString().split("T")[0];
-                     // default = วันนี้
-                    saleDate.value = todayStr;
+    <script>
+const saleDate = document.getElementById("sale_date");
 
-                  // เลือกย้อนหลังได้แค่เมื่อวาน
-                  saleDate.min = yesterdayStr;
+if (saleDate) {
+  function formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
-                  // ห้ามเลือกวันอนาคต
-                  saleDate.max = todayStr;
-                }
-            </script>
+  const today = new Date();
+
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+
+  const todayStr = formatLocalDate(today);
+  const yesterdayStr = formatLocalDate(yesterday);
+
+  saleDate.value = todayStr;
+  saleDate.min = yesterdayStr;
+  saleDate.max = todayStr;
+}
+</script>
+    
     
 </body>
 </html>
