@@ -212,6 +212,25 @@
                             <label class="w-20 font-bold">ชื่อผู้บันทึก :</label>
                             <input type="text" name="recorder_name" required class="flex-grow h-8 border-b-2 !border-b-[#555] bg-transparent !border-t-0 !border-x-0 outline-none focus:!border-b-[#D9AE5D] px-2 font-semibold">
                         </div>
+                        <div class="flex items-start gap-2 text-xs mt-3">
+                              <label class="w-20 font-bold pt-2">ลายเซ็น :</label>      
+                        <div class="flex-grow bg-[#3A3A3A] border border-[#555] rounded-xl p-2">
+                        <canvas 
+                        id="signature-pad"
+                        class="w-full h-28 bg-[#2A2A2A] rounded-lg touch-none"
+                        ></canvas>
+
+                        <button
+                        type="button"
+                        onclick="clearSignature()"
+                        class="mt-2 w-full bg-[#444] hover:bg-[#555] text-white py-1.5 rounded-lg text-xs"
+                        >
+                        ล้างลายเซ็น
+                        </button>
+                        </div>
+
+                        <input type="hidden" name="signature_data" id="signature_data">
+                        </div>
 
                         <div class="flex items-center gap-2 text-xs">
                             <label class="w-20 font-bold">ภาพยืนยัน :</label>
@@ -587,5 +606,73 @@
             }
         });
     </script>
+    <script>
+const canvas = document.getElementById("signature-pad");
+
+if (canvas) {
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
+
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
+
+  setTimeout(resizeCanvas, 100);
+
+  function getPoint(e) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches ? e.touches[0] : e;
+
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top
+    };
+  }
+
+  function startDraw(e) {
+    e.preventDefault();
+    drawing = true;
+    const p = getPoint(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    e.preventDefault();
+
+    const p = getPoint(e);
+
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#D9AE5D";
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+
+    document.getElementById("signature_data").value = canvas.toDataURL("image/png");
+  }
+
+  function endDraw() {
+    drawing = false;
+  }
+
+  canvas.addEventListener("mousedown", startDraw);
+  canvas.addEventListener("mousemove", draw);
+  canvas.addEventListener("mouseup", endDraw);
+  canvas.addEventListener("mouseleave", endDraw);
+
+  canvas.addEventListener("touchstart", startDraw, { passive: false });
+  canvas.addEventListener("touchmove", draw, { passive: false });
+  canvas.addEventListener("touchend", endDraw);
+
+  window.clearSignature = function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById("signature_data").value = "";
+  };
+}
+</script>
+    
 </body>
 </html>
