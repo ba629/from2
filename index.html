@@ -165,7 +165,7 @@
                             <label class="text-right pr-2">QR-CODE AUTO :</label>
                             <input type="text" inputmode="decimal" name="pay_qr" class="border p-1 payment-input num-input rounded shadow-sm" placeholder="0.00">
                             
-                            <label class="text-right pr-2">GHL :</label>
+                            <label class="text-right pr-2">เครื่องรูดบัตร GHL :</label>
                             <input type="text" inputmode="decimal" name="pay_ghl" class="border p-1 payment-input num-input rounded shadow-sm" placeholder="0.00">
                             
                             <label class="text-right pr-2 leading-tight">เครื่องรูดบัตร (สำรอง) TTB :</label>
@@ -232,20 +232,7 @@
                         <input type="hidden" name="signature_data" id="signature_data">
                         </div>
 
-                        <div class="flex items-center gap-2 text-xs">
-                            <label class="w-20 font-bold">ภาพยืนยัน :</label>
-                            <div class="relative flex-grow h-10 border-2 border-dashed border-[#555] hover:border-[#D9AE5D] bg-[#3A3A3A] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
-                                <input type="file" name="confirm_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
-                                <div class="upload-placeholder flex items-center justify-center gap-1 z-10 transition duration-300">
-                                    <svg class="w-4 h-4 text-gray-400 group-hover:text-[#D9AE5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                    <span class="text-[10px] text-gray-400 group-hover:text-[#D9AE5D]">แนบรูปถ่าย</span>
-                                </div>
-                                <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                <div class="preview-overlay absolute inset-0 bg-[#1A1A1A]/70 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-1">
-                                    <span class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
 
