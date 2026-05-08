@@ -3,864 +3,642 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบฟอร์มบันทึกยอดขายรายวัน - Luxury Retail</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
+    <title>แบบฟอร์มบันทึกยอดขายรายวัน</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ==============================
-           CSS Variables (ตั้งค่าสี ธีม)
-           ============================== */
+        /* CSS ตัวแปรสำหรับ Dark/Light Mode */
         :root {
-            --font-main: 'Sarabun', sans-serif;
-            --transition-speed: 0.3s;
-        }
-
-        /* --- Dark Mode (โหมดมืดตามรูป) --- */
-        body.dark-mode {
-            --bg-color: #1e1b18;
-            --card-bg: #2b2723;
-            --text-main: #d4af37;
-            --text-muted: #8a8175;
-            --border-color: #4a443a;
-            --input-bg: #1e1b18;
-            --input-text: #ffffff;
-            --accent-color: #d4af37;
-            --btn-bg: #d4af37;
-            --btn-text: #1e1b18;
-        }
-
-        /* --- Light Mode (โหมดสว่าง) --- */
-        body.light-mode {
-            --bg-color: #f9f8f4;
+            --bg-color: #f5f3ef;
             --card-bg: #ffffff;
-            --text-main: #b8860b;
-            --text-muted: #6b7280;
-            --border-color: #e5e7eb;
-            --input-bg: #f3f4f6;
-            --input-text: #111827;
-            --accent-color: #b8860b;
-            --btn-bg: #b8860b;
-            --btn-text: #ffffff;
+            --text-color: #333333;
+            --text-muted: #888888;
+            --border-color: #e5e5e5;
+            --input-bg: #faf9f7;
+            --accent-color: #c19a5b;
+            --accent-hover: #a8864f;
+            --red-color: #e74c3c;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
-        /* ==============================
-           Global Styles
-           ============================== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        body.dark-mode {
+            --bg-color: #1e1e1e;
+            --card-bg: #2a2a2a;
+            --text-color: #f0f0f0;
+            --text-muted: #a0a0a0;
+            --border-color: #404040;
+            --input-bg: #333333;
+            --accent-color: #d4af37;
+            --accent-hover: #f3e5ab;
+            --red-color: #ff6b6b;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
         body {
-            font-family: var(--font-main);
+            font-family: 'Sarabun', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-muted);
-            transition: background-color var(--transition-speed), color var(--transition-speed);
-            padding-bottom: 50px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
 
-        h1, h2, h3 {
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
-        /* ==============================
-           Header & Top Bar
-           ============================== */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid var(--border-color);
+        .custom-card {
             background-color: var(--card-bg);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--accent-color);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
             border-radius: 8px;
+        }
+
+        .custom-input {
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 12px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .custom-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .num-input {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ซ่อนปุ่มลูกศรขึ้นลงใน input number */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .title-gold {
+            color: var(--accent-color);
+            font-weight: bold;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 8px;
+            margin-bottom: 16px;
+        }
+
+        .table-row {
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        /* ปุ่ม Switch Theme */
+        .theme-btn {
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .theme-btn:hover, .theme-btn.active {
+            background-color: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        /* อัปโหลดไฟล์ Preview */
+        .upload-box {
+            background-color: var(--input-bg);
+            border: 1px dashed var(--border-color);
+            position: relative;
+            height: 60px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--btn-text);
-        }
-
-        .logo-area span {
-            font-size: 14px;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-        }
-
-        .header-center {
-            text-align: center;
-        }
-
-        .header-center h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .header-center h2 {
-            font-size: 12px;
-            letter-spacing: 3px;
-            font-weight: 400;
-        }
-
-        .header-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 10px;
-        }
-
-        .theme-switch {
-            display: flex;
-            gap: 5px;
-        }
-
-        .theme-switch button {
-            background-color: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 5px 10px;
-            font-size: 12px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-
-        .theme-switch button:hover {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        select.branch-select {
-            background-color: var(--input-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 4px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* ==============================
-           Main Layout & Containers
-           ============================== */
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px 40px;
-        }
-
-        .notice-bar {
-            border-left: 4px solid var(--accent-color);
-            padding: 10px 15px;
-            margin-bottom: 25px;
-            font-size: 13px;
-            background-color: var(--card-bg);
-        }
-
-        .notice-bar strong {
-            color: var(--accent-color);
-        }
-
-        .date-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            font-size: 14px;
-            color: var(--text-main);
-        }
-
-        .date-section input {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 15px;
-            border-radius: 4px;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 2fr;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-
-        .card h3 {
-            font-size: 16px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card h3::before {
-            content: '';
-            width: 3px;
-            height: 16px;
-            background-color: var(--accent-color);
-            display: block;
-        }
-
-        /* ==============================
-           Form Elements
-           ============================== */
-        .input-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 13px;
-        }
-
-        .input-group input {
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--input-text);
-            padding: 8px 12px;
-            border-radius: 4px;
-            text-align: right;
-            width: 120px;
-            outline: none;
-        }
-
-        .input-group input:focus, .size-input:focus, .price-input:focus, textarea:focus {
-            border-color: var(--accent-color);
-        }
-
-        .attach-btn {
-            background-color: transparent;
-            border: 1px dashed var(--border-color);
-            color: var(--text-muted);
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-            margin-top: 10px;
-            display: inline-block;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .attach-btn:hover {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        .total-box {
-            border: 1px solid var(--accent-color);
-            padding: 15px;
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 4px;
-        }
-
-        .total-box span {
-            color: var(--accent-color);
-            font-size: 14px;
-        }
-
-        .total-box strong {
-            color: var(--accent-color);
-            font-size: 20px;
-        }
-
-        /* ==============================
-           Tables
-           ============================== */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-
-        th {
-            text-align: left;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--accent-color);
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        th:last-child {
-            text-align: right;
-        }
-
-        td {
-            padding: 10px 0;
-            border-bottom: 1px dashed var(--border-color);
-            font-size: 13px;
-            color: var(--input-text);
-        }
-
-        .size-input, .price-input {
-            background-color: transparent;
-            border: none;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--input-text);
-            padding: 5px;
-            width: 100%;
-            outline: none;
-        }
-
-        .price-input {
-            text-align: right;
-        }
-
-        .remove-btn {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 2px 6px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-left: 10px;
-        }
-        .remove-btn:hover {
-            border-color: #ef4444; color: #ef4444;
-        }
-
-        /* ==============================
-           File Previews
-           ============================== */
-        .hidden-file-input {
-            display: none;
-        }
-        
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-
-        .preview-item {
-            position: relative;
-            width: 50px;
-            height: 50px;
-            border-radius: 4px;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            transition: border-color 0.2s;
         }
-
-        .preview-item img {
+        .upload-box:hover {
+            border-color: var(--accent-color);
+        }
+        .upload-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* ให้รูปเต็มกรอบแบบสวยงาม */
+            z-index: 10;
         }
-
-        .preview-item .remove-file {
+        .file-name-overlay {
             position: absolute;
-            top: 2px;
-            right: 2px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 16px;
-            height: 16px;
-            font-size: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-        }
-        .preview-item .remove-file:hover {
-            background: #ef4444;
-        }
-
-        /* ==============================
-           Textarea & Signatures
-           ============================== */
-        textarea {
+            bottom: 0;
             width: 100%;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--input-text);
-            padding: 15px;
-            border-radius: 4px;
-            min-height: 100px;
-            resize: vertical;
-            outline: none;
-            font-family: inherit;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 10px;
+            text-align: center;
+            padding: 2px 4px;
+            z-index: 20;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        .signature-area {
-            display: flex;
-            gap: 30px;
-            margin-top: 20px;
-        }
-
-        .signature-box {
-            flex-grow: 1;
-            border: 1px solid var(--border-color);
-            background-color: var(--input-bg);
-            height: 120px;
-            border-radius: 4px;
-            position: relative;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .submit-btn {
-            background-color: var(--btn-bg);
-            color: var(--btn-text);
-            border: none;
-            padding: 15px 40px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 4px;
-            cursor: pointer;
-            display: block;
-            margin: 40px auto 0;
-            font-family: inherit;
-            transition: opacity 0.2s;
-        }
-
-        .submit-btn:hover {
-            opacity: 0.9;
-        }
-
     </style>
 </head>
-<body class="dark-mode">
+<body class="light-mode p-4 md:p-8">
 
-    <header>
-        <div class="logo-area">
-            <div class="logo-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                </svg>
-            </div>
-            <span>LUXURY RETAIL SYSTEM</span>
-        </div>
-        <div class="header-center">
-            <h1>แบบฟอร์มบันทึกยอดขายรายวัน</h1>
-            <h2>DAILY SALES RECORD FORM</h2>
-        </div>
-        <div class="header-right">
-            <div class="theme-switch">
-                <button type="button" onclick="setTheme('dark-mode')">🌙 มืด</button>
-                <button type="button" onclick="setTheme('light-mode')">☀️ สว่าง</button>
-            </div>
-            <select class="branch-select">
-                <option>— เลือกสาขา —</option>
-                <option>SUITCUBE SIAM</option>
-                <option>SUITCUBE T21</option>
-            </select>
-        </div>
-    </header>
-
-    <main>
-        <div class="notice-bar">
-            กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ - เงินสดต้องเหลือ <strong>ไม่เกิน 2,000 บาท</strong> หากเกินต้องโทรขออนุมัติ**
-        </div>
-
-        <div class="date-section">
-            <label>วันที่บันทึกของวันที่</label>
-            <input type="date" id="saleDate">
-        </div>
-
-        <div class="form-grid">
-            
-            <div class="col-1">
-                <div class="card">
-                    <h3>ช่องทางการรับชำระเงิน</h3>
-                    <div class="input-group">
-                        <label>QR-CODE AUTO</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    <div class="input-group">
-                        <label>เครื่องรูดบัตร GHL</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    
-                    <div class="file-upload-wrapper">
-                        <label class="attach-btn" style="margin-bottom: 0;">
-                            + ไฟล์แนบ GHL
-                            <input type="file" multiple accept="image/*" class="hidden-file-input" onchange="handleMultipleFiles(this, 'preview-ghl')">
-                        </label>
-                        <div id="preview-ghl" class="preview-container"></div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label>เครื่องรูดบัตร (สำรอง) TTB</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    <div class="input-group">
-                        <label>WECHAT / ALIPAY</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    <div class="input-group">
-                        <label>รับช่องทาง KTB พี่กวาง</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    <div class="input-group">
-                        <label>ไทยพาณิชย์ 0198</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    <div class="input-group">
-                        <label>(งานองค์กร) TTB 6417</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    <div class="input-group" style="margin-top: 15px;">
-                        <label style="color: var(--accent-color);">เงินสด</label>
-                        <input type="text" placeholder="0.00" style="border-color: var(--accent-color);">
-                    </div>
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <header class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-[#2a2a2a] rounded flex items-center justify-center">
+                    <svg class="w-8 h-8 text-[#d4af37]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z"></path><path d="M12 12L20 7.5"></path><path d="M12 12V21"></path><path d="M12 12L4 7.5"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider text-[var(--accent-color)] uppercase">แบบฟอร์มบันทึกยอดขายรายวัน</h1>
+                    <p class="text-xs text-[var(--text-muted)] tracking-widest">DAILY SALES RECORD FORM</p>
                 </div>
             </div>
+            <div class="flex flex-col items-end gap-3">
+                <div class="flex gap-2">
+                    <button type="button" class="theme-btn active" onclick="setTheme('light-mode', this)">☼ สว่าง</button>
+                    <button type="button" class="theme-btn" onclick="setTheme('dark-mode', this)">☾ มืด</button>
+                </div>
+                <select id="branch" class="custom-input w-48 text-sm cursor-pointer">
+                    <option value="">— เลือกสาขา —</option>
+                    <option value="BKK">สาขา กทม.</option>
+                    <option value="UPC">สาขา ต่างจังหวัด</option>
+                </select>
+            </div>
+        </header>
 
-            <div class="col-2">
-                <div class="card">
-                    <h3>ตรวจยอดขายเงินสด</h3>
-                    <div class="input-group">
-                        <label>เงินสดตั้งต้น</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    <div class="input-group">
-                        <label>เงินสดรับมา</label>
-                        <input type="text" placeholder="0.00" readonly style="opacity: 0.7;">
-                    </div>
-                    <div class="input-group">
-                        <label>ฝากเงินสด</label>
-                        <input type="text" placeholder="0.00">
-                    </div>
-                    
-                    <div class="total-box">
-                        <span>เงินสดเหลือ</span>
-                        <strong>0.00</strong>
-                    </div>
+        <div class="custom-card p-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+            <p class="text-[var(--text-muted)]">กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ - เงินสดต้องเหลือ <strong class="text-[var(--red-color)]">ไม่เกิน 2,000 บาท</strong> หากเกินต้องโทรขออนุมัติ**</p>
+            <div class="flex items-center gap-2">
+                <label class="whitespace-nowrap font-bold text-[var(--accent-color)]">วันที่บันทึก :</label>
+                <input type="date" id="sale_date" class="custom-input cursor-pointer w-40">
+            </div>
+        </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; gap: 15px;">
-                        <span style="font-size: 13px; white-space: nowrap;">สลิปฝากเงินสด</span>
-                        <div class="file-upload-wrapper" style="width: 100%;">
-                            <label class="attach-btn" style="margin-top: 0;">
-                                + แนบสลิป
-                                <input type="file" multiple accept="image/*" class="hidden-file-input" onchange="handleMultipleFiles(this, 'preview-cash-slip')">
-                            </label>
+        <form id="salesForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                <div class="md:col-span-4 custom-card p-5">
+                    <h2 class="title-gold">ช่องทางการรับชำระเงิน</h2>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center">
+                            <label>QR-CODE AUTO</label>
+                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>เครื่องรูดบัตร GHL</label>
+                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-end">
+                            <div class="upload-box w-32">
+                                <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-30" onchange="previewFile(this)">
+                                <span class="text-[10px] text-[var(--text-muted)] z-0">+ ไฟล์แนบ GHL</span>
+                                <img class="hidden">
+                                <div class="file-name-overlay hidden"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>เครื่องรูดบัตร (สำรอง) TTB</label>
+                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>WECHAT / ALIPAY</label>
+                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>รับช่องทาง KTB พี่กวาง</label>
+                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>ไทยพาณิชย์ 0198</label>
+                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label>(งานองค์กร) TTB 6417</label>
+                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center pt-2 mt-2 border-t border-[var(--border-color)]">
+                            <label class="font-bold text-[var(--accent-color)]">เงินสด</label>
+                            <input type="text" id="cash_payment" class="custom-input num-input w-32 font-bold !border-[var(--accent-color)] text-[var(--accent-color)]" placeholder="0.00">
                         </div>
                     </div>
-                    <div id="preview-cash-slip" class="preview-container" style="justify-content: flex-end;"></div>
                 </div>
 
-                <div class="card">
-                    <h3>VOUCHER</h3>
-                    <div class="input-group">
-                        <label>Voucher 500 เหลือจำนวนใบ</label>
-                        <input type="text" placeholder="0">
+                <div class="md:col-span-3 space-y-6">
+                    <div class="custom-card p-5">
+                        <h2 class="title-gold">ตรวจยอดขายเงินสด</h2>
+                        <div class="space-y-4 text-sm">
+                            <div class="flex justify-between items-center">
+                                <label>เงินสดตั้งต้น</label>
+                                <input type="text" id="cash_start" class="custom-input num-input w-28 calc-balance" placeholder="0.00">
+                            </div>
+                            <div class="flex justify-between items-center relative">
+                                <label class="text-[var(--accent-color)] font-bold">เงินสดรับมา</label>
+                                <div class="absolute left-[-20px] text-[var(--accent-color)] opacity-50">➔</div>
+                                <input type="text" id="cash_received" class="custom-input num-input w-28 !bg-[var(--input-bg)] opacity-80" readonly placeholder="0.00">
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <label>ฝากเงินสด</label>
+                                <input type="text" id="cash_deposit" class="custom-input num-input w-28 calc-balance" placeholder="0.00">
+                            </div>
+                            <div class="flex justify-between items-center border border-[var(--accent-color)] p-2 rounded bg-[var(--card-bg)]">
+                                <label class="font-bold">เงินสดเหลือ</label>
+                                <input type="text" id="cash_balance" class="num-input w-24 bg-transparent border-none font-bold text-lg text-[var(--accent-color)] focus:outline-none" readonly value="0.00">
+                            </div>
+                            
+                            <div class="flex justify-between items-center pt-2">
+                                <label class="text-xs">สลิปฝากเงินสด</label>
+                                <div class="upload-box w-28 h-[40px]">
+                                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-30" onchange="previewFile(this)">
+                                    <span class="text-[10px] text-[var(--text-muted)] z-0">+ แนบสลิป</span>
+                                    <img class="hidden">
+                                    <div class="file-name-overlay hidden"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label>Voucher 1000 เหลือจำนวนใบ</label>
-                        <input type="text" placeholder="0">
+
+                    <div class="custom-card p-5">
+                        <h2 class="title-gold">VOUCHER</h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs">Voucher 500 เหลือ (ใบ)</label>
+                                <input type="text" class="custom-input num-input w-16" placeholder="0">
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs">Voucher 1000 เหลือ (ใบ)</label>
+                                <input type="text" class="custom-input num-input w-16" placeholder="0">
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div class="md:col-span-5 space-y-6">
+                    <div class="custom-card p-5">
+                        <h2 class="title-gold">รายการขายเงินสด</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="text-[var(--text-muted)] border-b border-[var(--border-color)]">
+                                        <th class="text-left font-normal pb-2 w-8">#</th>
+                                        <th class="text-left font-normal pb-2">SKU</th>
+                                        <th class="text-center font-normal pb-2 w-16">SIZE</th>
+                                        <th class="text-right font-normal pb-2 w-24">ราคา/หน่วย</th>
+                                        <th class="pb-2 w-6"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="items_body">
+                                    <tr class="table-row">
+                                        <td class="py-2">1</td>
+                                        <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm" placeholder="รหัสสินค้า"></td>
+                                        <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm text-center" placeholder="—"></td>
+                                        <td><input type="text" class="bg-transparent border-none w-full outline-none num-input text-sm item-price" placeholder="0.00"></td>
+                                        <td class="text-right"><button type="button" class="text-[var(--text-muted)] hover:text-red-500" onclick="removeRow(this)">✕</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="flex justify-between items-start mt-4">
+                            <button type="button" onclick="addRow()" class="text-xs border border-[var(--border-color)] px-3 py-1.5 rounded hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] transition">+ เพิ่มรายการสินค้า</button>
+                            
+                            <div class="text-right flex flex-col items-end">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-bold">รวมรายการขายเงินสด</span>
+                                    <input type="text" id="total_cash_items" class="num-input bg-transparent border-none font-bold text-xl text-[var(--accent-color)] w-24 focus:outline-none" value="0.00" readonly>
+                                </div>
+                                <span id="match_warning" class="text-xs text-[var(--red-color)] font-bold hidden animate-pulse mt-1">
+                                    ⚠ ยอดไม่ตรงกับเงินสดรับมา!
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="custom-card p-5">
+                        <h2 class="title-gold">หมายเหตุ & VOUCHER</h2>
+                        <div class="space-y-4">
+                            <textarea class="custom-input h-20 text-sm resize-none" placeholder="สำหรับอธิบายรายการขายเพิ่มเติม&#10;เช่น ส่วนลดพิเศษ, เหตุผลในการลด, รายการ Pick Up, มัดจำ Deposit"></textarea>
+                            
+                            <div>
+                                <label class="text-xs text-[var(--text-muted)] block mb-1">หลักฐาน VOUCHER ห้าง / คูปองของขวัญ</label>
+                                <div class="upload-box w-32 h-[40px]">
+                                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-30" onchange="previewFile(this)">
+                                    <span class="text-[10px] text-[var(--text-muted)] z-0">+ แนบหลักฐาน</span>
+                                    <img class="hidden">
+                                    <div class="file-name-overlay hidden"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="col-3">
-                <div class="card">
-                    <h3>รายการขายเงินสด</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th width="10%">#</th>
-                                <th width="40%">SKU</th>
-                                <th width="20%">SIZE</th>
-                                <th width="30%">ราคา/หน่วย</th>
-                            </tr>
-                        </thead>
-                        <tbody id="items-table-body">
-                            <tr>
-                                <td>1</td>
-                                <td>รหัสสินค้า</td>
-                                <td><input type="text" class="size-input" placeholder="—"></td>
-                                <td style="text-align: right;">
-                                    <input type="text" class="price-input" placeholder="0.00">
-                                    <button class="remove-btn" onclick="this.closest('tr').remove()">x</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <button class="attach-btn" style="width: auto; border-color: var(--accent-color); color: var(--accent-color);" onclick="addItem()">+ เพิ่มรายการสินค้า</button>
-
-                    <div style="text-align: right; margin-top: 20px;">
-                        <span style="font-size: 13px; margin-right: 15px;">รวมรายการขายเงินสด</span>
-                        <strong style="color: var(--accent-color); font-size: 22px;">0.00</strong>
-                    </div>
-                </div>
+            <div class="custom-card p-4 flex justify-between items-center text-sm border-l-4 border-[var(--accent-color)]">
+                <span class="font-bold tracking-widest text-[var(--accent-color)] text-xs uppercase">Daily Sales Record</span>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" required class="accent-[var(--accent-color)] w-4 h-4">
+                    <span>ยืนยันการกดรับ Shipment ใน Salesforce ครบถ้วน</span>
+                </label>
             </div>
-        </div>
 
-        <div class="card">
-            <h3>หมายเหตุ & VOUCHER</h3>
-            <textarea placeholder="สำหรับอธิบายรายการขายเพิ่มเติม&#10;เช่น ส่วนลดพิเศษ (เลขที่ใบเสร็จ เหตุผลในการลด)&#10;รายการ Pick Up (เลขที่ใบเสร็จ มัดจำ Deposit)"></textarea>
-            
-            <div style="margin-top: 15px;">
-                <label style="font-size: 13px; display: block; margin-bottom: 5px;">หลักฐาน VOUCHER ห้าง / คูปองของขวัญ</label>
-                <div class="file-upload-wrapper">
-                    <label class="attach-btn" style="width: auto; margin-top: 0; padding: 8px 25px;">
-                        + แนบหลักฐาน
-                        <input type="file" multiple accept="image/*" class="hidden-file-input" onchange="handleMultipleFiles(this, 'preview-voucher')">
-                    </label>
-                    <div id="preview-voucher" class="preview-container"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 25px;">
-            <h3 style="margin: 0; font-size: 14px; letter-spacing: 2px;">• DAILY SALES RECORD •</h3>
-            <label class="checkbox-label">
-                <input type="checkbox">
-                ยืนยันการกดรับ Shipment ใน Salesforce ครบถ้วน
-            </label>
-        </div>
-
-        <div class="card">
-            <h3>ผู้บันทึก & ลายเซ็น</h3>
-            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px;">
-                <div>
-                    <label class="checkbox-label" style="align-items: flex-start; margin-bottom: 20px;">
-                        <input type="checkbox" style="margin-top: 3px;">
-                        <span>ขอรับรองว่าข้อมูลยอดเงิน ณ สิ้นวันถูกต้อง หากพบการทุจริต ยินยอมให้บริษัทดำเนินคดีได้ตามกฎหมาย</span>
-                    </label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <label style="font-size: 13px; white-space: nowrap;">ชื่อผู้บันทึก</label>
-                        <input type="text" style="width: 100%; background-color: var(--input-bg); border: 1px solid var(--border-color); padding: 8px; border-radius: 4px; color: var(--input-text);">
-                    </div>
-                </div>
+            <div class="custom-card p-5 space-y-4">
+                <h2 class="title-gold">ผู้บันทึก & ลายเซ็น</h2>
                 
-                <div>
-                    <label style="font-size: 13px; color: var(--accent-color); display: block; margin-bottom: 5px;">ลายเซ็น • SIGNATURE</label>
-                    <div class="signature-box">
-                        <canvas id="sig-canvas" style="width: 100%; height: 100%; touch-action: none;"></canvas>
-                        <button onclick="clearCanvas()" style="position: absolute; bottom: 10px; right: 10px; background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; padding: 3px 8px; border-radius: 3px; cursor: pointer;">ล้างลายเซ็น</button>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-1/2 space-y-4">
+                        <label class="flex items-start gap-2 cursor-pointer text-sm">
+                            <input type="checkbox" required class="accent-[var(--accent-color)] w-4 h-4 mt-0.5">
+                            <span>ขอรับรองว่าข้อมูลยอดเงิน ณ สิ้นวันถูกต้อง หากพบการทุจริต ยินยอมให้บริษัทดำเนินคดีได้ตามกฎหมาย</span>
+                        </label>
+                        <div class="flex items-center gap-3">
+                            <label class="whitespace-nowrap text-sm font-bold">ชื่อผู้บันทึก</label>
+                            <input type="text" class="custom-input max-w-[250px]">
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2">
+                        <label class="text-xs font-bold tracking-widest text-[var(--accent-color)] uppercase block mb-2">ลายเซ็น · Signature</label>
+                        <div class="border border-[var(--border-color)] rounded bg-[var(--card-bg)] p-1 relative">
+                            <canvas id="signaturePad" class="w-full h-24 touch-none cursor-crosshair"></canvas>
+                            <button type="button" onclick="clearSignature()" class="absolute bottom-2 right-2 text-[10px] border border-[var(--border-color)] px-2 py-1 rounded bg-[var(--input-bg)] hover:text-[var(--accent-color)]">ล้างลายเซ็น</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <button class="submit-btn">ส่งข้อมูลบันทึกยอดขาย</button>
-
-    </main>
+            <div class="text-center">
+                <button type="submit" class="bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-white font-bold py-3 px-12 rounded shadow-lg transition transform hover:scale-105 active:scale-95">ส่งข้อมูลบันทึกยอดขาย</button>
+            </div>
+        </form>
+    </div>
 
     <script>
-        // 1. ฟังก์ชันเปลี่ยนธีม (Dark / Light)
-        function setTheme(themeName) {
-            document.body.classList.remove('light-mode', 'dark-mode');
-            document.body.classList.add(themeName);
-            localStorage.setItem('theme', themeName);
-            // เมื่อสลับธีม สลับสีหมึกลายเซ็นด้วย
-            if(canvas && canvas.getContext) {
-                const ctx = canvas.getContext('2d');
-                ctx.strokeStyle = themeName === 'dark-mode' ? '#ffffff' : '#1e1b18';
-            }
+        /* ---------------------------------------------------
+           1. Theme Toggle (Mืด / สว่าง)
+        --------------------------------------------------- */
+        function setTheme(theme, btnElement) {
+            document.body.className = theme;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
         }
-        const savedTheme = localStorage.getItem('theme') || 'dark-mode';
-        setTheme(savedTheme);
 
-        // 2. ล็อกการเลือกวันที่ให้ได้แค่ "วันนี้" และ "พรุ่งนี้"
-        const saleDateInput = document.getElementById('saleDate');
-        if (saleDateInput) {
-            const today = new Date();
-            const tomorrow = new Date();
-            tomorrow.setDate(today.getDate() + 1);
+        /* ---------------------------------------------------
+           2. Date Config (บังคับเลือกได้แค่วันนี้ & พรุ่งนี้)
+        --------------------------------------------------- */
+        const dateInput = document.getElementById('sale_date');
+        
+        function getLocalYYYYMMDD(offsetDays = 0) {
+            const d = new Date();
+            d.setDate(d.getDate() + offsetDays);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
 
-            const formatDate = (date) => {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                return `${year}-${month}-${day}`;
-            };
+        const today = getLocalYYYYMMDD(0);
+        const tomorrow = getLocalYYYYMMDD(1);
 
-            const todayStr = formatDate(today);
-            const tomorrowStr = formatDate(tomorrow);
+        dateInput.value = today; // ค่าเริ่มต้นคือวันนี้
+        dateInput.min = today;
+        dateInput.max = tomorrow;
 
-            // เซ็ตค่าเริ่มต้นและ Limits
-            saleDateInput.value = todayStr;
-            saleDateInput.min = todayStr;
-            saleDateInput.max = tomorrowStr;
+        dateInput.addEventListener('change', function() {
+            if (this.value < today || this.value > tomorrow) {
+                alert('ระบบจำกัดให้เลือกวันที่บันทึกได้เฉพาะ "วันนี้" หรือ "พรุ่งนี้" เท่านั้นครับ');
+                this.value = today;
+            }
+        });
 
-            // ดักการพิมพ์วันที่เอง (Fallback)
-            saleDateInput.addEventListener('change', (e) => {
-                if (e.target.value < todayStr || e.target.value > tomorrowStr) {
-                    alert('เลือกได้เฉพาะวันนี้และพรุ่งนี้เท่านั้น');
-                    e.target.value = todayStr;
+        /* ---------------------------------------------------
+           3. Format Number (ใส่ลูกน้ำ)
+        --------------------------------------------------- */
+        function parseNum(str) {
+            return parseFloat((str || '').toString().replace(/,/g, '')) || 0;
+        }
+
+        function formatNum(num) {
+            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        document.addEventListener('input', function(e) {
+            if(e.target.classList.contains('num-input') && !e.target.readOnly) {
+                let cursor = e.target.selectionStart;
+                let oldLen = e.target.value.length;
+                
+                let val = e.target.value.replace(/[^0-9.]/g, '');
+                let parts = val.split('.');
+                if(parts.length > 2) val = parts[0] + '.' + parts.slice(1).join('');
+                if(parts[0]) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                
+                let newVal = parts.join('.');
+                e.target.value = newVal;
+                
+                let newLen = newVal.length;
+                cursor += (newLen - oldLen);
+                
+                if(document.activeElement === e.target) {
+                    e.target.setSelectionRange(cursor, cursor);
                 }
-            });
-        }
-
-        // 3. ระบบอัปโหลดหลายไฟล์ (Multiple Upload + Preview)
-        const fileStore = {}; // เก็บไฟล์แยกตาม ID ของ Preview Container
-
-        function handleMultipleFiles(input, previewId) {
-            if (!fileStore[previewId]) {
-                fileStore[previewId] = new DataTransfer();
+                
+                calculateAll();
             }
-            const dt = fileStore[previewId];
+        });
+
+        /* ---------------------------------------------------
+           4. Calculation & Validation Logic
+        --------------------------------------------------- */
+        const cashPaymentInput = document.getElementById('cash_payment');
+        const cashReceivedInput = document.getElementById('cash_received');
+        const cashStartInput = document.getElementById('cash_start');
+        const cashDepositInput = document.getElementById('cash_deposit');
+        const cashBalanceDisplay = document.getElementById('cash_balance');
+        const totalItemsDisplay = document.getElementById('total_cash_items');
+        const matchWarning = document.getElementById('match_warning');
+
+        function calculateAll() {
+            // A. โยงยอด "เงินสด" -> "เงินสดรับมา"
+            const cashVal = parseNum(cashPaymentInput.value);
+            cashReceivedInput.value = formatNum(cashVal);
+
+            // B. คำนวณ "เงินสดเหลือ" = (ตั้งต้น + รับมา) - ฝาก
+            const startVal = parseNum(cashStartInput.value);
+            const depositVal = parseNum(cashDepositInput.value);
+            const balanceVal = (startVal + cashVal) - depositVal;
             
-            // เพิ่มไฟล์ใหม่เข้าไปใน DataTransfer
-            for (let file of input.files) {
-                dt.items.add(file);
+            cashBalanceDisplay.value = formatNum(balanceVal);
+            if(balanceVal > 2000) {
+                cashBalanceDisplay.style.color = 'var(--red-color)'; // เกิน 2000 แดง
+            } else {
+                cashBalanceDisplay.style.color = 'var(--accent-color)';
             }
-            // อัปเดตไฟล์กลับเข้าไปใน Input
-            input.files = dt.files;
-            renderPreviews(input, previewId, dt);
-        }
 
-        function renderPreviews(input, previewId, dt) {
-            const previewContainer = document.getElementById(previewId);
-            previewContainer.innerHTML = ''; // เคลียร์ของเก่า
-
-            Array.from(dt.files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = 'preview-item';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" title="${file.name}">
-                        <button type="button" class="remove-file" onclick="removeFile('${previewId}', ${index}, this)">✕</button>
-                    `;
-                    previewContainer.appendChild(div);
-                }
-                reader.readAsDataURL(file);
+            // C. คำนวณ "รวมรายการขายเงินสด" (ตารางสินค้า)
+            let totalItems = 0;
+            document.querySelectorAll('.item-price').forEach(el => {
+                totalItems += parseNum(el.value);
             });
+            totalItemsDisplay.value = formatNum(totalItems);
+
+            // D. ตรวจสอบเงื่อนไข "ต้องเท่ากัน"
+            if(cashVal !== totalItems && (cashVal > 0 || totalItems > 0)) {
+                totalItemsDisplay.style.color = 'var(--red-color)';
+                matchWarning.classList.remove('hidden');
+            } else {
+                totalItemsDisplay.style.color = 'var(--accent-color)';
+                matchWarning.classList.add('hidden');
+            }
         }
 
-        function removeFile(previewId, index, btnElement) {
-            const dt = fileStore[previewId];
-            const wrapper = btnElement.closest('.file-upload-wrapper');
-            const input = wrapper.querySelector('input[type="file"]');
-            
-            const newDt = new DataTransfer();
-            Array.from(dt.files).forEach((file, i) => {
-                if (i !== index) newDt.items.add(file);
-            });
-            
-            // อัปเดตข้อมูลใหม่
-            fileStore[previewId] = newDt;
-            input.files = newDt.files;
-            renderPreviews(input, previewId, newDt);
-        }
-
-        // 4. ฟังก์ชันเพิ่มรายการสินค้า (ตาราง)
-        function addItem() {
-            const tbody = document.getElementById('items-table-body');
-            const rowCount = tbody.children.length + 1;
+        /* ---------------------------------------------------
+           5. Table Functions
+        --------------------------------------------------- */
+        function addRow() {
+            const tbody = document.getElementById('items_body');
+            const rowCount = tbody.rows.length + 1;
             const tr = document.createElement('tr');
+            tr.className = "table-row";
             tr.innerHTML = `
-                <td>${rowCount}</td>
-                <td>รหัสสินค้า</td>
-                <td><input type="text" class="size-input" placeholder="—"></td>
-                <td style="text-align: right;">
-                    <input type="text" class="price-input" placeholder="0.00">
-                    <button class="remove-btn" onclick="this.closest('tr').remove()">x</button>
-                </td>
+                <td class="py-2">${rowCount}</td>
+                <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm" placeholder="รหัสสินค้า"></td>
+                <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm text-center" placeholder="—"></td>
+                <td><input type="text" class="bg-transparent border-none w-full outline-none num-input text-sm item-price" placeholder="0.00"></td>
+                <td class="text-right"><button type="button" class="text-[var(--text-muted)] hover:text-red-500" onclick="removeRow(this)">✕</button></td>
             `;
             tbody.appendChild(tr);
         }
 
-        // 5. ฟังก์ชันลายเซ็น Canvas
-        const canvas = document.getElementById('sig-canvas');
-        if(canvas) {
-            const ctx = canvas.getContext('2d');
-            let isDrawing = false;
-
-            function resizeCanvas() {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
+        function removeRow(btn) {
+            btn.closest('tr').remove();
+            // Re-number
+            const rows = document.getElementById('items_body').rows;
+            for(let i=0; i<rows.length; i++){
+                rows[i].cells[0].innerText = i + 1;
             }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+            calculateAll();
+        }
 
-            function getCoordinates(event) {
-                const rect = canvas.getBoundingClientRect();
-                if(event.touches && event.touches.length > 0) {
-                    return { x: event.touches[0].clientX - rect.left, y: event.touches[0].clientY - rect.top };
+        /* ---------------------------------------------------
+           6. Image Preview Function (Thumbnail)
+        --------------------------------------------------- */
+        function previewFile(input) {
+            const container = input.parentElement;
+            const img = container.querySelector('img');
+            const overlay = container.querySelector('.file-name-overlay');
+            const placeholder = container.querySelector('span'); // ตัวหนังสือ + แนบสลิป
+
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        img.src = e.target.result;
+                        img.classList.remove('hidden');
+                        
+                        overlay.textContent = file.name;
+                        overlay.classList.remove('hidden');
+                        
+                        placeholder.classList.add('hidden'); // ซ่อนคำว่า + แนบสลิป
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    // ถ้าไม่ใช่รูปภาพ ให้โชว์แค่ชื่อไฟล์
+                    img.classList.add('hidden');
+                    overlay.textContent = file.name;
+                    overlay.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
                 }
-                return { x: event.clientX - rect.left, y: event.clientY - rect.top };
-            }
-
-            function startPosition(e) {
-                isDrawing = true;
-                draw(e);
-            }
-
-            function endPosition() {
-                isDrawing = false;
-                ctx.beginPath();
-            }
-
-            function draw(e) {
-                if (!isDrawing) return;
-                e.preventDefault();
-                const pos = getCoordinates(e);
-                
-                ctx.lineWidth = 2;
-                ctx.lineCap = 'round';
-                ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#ffffff' : '#1e1b18';
-
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(pos.x, pos.y);
-            }
-
-            canvas.addEventListener('mousedown', startPosition);
-            canvas.addEventListener('mouseup', endPosition);
-            canvas.addEventListener('mousemove', draw);
-
-            canvas.addEventListener('touchstart', startPosition, { passive: false });
-            canvas.addEventListener('touchend', endPosition);
-            canvas.addEventListener('touchmove', draw, { passive: false });
-        }
-
-        function clearCanvas() {
-            if(canvas) {
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            } else {
+                img.classList.add('hidden');
+                overlay.classList.add('hidden');
+                placeholder.classList.remove('hidden');
             }
         }
+
+        /* ---------------------------------------------------
+           7. Signature Canvas
+        --------------------------------------------------- */
+        const canvas = document.getElementById('signaturePad');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth - 10;
+            canvas.height = 96; // h-24 = 6rem = 96px
+        }
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100); // init
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startPosition(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault(); // กันมือถือไถล
+            const pos = getPos(e);
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            // ปรับสีปากกาตาม Theme
+            ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#fff' : '#000';
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseleave', endPosition);
+        
+        canvas.addEventListener('touchstart', startPosition, {passive: false});
+        canvas.addEventListener('touchend', endPosition);
+        canvas.addEventListener('touchmove', draw, {passive: false});
+
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        /* ---------------------------------------------------
+           8. Form Submit Protection
+        --------------------------------------------------- */
+        document.getElementById('salesForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const cashVal = parseNum(cashPaymentInput.value);
+            let totalItems = 0;
+            document.querySelectorAll('.item-price').forEach(el => totalItems += parseNum(el.value));
+
+            if(cashVal !== totalItems) {
+                alert('❌ ไม่สามารถบันทึกได้!\nกรุณาตรวจสอบให้แน่ใจว่า "รวมรายการขายเงินสด" ตรงกับ "ยอดเงินสดรับมา" ครับ');
+                return;
+            }
+
+            alert('✅ ข้อมูลถูกต้อง ระบบกำลังทำการบันทึก...');
+            // เขียนโค้ดส่ง API/Backend ต่อได้เลย
+        });
+
     </script>
 </body>
 </html>
