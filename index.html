@@ -6,87 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แบบฟอร์มบันทึกยอดขายรายวัน</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Mitr:wght@300;400;500&family=Niramit:wght@300;400;500;600&family=Prompt:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- CSS Variables สำหรับ Theme --- */
+        /* --- CSS Variables สำหรับ Theme Customizer --- */
         :root {
-            --color-bg-body: #F5F3EF;
-            --color-bg-form: #F8F7F4;
-            --color-header-bg: #3b3833;
-            --color-header-text: #D9AE5D;
-            --color-text-general: #e5e7eb; /* สีเทาอ่อน (เทียบเท่า text-gray-200) */
+            --color-bg-body: #F9F8F4;
+            --color-bg-card: #FFFFFF;
+            --color-bg-input: #FCFBFA;
+            --color-bg-highlight: #FFF8E7;
+            --color-accent: #D9AE5D;
+            --color-text-heading: #1F2937;
+            --color-text-general: #6B7280;
+            --font-family: 'Sarabun';
         }
 
         body {
-            font-family: 'Sarabun', sans-serif;
+            font-family: var(--font-family), sans-serif;
             background-color: var(--color-bg-body) !important;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, font-family 0.3s ease;
         }
 
-        .custom-bg-form {
-            background-color: var(--color-bg-form) !important;
-            transition: background-color 0.3s ease;
-        }
+        /* Classes ที่ผูกกับตัวแปรสี */
+        .theme-bg-card { background-color: var(--color-bg-card) !important; transition: background-color 0.3s ease; }
+        .theme-bg-input { background-color: var(--color-bg-input) !important; transition: background-color 0.3s ease; }
+        .theme-bg-highlight { background-color: var(--color-bg-highlight) !important; border-color: color-mix(in srgb, var(--color-accent) 40%, transparent) !important; transition: all 0.3s ease; }
+        
+        .theme-accent-bg { background-color: var(--color-accent) !important; color: #FFFFFF !important; transition: background-color 0.3s ease; }
+        .theme-accent-text { color: var(--color-accent) !important; transition: color 0.3s ease; }
+        .theme-accent-border { border-color: var(--color-accent) !important; transition: border-color 0.3s ease; }
+        
+        .theme-text-heading { color: var(--color-text-heading) !important; transition: color 0.3s ease; }
+        .theme-text-general { color: var(--color-text-general) !important; transition: color 0.3s ease; }
+        /* ------------------------------------------- */
 
-        .header-bg {
-            background-color: var(--color-header-bg) !important;
-            color: var(--color-header-text) !important;
-            transition: all 0.3s ease;
-        }
-
-        /* ผูกตัวแปรสีเข้ากับตัวหนังสือทั่วไป ยกเว้นส่วนที่แจ้งเตือน (สีแดง) */
-        label:not(.text-red-400), 
-        span.text-gray-200, 
-        span.text-gray-300,
-        span.text-gray-400,
-        div.text-gray-200,
-        p.text-gray-400,
-        td.text-gray-300 {
-            color: var(--color-text-general) !important;
-            transition: color 0.3s ease;
-        }
-
-        .gold-text {
-            color: var(--color-header-text) !important;
-            transition: color 0.3s ease;
-        }
-
-        /* -------------------------------- */
-
-        .section-bg {
-            background-color: #FFFFFF;
-        }
-
-        .gold-accent {
-            border-color: #D9AE5D;
-        }
-
-        .btn-gold {
-            background-color: #D9AE5D;
-            color: #1A1A1A;
-        }
-
-        .btn-gold:hover {
-            background-color: #c49d54;
-        }
-
+        /* ซ่อนลูกศรใน input number */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        input,
-        select,
-        textarea {
-            border-color: #D6D3D1 !important;
-            background-color: #FFFFFF !important;
-            color: #1F2937 !important;
+        /* สไตล์ Input ทั่วไป */
+        input, select, textarea {
+            border: 1px solid #E5E7EB !important;
+            color: var(--color-text-heading) !important;
             transition: all 0.2s ease-in-out;
         }
 
-        input::placeholder,
-        textarea::placeholder {
+        input::placeholder, textarea::placeholder {
             color: #9CA3AF !important;
         }
 
@@ -95,560 +64,444 @@
             text-align: right;
         }
 
-        .num-input:focus {
-            background-color: #FFFFFF !important;
-            box-shadow: 0 0 0 3px rgba(217, 174, 93, 0.2) !important;
-            border-color: #D9AE5D !important;
+        input:focus, select:focus, textarea:focus {
             outline: none;
+            background-color: var(--color-bg-card) !important;
+            border-color: var(--color-accent) !important;
+            /* ใช้ color-mix เพื่อสร้างเงาสีเดียวกับ accent แบบโปร่งใส */
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent) !important;
         }
 
-        input:focus:not(.num-input),
-        select:focus,
-        textarea:focus {
-            outline: none;
-            background-color: #444444 !important;
-            border-color: #D9AE5D !important;
-            box-shadow: 0 0 0 3px rgba(217, 174, 93, 0.1) !important;
+        /* ตกแต่งตาราง */
+        thead th {
+            font-weight: 600;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        tbody td {
+            border-bottom: 1px solid #F3F4F6;
         }
 
-        input[type="date"] {
-            position: relative;
-        }
-
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            background-color: #4A4A4A;
-            padding: 4px;
+        /* Theme Panel Custom Input Color */
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-            transition: all 0.2s ease;
-            filter: invert(1);
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-
-        input[type="date"]::-webkit-calendar-picker-indicator:hover {
-            background-color: #555555;
-            transform: translateY(-50%) scale(1.05);
-        }
-
-        select optgroup {
-            font-weight: 700;
-            color: #D9AE5D;
-            background-color: #1F1F1F;
-        }
-
-        select option {
-            font-weight: 400;
-            color: #FFFFFF;
-            background-color: #3A3A3A;
-        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
     </style>
 </head>
 
-<body class="p-2 md:p-6 text-white relative">
-    <div class="max-w-full mx-auto custom-bg-form shadow-2xl p-4 md:p-8 rounded-2xl border border-[#444]">
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6 border-b border-[#444] pb-6">
-            <div class="md:col-span-5 flex flex-col gap-4">
-                <div class="flex items-center gap-4">
-                    <div
-                        class="w-16 h-16 border-2 gold-accent flex items-center justify-center font-bold rounded-2xl shadow-md bg-[#1F1F1F] flex-shrink-0">
-                        <svg class="w-10 h-10 text-[#D9AE5D]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z"></path>
-                            <path d="M12 12L20 7.5"></path>
-                            <path d="M12 12V21"></path>
-                            <path d="M12 12L4 7.5"></path>
-                        </svg>
-                    </div>
-                    <div class="flex-grow space-y-2">
-                        <select id="branch" name="branch" required
-                            class="w-full border p-2 text-sm font-semibold rounded-lg cursor-pointer shadow-sm">
-                            <option value="">-- เลือกสาขา --</option>
-                            <optgroup label="สาขาในกรุงเทพฯ และปริมณฑล">
-                                <option value="SUITCUBE R3 SIGNATURE">SUITCUBE R3 SIGNATURE</option>
-                                <option value="SUITCUBE RCD">SUITCUBE RCD (รัชดา-สุทธิสาร)</option>
-                                <option value="SUITCUBE SIAM">SUITCUBE SIAM (สยามสแควร์วัน)</option>
-                                <option value="SUITCUBE T21">SUITCUBE T21 (เทอร์มินอล 21 อโศก)</option>
-                                <option value="SUITCUBE PM">SUITCUBE PM (เดอะพรอมานาด)</option>
-                                <option value="SUITCUBE SC">SUITCUBE SC (ซีคอนสแควร์ ศรีนครินทร์)</option>
-                                <option value="SUITCUBE FP">SUITCUBE FP (ฟิวเจอร์พาร์ค รังสิต)</option>
-                                <option value="SUITCUBE SILOM COMPLEX">SUITCUBE SILOM COMPLEX (สีลมคอมเพล็กซ์)</option>
-                                <option value="SUITCUBE NW">SUITCUBE NW (เดอะมอลล์ งามวงศ์วาน)</option>
-                                <option value="SUITCUBE CC">SUITCUBE CC (เดอะเซอร์เคิล ราชพฤกษ์)</option>
-                                <option value="SUITCUBE BP">SUITCUBE BP (เดอะมอลล์ บางกะปิ)</option>
-                            </optgroup>
-                            <optgroup label="สาขาต่างจังหวัด">
-                                <option value="SUITCUBE CM">SUITCUBE CM (เชียงใหม่ - One Nimman)</option>
-                                <option value="SUITCUBE KR">SUITCUBE KR (นครราชสีมา - เดอะมอลล์ โคราช)</option>
-                                <option value="SUITCUBE PK">SUITCUBE PK (ภูเก็ต - Bukis Phuket)</option>
-                                <option value="SUITCUBE KK">SUITCUBE KK (ขอนแก่น - ถนนเทพารักษ์)</option>
-                                <option value="Gent&Tonic"> Gent&Tonic (ภูเก็ต - Bukis Phuket)</option>
-                            </optgroup>
-                        </select>
-                        <div class="flex items-center gap-2">
-                            <label class="text-xs font-bold whitespace-nowrap text-gray-300">บันทึกยอดขายของวันที่
-                                :</label>
-                            <input type="date" id="sale_date" name="sale_date" required
-                                class="w-full border p-1.5 text-center text-sm rounded-lg cursor-pointer shadow-sm">
-                        </div>
-                    </div>
+<body class="p-2 md:p-6 lg:p-8 relative">
+    <div class="max-w-7xl mx-auto">
+        
+        <div class="theme-bg-card shadow-sm rounded-2xl p-5 mb-6 flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-100">
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <div class="w-14 h-14 bg-[#2A2E35] rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                    <svg class="w-8 h-8 theme-accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z"></path>
+                        <path d="M12 12L20 7.5"></path>
+                        <path d="M12 12V21"></path>
+                        <path d="M12 12L4 7.5"></path>
+                    </svg>
+                </div>
+                <div class="flex flex-col gap-2 w-full">
+                    <select id="branch" name="branch" required class="w-full md:w-64 p-2 text-sm font-semibold rounded-lg cursor-pointer theme-bg-input">
+                        <option value="">-- เลือกสาขา --</option>
+                        <optgroup label="สาขาในกรุงเทพฯ และปริมณฑล">
+                            <option value="SUITCUBE R3 SIGNATURE">SUITCUBE R3 SIGNATURE</option>
+                            <option value="SUITCUBE RCD">SUITCUBE RCD (รัชดา-สุทธิสาร)</option>
+                            <option value="SUITCUBE SIAM">SUITCUBE SIAM (สยามสแควร์วัน)</option>
+                            <option value="SUITCUBE T21">SUITCUBE T21 (เทอร์มินอล 21 อโศก)</option>
+                        </optgroup>
+                        <optgroup label="สาขาต่างจังหวัด">
+                            <option value="SUITCUBE CM">SUITCUBE CM (เชียงใหม่)</option>
+                            <option value="SUITCUBE KR">SUITCUBE KR (นครราชสีมา)</option>
+                            <option value="SUITCUBE PK">SUITCUBE PK (ภูเก็ต)</option>
+                        </optgroup>
+                    </select>
                 </div>
             </div>
-            <div class="md:col-span-7 text-right">
-                <h1 class="text-2xl font-bold gold-text">แบบฟอร์มบันทึกยอดขายรายวัน</h1>
-                <p class="text-xs mt-2 text-gray-400">กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ
-                    แบบฟอร์มสำหรับหน้าร้าน แอดมิน และบัญชี <br><span
-                        class="text-red-400 font-semibold">**เงินสดในลิ้นชักห้ามมีเกิน 2,000 บาท ถ้าต้องเหลือมากกว่า
-                        2,000 บาท ต้องโทรขออนุมัติ**</span></p>
+
+            <div class="flex items-center gap-3 theme-bg-input border border-gray-100 p-2 rounded-xl w-full md:w-auto">
+                <label class="text-sm font-bold theme-text-general whitespace-nowrap pl-2">วันที่ :</label>
+                <input type="date" id="sale_date" name="sale_date" required class="border-0 bg-transparent theme-text-heading font-semibold focus:ring-0 cursor-pointer w-full md:w-auto">
             </div>
         </div>
 
         <form id="dailySalesForm" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
 
-                <div class="md:col-span-4 space-y-4">
-                    <div class="header-bg text-xs font-bold p-2 px-4 rounded-t-xl shadow-sm tracking-wide">
-                        ช่องทางการรับชำระเงิน</div>
-                    <div class="section-bg p-4 space-y-2 text-xs rounded-b-xl border border-[#444] shadow-inner">
-                        <div class="grid grid-cols-2 gap-2 items-center text-gray-200">
-                            <label class="text-right pr-2">QR-CODE AUTO :</label>
-                            <input type="text" inputmode="decimal" name="pay_qr"
-                                class="border p-2 h-10 text-sm payment-input num-input rounded shadow-sm"
-                                placeholder="0.00">
+                <div class="md:col-span-4 space-y-6">
+                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-2 mb-5">
+                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
+                            <h2 class="font-bold theme-text-heading text-lg">ช่องทางการรับชำระเงิน</h2>
+                        </div>
+                        
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">QR-CODE AUTO :</label>
+                                <input type="text" inputmode="decimal" name="pay_qr" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">เครื่องรูดบัตร GHL :</label>
+                                <input type="text" inputmode="decimal" name="pay_ghl" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
+                            </div>
 
-                            <label class="text-right pr-2 self-start mt-3">เครื่องรูดบัตร GHL :</label>
-                            <div class="flex flex-col gap-1.5 w-full">
-                                <input type="text" inputmode="decimal" name="pay_ghl"
-                                    class="border p-2 h-10 payment-input num-input rounded shadow-sm w-full"
-                                    placeholder="0.00">
-
-                                <div
-                                    class="relative w-full h-8 border-2 border-dashed border-[#555] hover:border-[#D9AE5D] bg-[#3A3A3A] rounded-lg flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
-                                    <input type="file" name="ghl_file" accept="image/*"
-                                        class="absolute inset-0 opacity-0 cursor-pointer z-20"
-                                        onchange="previewFile(this)">
-                                    <div
-                                        class="upload-placeholder flex items-center justify-center gap-1 z-10 transition duration-300">
-                                        <svg class="w-3 h-3 text-gray-400 group-hover:text-[#D9AE5D]" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 4v16m8-8H4"></path>
-                                        </svg>
-                                        <span class="text-[10px] text-gray-400 group-hover:text-[#D9AE5D]">แนบสลิป
-                                            GHL</span>
+                            <div class="flex justify-end">
+                                <div class="relative w-32 h-8 border border-dashed border-gray-300 theme-bg-input hover:border-[#D9AE5D] rounded-md flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
+                                    <input type="file" name="ghl_file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
+                                    <div class="upload-placeholder flex items-center justify-center gap-1 z-10">
+                                        <span class="text-[10px] theme-text-general group-hover:text-[#D9AE5D]">แนบสลิป GHL</span>
                                     </div>
-                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0"
-                                        src="" alt="">
-                                    <div
-                                        class="preview-overlay absolute inset-0 bg-[#1A1A1A]/70 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-1">
-                                        <span
-                                            class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
-                                    </div>
+                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
                                 </div>
                             </div>
-                            <label class="text-right pr-2 leading-tight">เครื่องรูดบัตร (สำรอง) TTB :</label>
-                            <input type="text" inputmode="decimal" name="pay_ttb_spare"
-                                class="border p-2 h-10 payment-input num-input rounded shadow-sm" placeholder="0.00">
 
-                            <label class="text-right pr-2">We chat Alipay :</label>
-                            <input type="text" inputmode="decimal" name="pay_wechat"
-                                class="border p-2 h-10 payment-input num-input rounded shadow-sm" placeholder="0.00">
-
-                            <label class="text-right pr-2">รับช่องทาง KTB พี่กวาง :</label>
-                            <input type="text" inputmode="decimal" name="pay_ktb"
-                                class="border p-2 h-10 payment-input num-input rounded shadow-sm" placeholder="0.00">
-
-                            <label class="text-right pr-2">ไทยพาณิชย์ 0198 :</label>
-                            <input type="text" inputmode="decimal" name="pay_scb"
-                                class="border p-2 h-10 payment-input num-input rounded shadow-sm" placeholder="0.00">
-
-                            <label class="text-right pr-2">(งานองค์กร) TTB 6417 :</label>
-                            <input type="text" inputmode="decimal" name="pay_ttb_org"
-                                class="border p-2 h-10 payment-input num-input rounded shadow-sm" placeholder="0.00">
-
-                            <label class="text-right pr-2 font-bold text-white">เงินสด :</label>
-                            <input type="text" inputmode="decimal" name="pay_cash" id="cash-payment"
-                                class="border p-2 h-10 payment-input num-input rounded shadow-sm font-bold !text-[#D9AE5D]"
-                                placeholder="0.00">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center pt-4 border-t border-[#444]">
-                            <label class="text-right pr-2 font-bold uppercase text-white">ยอดขายทั้งหมด :</label>
-                            <div id="total-sales-display"
-                                class="border-2 border-[#D9AE5D] p-1 text-right !bg-[#1F1F1F] min-h-[28px] font-bold text-lg rounded-lg num-input !text-[#D9AE5D] shadow-sm">
-                                0.00</div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3 pt-2 text-gray-200">
-                        <div class="flex items-center gap-2 text-xs">
-                            <label class="w-20 font-bold">ชื่อผู้บันทึก :</label>
-                            <input type="text" name="recorder_name" required
-                                class="flex-grow h-8 border-b-2 !border-b-[#555] bg-transparent !border-t-0 !border-x-0 outline-none focus:!border-b-[#D9AE5D] px-2 font-semibold">
-                        </div>
-                        <div class="flex items-start gap-2 text-xs mt-3">
-                            <label class="w-20 font-bold pt-2">ลายเซ็น :</label>
-                            <div class="flex-grow bg-[#3A3A3A] border border-[#555] rounded-xl p-2">
-                                <canvas id="signature-pad"
-                                    class="w-full h-28 bg-[#2A2A2A] rounded-lg touch-none"></canvas>
-                                <button type="button" onclick="clearSignature()"
-                                    class="mt-2 w-full bg-[#444] hover:bg-[#555] text-white py-1.5 rounded-lg text-xs">
-                                    ล้างลายเซ็น
-                                </button>
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">เครื่องรูดบัตร TTB :</label>
+                                <input type="text" inputmode="decimal" name="pay_ttb_spare" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
                             </div>
-                            <input type="hidden" name="signature_data" id="signature_data">
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">We chat Alipay :</label>
+                                <input type="text" inputmode="decimal" name="pay_wechat" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">รับช่องทาง KTB :</label>
+                                <input type="text" inputmode="decimal" name="pay_ktb" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">ไทยพาณิชย์ 0198 :</label>
+                                <input type="text" inputmode="decimal" name="pay_scb" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">(องค์กร) TTB 6417 :</label>
+                                <input type="text" inputmode="decimal" name="pay_ttb_org" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
+                            </div>
+                            <div class="flex items-center justify-between mt-4">
+                                <label class="theme-text-heading font-bold">เงินสด :</label>
+                                <input type="text" inputmode="decimal" name="pay_cash" id="cash-payment" class="w-32 p-2 rounded-lg payment-input num-input font-bold theme-text-heading border-gray-300 theme-bg-input" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="mt-5 theme-bg-highlight p-4 rounded-xl flex justify-between items-center border">
+                            <span class="font-bold theme-text-heading text-sm">ยอดขายทั้งหมด :</span>
+                            <div id="total-sales-display" class="font-bold text-xl theme-accent-text num-input">0.00</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="md:col-span-3 space-y-4">
-                    <div>
-                        <div class="header-bg text-xs font-bold p-2 px-4 rounded-t-xl shadow-sm tracking-wide">
-                            ตรวจยอดขายเงินสด</div>
-                        <div
-                            class="section-bg border border-[#444] p-4 space-y-3 text-xs rounded-b-xl shadow-inner text-gray-200">
-                            <div class="grid grid-cols-[1.2fr_1.6fr] gap-2 items-center">
-                                <div
-                                    class="col-span-2 text-center bg-[#1F1F1F] text-[#D9AE5D] p-1.5 font-bold mb-1 rounded-md tracking-wider shadow-sm border border-[#444]">
-                                    ยอดเงินสดในลิ้นชัก</div>
-                                <label>เงินสดตั้งต้น :</label>
-                                <input type="text" inputmode="decimal" id="cash-start" name="cash_start"
-                                    class="w-[92%] lg:w-[85%] ml-auto border p-2 h-10 text-sm cash-calc num-input rounded shadow-sm"
-                                    placeholder="0.00">
+                <div class="md:col-span-4 space-y-6">
+                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-2 mb-5">
+                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
+                            <h2 class="font-bold theme-text-heading text-lg">ตรวจสอบยอดเงินสด</h2>
+                        </div>
+                        
+                        <div class="bg-[#2A2E35] text-white text-center py-2.5 rounded-xl font-bold mb-5 shadow-sm text-sm">
+                            ยอดเงินสดในลิ้นชัก
+                        </div>
 
-                                <label>เงินสดรับมา :</label>
-                                <input type="text" inputmode="decimal" id="cash-received" name="cash_received"
-                                    class="w-[92%] lg:w-[85%] ml-auto border p-2 h-10 text-sm cash-calc num-input !bg-[#1F1F1F] rounded font-semibold !text-[#D9AE5D] outline-none shadow-inner"
-                                    readonly title="อัปเดตอัตโนมัติตามช่องทางชำระเงิน" placeholder="0.00">
+                        <div class="space-y-4 text-sm">
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">เงินสดตั้งต้น :</label>
+                                <input type="text" inputmode="decimal" id="cash-start" name="cash_start" class="w-32 p-2 rounded-lg cash-calc num-input theme-bg-input" placeholder="0.00">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">เงินสดรับมา :</label>
+                                <input type="text" inputmode="decimal" id="cash-received" name="cash_received" class="w-32 p-2 rounded-lg cash-calc num-input bg-gray-100 font-semibold theme-text-general" readonly placeholder="0.00">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <label class="theme-text-general font-medium">ฝากเงินสด :</label>
+                                <input type="text" inputmode="decimal" id="cash-deposit" name="cash_deposit" class="w-32 p-2 rounded-lg cash-calc num-input theme-bg-input" placeholder="0.00">
+                            </div>
+                            
+                            <div class="flex items-center justify-between pt-2">
+                                <label class="font-bold theme-text-heading text-base">เงินสดคงเหลือ :</label>
+                                <div id="cash-balance-display" class="w-32 p-2 text-right theme-bg-card border-2 theme-accent-border font-bold rounded-lg num-input theme-text-heading shadow-sm text-lg">
+                                    0.00
+                                </div>
+                            </div>
 
-                                <label>ฝากเงินสด :</label>
-                                <input type="text" inputmode="decimal" id="cash-deposit" name="cash_deposit"
-                                    class="w-[92%] lg:w-[85%] ml-auto border p-2 h-10 text-sm cash-calc num-input rounded shadow-sm"
-                                    placeholder="0.00">
-
-                                <label class="font-bold text-white">เงินสดคงเหลือ :</label>
-                                <div id="cash-balance-display"
-                                    class="w-[92%] lg:w-[85%] ml-auto border p-2 h-10 text-sm text-right !bg-[#3A3A3A] font-bold rounded num-input shadow-sm text-white flex items-center justify-end">
-                                    0.00</div>
-
-                                <label class="col-span-2 mt-2 font-bold text-white">สลิปฝากเงินสด :</label>
-                                <div
-                                    class="col-span-2 relative h-16 border-2 border-dashed border-[#555] hover:border-[#D9AE5D] bg-[#3A3A3A] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all shadow-sm">
-                                    <input type="file" name="cash_deposit_slip" accept="image/*"
-                                        class="absolute inset-0 opacity-0 cursor-pointer z-20"
-                                        onchange="previewFile(this)">
-                                    <div
-                                        class="upload-placeholder flex flex-col items-center justify-center z-10 transition duration-300">
-                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-[#D9AE5D]" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                            </path>
-                                        </svg>
-                                        <span
-                                            class="text-[10px] text-gray-400 mt-1 group-hover:text-[#D9AE5D]">อัปโหลดสลิป</span>
+                            <div class="pt-2">
+                                <div class="relative w-full h-14 border-2 border-dashed border-gray-200 theme-bg-input rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
+                                    <input type="file" name="cash_deposit_slip" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
+                                    <div class="upload-placeholder flex items-center justify-center gap-1 z-10">
+                                        <span class="text-xs theme-text-general group-hover:text-[#D9AE5D]">อัปโหลดสลิปเงินสด</span>
                                     </div>
-                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0"
-                                        src="" alt="">
-                                    <div
-                                        class="preview-overlay absolute inset-0 bg-[#1A1A1A]/70 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
-                                        <span
-                                            class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
-                                    </div>
+                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div>
-                        <div class="header-bg text-xs font-bold p-2 px-4 rounded-t-xl shadow-sm tracking-wide">Voucher
+                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
+                            <h2 class="font-bold theme-text-heading text-lg">Voucher</h2>
                         </div>
-                        <div
-                            class="section-bg border border-[#444] p-4 space-y-4 text-xs rounded-b-xl shadow-inner text-gray-200">
-                            <div class="space-y-1">
-                                <label>Voucher 500 (จำนวนใบ)</label>
-                                <input type="text" inputmode="numeric" name="voucher_500"
-                                    class="w-full border p-2 h-10 rounded num-input shadow-sm" placeholder="0">
+                        <div class="flex gap-4">
+                            <div class="w-1/2">
+                                <label class="text-xs theme-text-general mb-1 block">500 (ใบ)</label>
+                                <input type="text" inputmode="numeric" name="voucher_500" class="w-full p-2 rounded-lg num-input text-center theme-bg-input" placeholder="0">
                             </div>
-                            <div class="space-y-1">
-                                <label>Voucher 1000 (จำนวนใบ)</label>
-                                <input type="text" inputmode="numeric" name="voucher_1000"
-                                    class="w-full border p-2 h-10 rounded num-input shadow-sm" placeholder="0">
+                            <div class="w-1/2">
+                                <label class="text-xs theme-text-general mb-1 block">1000 (ใบ)</label>
+                                <input type="text" inputmode="numeric" name="voucher_1000" class="w-full p-2 rounded-lg num-input text-center theme-bg-input" placeholder="0">
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <div class="md:col-span-5 space-y-4">
-                    <div>
-                        <div class="header-bg text-xs font-bold p-2 px-4 rounded-t-xl shadow-sm tracking-wide">
-                            รายการขายเงินสด</div>
-                        <div class="section-bg border border-[#444] rounded-b-xl overflow-hidden shadow-inner p-2">
-                            <div class="bg-[#2A2A2A] rounded-lg border border-[#444] overflow-hidden shadow-sm">
-                                <table class="w-full text-[10px]">
-                                    <thead class="bg-[#1F1F1F] text-white">
-                                        <tr>
-                                            <th class="border-b border-[#444] p-2 h-10 w-8">#</th>
-                                            <th class="border-b border-[#444] p-2 h-10 text-center">SKU</th>
-                                            <th class="border-b border-[#444] p-2 h-10 text-center">Size</th>
-                                            <th class="border-b border-[#444] p-2 h-10 text-center">ราคา</th>
-                                            <th class="border-b border-[#444] p-2 h-10 w-8"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="items-body" class="bg-[#303030]">
-                                        <tr>
-                                            <td class="border-b border-[#444] p-1 text-center text-gray-300">1</td>
-                                            <td class="border-b border-[#444] p-0"><input type="text"
-                                                    class="w-full p-1.5 outline-none item-sku bg-transparent !border-none"
-                                                    placeholder="รหัสสินค้า"></td>
-                                            <td class="border-b border-[#444] p-0"><input type="text"
-                                                    class="w-full p-1.5 outline-none item-size bg-transparent !border-none">
-                                            </td>
-                                            <td class="border-b border-[#444] p-0"><input type="text"
-                                                    inputmode="decimal"
-                                                    class="w-full p-1.5 text-right outline-none item-price num-input bg-transparent !border-none"
-                                                    placeholder="0.00"></td>
-                                            <td class="border-b border-[#444] p-1 text-center"><button type="button"
-                                                    onclick="removeRow(this)"
-                                                    class="text-gray-400 hover:text-red-400 font-bold transition">✕</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div
-                                    class="p-2 flex justify-between items-center bg-[#2A2A2A] text-[10px] border-t border-[#444]">
-                                    <button type="button" onclick="addItemRow()"
-                                        class="text-[#D9AE5D] border border-[#D9AE5D] px-2 py-1 rounded bg-[#1F1F1F] font-bold hover:bg-[#D9AE5D] hover:text-[#1A1A1A] transition shadow-sm">+
-                                        เพิ่มรายการ</button>
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-bold text-white uppercase">รวมขายเงินสด :</span>
-                                        <div id="total-cash-items"
-                                            class="border gold-accent px-4 py-1 min-w-[75px] text-right font-bold rounded num-input !bg-[#3A3A3A] text-white shadow-sm">
-                                            0.00</div>
-                                    </div>
-                                </div>
+                <div class="md:col-span-4 space-y-6">
+                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
+                            <h2 class="font-bold theme-text-heading text-lg">รายการขาย</h2>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs">
+                                <thead>
+                                    <tr>
+                                        <th class="p-2 text-center w-8 theme-text-general">#</th>
+                                        <th class="p-2 text-left theme-text-general">SKU</th>
+                                        <th class="p-2 text-left w-12 theme-text-general">Size</th>
+                                        <th class="p-2 text-right theme-text-general">ราคา</th>
+                                        <th class="p-2 w-8"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="items-body">
+                                    <tr>
+                                        <td class="p-2 text-center theme-text-general font-medium">1</td>
+                                        <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-sku bg-transparent !border-0 theme-text-heading" placeholder="รหัสสินค้า"></td>
+                                        <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-size bg-transparent !border-0 theme-text-heading text-center"></td>
+                                        <td class="p-1"><input type="text" inputmode="decimal" class="w-full p-1.5 text-right outline-none item-price num-input bg-transparent !border-0 theme-text-heading" placeholder="0.00"></td>
+                                        <td class="p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition">✕</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 flex justify-between items-center border-t border-gray-100 pt-3">
+                            <button type="button" onclick="addItemRow()" class="bg-[#2A2E35] text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-gray-800 transition shadow-sm">+ เพิ่มรายการ</button>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="font-medium theme-text-general">รวมเงินสด:</span>
+                                <div id="total-cash-items" class="font-bold theme-text-heading text-sm">0.00</div>
                             </div>
                         </div>
                     </div>
 
-                    <div>
-                        <div class="header-bg text-xs font-bold p-2 px-4 rounded-t-xl shadow-sm tracking-wide">
-                            หมายเหตุเพิ่มเติม</div>
-                        <div class="section-bg border border-[#444] p-3 min-h-[180px] rounded-b-xl shadow-inner">
-                            <textarea name="remarks"
-                                class="w-full h-full min-h-[150px] outline-none text-xs leading-relaxed rounded-lg p-3 resize-none shadow-sm"
-                                placeholder="ระบุรายละเอียดเพิ่มเติม...&#10;- ส่วนลดพิเศษ&#10;- รายการมัดจำ (Deposit)&#10;- รายละเอียดการใช้ Voucher"></textarea>
+                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
+                            <h2 class="font-bold theme-text-heading text-lg">หมายเหตุ</h2>
                         </div>
-                        <div class="space-y-1">
-                            <label class="font-bold text-white">คูปองอื่นๆ / บัตรห้าง</label>
-                            <div
-                                class="relative h-16 border-2 border-dashed border-[#555] hover:border-[#D9AE5D] bg-[#3A3A3A] rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all shadow-sm">
-                                <input type="file" name="voucher_photo" accept="image/*"
-                                    class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
-                                <div
-                                    class="upload-placeholder flex flex-col items-center justify-center z-10 transition duration-300">
-                                    <span class="text-[10px] text-gray-400 group-hover:text-[#D9AE5D]">+
-                                        แนบรูปคูปอง</span>
-                                </div>
-                                <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0"
-                                    src="" alt="">
-                                <div
-                                    class="preview-overlay absolute inset-0 bg-[#1A1A1A]/70 backdrop-blur-sm opacity-0 transition duration-300 z-10 flex items-center justify-center p-2">
-                                    <span
-                                        class="text-[10px] text-white font-bold truncate px-2 w-full text-center file-name-overlay"></span>
-                                </div>
+                        <textarea name="remarks" class="w-full h-24 outline-none text-sm leading-relaxed rounded-xl p-3 resize-none theme-bg-input" placeholder="ระบุรายละเอียด...&#10;- ส่วนลดพิเศษ&#10;- รายการมัดจำ (Deposit)"></textarea>
+                        
+                        <div class="mt-3">
+                            <div class="relative w-full h-10 border border-dashed border-gray-300 theme-bg-input rounded-lg flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
+                                <input type="file" name="voucher_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
+                                <span class="text-xs theme-text-general group-hover:theme-accent-text">+ แนบรูปคูปอง/บัตรห้าง</span>
+                                <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-col md:flex-row justify-between items-end gap-6 mt-6 border-t border-[#444] pt-6">
-                <div class="space-y-3 max-w-lg">
-                    <label class="flex items-start gap-2 text-[10px] leading-snug cursor-pointer group">
-                        <input type="checkbox" name="privacy_consent" required
-                            class="mt-1 accent-[#D9AE5D] w-4 h-4 rounded">
-                        <span class="group-hover:text-[#D9AE5D] transition text-gray-300">ข้าพเจ้าได้อ่านและ
-                            "ให้ความยินยอม" ในการเก็บรวบรวมและใช้ข้อมูลภาพถ่ายเพื่อวัตถุประสงค์ข้างต้น</span>
-                    </label>
-                    <label class="flex items-start gap-2 text-[10px] leading-snug cursor-pointer font-semibold group">
-                        <input type="checkbox" name="cash_policy_ack" required
-                            class="mt-1 accent-[#D9AE5D] w-4 h-4 rounded">
-                        <span class="group-hover:text-[#D9AE5D] transition text-red-400/90">เงินสดในลิ้นชักห้ามเกิน
-                            2,000 บาท หากเกินต้องนำฝากในวันถัดไป และขอรับรองว่าข้อมูลเป็นความจริง</span>
-                    </label>
-                    <label class="flex items-center gap-2 text-xs font-bold cursor-pointer group">
-                        <input type="checkbox" name="shipment_confirmed" class="accent-[#D9AE5D] w-4 h-4 rounded">
-                        <span class="group-hover:text-[#D9AE5D] transition text-gray-200">ยืนยันการรับ Shipment ใน
-                            Salesforce ครบถ้วน</span>
-                    </label>
+            <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100 mt-6 flex flex-col md:flex-row justify-between items-end gap-6 border-b-4 theme-accent-border">
+                <div class="w-full md:w-1/2 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <label class="font-bold theme-text-heading whitespace-nowrap">ชื่อผู้บันทึก :</label>
+                        <input type="text" name="recorder_name" required class="flex-grow p-2 rounded-lg max-w-xs theme-bg-input">
+                    </div>
+                    
+                    <div>
+                        <label class="font-bold theme-text-heading block mb-2 text-sm">ลายเซ็น :</label>
+                        <div class="border border-gray-200 rounded-xl p-2 theme-bg-input max-w-sm">
+                            <canvas id="signature-pad" class="w-full h-24 bg-white rounded-lg touch-none shadow-inner"></canvas>
+                            <button type="button" onclick="clearSignature()" class="mt-2 w-full theme-text-general hover:text-gray-800 text-xs font-medium py-1">ล้างลายเซ็น</button>
+                        </div>
+                        <input type="hidden" name="signature_data" id="signature_data">
+                    </div>
+
+                    <div class="space-y-2 pt-2">
+                        <label class="flex items-start gap-2 text-xs cursor-pointer">
+                            <input type="checkbox" name="cash_policy_ack" required class="mt-0.5 w-3.5 h-3.5">
+                            <span class="text-red-500 font-medium leading-snug">เงินสดในลิ้นชักห้ามเกิน 2,000 บาท หากเกินต้องนำฝากในวันถัดไป</span>
+                        </label>
+                        <label class="flex items-start gap-2 text-xs cursor-pointer">
+                            <input type="checkbox" name="privacy_consent" required class="mt-0.5 w-3.5 h-3.5">
+                            <span class="theme-text-general leading-snug">ข้าพเจ้าให้ความยินยอมในการเก็บข้อมูลและยืนยันการรับ Shipment แล้ว</span>
+                        </label>
+                    </div>
                 </div>
 
-                <div class="flex gap-2">
-                    <button type="button" onclick="window.location.reload()"
-                        class="bg-[#444] border border-[#555] text-white px-6 py-2 text-sm font-bold rounded-xl shadow-sm hover:bg-[#555] transition">ล้างข้อมูล</button>
-                    <button type="submit"
-                        class="btn-gold px-12 py-2 text-sm font-bold rounded-xl shadow-md transition transform active:scale-95">บันทึกข้อมูล</button>
+                <div class="w-full md:w-auto flex flex-col gap-3">
+                    <button type="submit" class="theme-accent-bg px-10 py-3.5 text-base font-bold rounded-xl shadow-lg transition transform hover:-translate-y-1 w-full md:w-auto">ส่งข้อมูลบันทึกยอดขาย</button>
                 </div>
             </div>
         </form>
     </div>
 
-    <button id="themeToggleBtn" class="fixed bottom-6 right-6 bg-[#1F1F1F] text-[#D9AE5D] p-3 rounded-full shadow-2xl border-2 border-[#D9AE5D] hover:bg-[#3A3A3A] z-50 transition-transform hover:scale-110">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button id="themeToggleBtn" class="fixed bottom-6 right-6 bg-white theme-text-heading p-3.5 rounded-full shadow-2xl border border-gray-200 hover:bg-gray-50 z-50 transition-transform hover:scale-110 group">
+        <svg class="w-6 h-6 group-hover:rotate-90 transition duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
         </svg>
     </button>
 
-    <div id="themePanel" class="fixed bottom-20 right-6 bg-[#2A2A2A] border border-[#D9AE5D] p-5 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-50 hidden w-72 transform transition-all opacity-0 scale-95 origin-bottom-right">
-        <h3 class="text-[#D9AE5D] font-bold mb-4 border-b border-[#444] pb-2 text-center text-lg">ปรับแต่งสี (Theme)</h3>
+    <div id="themePanel" class="fixed bottom-24 right-6 bg-white border border-gray-100 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-50 hidden w-80 transform transition-all opacity-0 scale-95 origin-bottom-right">
+        <h3 class="font-bold mb-4 border-b border-gray-100 pb-3 text-center text-lg text-gray-800">✨ ปรับแต่งดีไซน์</h3>
         
-        <div class="space-y-4 text-sm text-gray-200">
+        <div class="space-y-4 text-sm text-gray-600 font-medium overflow-y-auto max-h-[60vh] pr-2">
+            
+            <div class="flex flex-col gap-2 mb-2">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">รูปแบบฟอนต์ (Font)</label>
+                <select id="themeFont" class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-700 outline-none focus:border-gray-400">
+                    <option value="'Sarabun'">Sarabun (ทางการ, อ่านง่าย)</option>
+                    <option value="'Prompt'">Prompt (ทันสมัย, วัยรุ่น)</option>
+                    <option value="'Kanit'">Kanit (เหลี่ยม, แข็งแรง)</option>
+                    <option value="'Mitr'">Mitr (น่ารัก, เป็นมิตร)</option>
+                    <option value="'Niramit'">Niramit (มาตรฐาน)</option>
+                </select>
+            </div>
+
+            <div class="border-t border-gray-100 my-2 pt-2 text-xs font-bold text-gray-400 uppercase tracking-wider">ชุดสี (Colors)</div>
+            
             <div class="flex justify-between items-center">
-                <label>สีพื้นหลังนอกสุด</label>
-                <input type="color" id="themeBgBody" class="w-8 h-8 rounded cursor-pointer bg-transparent border-0">
+                <label>สีพื้นหลังเว็บ</label>
+                <input type="color" id="themeBgBody">
             </div>
             <div class="flex justify-between items-center">
-                <label>สีพื้นหลังฟอร์ม</label>
-                <input type="color" id="themeBgForm" class="w-8 h-8 rounded cursor-pointer bg-transparent border-0">
+                <label>สีพื้นหลังกล่อง (Card)</label>
+                <input type="color" id="themeBgCard">
             </div>
             <div class="flex justify-between items-center">
-                <label>สีพื้นหลังหัวข้อ</label>
-                <input type="color" id="themeBgHeader" class="w-8 h-8 rounded cursor-pointer bg-transparent border-0">
+                <label>สีช่องกรอกข้อมูล</label>
+                <input type="color" id="themeBgInput">
             </div>
             <div class="flex justify-between items-center">
-                <label>สีตัวหนังสือหัวข้อ</label>
-                <input type="color" id="themeTextHeader" class="w-8 h-8 rounded cursor-pointer bg-transparent border-0">
+                <label>สีแถบไฮไลท์ยอดรวม</label>
+                <input type="color" id="themeBgHighlight">
             </div>
             <div class="flex justify-between items-center">
-                <label>สีตัวหนังสือทั่วไป</label>
-                <input type="color" id="themeTextGeneral" class="w-8 h-8 rounded cursor-pointer bg-transparent border-0">
+                <label>สีหลัก (ปุ่ม, แถบหัวข้อ)</label>
+                <input type="color" id="themeAccent">
+            </div>
+            <div class="flex justify-between items-center">
+                <label>สีตัวหนังสือหัวข้อ/พิมพ์</label>
+                <input type="color" id="themeTextHeading">
+            </div>
+            <div class="flex justify-between items-center">
+                <label>สีตัวหนังสือทั่วไป/รอง</label>
+                <input type="color" id="themeTextGeneral">
             </div>
         </div>
         
-        <button id="themeResetBtn" class="mt-5 w-full bg-[#444] hover:bg-red-500 hover:text-white text-gray-300 py-2 rounded-xl text-xs font-bold transition duration-300">คืนค่าเริ่มต้น</button>
+        <button id="themeResetBtn" class="mt-6 w-full bg-gray-100 hover:bg-gray-200 text-gray-600 py-2.5 rounded-xl text-sm font-bold transition duration-300">คืนค่าเริ่มต้น</button>
     </div>
 
     <script>
         const defaultTheme = {
-            '--color-bg-body': '#F5F3EF',
-            '--color-bg-form': '#F8F7F4',
-            '--color-header-bg': '#3b3833',
-            '--color-header-text': '#D9AE5D',
-            '--color-text-general': '#e5e7eb'
+            '--color-bg-body': '#F9F8F4',
+            '--color-bg-card': '#FFFFFF',
+            '--color-bg-input': '#FCFBFA',
+            '--color-bg-highlight': '#FFF8E7',
+            '--color-accent': '#D9AE5D',
+            '--color-text-heading': '#1F2937',
+            '--color-text-general': '#6B7280',
+            '--font-family': "'Sarabun'"
         };
 
-        function applyTheme(colors) {
-            for (const [key, value] of Object.entries(colors)) {
+        function applyTheme(config) {
+            for (const [key, value] of Object.entries(config)) {
                 document.documentElement.style.setProperty(key, value);
             }
         }
 
         function initTheme() {
-            const savedTheme = JSON.parse(localStorage.getItem('customThemeColors')) || defaultTheme;
+            const savedTheme = JSON.parse(localStorage.getItem('myLightConfig')) || defaultTheme;
             applyTheme(savedTheme);
 
-            // เซ็ตค่าสีลงใน input color
+            document.getElementById('themeFont').value = savedTheme['--font-family'] || "'Sarabun'";
             document.getElementById('themeBgBody').value = savedTheme['--color-bg-body'];
-            document.getElementById('themeBgForm').value = savedTheme['--color-bg-form'];
-            document.getElementById('themeBgHeader').value = savedTheme['--color-header-bg'];
-            document.getElementById('themeTextHeader').value = savedTheme['--color-header-text'];
+            document.getElementById('themeBgCard').value = savedTheme['--color-bg-card'];
+            document.getElementById('themeBgInput').value = savedTheme['--color-bg-input'];
+            document.getElementById('themeBgHighlight').value = savedTheme['--color-bg-highlight'];
+            document.getElementById('themeAccent').value = savedTheme['--color-accent'];
+            document.getElementById('themeTextHeading').value = savedTheme['--color-text-heading'];
             document.getElementById('themeTextGeneral').value = savedTheme['--color-text-general'];
         }
 
-        function setupThemePickers() {
-            const inputs = [
-                { id: 'themeBgBody', varName: '--color-bg-body' },
-                { id: 'themeBgForm', varName: '--color-bg-form' },
-                { id: 'themeBgHeader', varName: '--color-header-bg' },
-                { id: 'themeTextHeader', varName: '--color-header-text' },
-                { id: 'themeTextGeneral', varName: '--color-text-general' }
-            ];
-
-            inputs.forEach(item => {
-                document.getElementById(item.id).addEventListener('input', (e) => {
-                    document.documentElement.style.setProperty(item.varName, e.target.value);
-                    
-                    // เซฟลง LocalStorage ทันที
-                    const currentColors = {
-                        '--color-bg-body': document.getElementById('themeBgBody').value,
-                        '--color-bg-form': document.getElementById('themeBgForm').value,
-                        '--color-header-bg': document.getElementById('themeBgHeader').value,
-                        '--color-header-text': document.getElementById('themeTextHeader').value,
-                        '--color-text-general': document.getElementById('themeTextGeneral').value
-                    };
-                    localStorage.setItem('customThemeColors', JSON.stringify(currentColors));
-                });
-            });
+        function saveAndApply() {
+            const currentColors = {
+                '--font-family': document.getElementById('themeFont').value,
+                '--color-bg-body': document.getElementById('themeBgBody').value,
+                '--color-bg-card': document.getElementById('themeBgCard').value,
+                '--color-bg-input': document.getElementById('themeBgInput').value,
+                '--color-bg-highlight': document.getElementById('themeBgHighlight').value,
+                '--color-accent': document.getElementById('themeAccent').value,
+                '--color-text-heading': document.getElementById('themeTextHeading').value,
+                '--color-text-general': document.getElementById('themeTextGeneral').value
+            };
+            applyTheme(currentColors);
+            localStorage.setItem('myLightConfig', JSON.stringify(currentColors));
         }
 
-        // กดปุ่มตั้งค่า (เปิด/ปิด แผงควบคุม)
+        // Add Listeners
+        document.getElementById('themeFont').addEventListener('change', saveAndApply);
+        const colorInputs = ['themeBgBody', 'themeBgCard', 'themeBgInput', 'themeBgHighlight', 'themeAccent', 'themeTextHeading', 'themeTextGeneral'];
+        colorInputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', saveAndApply);
+        });
+
+        // Toggle Panel
         document.getElementById('themeToggleBtn').addEventListener('click', () => {
             const panel = document.getElementById('themePanel');
             if (panel.classList.contains('hidden')) {
                 panel.classList.remove('hidden');
-                setTimeout(() => {
-                    panel.classList.remove('opacity-0', 'scale-95');
-                    panel.classList.add('opacity-100', 'scale-100');
-                }, 10);
+                setTimeout(() => { panel.classList.remove('opacity-0', 'scale-95'); panel.classList.add('opacity-100', 'scale-100'); }, 10);
             } else {
-                panel.classList.remove('opacity-100', 'scale-100');
-                panel.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => {
-                    panel.classList.add('hidden');
-                }, 300);
+                panel.classList.remove('opacity-100', 'scale-100'); panel.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => { panel.classList.add('hidden'); }, 300);
             }
         });
 
-        // กดปุ่มรีเซ็ต
+        // Reset Panel
         document.getElementById('themeResetBtn').addEventListener('click', () => {
-            localStorage.removeItem('customThemeColors');
+            localStorage.removeItem('myLightConfig');
             initTheme();
         });
 
-        // โหลดฟังก์ชันเมื่อหน้าเว็บพร้อม
         initTheme();
-        setupThemePickers();
     </script>
 
     <script>
         function previewFile(input) {
             const wrapper = input.parentElement;
-            const placeholder = wrapper.querySelector('.upload-placeholder');
-            const img = wrapper.querySelector('.preview-img');
-            const overlay = wrapper.querySelector('.preview-overlay');
-            const overlayText = wrapper.querySelector('.file-name-overlay');
-
+            const img = wrapper.querySelector('img');
             if (input.files && input.files[0]) {
                 const file = input.files[0];
-
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
                     reader.onload = function (e) {
                         img.src = e.target.result;
                         img.classList.remove('opacity-0');
-                        overlay.classList.remove('opacity-0');
-                        placeholder.classList.add('opacity-0');
-                        overlayText.textContent = file.name;
                     }
                     reader.readAsDataURL(file);
-                } else {
-                    img.classList.add('opacity-0');
-                    overlay.classList.remove('opacity-0');
-                    placeholder.classList.add('opacity-0');
-                    overlayText.textContent = file.name;
-                    overlay.classList.replace('bg-[#1A1A1A]/70', 'bg-[#D9AE5D]/90');
                 }
             } else {
                 img.classList.add('opacity-0');
-                overlay.classList.add('opacity-0');
-                placeholder.classList.remove('opacity-0');
-                overlay.classList.replace('bg-[#D9AE5D]/90', 'bg-[#1A1A1A]/70');
                 img.src = "";
             }
         }
@@ -680,9 +533,11 @@
             cashBalanceDisplay.textContent = balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
             if (balance > 2000) {
-                cashBalanceDisplay.className = "border p-1 text-right bg-red-900/30 font-bold rounded num-input text-red-400 shadow-sm border-red-500/50";
+                cashBalanceDisplay.classList.add('bg-red-50', 'border-red-500', 'text-red-600');
+                cashBalanceDisplay.classList.remove('theme-bg-card', 'theme-accent-border', 'theme-text-heading');
             } else {
-                cashBalanceDisplay.className = "border p-1 text-right !bg-[#3A3A3A] font-bold rounded num-input text-white shadow-sm";
+                cashBalanceDisplay.classList.remove('bg-red-50', 'border-red-500', 'text-red-600');
+                cashBalanceDisplay.classList.add('theme-bg-card', 'theme-accent-border', 'theme-text-heading');
             }
 
             let itemTotal = 0;
@@ -703,21 +558,17 @@
                     val = parts[0] + '.' + parts.slice(1).join('');
                     parts = val.split('.');
                 }
-
                 if (parts[0]) {
                     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
-
                 let newVal = parts.join('.');
                 e.target.value = newVal;
 
                 let newLength = newVal.length;
                 cursorPosition = cursorPosition + (newLength - originalLength);
-                
                 if (document.activeElement === e.target) {
                     e.target.setSelectionRange(cursorPosition, cursorPosition);
                 }
-
                 updateTotals();
             }
         });
@@ -726,13 +577,12 @@
             const tbody = document.getElementById('items-body');
             const rowCount = tbody.rows.length + 1;
             const tr = document.createElement('tr');
-            tr.className = "bg-[#303030]";
             tr.innerHTML = `
-                <td class="border-b border-[#444] p-1 text-center text-gray-300">${rowCount}</td>
-                <td class="border-b border-[#444] p-0"><input type="text" class="w-full p-1.5 outline-none item-sku bg-transparent !border-none" placeholder="รหัสสินค้า"></td>
-                <td class="border-b border-[#444] p-0"><input type="text" class="w-full p-1.5 outline-none item-size bg-transparent !border-none"></td>
-                <td class="border-b border-[#444] p-0"><input type="text" inputmode="decimal" class="w-full p-1.5 text-right outline-none item-price num-input bg-transparent !border-none" placeholder="0.00"></td>
-                <td class="border-b border-[#444] p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-400 hover:text-red-400 font-bold transition">✕</button></td>
+                <td class="p-2 text-center theme-text-general font-medium">${rowCount}</td>
+                <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-sku bg-transparent !border-0 theme-text-heading" placeholder="รหัสสินค้า"></td>
+                <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-size bg-transparent !border-0 theme-text-heading text-center"></td>
+                <td class="p-1"><input type="text" inputmode="decimal" class="w-full p-1.5 text-right outline-none item-price num-input bg-transparent !border-0 theme-text-heading" placeholder="0.00"></td>
+                <td class="p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition">✕</button></td>
             `;
             tbody.appendChild(tr);
         }
@@ -749,94 +599,10 @@
                 row.cells[0].textContent = index + 1;
             });
         }
-
-        function collectSkuRows() {
-            return Array.from(document.querySelectorAll('#items-body tr')).map((row, index) => {
-                return {
-                    no: index + 1,
-                    sku: row.querySelector('.item-sku')?.value || '',
-                    size: row.querySelector('.item-size')?.value || '',
-                    price: parseNumber(row.querySelector('.item-price')?.value || '0')
-                };
-            }).filter(item => item.sku || item.size || item.price);
-        }
-
-        document.getElementById('dailySalesForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            if (!document.getElementById('sale_date').value) {
-                alert('กรุณาเลือกวันที่ขาย');
-                return;
-            }
-            if (!document.getElementById('branch').value) {
-                alert('กรุณาเลือกสาขา');
-                return;
-            }
-
-            const balanceText = cashBalanceDisplay.textContent.replace(/,/g, '');
-            const balance = parseFloat(balanceText) || 0;
-            if (balance > 2000) {
-                if (!confirm("คำเตือน: เงินสดคงเหลือเกิน 2,000 บาท (ยอดปัจจุบัน: " + cashBalanceDisplay.textContent + ") คุณได้รับการอนุมัติแล้วใช่หรือไม่?")) return;
-            }
-
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const oldText = submitBtn.textContent;
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'กำลังบันทึก...';
-
-            try {
-                const formData = new FormData(e.target);
-
-                const totalSales = parseFloat(totalSalesDisplay.textContent.replace(/,/g, '')) || 0;
-                const skuTotal = parseFloat(document.getElementById('total-cash-items').textContent.replace(/,/g, '')) || 0;
-
-                formData.append('totalSales', totalSales.toFixed(2));
-                formData.append('cash_balance', balance.toFixed(2));
-                formData.append('skuTotal', skuTotal.toFixed(2));
-                formData.append('skuItems', JSON.stringify(collectSkuRows()));
-
-                for (let [key, value] of formData.entries()) {
-                    if (document.querySelector(`[name="${key}"]`)?.classList.contains('num-input') && typeof value === 'string') {
-                        formData.set(key, value.replace(/,/g, ''));
-                    }
-                }
-
-                const response = await fetch('/submit-sales', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                if (!response.ok || !result.ok) {
-                    throw new Error(result.message || 'บันทึกไม่สำเร็จ');
-                }
-
-                const modal = document.createElement('div');
-                modal.className = "fixed inset-0 bg-[#1A1A1A]/80 flex items-center justify-center p-4 z-50 backdrop-blur-sm";
-                modal.innerHTML = `
-                    <div class="bg-[#303030] p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center border-t-4 border-[#D9AE5D]">
-                        <div class="text-[#D9AE5D] mb-4 flex justify-center">
-                            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-white">บันทึกสำเร็จ</h3>
-                        <p class="text-sm text-gray-400 mb-6">ระบบได้บันทึกข้อมูลลง Lark Base เรียบร้อยแล้ว</p>
-                        <button onclick="this.closest('.fixed').remove(); window.location.reload();" class="btn-gold px-6 py-2 rounded-full w-full font-bold shadow-lg uppercase tracking-wide">ตกลง</button>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-
-            } catch (err) {
-                console.error(err);
-                alert('เกิดข้อผิดพลาด: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = oldText;
-            }
-        });
     </script>
+
     <script>
         const canvas = document.getElementById("signature-pad");
-
         if (canvas) {
             const ctx = canvas.getContext("2d");
             let drawing = false;
@@ -846,17 +612,12 @@
                 canvas.width = rect.width;
                 canvas.height = rect.height;
             }
-
             setTimeout(resizeCanvas, 100);
 
             function getPoint(e) {
                 const rect = canvas.getBoundingClientRect();
                 const touch = e.touches ? e.touches[0] : e;
-
-                return {
-                    x: touch.clientX - rect.left,
-                    y: touch.clientY - rect.top
-                };
+                return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
             }
 
             function startDraw(e) {
@@ -870,27 +631,22 @@
             function draw(e) {
                 if (!drawing) return;
                 e.preventDefault();
-
                 const p = getPoint(e);
-
                 ctx.lineWidth = 2;
                 ctx.lineCap = "round";
-                ctx.strokeStyle = "#D9AE5D";
+                // ใช้สีน้ำเงินเข้มๆ เหมือนปากกาจริง
+                ctx.strokeStyle = "#1e3a8a"; 
                 ctx.lineTo(p.x, p.y);
                 ctx.stroke();
-
                 document.getElementById("signature_data").value = canvas.toDataURL("image/png");
             }
 
-            function endDraw() {
-                drawing = false;
-            }
+            function endDraw() { drawing = false; }
 
             canvas.addEventListener("mousedown", startDraw);
             canvas.addEventListener("mousemove", draw);
             canvas.addEventListener("mouseup", endDraw);
             canvas.addEventListener("mouseleave", endDraw);
-
             canvas.addEventListener("touchstart", startDraw, { passive: false });
             canvas.addEventListener("touchmove", draw, { passive: false });
             canvas.addEventListener("touchend", endDraw);
@@ -904,7 +660,6 @@
 
     <script>
         const saleDate = document.getElementById("sale_date");
-
         if (saleDate) {
             function formatLocalDate(date) {
                 const year = date.getFullYear();
@@ -912,9 +667,7 @@
                 const day = String(date.getDate()).padStart(2, "0");
                 return `${year}-${month}-${day}`;
             }
-
             const today = new Date();
-
             const yesterday = new Date();
             yesterday.setDate(today.getDate() - 1);
 
