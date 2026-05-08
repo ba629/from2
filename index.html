@@ -1,690 +1,865 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบฟอร์มบันทึกยอดขายรายวัน</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Mitr:wght@300;400;500&family=Niramit:wght@300;400;500;600&family=Prompt:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>แบบฟอร์มบันทึกยอดขายรายวัน - Luxury Retail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS Variables สำหรับ Theme Customizer --- */
+        /* ==============================
+           CSS Variables (ตั้งค่าสี ธีม)
+           ============================== */
         :root {
-            --color-bg-body: #F9F8F4;
-            --color-bg-card: #FFFFFF;
-            --color-bg-input: #FCFBFA;
-            --color-bg-highlight: #FFF8E7;
-            --color-accent: #D9AE5D;
-            --color-text-heading: #1F2937;
-            --color-text-general: #6B7280;
-            --font-family: 'Sarabun';
+            --font-main: 'Sarabun', sans-serif;
+            --transition-speed: 0.3s;
+        }
+
+        /* --- Dark Mode (โหมดมืดตามรูป) --- */
+        body.dark-mode {
+            --bg-color: #1e1b18;
+            --card-bg: #2b2723;
+            --text-main: #d4af37;
+            --text-muted: #8a8175;
+            --border-color: #4a443a;
+            --input-bg: #1e1b18;
+            --input-text: #ffffff;
+            --accent-color: #d4af37;
+            --btn-bg: #d4af37;
+            --btn-text: #1e1b18;
+        }
+
+        /* --- Light Mode (โหมดสว่าง) --- */
+        body.light-mode {
+            --bg-color: #f9f8f4;
+            --card-bg: #ffffff;
+            --text-main: #b8860b;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --input-bg: #f3f4f6;
+            --input-text: #111827;
+            --accent-color: #b8860b;
+            --btn-bg: #b8860b;
+            --btn-text: #ffffff;
+        }
+
+        /* ==============================
+           Global Styles
+           ============================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: var(--font-family), sans-serif;
-            background-color: var(--color-bg-body) !important;
-            transition: background-color 0.3s ease, font-family 0.3s ease;
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-muted);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            padding-bottom: 50px;
         }
 
-        /* Classes ที่ผูกกับตัวแปรสี */
-        .theme-bg-card { background-color: var(--color-bg-card) !important; transition: background-color 0.3s ease; }
-        .theme-bg-input { background-color: var(--color-bg-input) !important; transition: background-color 0.3s ease; }
-        .theme-bg-highlight { background-color: var(--color-bg-highlight) !important; border-color: color-mix(in srgb, var(--color-accent) 40%, transparent) !important; transition: all 0.3s ease; }
-        
-        .theme-accent-bg { background-color: var(--color-accent) !important; color: #FFFFFF !important; transition: background-color 0.3s ease; }
-        .theme-accent-text { color: var(--color-accent) !important; transition: color 0.3s ease; }
-        .theme-accent-border { border-color: var(--color-accent) !important; transition: border-color 0.3s ease; }
-        
-        .theme-text-heading { color: var(--color-text-heading) !important; transition: color 0.3s ease; }
-        .theme-text-general { color: var(--color-text-general) !important; transition: color 0.3s ease; }
-        /* ------------------------------------------- */
-
-        /* ซ่อนลูกศรใน input number */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        h1, h2, h3 {
+            color: var(--accent-color);
+            font-weight: 700;
         }
 
-        /* สไตล์ Input ทั่วไป */
-        input, select, textarea {
-            border: 1px solid #E5E7EB !important;
-            color: var(--color-text-heading) !important;
-            transition: all 0.2s ease-in-out;
+        /* ==============================
+           Header & Top Bar
+           ============================== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--card-bg);
         }
 
-        input::placeholder, textarea::placeholder {
-            color: #9CA3AF !important;
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .num-input {
-            font-variant-numeric: tabular-nums;
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--btn-text);
+        }
+
+        .logo-area span {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        .header-center {
+            text-align: center;
+        }
+
+        .header-center h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header-center h2 {
+            font-size: 12px;
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .theme-switch {
+            display: flex;
+            gap: 5px;
+        }
+
+        .theme-switch button {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .theme-switch button:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        select.branch-select {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* ==============================
+           Main Layout & Containers
+           ============================== */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+
+        .notice-bar {
+            border-left: 4px solid var(--accent-color);
+            padding: 10px 15px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            background-color: var(--card-bg);
+        }
+
+        .notice-bar strong {
+            color: var(--accent-color);
+        }
+
+        .date-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .date-section input {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 15px;
+            border-radius: 4px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3::before {
+            content: '';
+            width: 3px;
+            height: 16px;
+            background-color: var(--accent-color);
+            display: block;
+        }
+
+        /* ==============================
+           Form Elements
+           ============================== */
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .input-group input {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--input-text);
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-align: right;
+            width: 120px;
+            outline: none;
+        }
+
+        .input-group input:focus, .size-input:focus, .price-input:focus, textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .attach-btn {
+            background-color: transparent;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 10px;
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .attach-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .total-box {
+            border: 1px solid var(--accent-color);
+            padding: 15px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .total-box span {
+            color: var(--accent-color);
+            font-size: 14px;
+        }
+
+        .total-box strong {
+            color: var(--accent-color);
+            font-size: 20px;
+        }
+
+        /* ==============================
+           Tables
+           ============================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        th {
+            text-align: left;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--accent-color);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        th:last-child {
             text-align: right;
         }
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            background-color: var(--color-bg-card) !important;
-            border-color: var(--color-accent) !important;
-            /* ใช้ color-mix เพื่อสร้างเงาสีเดียวกับ accent แบบโปร่งใส */
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent) !important;
+        td {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 13px;
+            color: var(--input-text);
         }
 
-        /* ตกแต่งตาราง */
-        thead th {
-            font-weight: 600;
-            border-bottom: 1px solid #E5E7EB;
-        }
-        tbody td {
-            border-bottom: 1px solid #F3F4F6;
-        }
-
-        /* Theme Panel Custom Input Color */
-        input[type="color"] {
-            -webkit-appearance: none;
+        .size-input, .price-input {
+            background-color: transparent;
             border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            padding: 0;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--input-text);
+            padding: 5px;
+            width: 100%;
+            outline: none;
         }
-        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
+
+        .price-input {
+            text-align: right;
+        }
+
+        .remove-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 2px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .remove-btn:hover {
+            border-color: #ef4444; color: #ef4444;
+        }
+
+        /* ==============================
+           File Previews
+           ============================== */
+        .hidden-file-input {
+            display: none;
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .preview-item {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-item .remove-file {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        .preview-item .remove-file:hover {
+            background: #ef4444;
+        }
+
+        /* ==============================
+           Textarea & Signatures
+           ============================== */
+        textarea {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--input-text);
+            padding: 15px;
+            border-radius: 4px;
+            min-height: 100px;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .signature-area {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .signature-box {
+            flex-grow: 1;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            height: 120px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto 0;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
     </style>
 </head>
+<body class="dark-mode">
 
-<body class="p-2 md:p-6 lg:p-8 relative">
-    <div class="max-w-7xl mx-auto">
-        
-        <div class="theme-bg-card shadow-sm rounded-2xl p-5 mb-6 flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-100">
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="w-14 h-14 bg-[#2A2E35] rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                    <svg class="w-8 h-8 theme-accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 3L4 7.5V16.5L12 21L20 16.5V7.5L12 3Z"></path>
-                        <path d="M12 12L20 7.5"></path>
-                        <path d="M12 12V21"></path>
-                        <path d="M12 12L4 7.5"></path>
-                    </svg>
-                </div>
-                <div class="flex flex-col gap-2 w-full">
-                    <select id="branch" name="branch" required class="w-full md:w-64 p-2 text-sm font-semibold rounded-lg cursor-pointer theme-bg-input">
-                        <option value="">-- เลือกสาขา --</option>
-                        <optgroup label="สาขาในกรุงเทพฯ และปริมณฑล">
-                            <option value="SUITCUBE R3 SIGNATURE">SUITCUBE R3 SIGNATURE</option>
-                            <option value="SUITCUBE RCD">SUITCUBE RCD (รัชดา-สุทธิสาร)</option>
-                            <option value="SUITCUBE SIAM">SUITCUBE SIAM (สยามสแควร์วัน)</option>
-                            <option value="SUITCUBE T21">SUITCUBE T21 (เทอร์มินอล 21 อโศก)</option>
-                        </optgroup>
-                        <optgroup label="สาขาต่างจังหวัด">
-                            <option value="SUITCUBE CM">SUITCUBE CM (เชียงใหม่)</option>
-                            <option value="SUITCUBE KR">SUITCUBE KR (นครราชสีมา)</option>
-                            <option value="SUITCUBE PK">SUITCUBE PK (ภูเก็ต)</option>
-                        </optgroup>
-                    </select>
-                </div>
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
             </div>
+            <span>LUXURY RETAIL SYSTEM</span>
+        </div>
+        <div class="header-center">
+            <h1>แบบฟอร์มบันทึกยอดขายรายวัน</h1>
+            <h2>DAILY SALES RECORD FORM</h2>
+        </div>
+        <div class="header-right">
+            <div class="theme-switch">
+                <button type="button" onclick="setTheme('dark-mode')">🌙 มืด</button>
+                <button type="button" onclick="setTheme('light-mode')">☀️ สว่าง</button>
+            </div>
+            <select class="branch-select">
+                <option>— เลือกสาขา —</option>
+                <option>SUITCUBE SIAM</option>
+                <option>SUITCUBE T21</option>
+            </select>
+        </div>
+    </header>
 
-            <div class="flex items-center gap-3 theme-bg-input border border-gray-100 p-2 rounded-xl w-full md:w-auto">
-                <label class="text-sm font-bold theme-text-general whitespace-nowrap pl-2">วันที่ :</label>
-                <input type="date" id="sale_date" name="sale_date" required class="border-0 bg-transparent theme-text-heading font-semibold focus:ring-0 cursor-pointer w-full md:w-auto">
-            </div>
+    <main>
+        <div class="notice-bar">
+            กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ - เงินสดต้องเหลือ <strong>ไม่เกิน 2,000 บาท</strong> หากเกินต้องโทรขออนุมัติ**
         </div>
 
-        <form id="dailySalesForm" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div class="date-section">
+            <label>วันที่บันทึกของวันที่</label>
+            <input type="date" id="saleDate">
+        </div>
 
-                <div class="md:col-span-4 space-y-6">
-                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex items-center gap-2 mb-5">
-                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
-                            <h2 class="font-bold theme-text-heading text-lg">ช่องทางการรับชำระเงิน</h2>
-                        </div>
-                        
-                        <div class="space-y-3 text-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">QR-CODE AUTO :</label>
-                                <input type="text" inputmode="decimal" name="pay_qr" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">เครื่องรูดบัตร GHL :</label>
-                                <input type="text" inputmode="decimal" name="pay_ghl" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
-                            </div>
-
-                            <div class="flex justify-end">
-                                <div class="relative w-32 h-8 border border-dashed border-gray-300 theme-bg-input hover:border-[#D9AE5D] rounded-md flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
-                                    <input type="file" name="ghl_file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
-                                    <div class="upload-placeholder flex items-center justify-center gap-1 z-10">
-                                        <span class="text-[10px] theme-text-general group-hover:text-[#D9AE5D]">แนบสลิป GHL</span>
-                                    </div>
-                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                </div>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">เครื่องรูดบัตร TTB :</label>
-                                <input type="text" inputmode="decimal" name="pay_ttb_spare" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">We chat Alipay :</label>
-                                <input type="text" inputmode="decimal" name="pay_wechat" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">รับช่องทาง KTB :</label>
-                                <input type="text" inputmode="decimal" name="pay_ktb" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">ไทยพาณิชย์ 0198 :</label>
-                                <input type="text" inputmode="decimal" name="pay_scb" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">(องค์กร) TTB 6417 :</label>
-                                <input type="text" inputmode="decimal" name="pay_ttb_org" class="w-32 p-2 rounded-lg payment-input num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            <div class="flex items-center justify-between mt-4">
-                                <label class="theme-text-heading font-bold">เงินสด :</label>
-                                <input type="text" inputmode="decimal" name="pay_cash" id="cash-payment" class="w-32 p-2 rounded-lg payment-input num-input font-bold theme-text-heading border-gray-300 theme-bg-input" placeholder="0.00">
-                            </div>
-                        </div>
-
-                        <div class="mt-5 theme-bg-highlight p-4 rounded-xl flex justify-between items-center border">
-                            <span class="font-bold theme-text-heading text-sm">ยอดขายทั้งหมด :</span>
-                            <div id="total-sales-display" class="font-bold text-xl theme-accent-text num-input">0.00</div>
-                        </div>
+        <div class="form-grid">
+            
+            <div class="col-1">
+                <div class="card">
+                    <h3>ช่องทางการรับชำระเงิน</h3>
+                    <div class="input-group">
+                        <label>QR-CODE AUTO</label>
+                        <input type="text" placeholder="0.00">
                     </div>
-                </div>
-
-                <div class="md:col-span-4 space-y-6">
-                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex items-center gap-2 mb-5">
-                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
-                            <h2 class="font-bold theme-text-heading text-lg">ตรวจสอบยอดเงินสด</h2>
-                        </div>
-                        
-                        <div class="bg-[#2A2E35] text-white text-center py-2.5 rounded-xl font-bold mb-5 shadow-sm text-sm">
-                            ยอดเงินสดในลิ้นชัก
-                        </div>
-
-                        <div class="space-y-4 text-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">เงินสดตั้งต้น :</label>
-                                <input type="text" inputmode="decimal" id="cash-start" name="cash_start" class="w-32 p-2 rounded-lg cash-calc num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">เงินสดรับมา :</label>
-                                <input type="text" inputmode="decimal" id="cash-received" name="cash_received" class="w-32 p-2 rounded-lg cash-calc num-input bg-gray-100 font-semibold theme-text-general" readonly placeholder="0.00">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <label class="theme-text-general font-medium">ฝากเงินสด :</label>
-                                <input type="text" inputmode="decimal" id="cash-deposit" name="cash_deposit" class="w-32 p-2 rounded-lg cash-calc num-input theme-bg-input" placeholder="0.00">
-                            </div>
-                            
-                            <div class="flex items-center justify-between pt-2">
-                                <label class="font-bold theme-text-heading text-base">เงินสดคงเหลือ :</label>
-                                <div id="cash-balance-display" class="w-32 p-2 text-right theme-bg-card border-2 theme-accent-border font-bold rounded-lg num-input theme-text-heading shadow-sm text-lg">
-                                    0.00
-                                </div>
-                            </div>
-
-                            <div class="pt-2">
-                                <div class="relative w-full h-14 border-2 border-dashed border-gray-200 theme-bg-input rounded-xl flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
-                                    <input type="file" name="cash_deposit_slip" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
-                                    <div class="upload-placeholder flex items-center justify-center gap-1 z-10">
-                                        <span class="text-xs theme-text-general group-hover:text-[#D9AE5D]">อัปโหลดสลิปเงินสด</span>
-                                    </div>
-                                    <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
-                            <h2 class="font-bold theme-text-heading text-lg">Voucher</h2>
-                        </div>
-                        <div class="flex gap-4">
-                            <div class="w-1/2">
-                                <label class="text-xs theme-text-general mb-1 block">500 (ใบ)</label>
-                                <input type="text" inputmode="numeric" name="voucher_500" class="w-full p-2 rounded-lg num-input text-center theme-bg-input" placeholder="0">
-                            </div>
-                            <div class="w-1/2">
-                                <label class="text-xs theme-text-general mb-1 block">1000 (ใบ)</label>
-                                <input type="text" inputmode="numeric" name="voucher_1000" class="w-full p-2 rounded-lg num-input text-center theme-bg-input" placeholder="0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="md:col-span-4 space-y-6">
-                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
-                            <h2 class="font-bold theme-text-heading text-lg">รายการขาย</h2>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-xs">
-                                <thead>
-                                    <tr>
-                                        <th class="p-2 text-center w-8 theme-text-general">#</th>
-                                        <th class="p-2 text-left theme-text-general">SKU</th>
-                                        <th class="p-2 text-left w-12 theme-text-general">Size</th>
-                                        <th class="p-2 text-right theme-text-general">ราคา</th>
-                                        <th class="p-2 w-8"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="items-body">
-                                    <tr>
-                                        <td class="p-2 text-center theme-text-general font-medium">1</td>
-                                        <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-sku bg-transparent !border-0 theme-text-heading" placeholder="รหัสสินค้า"></td>
-                                        <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-size bg-transparent !border-0 theme-text-heading text-center"></td>
-                                        <td class="p-1"><input type="text" inputmode="decimal" class="w-full p-1.5 text-right outline-none item-price num-input bg-transparent !border-0 theme-text-heading" placeholder="0.00"></td>
-                                        <td class="p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition">✕</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="mt-3 flex justify-between items-center border-t border-gray-100 pt-3">
-                            <button type="button" onclick="addItemRow()" class="bg-[#2A2E35] text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-gray-800 transition shadow-sm">+ เพิ่มรายการ</button>
-                            <div class="flex items-center gap-2 text-xs">
-                                <span class="font-medium theme-text-general">รวมเงินสด:</span>
-                                <div id="total-cash-items" class="font-bold theme-text-heading text-sm">0.00</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-[6px] h-6 theme-accent-bg rounded-full"></div>
-                            <h2 class="font-bold theme-text-heading text-lg">หมายเหตุ</h2>
-                        </div>
-                        <textarea name="remarks" class="w-full h-24 outline-none text-sm leading-relaxed rounded-xl p-3 resize-none theme-bg-input" placeholder="ระบุรายละเอียด...&#10;- ส่วนลดพิเศษ&#10;- รายการมัดจำ (Deposit)"></textarea>
-                        
-                        <div class="mt-3">
-                            <div class="relative w-full h-10 border border-dashed border-gray-300 theme-bg-input rounded-lg flex items-center justify-center cursor-pointer overflow-hidden group transition-all">
-                                <input type="file" name="voucher_photo" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="previewFile(this)">
-                                <span class="text-xs theme-text-general group-hover:theme-accent-text">+ แนบรูปคูปอง/บัตรห้าง</span>
-                                <img class="preview-img absolute inset-0 w-full h-full object-cover opacity-0 transition duration-300 z-0" src="" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="theme-bg-card p-5 rounded-2xl shadow-sm border border-gray-100 mt-6 flex flex-col md:flex-row justify-between items-end gap-6 border-b-4 theme-accent-border">
-                <div class="w-full md:w-1/2 space-y-4">
-                    <div class="flex items-center gap-3">
-                        <label class="font-bold theme-text-heading whitespace-nowrap">ชื่อผู้บันทึก :</label>
-                        <input type="text" name="recorder_name" required class="flex-grow p-2 rounded-lg max-w-xs theme-bg-input">
+                    <div class="input-group">
+                        <label>เครื่องรูดบัตร GHL</label>
+                        <input type="text" placeholder="0.00">
                     </div>
                     
-                    <div>
-                        <label class="font-bold theme-text-heading block mb-2 text-sm">ลายเซ็น :</label>
-                        <div class="border border-gray-200 rounded-xl p-2 theme-bg-input max-w-sm">
-                            <canvas id="signature-pad" class="w-full h-24 bg-white rounded-lg touch-none shadow-inner"></canvas>
-                            <button type="button" onclick="clearSignature()" class="mt-2 w-full theme-text-general hover:text-gray-800 text-xs font-medium py-1">ล้างลายเซ็น</button>
+                    <div class="file-upload-wrapper">
+                        <label class="attach-btn" style="margin-bottom: 0;">
+                            + ไฟล์แนบ GHL
+                            <input type="file" multiple accept="image/*" class="hidden-file-input" onchange="handleMultipleFiles(this, 'preview-ghl')">
+                        </label>
+                        <div id="preview-ghl" class="preview-container"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>เครื่องรูดบัตร (สำรอง) TTB</label>
+                        <input type="text" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label>WECHAT / ALIPAY</label>
+                        <input type="text" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label>รับช่องทาง KTB พี่กวาง</label>
+                        <input type="text" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label>ไทยพาณิชย์ 0198</label>
+                        <input type="text" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label>(งานองค์กร) TTB 6417</label>
+                        <input type="text" placeholder="0.00">
+                    </div>
+                    <div class="input-group" style="margin-top: 15px;">
+                        <label style="color: var(--accent-color);">เงินสด</label>
+                        <input type="text" placeholder="0.00" style="border-color: var(--accent-color);">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="card">
+                    <h3>ตรวจยอดขายเงินสด</h3>
+                    <div class="input-group">
+                        <label>เงินสดตั้งต้น</label>
+                        <input type="text" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label>เงินสดรับมา</label>
+                        <input type="text" placeholder="0.00" readonly style="opacity: 0.7;">
+                    </div>
+                    <div class="input-group">
+                        <label>ฝากเงินสด</label>
+                        <input type="text" placeholder="0.00">
+                    </div>
+                    
+                    <div class="total-box">
+                        <span>เงินสดเหลือ</span>
+                        <strong>0.00</strong>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; gap: 15px;">
+                        <span style="font-size: 13px; white-space: nowrap;">สลิปฝากเงินสด</span>
+                        <div class="file-upload-wrapper" style="width: 100%;">
+                            <label class="attach-btn" style="margin-top: 0;">
+                                + แนบสลิป
+                                <input type="file" multiple accept="image/*" class="hidden-file-input" onchange="handleMultipleFiles(this, 'preview-cash-slip')">
+                            </label>
                         </div>
-                        <input type="hidden" name="signature_data" id="signature_data">
                     </div>
-
-                    <div class="space-y-2 pt-2">
-                        <label class="flex items-start gap-2 text-xs cursor-pointer">
-                            <input type="checkbox" name="cash_policy_ack" required class="mt-0.5 w-3.5 h-3.5">
-                            <span class="text-red-500 font-medium leading-snug">เงินสดในลิ้นชักห้ามเกิน 2,000 บาท หากเกินต้องนำฝากในวันถัดไป</span>
-                        </label>
-                        <label class="flex items-start gap-2 text-xs cursor-pointer">
-                            <input type="checkbox" name="privacy_consent" required class="mt-0.5 w-3.5 h-3.5">
-                            <span class="theme-text-general leading-snug">ข้าพเจ้าให้ความยินยอมในการเก็บข้อมูลและยืนยันการรับ Shipment แล้ว</span>
-                        </label>
-                    </div>
+                    <div id="preview-cash-slip" class="preview-container" style="justify-content: flex-end;"></div>
                 </div>
 
-                <div class="w-full md:w-auto flex flex-col gap-3">
-                    <button type="submit" class="theme-accent-bg px-10 py-3.5 text-base font-bold rounded-xl shadow-lg transition transform hover:-translate-y-1 w-full md:w-auto">ส่งข้อมูลบันทึกยอดขาย</button>
+                <div class="card">
+                    <h3>VOUCHER</h3>
+                    <div class="input-group">
+                        <label>Voucher 500 เหลือจำนวนใบ</label>
+                        <input type="text" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Voucher 1000 เหลือจำนวนใบ</label>
+                        <input type="text" placeholder="0">
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
 
-    <button id="themeToggleBtn" class="fixed bottom-6 right-6 bg-white theme-text-heading p-3.5 rounded-full shadow-2xl border border-gray-200 hover:bg-gray-50 z-50 transition-transform hover:scale-110 group">
-        <svg class="w-6 h-6 group-hover:rotate-90 transition duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        </svg>
-    </button>
+            <div class="col-3">
+                <div class="card">
+                    <h3>รายการขายเงินสด</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="10%">#</th>
+                                <th width="40%">SKU</th>
+                                <th width="20%">SIZE</th>
+                                <th width="30%">ราคา/หน่วย</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items-table-body">
+                            <tr>
+                                <td>1</td>
+                                <td>รหัสสินค้า</td>
+                                <td><input type="text" class="size-input" placeholder="—"></td>
+                                <td style="text-align: right;">
+                                    <input type="text" class="price-input" placeholder="0.00">
+                                    <button class="remove-btn" onclick="this.closest('tr').remove()">x</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <button class="attach-btn" style="width: auto; border-color: var(--accent-color); color: var(--accent-color);" onclick="addItem()">+ เพิ่มรายการสินค้า</button>
 
-    <div id="themePanel" class="fixed bottom-24 right-6 bg-white border border-gray-100 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-50 hidden w-80 transform transition-all opacity-0 scale-95 origin-bottom-right">
-        <h3 class="font-bold mb-4 border-b border-gray-100 pb-3 text-center text-lg text-gray-800">✨ ปรับแต่งดีไซน์</h3>
-        
-        <div class="space-y-4 text-sm text-gray-600 font-medium overflow-y-auto max-h-[60vh] pr-2">
-            
-            <div class="flex flex-col gap-2 mb-2">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">รูปแบบฟอนต์ (Font)</label>
-                <select id="themeFont" class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-700 outline-none focus:border-gray-400">
-                    <option value="'Sarabun'">Sarabun (ทางการ, อ่านง่าย)</option>
-                    <option value="'Prompt'">Prompt (ทันสมัย, วัยรุ่น)</option>
-                    <option value="'Kanit'">Kanit (เหลี่ยม, แข็งแรง)</option>
-                    <option value="'Mitr'">Mitr (น่ารัก, เป็นมิตร)</option>
-                    <option value="'Niramit'">Niramit (มาตรฐาน)</option>
-                </select>
-            </div>
-
-            <div class="border-t border-gray-100 my-2 pt-2 text-xs font-bold text-gray-400 uppercase tracking-wider">ชุดสี (Colors)</div>
-            
-            <div class="flex justify-between items-center">
-                <label>สีพื้นหลังเว็บ</label>
-                <input type="color" id="themeBgBody">
-            </div>
-            <div class="flex justify-between items-center">
-                <label>สีพื้นหลังกล่อง (Card)</label>
-                <input type="color" id="themeBgCard">
-            </div>
-            <div class="flex justify-between items-center">
-                <label>สีช่องกรอกข้อมูล</label>
-                <input type="color" id="themeBgInput">
-            </div>
-            <div class="flex justify-between items-center">
-                <label>สีแถบไฮไลท์ยอดรวม</label>
-                <input type="color" id="themeBgHighlight">
-            </div>
-            <div class="flex justify-between items-center">
-                <label>สีหลัก (ปุ่ม, แถบหัวข้อ)</label>
-                <input type="color" id="themeAccent">
-            </div>
-            <div class="flex justify-between items-center">
-                <label>สีตัวหนังสือหัวข้อ/พิมพ์</label>
-                <input type="color" id="themeTextHeading">
-            </div>
-            <div class="flex justify-between items-center">
-                <label>สีตัวหนังสือทั่วไป/รอง</label>
-                <input type="color" id="themeTextGeneral">
+                    <div style="text-align: right; margin-top: 20px;">
+                        <span style="font-size: 13px; margin-right: 15px;">รวมรายการขายเงินสด</span>
+                        <strong style="color: var(--accent-color); font-size: 22px;">0.00</strong>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <button id="themeResetBtn" class="mt-6 w-full bg-gray-100 hover:bg-gray-200 text-gray-600 py-2.5 rounded-xl text-sm font-bold transition duration-300">คืนค่าเริ่มต้น</button>
-    </div>
+
+        <div class="card">
+            <h3>หมายเหตุ & VOUCHER</h3>
+            <textarea placeholder="สำหรับอธิบายรายการขายเพิ่มเติม&#10;เช่น ส่วนลดพิเศษ (เลขที่ใบเสร็จ เหตุผลในการลด)&#10;รายการ Pick Up (เลขที่ใบเสร็จ มัดจำ Deposit)"></textarea>
+            
+            <div style="margin-top: 15px;">
+                <label style="font-size: 13px; display: block; margin-bottom: 5px;">หลักฐาน VOUCHER ห้าง / คูปองของขวัญ</label>
+                <div class="file-upload-wrapper">
+                    <label class="attach-btn" style="width: auto; margin-top: 0; padding: 8px 25px;">
+                        + แนบหลักฐาน
+                        <input type="file" multiple accept="image/*" class="hidden-file-input" onchange="handleMultipleFiles(this, 'preview-voucher')">
+                    </label>
+                    <div id="preview-voucher" class="preview-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 25px;">
+            <h3 style="margin: 0; font-size: 14px; letter-spacing: 2px;">• DAILY SALES RECORD •</h3>
+            <label class="checkbox-label">
+                <input type="checkbox">
+                ยืนยันการกดรับ Shipment ใน Salesforce ครบถ้วน
+            </label>
+        </div>
+
+        <div class="card">
+            <h3>ผู้บันทึก & ลายเซ็น</h3>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px;">
+                <div>
+                    <label class="checkbox-label" style="align-items: flex-start; margin-bottom: 20px;">
+                        <input type="checkbox" style="margin-top: 3px;">
+                        <span>ขอรับรองว่าข้อมูลยอดเงิน ณ สิ้นวันถูกต้อง หากพบการทุจริต ยินยอมให้บริษัทดำเนินคดีได้ตามกฎหมาย</span>
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label style="font-size: 13px; white-space: nowrap;">ชื่อผู้บันทึก</label>
+                        <input type="text" style="width: 100%; background-color: var(--input-bg); border: 1px solid var(--border-color); padding: 8px; border-radius: 4px; color: var(--input-text);">
+                    </div>
+                </div>
+                
+                <div>
+                    <label style="font-size: 13px; color: var(--accent-color); display: block; margin-bottom: 5px;">ลายเซ็น • SIGNATURE</label>
+                    <div class="signature-box">
+                        <canvas id="sig-canvas" style="width: 100%; height: 100%; touch-action: none;"></canvas>
+                        <button onclick="clearCanvas()" style="position: absolute; bottom: 10px; right: 10px; background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; padding: 3px 8px; border-radius: 3px; cursor: pointer;">ล้างลายเซ็น</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="submit-btn">ส่งข้อมูลบันทึกยอดขาย</button>
+
+    </main>
 
     <script>
-        const defaultTheme = {
-            '--color-bg-body': '#F9F8F4',
-            '--color-bg-card': '#FFFFFF',
-            '--color-bg-input': '#FCFBFA',
-            '--color-bg-highlight': '#FFF8E7',
-            '--color-accent': '#D9AE5D',
-            '--color-text-heading': '#1F2937',
-            '--color-text-general': '#6B7280',
-            '--font-family': "'Sarabun'"
-        };
-
-        function applyTheme(config) {
-            for (const [key, value] of Object.entries(config)) {
-                document.documentElement.style.setProperty(key, value);
+        // 1. ฟังก์ชันเปลี่ยนธีม (Dark / Light)
+        function setTheme(themeName) {
+            document.body.classList.remove('light-mode', 'dark-mode');
+            document.body.classList.add(themeName);
+            localStorage.setItem('theme', themeName);
+            // เมื่อสลับธีม สลับสีหมึกลายเซ็นด้วย
+            if(canvas && canvas.getContext) {
+                const ctx = canvas.getContext('2d');
+                ctx.strokeStyle = themeName === 'dark-mode' ? '#ffffff' : '#1e1b18';
             }
         }
+        const savedTheme = localStorage.getItem('theme') || 'dark-mode';
+        setTheme(savedTheme);
 
-        function initTheme() {
-            const savedTheme = JSON.parse(localStorage.getItem('myLightConfig')) || defaultTheme;
-            applyTheme(savedTheme);
+        // 2. ล็อกการเลือกวันที่ให้ได้แค่ "วันนี้" และ "พรุ่งนี้"
+        const saleDateInput = document.getElementById('saleDate');
+        if (saleDateInput) {
+            const today = new Date();
+            const tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
 
-            document.getElementById('themeFont').value = savedTheme['--font-family'] || "'Sarabun'";
-            document.getElementById('themeBgBody').value = savedTheme['--color-bg-body'];
-            document.getElementById('themeBgCard').value = savedTheme['--color-bg-card'];
-            document.getElementById('themeBgInput').value = savedTheme['--color-bg-input'];
-            document.getElementById('themeBgHighlight').value = savedTheme['--color-bg-highlight'];
-            document.getElementById('themeAccent').value = savedTheme['--color-accent'];
-            document.getElementById('themeTextHeading').value = savedTheme['--color-text-heading'];
-            document.getElementById('themeTextGeneral').value = savedTheme['--color-text-general'];
-        }
-
-        function saveAndApply() {
-            const currentColors = {
-                '--font-family': document.getElementById('themeFont').value,
-                '--color-bg-body': document.getElementById('themeBgBody').value,
-                '--color-bg-card': document.getElementById('themeBgCard').value,
-                '--color-bg-input': document.getElementById('themeBgInput').value,
-                '--color-bg-highlight': document.getElementById('themeBgHighlight').value,
-                '--color-accent': document.getElementById('themeAccent').value,
-                '--color-text-heading': document.getElementById('themeTextHeading').value,
-                '--color-text-general': document.getElementById('themeTextGeneral').value
+            const formatDate = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
             };
-            applyTheme(currentColors);
-            localStorage.setItem('myLightConfig', JSON.stringify(currentColors));
-        }
 
-        // Add Listeners
-        document.getElementById('themeFont').addEventListener('change', saveAndApply);
-        const colorInputs = ['themeBgBody', 'themeBgCard', 'themeBgInput', 'themeBgHighlight', 'themeAccent', 'themeTextHeading', 'themeTextGeneral'];
-        colorInputs.forEach(id => {
-            document.getElementById(id).addEventListener('input', saveAndApply);
-        });
+            const todayStr = formatDate(today);
+            const tomorrowStr = formatDate(tomorrow);
 
-        // Toggle Panel
-        document.getElementById('themeToggleBtn').addEventListener('click', () => {
-            const panel = document.getElementById('themePanel');
-            if (panel.classList.contains('hidden')) {
-                panel.classList.remove('hidden');
-                setTimeout(() => { panel.classList.remove('opacity-0', 'scale-95'); panel.classList.add('opacity-100', 'scale-100'); }, 10);
-            } else {
-                panel.classList.remove('opacity-100', 'scale-100'); panel.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => { panel.classList.add('hidden'); }, 300);
-            }
-        });
+            // เซ็ตค่าเริ่มต้นและ Limits
+            saleDateInput.value = todayStr;
+            saleDateInput.min = todayStr;
+            saleDateInput.max = tomorrowStr;
 
-        // Reset Panel
-        document.getElementById('themeResetBtn').addEventListener('click', () => {
-            localStorage.removeItem('myLightConfig');
-            initTheme();
-        });
-
-        initTheme();
-    </script>
-
-    <script>
-        function previewFile(input) {
-            const wrapper = input.parentElement;
-            const img = wrapper.querySelector('img');
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        img.src = e.target.result;
-                        img.classList.remove('opacity-0');
-                    }
-                    reader.readAsDataURL(file);
+            // ดักการพิมพ์วันที่เอง (Fallback)
+            saleDateInput.addEventListener('change', (e) => {
+                if (e.target.value < todayStr || e.target.value > tomorrowStr) {
+                    alert('เลือกได้เฉพาะวันนี้และพรุ่งนี้เท่านั้น');
+                    e.target.value = todayStr;
                 }
-            } else {
-                img.classList.add('opacity-0');
-                img.src = "";
-            }
-        }
-
-        const cashPaymentInput = document.getElementById('cash-payment');
-        const cashReceivedInput = document.getElementById('cash-received');
-        const totalSalesDisplay = document.getElementById('total-sales-display');
-        const cashBalanceDisplay = document.getElementById('cash-balance-display');
-
-        function parseNumber(val) {
-            if (!val) return 0;
-            return parseFloat(val.toString().replace(/,/g, '')) || 0;
-        }
-
-        function updateTotals() {
-            cashReceivedInput.value = cashPaymentInput.value;
-
-            let totalSales = 0;
-            document.querySelectorAll('.payment-input').forEach(input => {
-                totalSales += parseNumber(input.value);
             });
-            totalSalesDisplay.textContent = totalSales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-            const start = parseNumber(document.getElementById('cash-start').value);
-            const received = parseNumber(cashReceivedInput.value);
-            const deposit = parseNumber(document.getElementById('cash-deposit').value);
-            const balance = (start + received) - deposit;
-
-            cashBalanceDisplay.textContent = balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-            if (balance > 2000) {
-                cashBalanceDisplay.classList.add('bg-red-50', 'border-red-500', 'text-red-600');
-                cashBalanceDisplay.classList.remove('theme-bg-card', 'theme-accent-border', 'theme-text-heading');
-            } else {
-                cashBalanceDisplay.classList.remove('bg-red-50', 'border-red-500', 'text-red-600');
-                cashBalanceDisplay.classList.add('theme-bg-card', 'theme-accent-border', 'theme-text-heading');
-            }
-
-            let itemTotal = 0;
-            document.querySelectorAll('.item-price').forEach(input => {
-                itemTotal += parseNumber(input.value);
-            });
-            document.getElementById('total-cash-items').textContent = itemTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        document.addEventListener('input', (e) => {
-            if (e.target.classList.contains('num-input') && !e.target.readOnly) {
-                let cursorPosition = e.target.selectionStart;
-                let originalLength = e.target.value.length;
+        // 3. ระบบอัปโหลดหลายไฟล์ (Multiple Upload + Preview)
+        const fileStore = {}; // เก็บไฟล์แยกตาม ID ของ Preview Container
 
-                let val = e.target.value.replace(/[^0-9.]/g, '');
-                let parts = val.split('.');
-                if (parts.length > 2) {
-                    val = parts[0] + '.' + parts.slice(1).join('');
-                    parts = val.split('.');
-                }
-                if (parts[0]) {
-                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                }
-                let newVal = parts.join('.');
-                e.target.value = newVal;
-
-                let newLength = newVal.length;
-                cursorPosition = cursorPosition + (newLength - originalLength);
-                if (document.activeElement === e.target) {
-                    e.target.setSelectionRange(cursorPosition, cursorPosition);
-                }
-                updateTotals();
+        function handleMultipleFiles(input, previewId) {
+            if (!fileStore[previewId]) {
+                fileStore[previewId] = new DataTransfer();
             }
-        });
+            const dt = fileStore[previewId];
+            
+            // เพิ่มไฟล์ใหม่เข้าไปใน DataTransfer
+            for (let file of input.files) {
+                dt.items.add(file);
+            }
+            // อัปเดตไฟล์กลับเข้าไปใน Input
+            input.files = dt.files;
+            renderPreviews(input, previewId, dt);
+        }
 
-        function addItemRow() {
-            const tbody = document.getElementById('items-body');
-            const rowCount = tbody.rows.length + 1;
+        function renderPreviews(input, previewId, dt) {
+            const previewContainer = document.getElementById(previewId);
+            previewContainer.innerHTML = ''; // เคลียร์ของเก่า
+
+            Array.from(dt.files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" title="${file.name}">
+                        <button type="button" class="remove-file" onclick="removeFile('${previewId}', ${index}, this)">✕</button>
+                    `;
+                    previewContainer.appendChild(div);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeFile(previewId, index, btnElement) {
+            const dt = fileStore[previewId];
+            const wrapper = btnElement.closest('.file-upload-wrapper');
+            const input = wrapper.querySelector('input[type="file"]');
+            
+            const newDt = new DataTransfer();
+            Array.from(dt.files).forEach((file, i) => {
+                if (i !== index) newDt.items.add(file);
+            });
+            
+            // อัปเดตข้อมูลใหม่
+            fileStore[previewId] = newDt;
+            input.files = newDt.files;
+            renderPreviews(input, previewId, newDt);
+        }
+
+        // 4. ฟังก์ชันเพิ่มรายการสินค้า (ตาราง)
+        function addItem() {
+            const tbody = document.getElementById('items-table-body');
+            const rowCount = tbody.children.length + 1;
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="p-2 text-center theme-text-general font-medium">${rowCount}</td>
-                <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-sku bg-transparent !border-0 theme-text-heading" placeholder="รหัสสินค้า"></td>
-                <td class="p-1"><input type="text" class="w-full p-1.5 outline-none item-size bg-transparent !border-0 theme-text-heading text-center"></td>
-                <td class="p-1"><input type="text" inputmode="decimal" class="w-full p-1.5 text-right outline-none item-price num-input bg-transparent !border-0 theme-text-heading" placeholder="0.00"></td>
-                <td class="p-1 text-center"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition">✕</button></td>
+                <td>${rowCount}</td>
+                <td>รหัสสินค้า</td>
+                <td><input type="text" class="size-input" placeholder="—"></td>
+                <td style="text-align: right;">
+                    <input type="text" class="price-input" placeholder="0.00">
+                    <button class="remove-btn" onclick="this.closest('tr').remove()">x</button>
+                </td>
             `;
             tbody.appendChild(tr);
         }
 
-        function removeRow(btn) {
-            btn.closest('tr').remove();
-            reorderRows();
-            updateTotals();
-        }
-
-        function reorderRows() {
-            const tbody = document.getElementById('items-body');
-            Array.from(tbody.rows).forEach((row, index) => {
-                row.cells[0].textContent = index + 1;
-            });
-        }
-    </script>
-
-    <script>
-        const canvas = document.getElementById("signature-pad");
-        if (canvas) {
-            const ctx = canvas.getContext("2d");
-            let drawing = false;
+        // 5. ฟังก์ชันลายเซ็น Canvas
+        const canvas = document.getElementById('sig-canvas');
+        if(canvas) {
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
 
             function resizeCanvas() {
-                const rect = canvas.getBoundingClientRect();
-                canvas.width = rect.width;
-                canvas.height = rect.height;
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
             }
-            setTimeout(resizeCanvas, 100);
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
 
-            function getPoint(e) {
+            function getCoordinates(event) {
                 const rect = canvas.getBoundingClientRect();
-                const touch = e.touches ? e.touches[0] : e;
-                return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+                if(event.touches && event.touches.length > 0) {
+                    return { x: event.touches[0].clientX - rect.left, y: event.touches[0].clientY - rect.top };
+                }
+                return { x: event.clientX - rect.left, y: event.clientY - rect.top };
             }
 
-            function startDraw(e) {
-                e.preventDefault();
-                drawing = true;
-                const p = getPoint(e);
+            function startPosition(e) {
+                isDrawing = true;
+                draw(e);
+            }
+
+            function endPosition() {
+                isDrawing = false;
                 ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
             }
 
             function draw(e) {
-                if (!drawing) return;
+                if (!isDrawing) return;
                 e.preventDefault();
-                const p = getPoint(e);
+                const pos = getCoordinates(e);
+                
                 ctx.lineWidth = 2;
-                ctx.lineCap = "round";
-                // ใช้สีน้ำเงินเข้มๆ เหมือนปากกาจริง
-                ctx.strokeStyle = "#1e3a8a"; 
-                ctx.lineTo(p.x, p.y);
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#ffffff' : '#1e1b18';
+
+                ctx.lineTo(pos.x, pos.y);
                 ctx.stroke();
-                document.getElementById("signature_data").value = canvas.toDataURL("image/png");
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
             }
 
-            function endDraw() { drawing = false; }
+            canvas.addEventListener('mousedown', startPosition);
+            canvas.addEventListener('mouseup', endPosition);
+            canvas.addEventListener('mousemove', draw);
 
-            canvas.addEventListener("mousedown", startDraw);
-            canvas.addEventListener("mousemove", draw);
-            canvas.addEventListener("mouseup", endDraw);
-            canvas.addEventListener("mouseleave", endDraw);
-            canvas.addEventListener("touchstart", startDraw, { passive: false });
-            canvas.addEventListener("touchmove", draw, { passive: false });
-            canvas.addEventListener("touchend", endDraw);
-
-            window.clearSignature = function () {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                document.getElementById("signature_data").value = "";
-            };
+            canvas.addEventListener('touchstart', startPosition, { passive: false });
+            canvas.addEventListener('touchend', endPosition);
+            canvas.addEventListener('touchmove', draw, { passive: false });
         }
-    </script>
 
-    <script>
-        const saleDate = document.getElementById("sale_date");
-        if (saleDate) {
-            function formatLocalDate(date) {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, "0");
-                const day = String(date.getDate()).padStart(2, "0");
-                return `${year}-${month}-${day}`;
+        function clearCanvas() {
+            if(canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
-            const today = new Date();
-            const yesterday = new Date();
-            yesterday.setDate(today.getDate() - 1);
-
-            const todayStr = formatLocalDate(today);
-            const yesterdayStr = formatLocalDate(yesterday);
-
-            saleDate.value = todayStr;
-            saleDate.min = yesterdayStr;
-            saleDate.max = todayStr;
-
-            saleDate.addEventListener("change", () => {
-                const selected = saleDate.value;
-                if (selected < yesterdayStr || selected > todayStr) {
-                    alert("เลือกได้เฉพาะวันนี้และเมื่อวานเท่านั้น");
-                    saleDate.value = todayStr;
-                }
-            });
         }
     </script>
 </body>
