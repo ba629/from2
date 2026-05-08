@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบฟอร์มบันทึกยอดขายรายวัน - Luxury System</title>
+    <title>ระบบบันทึกยอดขายรายวัน - Luxury Retail</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -30,15 +30,15 @@
         .custom-input { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 6px; padding: 8px 12px; outline: none; text-align: right; }
         .custom-input:focus { border-color: var(--accent-color); }
         
-        /* Image Preview Style */
+        /* Preview Image Style */
         .preview-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .preview-item { position: relative; width: 75px; height: 55px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); }
+        .preview-item { position: relative; width: 80px; height: 60px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); }
         .preview-item img { width: 100%; height: 100%; object-fit: cover; }
         .remove-img { position: absolute; top: 0; right: 0; background: var(--red-alert); color: white; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
         #cash_warning_box { display: none; background-color: #fdf2f2; border: 1px solid #f8b4b4; color: var(--red-alert); }
         body.dark-mode #cash_warning_box { background-color: #2d1a1a; border-color: #5a2a2a; }
-        
+
         .theme-btn { border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 20px; font-size: 12px; transition: 0.2s; }
         .theme-btn.active { background: var(--accent-color); color: white; border-color: var(--accent-color); }
     </style>
@@ -54,7 +54,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold text-[var(--accent-color)] uppercase tracking-tight">แบบฟอร์มบันทึกยอดขายรายวัน</h1>
-                    <p class="text-[10px] text-gray-400 tracking-[0.3em] font-light">LUXURY RETAIL SYSTEM</p>
+                    <p class="text-[10px] text-gray-400 tracking-[0.3em]">LUXURY RETAIL SYSTEM</p>
                 </div>
             </div>
             <div class="flex flex-col items-end gap-3">
@@ -80,8 +80,9 @@
         </div>
 
         <form id="salesForm" class="space-y-6">
+            
             <div class="custom-card p-4 flex justify-between items-center text-sm">
-                <span class="text-gray-400">กรุณาตรวจสอบข้อมูลให้ถูกต้องก่อนส่ง - ระบบจะล็อกวันที่ให้เลือกได้เฉพาะเมื่อวานและวันนี้</span>
+                <span class="text-gray-400">ระบบล็อกให้เลือกวันที่ได้เฉพาะ "เมื่อวาน" และ "วันนี้"</span>
                 <div class="flex items-center gap-3">
                     <label class="font-bold text-[var(--accent-color)]">วันที่บันทึก :</label>
                     <input type="date" id="sale_date" class="custom-input w-44 font-bold cursor-pointer">
@@ -116,20 +117,20 @@
                             <label>WECHAT / ALIPAY</label>
                             <input type="text" inputmode="decimal" class="custom-input w-36 num-format payment-field" placeholder="0.00">
                         </div>
-                        <div class="flex justify-between items-center gap-4">
-                            <label>ไทยพาณิชย์ 0198</label>
-                            <input type="text" inputmode="decimal" class="custom-input w-36 num-format payment-field" placeholder="0.00">
-                        </div>
                         <div class="flex justify-between items-center pt-3 mt-3 border-t border-[var(--border-color)]">
-                            <label class="font-bold text-[var(--accent-color)] text-base">เงินสด</label>
-                            <input type="text" id="cash_input" inputmode="decimal" class="custom-input w-36 font-bold !border-[var(--accent-color)] text-[var(--accent-color)] num-format" placeholder="0.00">
+                            <label class="font-bold text-[var(--accent-color)]">เงินสด</label>
+                            <input type="text" id="cash_input" inputmode="decimal" class="custom-input w-36 font-bold !border-[var(--accent-color)] text-[var(--accent-color)] num-format payment-field" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center pt-4 mt-4 border-t-2 border-double border-[var(--accent-color)]">
+                            <label class="font-bold uppercase text-xs">ยอดขายทั้งหมด :</label>
+                            <input type="text" id="total_all_display" class="w-36 bg-transparent border-none text-right font-bold text-xl text-[var(--accent-color)]" readonly value="0.00">
                         </div>
                     </div>
                 </div>
 
                 <div class="md:col-span-3 space-y-6">
                     <div class="custom-card p-6">
-                        <h2 class="title-gold mb-5 uppercase text-sm tracking-widest">ตรวจสอบยอดเงินสด</h2>
+                        <h2 class="title-gold mb-5 uppercase text-sm tracking-widest">ตรวจสอบเงินสด</h2>
                         <div class="space-y-4 text-sm">
                             <div class="flex justify-between items-center">
                                 <label>เงินสดตั้งต้น</label>
@@ -146,7 +147,7 @@
                             <div class="pt-2 border-t border-[var(--border-color)]">
                                 <div class="flex justify-between items-center mb-2">
                                     <span class="font-bold">เงินสดเหลือ</span>
-                                    <input type="text" id="cash_balance" class="w-28 bg-transparent border-none text-right font-bold text-xl text-[var(--accent-color)]" readonly value="0.00">
+                                    <input type="text" id="cash_balance" class="w-28 bg-transparent border-none text-right font-bold text-lg text-[var(--accent-color)]" readonly value="0.00">
                                 </div>
                                 <div class="relative border border-dashed border-gray-300 rounded-lg p-2 text-center text-[10px] text-gray-400 bg-[var(--input-bg)]">
                                     <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="previewSingle(this, 'deposit_preview')">
@@ -158,14 +159,14 @@
                     </div>
 
                     <div class="custom-card p-6">
-                        <h2 class="title-gold mb-4 uppercase text-sm tracking-widest">VOUCHER</h2>
-                        <div class="grid grid-cols-2 gap-4 text-xs">
+                        <h2 class="title-gold mb-4 uppercase text-sm tracking-widest">VOUCHER (ใบ)</h2>
+                        <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block mb-1 text-gray-400">500 เหลือ (ใบ)</label>
+                                <label class="block mb-1 text-[10px] text-gray-400">500 เหลือ</label>
                                 <input type="text" inputmode="numeric" class="custom-input w-full text-center" placeholder="0">
                             </div>
                             <div>
-                                <label class="block mb-1 text-gray-400">1000 เหลือ (ใบ)</label>
+                                <label class="block mb-1 text-[10px] text-gray-400">1000 เหลือ</label>
                                 <input type="text" inputmode="numeric" class="custom-input w-full text-center" placeholder="0">
                             </div>
                         </div>
@@ -174,8 +175,8 @@
 
                 <div class="md:col-span-5 space-y-6">
                     <div class="custom-card p-6">
-                        <h2 class="title-gold mb-4 uppercase text-sm tracking-widest">รายการขายเงินสด</h2>
-                        <div class="max-h-48 overflow-y-auto">
+                        <h2 class="title-gold mb-4 uppercase text-sm tracking-widest">รายการขาย (เงินสด)</h2>
+                        <div class="max-h-48 overflow-y-auto border-b">
                             <table class="w-full text-xs">
                                 <thead class="sticky top-0 bg-[var(--card-bg)] border-b">
                                     <tr class="text-gray-400">
@@ -188,31 +189,31 @@
                                 <tbody id="sku_body">
                                     <tr class="border-b border-dashed border-[var(--border-color)]">
                                         <td class="py-2">1</td>
-                                        <td><input type="text" class="w-full bg-transparent outline-none" placeholder="ระบุรหัสสินค้า"></td>
+                                        <td><input type="text" class="w-full bg-transparent outline-none" placeholder="รหัสสินค้า"></td>
                                         <td><input type="text" inputmode="decimal" class="w-full bg-transparent text-right outline-none num-format item-price" placeholder="0.00"></td>
                                         <td class="text-right"><button type="button" class="text-gray-300 hover:text-red-500" onclick="removeRow(this)">✕</button></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mt-4 flex justify-between items-center border-t pt-4">
+                        <div class="mt-4 flex justify-between items-center pt-2">
                             <button type="button" onclick="addRow()" class="text-[10px] border px-3 py-1.5 rounded-full hover:bg-[var(--accent-color)] hover:text-white transition">+ เพิ่มรายการ</button>
                             <div class="text-right">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold uppercase">รวมยอดสินค้า:</span>
+                                    <span class="text-xs font-bold uppercase">รวมเงินสินค้า:</span>
                                     <input type="text" id="sku_total" class="w-24 bg-transparent border-none text-right font-bold text-lg text-[var(--accent-color)]" value="0.00" readonly>
                                 </div>
-                                <p id="sku_warning" class="text-[10px] text-red-500 font-bold hidden">ยอดรวมไม่ตรงกับเงินสดรับมา!</p>
+                                <p id="sku_warning" class="text-[10px] text-red-500 font-bold hidden">ยอดไม่ตรงกับเงินสดรับมา!</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="custom-card p-6">
-                        <h2 class="title-gold mb-4 uppercase text-sm tracking-widest">หมายเหตุ & หลักฐาน</h2>
+                        <h2 class="title-gold mb-4 uppercase text-sm tracking-widest">หมายเหตุ & แนบหลักฐาน</h2>
                         <textarea class="custom-input w-full h-16 text-left mb-4 resize-none !text-left" style="text-align: left;" placeholder="ระบุรายละเอียดเพิ่มเติม..."></textarea>
                         <div class="relative border-2 border-dashed border-gray-200 rounded-lg p-3 text-center bg-gray-50 hover:bg-gray-100 cursor-pointer">
                             <input type="file" multiple accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleMultiPreview(this)">
-                            <span class="text-[10px] text-gray-400 font-bold">+ แนบรูป Voucher / หลักฐานการขาย (แนบได้หลายรูป)</span>
+                            <span class="text-[10px] text-gray-400 font-bold">+ แนบรูป Voucher / คูปอง (แนบได้หลายรูป)</span>
                         </div>
                         <div id="multi_preview" class="preview-container"></div>
                     </div>
@@ -239,61 +240,64 @@
                         </label>
                         <div class="flex items-center gap-4">
                             <span class="font-bold text-sm whitespace-nowrap">ชื่อผู้บันทึก :</span>
-                            <input type="text" class="custom-input !text-left flex-grow" placeholder="ระบุชื่อ-นามสกุล">
+                            <input type="text" class="custom-input !text-left flex-grow" placeholder="ระบุชื่อ">
                         </div>
                     </div>
-                    <div class="relative group">
-                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-2 block tracking-widest">ลายเซ็น · SIGNATURE</label>
-                        <div class="border border-gray-200 rounded-xl bg-white shadow-inner overflow-hidden">
+                    <div>
+                        <div class="border rounded-xl bg-white relative shadow-inner overflow-hidden">
                             <canvas id="signaturePad" class="w-full h-32 touch-none cursor-crosshair"></canvas>
+                            <button type="button" onclick="clearSignature()" class="absolute bottom-2 right-2 text-[10px] border px-2 py-1 rounded bg-white hover:text-red-500">ล้างลายเซ็น</button>
                         </div>
-                        <button type="button" onclick="clearSignature()" class="mt-2 text-[10px] text-gray-400 hover:text-red-500 px-3 py-1 border border-gray-100 rounded-full float-right transition">ล้างลายเซ็น</button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-center pt-6">
-                <button type="submit" class="w-full md:w-auto px-20 py-4 bg-[var(--accent-color)] hover:bg-[#a8864f] text-white font-bold rounded-xl shadow-2xl transition transform active:scale-95 text-lg">
-                    ส่งข้อมูลบันทึกยอดขาย
-                </button>
-            </div>
+            <button type="submit" class="w-full bg-[var(--accent-color)] hover:bg-[#a8864f] text-white font-bold py-4 rounded-xl shadow-xl transition-all text-lg active:scale-95">ส่งข้อมูลบันทึกยอดขาย</button>
         </form>
     </div>
 
     <script>
-        /* 1. Theme Logic */
+        /* 1. Theme Switcher */
         const setTheme = (mode) => {
             document.body.classList.toggle('dark-mode', mode === 'dark');
             document.getElementById('lightBtn').classList.toggle('active', mode === 'light');
             document.getElementById('darkBtn').classList.toggle('active', mode === 'dark');
         }
 
-        /* 2. Date Logic (เมื่อวาน & วันนี้) */
+        /* 2. Date Restriction (Yesterday & Today) */
         const dInput = document.getElementById('sale_date');
-        const fmt = (o=0) => { const d = new Date(); d.setDate(d.getDate()+o); return d.toISOString().split('T')[0]; };
-        dInput.value = fmt(0); dInput.min = fmt(-1); dInput.max = fmt(0);
+        const getISO = (off=0) => { const d = new Date(); d.setDate(d.getDate()+off); return d.toISOString().split('T')[0]; };
+        dInput.value = getISO(0); dInput.min = getISO(-1); dInput.max = getISO(0);
 
-        /* 3. Calculations */
+        /* 3. Calculations Logic */
         const parse = (v) => parseFloat(v.toString().replace(/,/g,'')) || 0;
         const format = (n) => n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-        function doCalc() {
-            const cash = parse(document.getElementById('cash_input').value);
-            document.getElementById('cash_received').value = format(cash);
+        function updateAll() {
+            // รวมยอดขายทั้งหมด (Col 1)
+            let totalAll = 0;
+            document.querySelectorAll('.payment-field').forEach(el => totalAll += parse(el.value));
+            document.getElementById('total_all_display').value = format(totalAll);
 
+            // ยอดเงินสดลิงก์กัน
+            const cashVal = parse(document.getElementById('cash_input').value);
+            document.getElementById('cash_received').value = format(cashVal);
+
+            // คำนวณเงินคงเหลือ
             const start = parse(document.getElementById('cash_start').value);
             const deposit = parse(document.getElementById('cash_deposit').value);
-            const balance = (start + cash) - deposit;
+            const balance = (start + cashVal) - deposit;
             
             const balEl = document.getElementById('cash_balance');
             balEl.value = format(balance);
             balEl.style.color = balance > 2000 ? 'var(--red-alert)' : 'var(--accent-color)';
             document.getElementById('cash_warning_box').style.display = balance > 2000 ? 'flex' : 'none';
 
-            let skuTotal = 0;
-            document.querySelectorAll('.item-price').forEach(el => skuTotal += parse(el.value));
-            document.getElementById('sku_total').value = format(skuTotal);
-            document.getElementById('sku_warning').style.display = (cash !== skuTotal && skuTotal > 0) ? 'block' : 'none';
+            // รวมรายการสินค้า (Col 3)
+            let skuSum = 0;
+            document.querySelectorAll('.item-price').forEach(el => skuSum += parse(el.value));
+            document.getElementById('sku_total').value = format(skuSum);
+            document.getElementById('sku_warning').style.display = (cashVal !== skuSum && skuSum > 0) ? 'block' : 'none';
         }
 
         document.addEventListener('input', (e) => {
@@ -302,81 +306,67 @@
                 let pts = v.split('.');
                 if(pts[0]) pts[0] = pts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 e.target.value = pts.join('.');
-                doCalc();
+                updateAll();
             }
         });
 
-        /* 4. SKU Table */
+        /* 4. Table Management */
         function addRow() {
             const tbody = document.getElementById('sku_body');
-            const r = tbody.insertRow();
-            r.className = "border-b border-dashed border-[var(--border-color)]";
-            r.innerHTML = `<td class="py-2">${tbody.rows.length}</td><td><input type="text" class="w-full bg-transparent outline-none"></td><td><input type="text" inputmode="decimal" class="w-full bg-transparent text-right outline-none num-format item-price" placeholder="0.00"></td><td class="text-right"><button type="button" onclick="removeRow(this)">✕</button></td>`;
+            const row = tbody.insertRow();
+            row.className = "border-b border-dashed border-[var(--border-color)]";
+            row.innerHTML = `<td class="py-2">${tbody.rows.length}</td><td><input type="text" class="w-full bg-transparent outline-none"></td><td><input type="text" inputmode="decimal" class="w-full bg-transparent text-right outline-none num-format item-price" placeholder="0.00"></td><td class="text-right"><button type="button" class="text-gray-300 hover:text-red-500" onclick="removeRow(this)">✕</button></td>`;
         }
-        function removeRow(b) { b.closest('tr').remove(); doCalc(); }
+        function removeRow(btn) { btn.closest('tr').remove(); updateAll(); }
 
-        /* 5. Image Management */
-        function previewSingle(input, containerId) {
-            const c = document.getElementById(containerId);
-            c.innerHTML = ''; 
-            if(input.files && input.files[0]) {
-                const r = new FileReader();
-                r.onload = (e) => {
-                    c.innerHTML = `<div class="preview-item"><img src="${e.target.result}"><div class="remove-img" onclick="this.parentElement.remove()">✕</div></div>`;
-                }
-                r.readAsDataURL(input.files[0]);
+        /* 5. File Management & Previews */
+        function previewSingle(input, targetId) {
+            const container = document.getElementById(targetId);
+            container.innerHTML = '';
+            if(input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    container.innerHTML = `<div class="preview-item"><img src="${e.target.result}"><div class="remove-img" onclick="this.parentElement.remove()">✕</div></div>`;
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
         function handleMultiPreview(input) {
-            const c = document.getElementById('multi_preview');
-            Array.from(input.files).forEach(f => {
-                const r = new FileReader();
-                r.onload = (e) => {
-                    const d = document.createElement('div');
-                    d.className = 'preview-item';
-                    d.innerHTML = `<img src="${e.target.result}"><div class="remove-img" onclick="this.parentElement.remove()">✕</div>`;
-                    c.appendChild(d);
-                }
-                r.readAsDataURL(f);
+            const container = document.getElementById('multi_preview');
+            Array.from(input.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = `<img src="${e.target.result}"><div class="remove-img" onclick="this.parentElement.remove()">✕</div>`;
+                    container.appendChild(div);
+                };
+                reader.readAsDataURL(file);
             });
         }
 
-        /* 6. Signature */
+        /* 6. Signature Pad Logic */
         const canvas = document.getElementById('signaturePad');
         const ctx = canvas.getContext('2d');
-        let draw = false;
-        const res = () => { canvas.width = canvas.offsetWidth; canvas.height = 128; };
-        window.onresize = res; res();
-        canvas.addEventListener('mousedown', () => draw = true);
-        window.addEventListener('mouseup', () => { draw = false; ctx.beginPath(); });
-        canvas.addEventListener('mousemove', (e) => {
-            if(!draw) return;
-            const r = canvas.getBoundingClientRect();
-            ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#fff' : '#333';
-            ctx.lineTo(e.clientX - r.left, e.clientY - r.top); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
-        });
-        // Touch support
-        canvas.addEventListener('touchstart', (e) => { draw = true; e.preventDefault(); }, {passive: false});
-        canvas.addEventListener('touchend', (e) => { draw = false; ctx.beginPath(); e.preventDefault(); }, {passive: false});
-        canvas.addEventListener('touchmove', (e) => {
-            if(!draw) return;
-            const r = canvas.getBoundingClientRect();
-            const t = e.touches[0];
-            ctx.lineTo(t.clientX - r.left, t.clientY - r.top); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(t.clientX - r.left, t.clientY - r.top);
-            e.preventDefault();
-        }, {passive: false});
-        function clearSignature() { ctx.clearRect(0,0,canvas.width,canvas.height); }
+        let drawing = false;
+        const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = 128; };
+        window.onresize = resize; resize();
+        const getPos = (e) => { const r = canvas.getBoundingClientRect(); const t = e.touches ? e.touches[0] : e; return { x: t.clientX - r.left, y: t.clientY - r.top }; };
+        const move = (e) => { if(!drawing) return; const p = getPos(e); ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#fff' : '#333'; ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+        canvas.addEventListener('mousedown', () => drawing = true);
+        window.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+        canvas.addEventListener('mousemove', move);
+        canvas.addEventListener('touchstart', (e) => { drawing = true; move(e); e.preventDefault(); }, {passive: false});
+        canvas.addEventListener('touchend', () => { drawing = false; ctx.beginPath(); });
+        canvas.addEventListener('touchmove', (e) => { move(e); e.preventDefault(); }, {passive: false});
+        function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
-        /* 7. Final Validation */
+        /* 7. Final Form Validation */
         document.getElementById('salesForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const c = parse(document.getElementById('cash_input').value);
-            const s = parse(document.getElementById('sku_total').value);
-            if(c !== s) { alert('❌ ยอดรวมรายการสินค้าไม่ตรงกับยอดเงินสดรับมา!'); return; }
-            alert('✅ บันทึกข้อมูลสำเร็จ ขอบคุณค่ะ');
+            const cash = parse(document.getElementById('cash_input').value);
+            const sku = parse(document.getElementById('sku_total').value);
+            if(cash !== sku && sku > 0) { e.preventDefault(); alert('❌ ยอดรวมรายการสินค้าไม่ตรงกับยอดเงินสดรับมา! กรุณาตรวจสอบอีกครั้งครับ'); }
         });
     </script>
 </body>
