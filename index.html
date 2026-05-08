@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS ตัวแปรสำหรับ Dark/Light Mode */
         :root {
             --bg-color: #f5f3ef;
             --card-bg: #ffffff;
@@ -16,9 +15,7 @@
             --border-color: #e5e5e5;
             --input-bg: #faf9f7;
             --accent-color: #c19a5b;
-            --accent-hover: #a8864f;
             --red-color: #e74c3c;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         body.dark-mode {
@@ -29,9 +26,6 @@
             --border-color: #404040;
             --input-bg: #333333;
             --accent-color: #d4af37;
-            --accent-hover: #f3e5ab;
-            --red-color: #ff6b6b;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
         body {
@@ -44,8 +38,8 @@
         .custom-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
             border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .custom-input {
@@ -56,24 +50,11 @@
             padding: 6px 12px;
             width: 100%;
             outline: none;
-            transition: border-color 0.2s;
+            height: 38px;
         }
 
-        .custom-input:focus {
-            border-color: var(--accent-color);
-        }
-
-        .num-input {
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* ซ่อนปุ่มลูกศรขึ้นลงใน input number */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+        .num-input { text-align: right; font-variant-numeric: tabular-nums; }
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
         .title-gold {
             color: var(--accent-color);
@@ -83,11 +64,6 @@
             margin-bottom: 16px;
         }
 
-        .table-row {
-            border-bottom: 1px dashed var(--border-color);
-        }
-
-        /* ปุ่ม Switch Theme */
         .theme-btn {
             background-color: var(--input-bg);
             color: var(--text-color);
@@ -96,50 +72,38 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.2s;
         }
-        .theme-btn:hover, .theme-btn.active {
-            background-color: var(--accent-color);
-            color: #fff;
-            border-color: var(--accent-color);
-        }
+        .theme-btn.active { background-color: var(--accent-color); color: #fff; border-color: var(--accent-color); }
 
-        /* อัปโหลดไฟล์ Preview */
-        .upload-box {
-            background-color: var(--input-bg);
-            border: 1px dashed var(--border-color);
+        /* ช่องแนบไฟล์ดีไซน์ใหม่ให้เท่ากับช่อง Input */
+        .upload-field {
             position: relative;
-            height: 60px;
-            border-radius: 6px;
+            height: 38px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            padding: 0 12px;
             cursor: pointer;
             overflow: hidden;
-            transition: border-color 0.2s;
         }
-        .upload-box:hover {
-            border-color: var(--accent-color);
-        }
-        .upload-box img {
-            width: 100%;
+        .upload-field img {
             height: 100%;
-            object-fit: cover; /* ให้รูปเต็มกรอบแบบสวยงาม */
-            z-index: 10;
-        }
-        .file-name-overlay {
+            width: 40px;
+            object-fit: cover;
             position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: rgba(0,0,0,0.6);
-            color: white;
+            right: 0;
+            top: 0;
+            border-left: 1px solid var(--border-color);
+        }
+        .file-name-txt {
             font-size: 10px;
-            text-align: center;
-            padding: 2px 4px;
-            z-index: 20;
+            color: var(--text-muted);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            max-width: 90%;
         }
     </style>
 </head>
@@ -154,7 +118,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-wider text-[var(--accent-color)] uppercase">แบบฟอร์มบันทึกยอดขายรายวัน</h1>
-                    <p class="text-xs text-[var(--text-muted)] tracking-widest">DAILY SALES RECORD FORM</p>
+                    <p class="text-xs text-[var(--text-muted)] tracking-widest uppercase">Daily Sales Record Form</p>
                 </div>
             </div>
             <div class="flex flex-col items-end gap-3">
@@ -162,10 +126,10 @@
                     <button type="button" class="theme-btn active" onclick="setTheme('light-mode', this)">☼ สว่าง</button>
                     <button type="button" class="theme-btn" onclick="setTheme('dark-mode', this)">☾ มืด</button>
                 </div>
-                <select id="branch" class="custom-input w-48 text-sm cursor-pointer">
+                <select class="custom-input w-48 text-sm cursor-pointer">
                     <option value="">— เลือกสาขา —</option>
-                    <option value="BKK">สาขา กทม.</option>
-                    <option value="UPC">สาขา ต่างจังหวัด</option>
+                    <option>สาขา กทม.</option>
+                    <option>สาขา ต่างจังหวัด</option>
                 </select>
             </div>
         </header>
@@ -174,7 +138,7 @@
             <p class="text-[var(--text-muted)]">กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลให้ถูกต้องก่อนส่งนะคะ - เงินสดต้องเหลือ <strong class="text-[var(--red-color)]">ไม่เกิน 2,000 บาท</strong> หากเกินต้องโทรขออนุมัติ**</p>
             <div class="flex items-center gap-2">
                 <label class="whitespace-nowrap font-bold text-[var(--accent-color)]">วันที่บันทึก :</label>
-                <input type="date" id="sale_date" class="custom-input cursor-pointer w-40">
+                <input type="date" id="sale_date" class="custom-input cursor-pointer w-44">
             </div>
         </div>
 
@@ -186,43 +150,46 @@
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between items-center">
                             <label>QR-CODE AUTO</label>
-                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                            <input type="text" class="custom-input num-input w-32 pay-in" placeholder="0.00">
                         </div>
                         <div class="flex justify-between items-center">
                             <label>เครื่องรูดบัตร GHL</label>
-                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
-                        </div>
-                        <div class="flex justify-end">
-                            <div class="upload-box w-32">
-                                <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-30" onchange="previewFile(this)">
-                                <span class="text-[10px] text-[var(--text-muted)] z-0">+ ไฟล์แนบ GHL</span>
-                                <img class="hidden">
-                                <div class="file-name-overlay hidden"></div>
+                            <div class="flex gap-2">
+                                <div class="upload-field w-32">
+                                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="previewFile(this)">
+                                    <span class="file-name-txt">+ แนบสลิป GHL</span>
+                                    <img class="hidden">
+                                </div>
+                                <input type="text" class="custom-input num-input w-32 pay-in" placeholder="0.00">
                             </div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <label>เครื่องรูดบัตร (สำรอง) TTB</label>
-                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                            <label>เครื่องรูดบัตร TTB</label>
+                            <input type="text" class="custom-input num-input w-32 pay-in" placeholder="0.00">
                         </div>
                         <div class="flex justify-between items-center">
                             <label>WECHAT / ALIPAY</label>
-                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                            <input type="text" class="custom-input num-input w-32 pay-in" placeholder="0.00">
                         </div>
                         <div class="flex justify-between items-center">
-                            <label>รับช่องทาง KTB พี่กวาง</label>
-                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                            <label>รับช่องทาง KTB</label>
+                            <input type="text" class="custom-input num-input w-32 pay-in" placeholder="0.00">
                         </div>
                         <div class="flex justify-between items-center">
                             <label>ไทยพาณิชย์ 0198</label>
-                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                            <input type="text" class="custom-input num-input w-32 pay-in" placeholder="0.00">
                         </div>
                         <div class="flex justify-between items-center">
-                            <label>(งานองค์กร) TTB 6417</label>
-                            <input type="text" class="custom-input num-input w-32 calc-total" placeholder="0.00">
+                            <label>(องค์กร) TTB 6417</label>
+                            <input type="text" class="custom-input num-input w-32 pay-in" placeholder="0.00">
                         </div>
-                        <div class="flex justify-between items-center pt-2 mt-2 border-t border-[var(--border-color)]">
-                            <label class="font-bold text-[var(--accent-color)]">เงินสด</label>
-                            <input type="text" id="cash_payment" class="custom-input num-input w-32 font-bold !border-[var(--accent-color)] text-[var(--accent-color)]" placeholder="0.00">
+                        <div class="flex justify-between items-center pt-2 border-t border-[var(--border-color)]">
+                            <label class="font-bold">เงินสด</label>
+                            <input type="text" id="cash_payment" class="custom-input num-input w-32 font-bold border-[var(--accent-color)]" placeholder="0.00">
+                        </div>
+                        <div class="flex justify-between items-center bg-[#fdfaf3] p-2 rounded border border-[#f5e6c8]">
+                            <label class="font-bold text-gray-700">ยอดขายทั้งหมด :</label>
+                            <input type="text" id="total_all_payments" class="num-input w-32 bg-transparent border-none font-bold text-[#b8860b] focus:outline-none" readonly value="0.00">
                         </div>
                     </div>
                 </div>
@@ -233,45 +200,35 @@
                         <div class="space-y-4 text-sm">
                             <div class="flex justify-between items-center">
                                 <label>เงินสดตั้งต้น</label>
-                                <input type="text" id="cash_start" class="custom-input num-input w-28 calc-balance" placeholder="0.00">
+                                <input type="text" id="cash_start" class="custom-input num-input w-28 calc-bal" placeholder="0.00">
                             </div>
-                            <div class="flex justify-between items-center relative">
+                            <div class="flex justify-between items-center">
                                 <label class="text-[var(--accent-color)] font-bold">เงินสดรับมา</label>
-                                <div class="absolute left-[-20px] text-[var(--accent-color)] opacity-50">➔</div>
-                                <input type="text" id="cash_received" class="custom-input num-input w-28 !bg-[var(--input-bg)] opacity-80" readonly placeholder="0.00">
+                                <input type="text" id="cash_received" class="custom-input num-input w-28 bg-gray-50 opacity-70" readonly placeholder="0.00">
                             </div>
                             <div class="flex justify-between items-center">
                                 <label>ฝากเงินสด</label>
-                                <input type="text" id="cash_deposit" class="custom-input num-input w-28 calc-balance" placeholder="0.00">
+                                <input type="text" id="cash_deposit" class="custom-input num-input w-28 calc-bal" placeholder="0.00">
                             </div>
-                            <div class="flex justify-between items-center border border-[var(--accent-color)] p-2 rounded bg-[var(--card-bg)]">
+                            <div class="flex justify-between items-center border border-[var(--accent-color)] p-2 rounded">
                                 <label class="font-bold">เงินสดเหลือ</label>
-                                <input type="text" id="cash_balance" class="num-input w-24 bg-transparent border-none font-bold text-lg text-[var(--accent-color)] focus:outline-none" readonly value="0.00">
+                                <input type="text" id="cash_balance" class="num-input w-24 bg-transparent border-none font-bold text-[var(--accent-color)] focus:outline-none" readonly value="0.00">
                             </div>
-                            
                             <div class="flex justify-between items-center pt-2">
                                 <label class="text-xs">สลิปฝากเงินสด</label>
-                                <div class="upload-box w-28 h-[40px]">
-                                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-30" onchange="previewFile(this)">
-                                    <span class="text-[10px] text-[var(--text-muted)] z-0">+ แนบสลิป</span>
+                                <div class="upload-field w-28">
+                                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="previewFile(this)">
+                                    <span class="file-name-txt">+ แนบสลิป</span>
                                     <img class="hidden">
-                                    <div class="file-name-overlay hidden"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="custom-card p-5">
                         <h2 class="title-gold">VOUCHER</h2>
-                        <div class="space-y-3 text-sm">
-                            <div class="flex justify-between items-center">
-                                <label class="text-xs">Voucher 500 เหลือ (ใบ)</label>
-                                <input type="text" class="custom-input num-input w-16" placeholder="0">
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <label class="text-xs">Voucher 1000 เหลือ (ใบ)</label>
-                                <input type="text" class="custom-input num-input w-16" placeholder="0">
-                            </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div><label>500 เหลือ (ใบ)</label><input type="text" class="custom-input num-input mt-1"></div>
+                            <div><label>1000 เหลือ (ใบ)</label><input type="text" class="custom-input num-input mt-1"></div>
                         </div>
                     </div>
                 </div>
@@ -279,366 +236,162 @@
                 <div class="md:col-span-5 space-y-6">
                     <div class="custom-card p-5">
                         <h2 class="title-gold">รายการขายเงินสด</h2>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="text-[var(--text-muted)] border-b border-[var(--border-color)]">
-                                        <th class="text-left font-normal pb-2 w-8">#</th>
-                                        <th class="text-left font-normal pb-2">SKU</th>
-                                        <th class="text-center font-normal pb-2 w-16">SIZE</th>
-                                        <th class="text-right font-normal pb-2 w-24">ราคา/หน่วย</th>
-                                        <th class="pb-2 w-6"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="items_body">
-                                    <tr class="table-row">
-                                        <td class="py-2">1</td>
-                                        <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm" placeholder="รหัสสินค้า"></td>
-                                        <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm text-center" placeholder="—"></td>
-                                        <td><input type="text" class="bg-transparent border-none w-full outline-none num-input text-sm item-price" placeholder="0.00"></td>
-                                        <td class="text-right"><button type="button" class="text-[var(--text-muted)] hover:text-red-500" onclick="removeRow(this)">✕</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="flex justify-between items-start mt-4">
-                            <button type="button" onclick="addRow()" class="text-xs border border-[var(--border-color)] px-3 py-1.5 rounded hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] transition">+ เพิ่มรายการสินค้า</button>
-                            
-                            <div class="text-right flex flex-col items-end">
-                                <div class="flex items-center gap-3">
+                        <table class="w-full text-sm">
+                            <thead class="text-xs text-[var(--text-muted)] border-b border-[var(--border-color)]">
+                                <tr><th class="text-left pb-2 w-8">#</th><th class="text-left pb-2">SKU</th><th class="text-center pb-2 w-12">SIZE</th><th class="text-right pb-2 w-24">ราคา</th><th class="w-6"></th></tr>
+                            </thead>
+                            <tbody id="items_body">
+                                <tr class="border-b border-dashed border-[var(--border-color)]">
+                                    <td class="py-2">1</td>
+                                    <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm" placeholder="รหัสสินค้า"></td>
+                                    <td><input type="text" class="bg-transparent border-none w-full outline-none text-center text-sm" placeholder="-"></td>
+                                    <td><input type="text" class="bg-transparent border-none w-full outline-none num-input text-sm item-price" placeholder="0.00"></td>
+                                    <td class="text-right"><button type="button" class="text-gray-300 hover:text-red-500" onclick="removeRow(this)">✕</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="flex justify-between items-center mt-4">
+                            <button type="button" onclick="addRow()" class="text-xs border px-3 py-1.5 rounded hover:text-[var(--accent-color)]">+ เพิ่มรายการ</button>
+                            <div class="text-right">
+                                <div class="flex items-center gap-2">
                                     <span class="text-sm font-bold">รวมรายการขายเงินสด</span>
-                                    <input type="text" id="total_cash_items" class="num-input bg-transparent border-none font-bold text-xl text-[var(--accent-color)] w-24 focus:outline-none" value="0.00" readonly>
+                                    <input type="text" id="total_cash_items" class="num-input bg-transparent border-none font-bold text-[var(--accent-color)] w-24 focus:outline-none" readonly value="0.00">
                                 </div>
-                                <span id="match_warning" class="text-xs text-[var(--red-color)] font-bold hidden animate-pulse mt-1">
-                                    ⚠ ยอดไม่ตรงกับเงินสดรับมา!
-                                </span>
+                                <span id="match_warning" class="text-[10px] text-[var(--red-color)] font-bold hidden">⚠ ยอดไม่ตรงกับเงินสดรับมา!</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="custom-card p-5">
-                        <h2 class="title-gold">หมายเหตุ & VOUCHER</h2>
-                        <div class="space-y-4">
-                            <textarea class="custom-input h-20 text-sm resize-none" placeholder="สำหรับอธิบายรายการขายเพิ่มเติม&#10;เช่น ส่วนลดพิเศษ, เหตุผลในการลด, รายการ Pick Up, มัดจำ Deposit"></textarea>
-                            
-                            <div>
-                                <label class="text-xs text-[var(--text-muted)] block mb-1">หลักฐาน VOUCHER ห้าง / คูปองของขวัญ</label>
-                                <div class="upload-box w-32 h-[40px]">
-                                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-30" onchange="previewFile(this)">
-                                    <span class="text-[10px] text-[var(--text-muted)] z-0">+ แนบหลักฐาน</span>
-                                    <img class="hidden">
-                                    <div class="file-name-overlay hidden"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="custom-card p-4 flex justify-between items-center text-sm border-l-4 border-[var(--accent-color)]">
-                <span class="font-bold tracking-widest text-[var(--accent-color)] text-xs uppercase">Daily Sales Record</span>
-                <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" required class="accent-[var(--accent-color)] w-4 h-4">
-                    <span>ยืนยันการกดรับ Shipment ใน Salesforce ครบถ้วน</span>
-                </label>
-            </div>
-
-            <div class="custom-card p-5 space-y-4">
-                <h2 class="title-gold">ผู้บันทึก & ลายเซ็น</h2>
-                
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-1/2 space-y-4">
-                        <label class="flex items-start gap-2 cursor-pointer text-sm">
-                            <input type="checkbox" required class="accent-[var(--accent-color)] w-4 h-4 mt-0.5">
-                            <span>ขอรับรองว่าข้อมูลยอดเงิน ณ สิ้นวันถูกต้อง หากพบการทุจริต ยินยอมให้บริษัทดำเนินคดีได้ตามกฎหมาย</span>
-                        </label>
-                        <div class="flex items-center gap-3">
-                            <label class="whitespace-nowrap text-sm font-bold">ชื่อผู้บันทึก</label>
-                            <input type="text" class="custom-input max-w-[250px]">
-                        </div>
-                    </div>
-                    
-                    <div class="w-full md:w-1/2">
-                        <label class="text-xs font-bold tracking-widest text-[var(--accent-color)] uppercase block mb-2">ลายเซ็น · Signature</label>
-                        <div class="border border-[var(--border-color)] rounded bg-[var(--card-bg)] p-1 relative">
-                            <canvas id="signaturePad" class="w-full h-24 touch-none cursor-crosshair"></canvas>
-                            <button type="button" onclick="clearSignature()" class="absolute bottom-2 right-2 text-[10px] border border-[var(--border-color)] px-2 py-1 rounded bg-[var(--input-bg)] hover:text-[var(--accent-color)]">ล้างลายเซ็น</button>
-                        </div>
+                        <h2 class="title-gold">หมายเหตุ</h2>
+                        <textarea class="custom-input h-20 text-sm resize-none" placeholder="ระบุรายละเอียดเพิ่มเติม..."></textarea>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center">
-                <button type="submit" class="bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-white font-bold py-3 px-12 rounded shadow-lg transition transform hover:scale-105 active:scale-95">ส่งข้อมูลบันทึกยอดขาย</button>
+            <div class="custom-card p-5 space-y-6">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <label class="flex items-start gap-2 text-xs"><input type="checkbox" required class="mt-1"><span>ยืนยันข้อมูลถูกต้องและยอมรับเงื่อนไขบริษัท</span></label>
+                        <div class="flex items-center gap-3"><label class="text-sm font-bold whitespace-nowrap">ชื่อผู้บันทึก</label><input type="text" class="custom-input"></div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-[var(--accent-color)] uppercase">ลายเซ็น Signature</label>
+                        <div class="border border-[var(--border-color)] rounded bg-white mt-2 relative">
+                            <canvas id="signaturePad" class="w-full h-24 cursor-crosshair"></canvas>
+                            <button type="button" onclick="clearSignature()" class="absolute bottom-2 right-2 text-[10px] border px-2 py-1 rounded bg-gray-50">ล้าง</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center pt-4">
+                    <button type="submit" class="bg-[var(--accent-color)] text-white font-bold py-3 px-16 rounded-full shadow-lg hover:scale-105 transition">ส่งข้อมูลบันทึกยอดขาย</button>
+                </div>
             </div>
         </form>
     </div>
 
     <script>
-        /* ---------------------------------------------------
-           1. Theme Toggle (Mืด / สว่าง)
-        --------------------------------------------------- */
-        function setTheme(theme, btnElement) {
-            document.body.className = theme;
-            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-        }
+        function setTheme(t, b) { document.body.className = t; document.querySelectorAll('.theme-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); }
 
-        /* ---------------------------------------------------
-           2. Date Config (บังคับเลือกได้แค่วันนี้ & พรุ่งนี้)
-        --------------------------------------------------- */
+        // --- ล็อกวันที่: วันนี้ & พรุ่งนี้ ---
         const dateInput = document.getElementById('sale_date');
-        
-        function getLocalYYYYMMDD(offsetDays = 0) {
+        function getYYYYMMDD(offset) {
             const d = new Date();
-            d.setDate(d.getDate() + offsetDays);
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            d.setDate(d.getDate() + offset);
+            return d.toISOString().split('T')[0];
         }
-
-        const today = getLocalYYYYMMDD(0);
-        const tomorrow = getLocalYYYYMMDD(1);
-
-        dateInput.value = today; // ค่าเริ่มต้นคือวันนี้
+        const today = getYYYYMMDD(0);
+        const tomorrow = getYYYYMMDD(1);
+        dateInput.value = today;
         dateInput.min = today;
         dateInput.max = tomorrow;
 
-        dateInput.addEventListener('change', function() {
-            if (this.value < today || this.value > tomorrow) {
-                alert('ระบบจำกัดให้เลือกวันที่บันทึกได้เฉพาะ "วันนี้" หรือ "พรุ่งนี้" เท่านั้นครับ');
-                this.value = today;
-            }
-        });
+        function parseNum(s) { return parseFloat((s || '').toString().replace(/,/g, '')) || 0; }
+        function formatNum(n) { return n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
 
-        /* ---------------------------------------------------
-           3. Format Number (ใส่ลูกน้ำ)
-        --------------------------------------------------- */
-        function parseNum(str) {
-            return parseFloat((str || '').toString().replace(/,/g, '')) || 0;
-        }
-
-        function formatNum(num) {
-            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        }
-
-        document.addEventListener('input', function(e) {
+        document.addEventListener('input', (e) => {
             if(e.target.classList.contains('num-input') && !e.target.readOnly) {
-                let cursor = e.target.selectionStart;
-                let oldLen = e.target.value.length;
-                
-                let val = e.target.value.replace(/[^0-9.]/g, '');
-                let parts = val.split('.');
-                if(parts.length > 2) val = parts[0] + '.' + parts.slice(1).join('');
-                if(parts[0]) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                
-                let newVal = parts.join('.');
-                e.target.value = newVal;
-                
-                let newLen = newVal.length;
-                cursor += (newLen - oldLen);
-                
-                if(document.activeElement === e.target) {
-                    e.target.setSelectionRange(cursor, cursor);
-                }
-                
-                calculateAll();
+                let v = e.target.value.replace(/[^0-9.]/g, '');
+                let p = v.split('.');
+                if(p.length > 2) v = p[0] + '.' + p.slice(1).join('');
+                if(p[0]) p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                e.target.value = p.join('.');
+                calculate();
             }
         });
 
-        /* ---------------------------------------------------
-           4. Calculation & Validation Logic
-        --------------------------------------------------- */
-        const cashPaymentInput = document.getElementById('cash_payment');
-        const cashReceivedInput = document.getElementById('cash_received');
-        const cashStartInput = document.getElementById('cash_start');
-        const cashDepositInput = document.getElementById('cash_deposit');
-        const cashBalanceDisplay = document.getElementById('cash_balance');
-        const totalItemsDisplay = document.getElementById('total_cash_items');
-        const matchWarning = document.getElementById('match_warning');
+        function calculate() {
+            let totalPay = 0;
+            document.querySelectorAll('.pay-in').forEach(el => totalPay += parseNum(el.value));
+            const cashVal = parseNum(document.getElementById('cash_payment').value);
+            document.getElementById('total_all_payments').value = formatNum(totalPay + cashVal);
 
-        function calculateAll() {
-            // A. โยงยอด "เงินสด" -> "เงินสดรับมา"
-            const cashVal = parseNum(cashPaymentInput.value);
-            cashReceivedInput.value = formatNum(cashVal);
+            document.getElementById('cash_received').value = formatNum(cashVal);
 
-            // B. คำนวณ "เงินสดเหลือ" = (ตั้งต้น + รับมา) - ฝาก
-            const startVal = parseNum(cashStartInput.value);
-            const depositVal = parseNum(cashDepositInput.value);
-            const balanceVal = (startVal + cashVal) - depositVal;
-            
-            cashBalanceDisplay.value = formatNum(balanceVal);
-            if(balanceVal > 2000) {
-                cashBalanceDisplay.style.color = 'var(--red-color)'; // เกิน 2000 แดง
-            } else {
-                cashBalanceDisplay.style.color = 'var(--accent-color)';
-            }
+            const startVal = parseNum(document.getElementById('cash_start').value);
+            const depVal = parseNum(document.getElementById('cash_deposit').value);
+            const bal = (startVal + cashVal) - depVal;
+            document.getElementById('cash_balance').value = formatNum(bal);
+            document.getElementById('cash_balance').style.color = bal > 2000 ? 'var(--red-color)' : 'var(--accent-color)';
 
-            // C. คำนวณ "รวมรายการขายเงินสด" (ตารางสินค้า)
             let totalItems = 0;
-            document.querySelectorAll('.item-price').forEach(el => {
-                totalItems += parseNum(el.value);
-            });
-            totalItemsDisplay.value = formatNum(totalItems);
+            document.querySelectorAll('.item-price').forEach(el => totalItems += parseNum(el.value));
+            document.getElementById('total_cash_items').value = formatNum(totalItems);
 
-            // D. ตรวจสอบเงื่อนไข "ต้องเท่ากัน"
+            const warning = document.getElementById('match_warning');
             if(cashVal !== totalItems && (cashVal > 0 || totalItems > 0)) {
-                totalItemsDisplay.style.color = 'var(--red-color)';
-                matchWarning.classList.remove('hidden');
+                warning.classList.remove('hidden');
+                document.getElementById('total_cash_items').style.color = 'var(--red-color)';
             } else {
-                totalItemsDisplay.style.color = 'var(--accent-color)';
-                matchWarning.classList.add('hidden');
+                warning.classList.add('hidden');
+                document.getElementById('total_cash_items').style.color = 'var(--accent-color)';
             }
         }
 
-        /* ---------------------------------------------------
-           5. Table Functions
-        --------------------------------------------------- */
-        function addRow() {
-            const tbody = document.getElementById('items_body');
-            const rowCount = tbody.rows.length + 1;
-            const tr = document.createElement('tr');
-            tr.className = "table-row";
-            tr.innerHTML = `
-                <td class="py-2">${rowCount}</td>
-                <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm" placeholder="รหัสสินค้า"></td>
-                <td><input type="text" class="bg-transparent border-none w-full outline-none text-sm text-center" placeholder="—"></td>
-                <td><input type="text" class="bg-transparent border-none w-full outline-none num-input text-sm item-price" placeholder="0.00"></td>
-                <td class="text-right"><button type="button" class="text-[var(--text-muted)] hover:text-red-500" onclick="removeRow(this)">✕</button></td>
-            `;
-            tbody.appendChild(tr);
-        }
-
-        function removeRow(btn) {
-            btn.closest('tr').remove();
-            // Re-number
-            const rows = document.getElementById('items_body').rows;
-            for(let i=0; i<rows.length; i++){
-                rows[i].cells[0].innerText = i + 1;
-            }
-            calculateAll();
-        }
-
-        /* ---------------------------------------------------
-           6. Image Preview Function (Thumbnail)
-        --------------------------------------------------- */
         function previewFile(input) {
             const container = input.parentElement;
             const img = container.querySelector('img');
-            const overlay = container.querySelector('.file-name-overlay');
-            const placeholder = container.querySelector('span'); // ตัวหนังสือ + แนบสลิป
-
+            const txt = container.querySelector('.file-name-txt');
             if (input.files && input.files[0]) {
-                const file = input.files[0];
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        img.src = e.target.result;
-                        img.classList.remove('hidden');
-                        
-                        overlay.textContent = file.name;
-                        overlay.classList.remove('hidden');
-                        
-                        placeholder.classList.add('hidden'); // ซ่อนคำว่า + แนบสลิป
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    // ถ้าไม่ใช่รูปภาพ ให้โชว์แค่ชื่อไฟล์
-                    img.classList.add('hidden');
-                    overlay.textContent = file.name;
-                    overlay.classList.remove('hidden');
-                    placeholder.classList.add('hidden');
-                }
-            } else {
-                img.classList.add('hidden');
-                overlay.classList.add('hidden');
-                placeholder.classList.remove('hidden');
+                const reader = new FileReader();
+                reader.onload = (e) => { 
+                    img.src = e.target.result; img.classList.remove('hidden'); 
+                    txt.textContent = input.files[0].name;
+                    txt.style.maxWidth = '60%';
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
-        /* ---------------------------------------------------
-           7. Signature Canvas
-        --------------------------------------------------- */
+        function addRow() {
+            const tb = document.getElementById('items_body');
+            const tr = document.createElement('tr');
+            tr.className = "border-b border-dashed border-[var(--border-color)]";
+            tr.innerHTML = `<td class="py-2">${tb.rows.length+1}</td><td><input type="text" class="bg-transparent border-none w-full outline-none text-sm" placeholder="รหัสสินค้า"></td><td><input type="text" class="bg-transparent border-none w-full outline-none text-center text-sm" placeholder="-"></td><td><input type="text" class="bg-transparent border-none w-full outline-none num-input text-sm item-price" placeholder="0.00"></td><td class="text-right"><button type="button" class="text-gray-300 hover:text-red-500" onclick="removeRow(this)">✕</button></td>`;
+            tb.appendChild(tr);
+        }
+        function removeRow(b) { b.closest('tr').remove(); calculate(); }
+
         const canvas = document.getElementById('signaturePad');
         const ctx = canvas.getContext('2d');
-        let isDrawing = false;
-
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth - 10;
-            canvas.height = 96; // h-24 = 6rem = 96px
-        }
-        window.addEventListener('resize', resizeCanvas);
-        setTimeout(resizeCanvas, 100); // init
-
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-            return {
-                x: clientX - rect.left,
-                y: clientY - rect.top
-            };
-        }
-
-        function startPosition(e) {
-            isDrawing = true;
-            draw(e);
-        }
-
-        function endPosition() {
-            isDrawing = false;
-            ctx.beginPath();
-        }
-
-        function draw(e) {
-            if (!isDrawing) return;
-            e.preventDefault(); // กันมือถือไถล
-            const pos = getPos(e);
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
-            // ปรับสีปากกาตาม Theme
-            ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#fff' : '#000';
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-        }
-
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mouseup', endPosition);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseleave', endPosition);
-        
-        canvas.addEventListener('touchstart', startPosition, {passive: false});
-        canvas.addEventListener('touchend', endPosition);
-        canvas.addEventListener('touchmove', draw, {passive: false});
-
-        function clearSignature() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        /* ---------------------------------------------------
-           8. Form Submit Protection
-        --------------------------------------------------- */
-        document.getElementById('salesForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const cashVal = parseNum(cashPaymentInput.value);
-            let totalItems = 0;
-            document.querySelectorAll('.item-price').forEach(el => totalItems += parseNum(el.value));
-
-            if(cashVal !== totalItems) {
-                alert('❌ ไม่สามารถบันทึกได้!\nกรุณาตรวจสอบให้แน่ใจว่า "รวมรายการขายเงินสด" ตรงกับ "ยอดเงินสดรับมา" ครับ');
-                return;
-            }
-
-            alert('✅ ข้อมูลถูกต้อง ระบบกำลังทำการบันทึก...');
-            // เขียนโค้ดส่ง API/Backend ต่อได้เลย
+        let drawing = false;
+        function resize() { canvas.width = canvas.parentElement.clientWidth; canvas.height = 96; }
+        window.onresize = resize; resize();
+        canvas.addEventListener('mousedown', () => drawing = true);
+        window.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+        canvas.addEventListener('mousemove', (e) => {
+            if(!drawing) return;
+            const r = canvas.getBoundingClientRect();
+            ctx.lineWidth = 2; ctx.lineTo(e.clientX - r.left, e.clientY - r.top); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
         });
+        function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
+        document.getElementById('salesForm').onsubmit = (e) => {
+            const cash = parseNum(document.getElementById('cash_payment').value);
+            const items = parseNum(document.getElementById('total_cash_items').value);
+            if(cash !== items) { alert('ยอดรวมในตารางไม่ตรงกับยอดเงินสดรับมา!'); return false; }
+            alert('บันทึกข้อมูลเรียบร้อย');
+        };
     </script>
 </body>
 </html>
