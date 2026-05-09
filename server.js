@@ -240,36 +240,119 @@ function buildFields(body, fileMap) {
   return fields;
 }
 
-// ✨ ตัวกรอง: ลบฟิลด์ที่ไม่มีใน schema, ลบ array ว่างของ attachment, ลบค่าว่าง
+// ✨ Lark Bitable field types
+//   1 = Text                     → string
+//   2 = Number                   → number
+//   3 = SingleSelect             → string
+//   4 = MultiSelect              → string[]
+//   5 = DateTime                 → number (ms timestamp)
+//   7 = Checkbox                 → boolean
+//   11 = Person                  → object[]
+//   13 = Phone                   → string
+//   15 = Hyperlink/Url           → object {text, link}
+//   17 = Attachment              → object[] {file_token}
+//   18 = SingleLink              → array
+//   19 = Lookup (readonly)
+//   20 = Formula (readonly)
+//   1001-1005 = Created/Modified/AutoNumber (readonly)
+const READONLY_TYPES = new Set([19, 20, 1001, 1002, 1003, 1004, 1005]);
+
+function coerceValueByType(val, fieldType) {
+  if (val === null || val === undefined) return undefined;
+
+  switch (fieldType) {
+    case 1:  // Text
+    case 13: // Phone
+      if (Array.isArray(val)) return val.length ? String(val.join(', ')) : undefined;
+      if (typeof val === 'object') return JSON.stringify(val);
+      if (val === '' || val === false) return undefined;
+      return String(val);
+
+    case 2: { // Number
+      if (val === '' || val === false) return undefined;
+      const n = typeof val === 'number' ? val : Number(String(val).replace(/,/g, ''));
+      return Number.isFinite(n) ? n : undefined;
+    }
+
+    case 3:  // SingleSelect
+      if (val === '' || val === false) return undefined;
+      return String(val);
+
+    case 4:  // MultiSelect
+      if (Array.isArray(val)) return val.length ? val.map(String) : undefined;
+      if (val === '' || val === false) return undefined;
+      return [String(val)];
+
+    case 5: { // DateTime
+      if (val === '' || val === false) return undefined;
+      const ts = typeof val === 'number' ? val : new Date(val).getTime();
+      return Number.isFinite(ts) ? ts : undefined;
+    }
+
+    case 7:  // Checkbox
+      if (typeof val === 'boolean') return val;
+      return val === 'on' || val === 'true' || val === '1' || val === 1;
+
+    case 15: // Hyperlink
+      if (val === '' || val === false) return undefined;
+      if (typeof val === 'string') return { text: val, link: val };
+      return val;
+
+    case 17: // Attachment
+      if (Array.isArray(val)) return val.length ? val : undefined;
+      return undefined;
+
+    default:
+      return val;
+  }
+}
+
 function sanitizeFields(fields, schema) {
   const out = {};
-  const skipped = [];
-  const empty = [];
+  const skipped = [], empty = [], readonly = [], coerced = [];
+  const hasSchema = Object.keys(schema).length > 0;
 
   for (const [key, val] of Object.entries(fields)) {
-    // ฟิลด์ไม่อยู่ใน schema → ข้าม
-    if (Object.keys(schema).length > 0 && !schema[key]) {
+    if (hasSchema && !schema[key]) {
       skipped.push(key);
       continue;
     }
 
-    // attachment array ที่ว่าง → ข้าม (Lark จะ error ถ้าส่ง [])
-    if (Array.isArray(val) && val.length === 0) {
+    const fieldInfo = schema[key];
+    const fieldType = fieldInfo?.type;
+
+    if (fieldType && READONLY_TYPES.has(fieldType)) {
+      readonly.push(`${key}(type=${fieldType})`);
+      continue;
+    }
+
+    let coercedVal = val;
+    if (hasSchema && fieldType !== undefined) {
+      const before = JSON.stringify(val);
+      coercedVal = coerceValueByType(val, fieldType);
+      const after = JSON.stringify(coercedVal);
+      if (coercedVal !== undefined && before !== after) {
+        coerced.push(`${key}(t${fieldType}): ${before}→${after}`);
+      }
+    }
+
+    if (coercedVal === undefined || coercedVal === null || coercedVal === '') {
+      empty.push(key);
+      continue;
+    }
+    if (Array.isArray(coercedVal) && coercedVal.length === 0) {
       empty.push(key);
       continue;
     }
 
-    // string ว่าง → ข้าม (ป้องกัน PK เป็น text field ที่ส่ง '' มา)
-    if (val === '' || val === null || val === undefined) {
-      empty.push(key);
-      continue;
-    }
-
-    out[key] = val;
+    out[key] = coercedVal;
   }
 
-  if (skipped.length) console.log('⚠️  Skipped (not in schema):', skipped.join(', '));
-  if (empty.length) console.log('⚠️  Skipped (empty):', empty.join(', '));
+  if (skipped.length)  console.log('⚠️  Skipped (not in schema):', skipped.join(', '));
+  if (readonly.length) console.log('⚠️  Skipped (readonly):     ', readonly.join(', '));
+  if (empty.length)    console.log('⚠️  Skipped (empty):        ', empty.join(', '));
+  if (coerced.length)  console.log('🔄 Coerced:');
+  coerced.forEach(c => console.log('   ', c));
 
   return out;
 }
