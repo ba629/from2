@@ -920,13 +920,48 @@
   function closeModal() { document.getElementById('cashModal').classList.remove('active'); }
   function confirmSave() { closeModal(); doSave(); }
 
-  function doSave() {
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.textContent = '✓ บันทึกข้อมูลเรียบร้อยแล้ว';
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 3000);
+async function doSave() {
+  try {
+    const fd = new FormData();
+
+    fd.append('branch', document.querySelector('.branch-select').value || '');
+    fd.append('sale_date', selectedDate || '');
+    fd.append('remarks', document.querySelector('.notes-area')?.value || '');
+
+    fd.append('pay_qr', document.querySelectorAll('.field-input')[0]?.dataset.raw || 0);
+    fd.append('pay_ghl', document.querySelectorAll('.field-input')[1]?.dataset.raw || 0);
+    fd.append('pay_ttb_spare', document.querySelectorAll('.field-input')[2]?.dataset.raw || 0);
+    fd.append('pay_wechat', document.querySelectorAll('.field-input')[3]?.dataset.raw || 0);
+    fd.append('pay_ktb', document.querySelectorAll('.field-input')[4]?.dataset.raw || 0);
+    fd.append('pay_scb', document.querySelectorAll('.field-input')[5]?.dataset.raw || 0);
+    fd.append('pay_ttb_org', document.querySelectorAll('.field-input')[6]?.dataset.raw || 0);
+    fd.append('pay_cash', document.getElementById('cashPayment')?.dataset.raw || 0);
+    fd.append('totalSales', document.querySelector('.field-input.highlight')?.dataset.raw || 0);
+
+    fd.append('cash_start', document.getElementById('cashStart')?.dataset.raw || 0);
+    fd.append('cash_received', document.getElementById('cashIn')?.dataset.raw || 0);
+    fd.append('cash_deposit', document.getElementById('cashDeposit')?.dataset.raw || 0);
+    fd.append('cash_balance', document.getElementById('cashRemain')?.textContent.replace(/,/g, '') || 0);
+
+    const res = await fetch('/submit-sales', {
+      method: 'POST',
+      body: fd
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+      alert('ส่งเข้า Lark ไม่สำเร็จ: ' + (data.message || 'ไม่ทราบสาเหตุ'));
+      console.error(data);
+      return;
+    }
+
+    alert('บันทึกเข้า Lark สำเร็จแล้ว');
+  } catch (err) {
+    console.error(err);
+    alert('เกิดข้อผิดพลาดตอนส่งข้อมูล: ' + err.message);
   }
+}
 
   document.getElementById('cashModal').addEventListener('click', e => {
     if (e.target === e.currentTarget) closeModal();
