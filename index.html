@@ -925,7 +925,7 @@ async function doSave() {
     const fd = new FormData();
 
     fd.append('branch', document.querySelector('.branch-select').value || '');
-    fd.append('sale_date', selectedDate || '');
+    fd.append('sale_date', document.getElementById('dateDisplay')?.dataset.value || document.getElementById('dateDisplay')?.value || '');
     fd.append('remarks', document.querySelector('.notes-area')?.value || '');
 
     fd.append('pay_qr', document.querySelectorAll('.field-input')[0]?.dataset.raw || 0);
