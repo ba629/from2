@@ -73,7 +73,47 @@ async function resolveAppToken() {
   return cachedAppToken;
 }
 
-// ===== Helper functions =====
+// ✨ ดึง schema ของ table มา cache เพื่อกรองฟิลด์ที่ไม่มีจริง
+let cachedFieldSchema = null;
+
+async function getTableFields() {
+  if (cachedFieldSchema) return cachedFieldSchema;
+
+  const appToken = await resolveAppToken();
+  try {
+    const res = await larkClient.bitable.appTableField.list({
+      path: {
+        app_token: appToken,
+        table_id: process.env.LARK_TABLE_ID
+      },
+      params: { page_size: 100 }
+    });
+
+    const items = res.data?.items || [];
+    const map = {};
+    items.forEach(f => {
+      map[f.field_name] = {
+        type: f.type,
+        ui_type: f.ui_type,
+        is_primary: f.is_primary || false
+      };
+    });
+
+    console.log('📋 Table schema loaded. Fields:', Object.keys(map).length);
+    const primary = items.find(f => f.is_primary);
+    if (primary) {
+      console.log(`🔑 Primary field: "${primary.field_name}" (type=${primary.type}, ui_type=${primary.ui_type})`);
+    }
+
+    cachedFieldSchema = map;
+    return map;
+  } catch (err) {
+    console.warn('⚠️  Cannot load table schema:', err.message);
+    return {};
+  }
+}
+
+// ===== Helpers =====
 
 function numberValue(value) {
   const n = Number(String(value ?? '').replace(/,/g, ''));
@@ -92,10 +132,10 @@ function safeJsonArray(value) {
   }
 }
 
-// ✨ แปลง date string → Unix timestamp ใน milliseconds
 function dateToTimestamp(dateStr) {
   if (!dateStr) return null;
-  const ts = new Date(dateStr).getTime();
+  // YYYY-MM-DD → ตีความเป็น local midnight
+  const ts = new Date(dateStr + 'T00:00:00').getTime();
   return Number.isFinite(ts) ? ts : null;
 }
 
@@ -111,7 +151,6 @@ async function uploadMediaToLarkBase(file) {
   console.log('📤 Uploading file:', {
     file_name: file.originalname,
     parent_type: parentType,
-    parent_node: appToken,
     size: file.size
   });
 
@@ -127,6 +166,8 @@ async function uploadMediaToLarkBase(file) {
     });
 
     console.log('✅ File uploaded, token:', res.file_token);
+    // ลบไฟล์ temp
+    fs.unlink(file.path, () => {});
     return res.file_token;
   } catch (err) {
     const detail = err.response?.data || err.message || JSON.stringify(err);
@@ -136,15 +177,12 @@ async function uploadMediaToLarkBase(file) {
 
 async function uploadFilesByField(files = []) {
   const result = {};
-
   for (const file of files) {
     const fileToken = await uploadMediaToLarkBase(file);
     if (!fileToken) continue;
-
     result[file.fieldname] = result[file.fieldname] || [];
     result[file.fieldname].push({ file_token: fileToken });
   }
-
   return result;
 }
 
@@ -189,16 +227,51 @@ function buildFields(body, fileMap) {
     'ไฟล์สลิปฝากเงินสด': fileMap.cash_deposit_slip || [],
     'ไฟล์ภาพ Voucher': fileMap.voucher_photo || [],
     'ไฟล์แนบ GHL': fileMap.ghl_file || [],
-    'ภาพถ่ายยืนยัน': fileMap.confirm_photo || []
+    'ภาพถ่ายยืนยัน': fileMap.confirm_photo || [],
+    'ลายเซ็น': fileMap.signature || []
   };
 
-  // ✨ ใส่ "วันที่ขาย" เฉพาะตอนที่แปลงเป็น timestamp ได้
+  // วันที่
   const dateTs = dateToTimestamp(body.sale_date);
   if (dateTs !== null) {
     fields['วันที่ขาย'] = dateTs;
   }
 
   return fields;
+}
+
+// ✨ ตัวกรอง: ลบฟิลด์ที่ไม่มีใน schema, ลบ array ว่างของ attachment, ลบค่าว่าง
+function sanitizeFields(fields, schema) {
+  const out = {};
+  const skipped = [];
+  const empty = [];
+
+  for (const [key, val] of Object.entries(fields)) {
+    // ฟิลด์ไม่อยู่ใน schema → ข้าม
+    if (Object.keys(schema).length > 0 && !schema[key]) {
+      skipped.push(key);
+      continue;
+    }
+
+    // attachment array ที่ว่าง → ข้าม (Lark จะ error ถ้าส่ง [])
+    if (Array.isArray(val) && val.length === 0) {
+      empty.push(key);
+      continue;
+    }
+
+    // string ว่าง → ข้าม (ป้องกัน PK เป็น text field ที่ส่ง '' มา)
+    if (val === '' || val === null || val === undefined) {
+      empty.push(key);
+      continue;
+    }
+
+    out[key] = val;
+  }
+
+  if (skipped.length) console.log('⚠️  Skipped (not in schema):', skipped.join(', '));
+  if (empty.length) console.log('⚠️  Skipped (empty):', empty.join(', '));
+
+  return out;
 }
 
 // ===== Routes =====
@@ -221,33 +294,52 @@ app.get('/test-resolve', async (_req, res) => {
   }
 });
 
-// ทดสอบ create record อย่างเดียว ไม่มี file
+// ✨ ดู schema field ทั้งหมด
+app.get('/test-schema', async (_req, res) => {
+  try {
+    cachedFieldSchema = null; // force reload
+    const schema = await getTableFields();
+    res.json({ ok: true, count: Object.keys(schema).length, fields: schema });
+  } catch (err) {
+    res.status(500).json({ ok: false, message: err.message });
+  }
+});
+
+// ทดสอบ create record
 app.get('/test-create', async (_req, res) => {
   try {
     const appToken = await resolveAppToken();
-    
-    console.log('🧪 Testing create with:', {
-      app_token: appToken,
-      table_id: process.env.LARK_TABLE_ID
-    });
+    const schema = await getTableFields();
+
+    // สร้าง payload แบบมินิมัล
+    const testFields = sanitizeFields({
+      'หมายเหตุ': 'TEST จาก /test-create ' + new Date().toISOString()
+    }, schema);
+
+    console.log('🧪 Test create fields:', testFields);
 
     const createRes = await larkClient.bitable.appTableRecord.create({
       path: {
         app_token: appToken,
         table_id: process.env.LARK_TABLE_ID
       },
-      data: {
-        fields: {
-          'หมายเหตุ': 'TEST จาก /test-create ' + new Date().toISOString()
-        }
-      }
+      data: { fields: testFields }
     });
 
-    console.log('✅ Test create response:', JSON.stringify(createRes, null, 2));
+    console.log('Test response:', JSON.stringify(createRes, null, 2));
+
+    if (createRes.code && createRes.code !== 0) {
+      return res.status(400).json({
+        ok: false,
+        message: createRes.msg,
+        lark_response: createRes,
+        sent_fields: testFields
+      });
+    }
+
     res.json({ ok: true, response: createRes });
   } catch (err) {
     console.error('❌ Test create error:', err);
-    console.error('Response data:', err.response?.data);
     res.status(500).json({
       ok: false,
       message: err.message,
@@ -260,21 +352,35 @@ app.post('/submit-sales', upload.any(), async (req, res) => {
   console.log('\n========================================');
   console.log('=== SUBMIT-SALES START ===');
   console.log('========================================');
-  
+
   try {
     checkEnv();
 
     const appToken = await resolveAppToken();
+    const schema = await getTableFields();
+
     console.log('✅ app_token:', appToken);
     console.log('✅ table_id:', process.env.LARK_TABLE_ID);
     console.log('📁 Files received:', req.files?.length || 0);
-    
+    if (req.files?.length) {
+      console.log('   Files:', req.files.map(f => `${f.fieldname}(${f.originalname})`).join(', '));
+    }
+
+    // อัปโหลดไฟล์
     const fileMap = await uploadFilesByField(req.files);
-    console.log('✅ All files uploaded. fileMap keys:', Object.keys(fileMap));
-    
-    const fields = buildFields(req.body, fileMap);
-    console.log('📝 Fields built. Keys:', Object.keys(fields).length);
-    console.log('📅 sale_date input:', req.body.sale_date, '→ timestamp:', fields['วันที่ขาย']);
+    console.log('✅ Files uploaded. fileMap keys:', Object.keys(fileMap));
+
+    // สร้าง fields
+    const rawFields = buildFields(req.body, fileMap);
+    console.log('📅 sale_date input:', req.body.sale_date, '→ ts:', rawFields['วันที่ขาย']);
+
+    // ✨ Sanitize ตาม schema
+    const fields = sanitizeFields(rawFields, schema);
+    console.log('📝 Final fields count:', Object.keys(fields).length);
+
+    if (Object.keys(fields).length === 0) {
+      throw new Error('ไม่มีข้อมูลที่จะส่ง — กรุณากรอกข้อมูลอย่างน้อย 1 ช่อง');
+    }
 
     console.log('📨 Calling bitable.appTableRecord.create...');
     const createRes = await larkClient.bitable.appTableRecord.create({
@@ -285,13 +391,10 @@ app.post('/submit-sales', upload.any(), async (req, res) => {
       data: { fields }
     });
 
-    console.log('✅✅✅ CREATE RESPONSE:');
-    console.log(JSON.stringify(createRes, null, 2));
+    console.log('✅ CREATE RESPONSE code:', createRes.code, 'msg:', createRes.msg);
 
-    // ✨ เช็คว่า Lark ตอบ error code มาไหม
     if (createRes.code && createRes.code !== 0) {
-      console.error('❌ Lark Base rejected the data');
-      console.error('=== SUBMIT-SALES FAILED ===\n');
+      console.error('❌ Lark Base rejected:', createRes);
       return res.status(400).json({
         ok: false,
         message: `Lark Base error: ${createRes.msg}`,
@@ -304,15 +407,16 @@ app.post('/submit-sales', upload.any(), async (req, res) => {
 
     res.json({
       ok: true,
-      record: createRes.record
+      record: createRes.data?.record || createRes.record
     });
   } catch (err) {
-    console.error('\n❌❌❌ SUBMIT ERROR:');
-    console.error('Message:', err.message);
+    console.error('\n❌ SUBMIT ERROR:', err.message);
     console.error('Stack:', err.stack);
-    console.error('Response data:', JSON.stringify(err.response?.data, null, 2));
+    if (err.response?.data) {
+      console.error('Response data:', JSON.stringify(err.response.data, null, 2));
+    }
     console.error('=== SUBMIT-SALES FAILED ===\n');
-    
+
     res.status(500).json({
       ok: false,
       message: err.message,
@@ -323,4 +427,9 @@ app.post('/submit-sales', upload.any(), async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running: http://localhost:${PORT}`);
+  console.log('Useful endpoints:');
+  console.log(`  GET  /health         — health check`);
+  console.log(`  GET  /test-resolve   — verify app token resolution`);
+  console.log(`  GET  /test-schema    — list all table fields + primary key`);
+  console.log(`  GET  /test-create    — try minimal create record`);
 });

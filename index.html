@@ -77,35 +77,6 @@
   body.light .modal-overlay { background:rgba(0,0,0,0.5); }
   body.light .logo-text { color:rgba(26,18,8,0.5); }
 
-  /* ── FOREST / NAVY THEME ── */
-  body.forest {
-    --gold: #D9AE5D;
-    --gold-light: #E8C97A;
-    --gold-pale: rgba(217,174,93,0.12);
-    --gold-border: rgba(217,174,93,0.3);
-    --dark-2: #1A2235;
-    --dark-surface: #243048;
-    --text-primary: #E8EEF8;
-    --text-muted: rgba(232,238,248,0.58);
-    --text-dim: rgba(232,238,248,0.24);
-    --red-pale: rgba(224,92,92,0.09);
-    background-image:
-      radial-gradient(ellipse at 0% 0%, rgba(217,174,93,0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 100% 100%, rgba(100,140,220,0.08) 0%, transparent 50%);
-  }
-  body.forest .panel { border-color:rgba(217,174,93,0.22); box-shadow:0 2px 16px rgba(0,0,0,0.3); }
-  body.forest .panel-header { background:rgba(217,174,93,0.06); }
-  body.forest .cash-remain { background:rgba(217,174,93,0.08); }
-  body.forest .action-bar { background:#1E2B42; }
-  body.forest .subtitle-bar { background:linear-gradient(90deg,rgba(217,174,93,0.08) 0%,transparent 100%); }
-  body.forest .sig-canvas { background:rgba(100,140,220,0.05); border-color:rgba(217,174,93,0.2); }
-  body.forest .date-input { background:#1E2B42; color:var(--gold-light); }
-  body.forest .branch-select { background:#243048; }
-  body.forest .field-input { background:rgba(100,140,220,0.06); }
-  body.forest .table-input { color:var(--text-primary); }
-  body.forest .voucher-textarea, body.forest .notes-area { background:rgba(100,140,220,0.05); }
-  body.forest .ghl-attach-row { background:rgba(100,140,220,0.05); }
-
   /* ── ORIGINAL CREAM/WHITE THEME ── */
   body.original {
     --gold: #D9AE5D;
@@ -182,12 +153,11 @@
   body.original .sig-canvas { background: #FAFAFA; border-color: rgba(217,174,93,0.35); }
   body.original .sig-btn { border-color: rgba(217,174,93,0.35); color: rgba(28,28,28,0.5); }
   body.original .sig-btn:hover { border-color: #D9AE5D; color: #8B6910; }
-  body.original .action-bar { background: #FFFFFF; border-color: rgba(217,174,93,0.4); }
-  body.original .action-bar::before { opacity: 0.5; }
-  body.original .ornament { color: #C49A3C; }
-  body.original .shipment-check { color: rgba(28,28,28,0.6); }
-  body.original .btn-clear { border-color: rgba(217,174,93,0.4); color: rgba(28,28,28,0.55); }
-  body.original .btn-clear:hover { border-color: #D9AE5D; color: #8B6910; }
+  body.original .action-bar { background:#303030; border-color:transparent; box-shadow:0 -2px 14px rgba(0,0,0,0.12); }
+  body.original .ornament { color: #D9AE5D; }
+  body.original .shipment-check { color: rgba(245,237,218,0.8); }
+  body.original .btn-clear { border-color: rgba(217,174,93,0.5); color: #D9AE5D; }
+  body.original .btn-clear:hover { background: rgba(217,174,93,0.15); }
   body.original .branch-select { background: #FFFFFF; color: #1C1C1C; border-color: rgba(217,174,93,0.4); }
   body.original .branch-wrap::after { color: #D9AE5D; }
   body.original .lux-cb { accent-color: #D9AE5D; }
@@ -197,12 +167,6 @@
   body.original .cash-row { border-bottom-color: rgba(217,174,93,0.12); }
   body.original .field-divider { background: #303030; opacity:0.15; }
   body.original .voucher-section { border-top-color: rgba(217,174,93,0.35); }
-  body.original .action-bar { background:#303030; border-color:transparent; box-shadow:0 -2px 14px rgba(0,0,0,0.12); }
-  body.original .ornament { color: #D9AE5D; }
-  body.original .shipment-check { color: rgba(245,237,218,0.8); }
-  body.original .btn-clear { border-color: rgba(217,174,93,0.5); color: #D9AE5D; }
-  body.original .btn-clear:hover { background: rgba(217,174,93,0.15); }
-  body.original .date-row .date-label { color: rgba(28,28,28,0.5); }
   body.original .table-footer { border-top-color: #303030; opacity-border: 0.15; }
 
   /* ── THEME TOGGLE BUTTON ── */
@@ -270,7 +234,7 @@
   .main-grid { display:grid; grid-template-columns:330px 240px 1fr; gap:18px; margin-bottom:18px; }
   .bottom-row { display:grid; grid-template-columns:330px 1fr; gap:18px; margin-bottom:18px; }
 
-  /* PAYMENT FIELDS — label LEFT, input RIGHT */
+  /* PAYMENT FIELDS */
   .field { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:7px; }
   .field:last-child { margin-bottom:0; }
   .field-label { font-size:10px; letter-spacing:0.1em; color:var(--text-muted); text-transform:uppercase; white-space:nowrap; flex-shrink:0; }
@@ -288,7 +252,7 @@
     color:var(--gold-light); font-family:'Sarabun',sans-serif; font-size:14px; font-weight:500; width:120px;
   }
 
-  /* GHL ATTACH — multi-image upload */
+  /* GHL ATTACH */
   .ghl-attach-row {
     margin:-2px 0 8px 6px;
     padding:8px 10px;
@@ -306,9 +270,7 @@
   }
   .ghl-upload-btn:hover { border-color:var(--gold); color:var(--gold); }
   .ghl-file-input { display:none; }
-  .ghl-preview-wrap {
-    display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;
-  }
+  .ghl-preview-wrap { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
   .ghl-thumb {
     position:relative; width:48px; height:48px;
     border:1px solid rgba(217,174,93,0.25); overflow:hidden; flex-shrink:0;
@@ -346,8 +308,6 @@
   .voucher-label { font-size:10.5px; color:var(--text-muted); }
   .voucher-input { width:70px; background:rgba(217,174,93,0.04); border:1px solid rgba(217,174,93,0.15); color:var(--text-primary); padding:4px 8px; font-family:'Sarabun',sans-serif; font-size:13px; font-weight:400; text-align:center; outline:none; transition:border-color 0.2s; }
   .voucher-input:focus { border-color:var(--gold); }
-  .voucher-textarea { width:100%; margin-top:8px; background:rgba(217,174,93,0.03); border:1px solid rgba(217,174,93,0.12); color:var(--text-muted); padding:8px 11px; font-family:'Sarabun',sans-serif; font-size:11px; font-weight:300; resize:none; outline:none; height:52px; transition:border-color 0.2s; }
-  .voucher-textarea:focus { border-color:var(--gold); }
 
   /* SALES TABLE */
   .sales-table { width:100%; border-collapse:collapse; }
@@ -401,6 +361,7 @@
   .btn-clear:hover { border-color:var(--gold); color:var(--gold); }
   .btn-save { background:linear-gradient(135deg,var(--gold) 0%,#B8922A 100%); border-color:var(--gold); color:var(--dark); font-weight:600; box-shadow:0 4px 18px rgba(217,174,93,0.28); }
   .btn-save:hover { box-shadow:0 6px 26px rgba(217,174,93,0.42); transform:translateY(-1px); }
+  .btn-save:disabled { opacity:0.6; cursor:wait; transform:none; }
 
   /* MODAL */
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
@@ -421,7 +382,14 @@
   .modal-btn-confirm:hover { background:#c94a4a; }
 
   /* TOAST */
-  .toast { position:fixed; bottom:28px; right:28px; z-index:2000; background:linear-gradient(135deg,var(--gold),#B8922A); color:var(--dark); padding:12px 24px; font-family:'Sarabun',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.08em; box-shadow:0 6px 24px rgba(217,174,93,0.4); animation:fadeIn 0.3s ease; }
+  .toast {
+    position:fixed; bottom:28px; right:28px; z-index:2000;
+    background:linear-gradient(135deg,var(--gold),#B8922A); color:var(--dark);
+    padding:14px 26px; font-family:'Sarabun',sans-serif; font-size:13px; font-weight:600;
+    letter-spacing:0.08em; box-shadow:0 6px 24px rgba(217,174,93,0.4);
+    animation:fadeIn 0.3s ease;
+  }
+  .toast.error { background:linear-gradient(135deg,#E05C5C,#c94a4a); color:#fff; }
 
   /* DIVIDER */
   .field-divider { height:1px; background:var(--gold-border); margin:10px 0; opacity:0.4; }
@@ -435,16 +403,11 @@
   <!-- HEADER -->
   <div class="header">
     <div class="logo-area">
-      <!-- Cubic 3D logo -->
       <div class="logo-hex" style="clip-path:none;border-radius:4px;width:48px;height:48px;">
         <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-          <!-- cube top face -->
           <polygon points="20,4 34,11 20,18 6,11" fill="rgba(0,0,0,0.25)"/>
-          <!-- cube left face -->
           <polygon points="6,11 20,18 20,34 6,27" fill="rgba(0,0,0,0.45)"/>
-          <!-- cube right face -->
           <polygon points="34,11 20,18 20,34 34,27" fill="rgba(0,0,0,0.15)"/>
-          <!-- edges -->
           <polyline points="20,4 34,11 34,27 20,34 6,27 6,11 20,4" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
           <line x1="20" y1="18" x2="20" y2="34" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
           <line x1="20" y1="18" x2="6" y2="11" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
@@ -458,7 +421,6 @@
       <span>DAILY SALES RECORD FORM</span>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-      <!-- Theme Toggle — อยู่บนเลือกสาขา -->
       <div class="theme-toggle">
         <button class="theme-btn" id="btnOriginal" onclick="setTheme('original')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -474,11 +436,27 @@
         </button>
       </div>
       <div class="branch-wrap">
-        <select class="branch-select">
-          <option>— เลือกสาขา —</option>
-          <option>สาขาสีลม</option>
-          <option>สาขาสยาม</option>
-          <option>สาขาเอ็มควอเทียร์</option>
+        <select class="branch-select" name="branch" id="branchSelect">
+          <option value="">— เลือกสาขา —</option>
+          <optgroup label="สาขาในกรุงเทพฯ และปริมณฑล">
+            <option value="SUITCUBE R3 SIGNATURE">SUITCUBE R3 SIGNATURE</option>
+            <option value="SUITCUBE RCD">SUITCUBE RCD (รัชดา-สุทธิสาร)</option>
+            <option value="SUITCUBE SIAM">SUITCUBE SIAM (สยามสแควร์วัน)</option>
+            <option value="SUITCUBE T21">SUITCUBE T21 (เทอร์มินอล 21 อโศก)</option>
+            <option value="SUITCUBE PM">SUITCUBE PM (เดอะพรอมานาด)</option>
+            <option value="SUITCUBE SC">SUITCUBE SC (ซีคอนสแควร์ ศรีนครินทร์)</option>
+            <option value="SUITCUBE FP">SUITCUBE FP (ฟิวเจอร์พาร์ค รังสิต)</option>
+            <option value="SUITCUBE SILOM COMPLEX">SUITCUBE SILOM COMPLEX</option>
+            <option value="SUITCUBE NW">SUITCUBE NW (เดอะมอลล์ งามวงศ์วาน)</option>
+            <option value="SUITCUBE CC">SUITCUBE CC (เดอะเซอร์เคิล ราชพฤกษ์)</option>
+            <option value="SUITCUBE BP">SUITCUBE BP (เดอะมอลล์ บางกะปิ)</option>
+          </optgroup>
+          <optgroup label="สาขาต่างจังหวัด">
+            <option value="SUITCUBE CM">SUITCUBE CM (เชียงใหม่)</option>
+            <option value="SUITCUBE KR">SUITCUBE KR (โคราช)</option>
+            <option value="SUITCUBE PK">SUITCUBE PK (ภูเก็ต)</option>
+            <option value="SUITCUBE KK">SUITCUBE KK (ขอนแก่น)</option>
+          </optgroup>
         </select>
       </div>
     </div>
@@ -521,12 +499,12 @@
 
         <div class="field">
           <label class="field-label">QR-Code Auto</label>
-          <input class="field-input num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" name="pay_qr" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
 
         <div class="field">
           <label class="field-label">เครื่องรูดบัตร GHL</label>
-          <input class="field-input num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" name="pay_ghl" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
         <div class="ghl-attach-row">
           <div class="ghl-attach-top">
@@ -542,35 +520,34 @@
 
         <div class="field">
           <label class="field-label">เครื่องรูดบัตร (สำรอง) TTB</label>
-          <input class="field-input num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" name="pay_ttb_spare" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
         <div class="field">
           <label class="field-label">WeChat / Alipay</label>
-          <input class="field-input num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" name="pay_wechat" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
         <div class="field">
           <label class="field-label">รับช่องทาง KTB ที่กวาง</label>
-          <input class="field-input num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" name="pay_ktb" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
         <div class="field">
           <label class="field-label">ไทยพาณิชย์ 0198</label>
-          <input class="field-input num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" name="pay_scb" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
         <div class="field">
           <label class="field-label">(งานองค์กร) TTB 6417</label>
-          <input class="field-input num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" name="pay_ttb_org" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
-        <!-- เงินสด ← ลิงก์กับเงินสดรับมา -->
         <div class="field">
           <label class="field-label">เงินสด</label>
-          <input class="field-input num-input" id="cashPayment" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input num-input" id="cashPayment" name="pay_cash" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
 
         <div class="field-divider"></div>
 
         <div class="field">
           <label class="field-label" style="color:var(--gold);font-weight:500;letter-spacing:0.14em;">ยอดขายทั้งหมด</label>
-          <input class="field-input highlight num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="field-input highlight num-input" name="totalSales" id="totalSalesInput" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
       </div>
     </div>
@@ -582,16 +559,15 @@
 
         <div class="cash-row">
           <span class="cash-label">เงินสดตั้งต้น</span>
-          <input class="cash-input num-input" id="cashStart" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="cash-input num-input" id="cashStart" name="cash_start" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
-        <!-- readonly — ดึงจากช่องเงินสดซ้ายอัตโนมัติ -->
         <div class="cash-row">
           <span class="cash-label">เงินสดรับมา</span>
-          <input class="cash-input" id="cashIn" type="text" placeholder="0.00" readonly data-raw="">
+          <input class="cash-input" id="cashIn" name="cash_received" type="text" placeholder="0.00" readonly data-raw="">
         </div>
         <div class="cash-row">
           <span class="cash-label">ฝากเงินสด</span>
-          <input class="cash-input num-input" id="cashDeposit" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
+          <input class="cash-input num-input" id="cashDeposit" name="cash_deposit" type="text" inputmode="decimal" placeholder="0.00" data-raw="">
         </div>
 
         <div class="cash-remain" id="cashRemainBox">
@@ -615,11 +591,11 @@
           <div class="voucher-section-title">Voucher</div>
           <div class="voucher-row">
             <span class="voucher-label">Voucher 500 เหลือจำนวนใบ</span>
-            <input class="voucher-input" type="text" inputmode="numeric" placeholder="0">
+            <input class="voucher-input" name="voucher_500" type="text" inputmode="numeric" placeholder="0">
           </div>
           <div class="voucher-row" style="border:none;padding-bottom:0;">
             <span class="voucher-label">Voucher 1000 เหลือจำนวนใบ</span>
-            <input class="voucher-input" type="text" inputmode="numeric" placeholder="0">
+            <input class="voucher-input" name="voucher_1000" type="text" inputmode="numeric" placeholder="0">
           </div>
         </div>
       </div>
@@ -642,16 +618,16 @@
           <tbody id="salesBody">
             <tr>
               <td class="row-num">1</td>
-              <td><input class="table-input" type="text" placeholder="รหัสสินค้า"></td>
-              <td><input class="table-input" type="text" placeholder="—"></td>
-              <td><input class="table-input price num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw=""></td>
+              <td><input class="table-input item-sku" type="text" placeholder="รหัสสินค้า"></td>
+              <td><input class="table-input item-size" type="text" placeholder="—"></td>
+              <td><input class="table-input price num-input item-price" type="text" inputmode="decimal" placeholder="0.00" data-raw=""></td>
               <td><button class="btn-remove" onclick="removeRow(this)">×</button></td>
             </tr>
             <tr>
               <td class="row-num">2</td>
-              <td><input class="table-input" type="text" placeholder="รหัสสินค้า"></td>
-              <td><input class="table-input" type="text" placeholder="—"></td>
-              <td><input class="table-input price num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw=""></td>
+              <td><input class="table-input item-sku" type="text" placeholder="รหัสสินค้า"></td>
+              <td><input class="table-input item-size" type="text" placeholder="—"></td>
+              <td><input class="table-input price num-input item-price" type="text" inputmode="decimal" placeholder="0.00" data-raw=""></td>
               <td><button class="btn-remove" onclick="removeRow(this)">×</button></td>
             </tr>
           </tbody>
@@ -676,13 +652,11 @@
       <div class="panel-header">หมายเหตุ & Voucher</div>
       <div class="panel-body" style="display:flex;flex-direction:column;gap:14px;">
 
-        <!-- หมายเหตุทั่วไป -->
         <div>
           <div style="font-size:9px;letter-spacing:0.22em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;font-family:'Cormorant Garamond',serif;">หมายเหตุ</div>
-          <textarea class="notes-area" style="min-height:80px;height:80px;" placeholder="สำหรับอธิบายรายการขายเพิ่มเติม&#10;เช่น  ส่วนลดพิเศษ (เลขที่ใบเสร็จ  เหตุผลในการลด)&#10;รายการ Pick Up (เลขที่ใบเสร็จ  มัดจำ  Deposit)&#10;รายการใช้ Voucher (เลขที่ใบเสร็จ  ราคา)"></textarea>
+          <textarea class="notes-area" name="remarks" style="min-height:80px;height:80px;" placeholder="สำหรับอธิบายรายการขายเพิ่มเติม&#10;เช่น  ส่วนลดพิเศษ (เลขที่ใบเสร็จ  เหตุผลในการลด)&#10;รายการ Pick Up (เลขที่ใบเสร็จ  มัดจำ  Deposit)&#10;รายการใช้ Voucher (เลขที่ใบเสร็จ  ราคา)"></textarea>
         </div>
 
-        <!-- หลักฐาน Voucher ห้าง / คูปองของขวัญ -->
         <div>
           <div style="font-size:9px;letter-spacing:0.22em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;font-family:'Cormorant Garamond',serif;">หลักฐาน Voucher ห้าง / คูปองของขวัญ</div>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
@@ -700,11 +674,11 @@
   </div>
 
 
-  <!-- ACTION BAR — shipment check only -->
+  <!-- ACTION BAR -->
   <div class="action-bar">
     <div class="ornament">DAILY SALES RECORD</div>
     <label class="shipment-check">
-      <input type="checkbox" class="lux-cb">
+      <input type="checkbox" class="lux-cb" id="cbShipment">
       ยืนยันการกดรับ Shipment ใน Salesforce ครบถ้วน
     </label>
   </div>
@@ -715,12 +689,12 @@
     <div class="panel-body" style="display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start;">
       <div>
         <div style="display:flex;align-items:flex-start;gap:9px;padding:10px 12px;background:rgba(217,174,93,0.04);border:1px solid rgba(217,174,93,0.15);margin-bottom:12px;">
-          <input type="checkbox" class="lux-cb" style="margin-top:3px;flex-shrink:0;">
+          <input type="checkbox" class="lux-cb" id="cbCashPolicy" style="margin-top:3px;flex-shrink:0;">
           <span style="font-size:11px;color:var(--text-muted);line-height:1.7;">ขอรับรองว่าข้อมูลยอดเงิน ณ สิ้นวันถูกต้อง หากพบการทุจริต ยินยอมให้บริษัทดำเนินคดีได้ตามกฎหมาย</span>
         </div>
         <div class="meta-field" style="margin-bottom:0;">
           <span class="meta-field-label">ชื่อผู้บันทึก</span>
-          <input class="meta-field-input" type="text" placeholder="">
+          <input class="meta-field-input" name="recorder_name" type="text" placeholder="">
         </div>
       </div>
       <div class="sig-section" style="margin-top:0;">
@@ -733,10 +707,10 @@
     </div>
   </div>
 
-  <!-- ปุ่มบันทึก / ล้างข้อมูล — ท้ายสุด -->
+  <!-- ปุ่ม -->
   <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
     <button class="btn btn-clear" onclick="clearForm()">ล้างข้อมูล</button>
-    <button class="btn btn-save" onclick="saveForm()">บันทึกข้อมูล</button>
+    <button class="btn btn-save" id="btnSave" onclick="saveForm()">บันทึกข้อมูล</button>
   </div>
 
 </div>
@@ -764,8 +738,8 @@
 <script>
   /* ─── Theme Toggle ─── */
   function setTheme(mode) {
-    document.body.classList.remove('light','forest','original');
-    ['btnDark','btnLight','btnForest','btnOriginal'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+    document.body.classList.remove('light','original');
+    ['btnDark','btnLight','btnOriginal'].forEach(id => document.getElementById(id)?.classList.remove('active'));
     if (mode === 'light') {
       document.body.classList.add('light');
       document.getElementById('btnLight').classList.add('active');
@@ -798,7 +772,6 @@
       if (d.length > 2) v = d[0] + '.' + d.slice(1).join('');
       if (d[1] && d[1].length > 2) v = d[0] + '.' + d[1].slice(0,2);
       el.dataset.raw = v;
-      // link เงินสด → เงินสดรับมา
       if (el.id === 'cashPayment') {
         const ci = document.getElementById('cashIn');
         ci.dataset.raw = v;
@@ -821,7 +794,7 @@
 
   document.querySelectorAll('.num-input').forEach(bindNumInput);
 
-  /* ─── Cash remain calc + red indicator ─── */
+  /* ─── Cash remain calc ─── */
   function calcCash() {
     const start   = parseFloat(document.getElementById('cashStart').dataset.raw) || 0;
     const cashIn  = parseFloat(document.getElementById('cashIn').dataset.raw) || 0;
@@ -836,13 +809,11 @@
     } else {
       valEl.classList.remove('over'); box.classList.remove('over');
     }
-    // re-check sales match whenever cashIn changes
     let salesTotal = 0;
     document.querySelectorAll('#salesBody .num-input').forEach(i => salesTotal += parseFloat(i.dataset.raw) || 0);
     checkSalesMatch(salesTotal);
   }
 
-  /* ─── Sales total + match check ─── */
   function calcTotal() {
     let total = 0;
     document.querySelectorAll('#salesBody .num-input').forEach(i => total += parseFloat(i.dataset.raw) || 0);
@@ -879,9 +850,9 @@
     tr.style.animation = 'fadeIn 0.3s ease';
     tr.innerHTML = `
       <td class="row-num">${rowCount}</td>
-      <td><input class="table-input" type="text" placeholder="รหัสสินค้า"></td>
-      <td><input class="table-input" type="text" placeholder="—"></td>
-      <td><input class="table-input price num-input" type="text" inputmode="decimal" placeholder="0.00" data-raw=""></td>
+      <td><input class="table-input item-sku" type="text" placeholder="รหัสสินค้า"></td>
+      <td><input class="table-input item-size" type="text" placeholder="—"></td>
+      <td><input class="table-input price num-input item-price" type="text" inputmode="decimal" placeholder="0.00" data-raw=""></td>
       <td><button class="btn-remove" onclick="removeRow(this)">×</button></td>
     `;
     document.getElementById('salesBody').appendChild(tr);
@@ -892,21 +863,69 @@
     const tr = btn.closest('tr');
     tr.style.transition = 'opacity 0.2s, transform 0.2s';
     tr.style.opacity = '0'; tr.style.transform = 'translateX(10px)';
-    setTimeout(() => { tr.remove(); calcTotal(); }, 200);
+    setTimeout(() => {
+      tr.remove();
+      // Renumber rows
+      const rows = document.querySelectorAll('#salesBody tr');
+      rows.forEach((r, i) => r.querySelector('.row-num').textContent = i + 1);
+      rowCount = rows.length;
+      calcTotal();
+    }, 200);
   }
 
-  /* ─── Save + Modal ─── */
+  /* ─── Toast ─── */
+  function showToast(message, isError = false) {
+    const toast = document.createElement('div');
+    toast.className = 'toast' + (isError ? ' error' : '');
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3500);
+  }
+
+  /* ─── Helpers ─── */
+  function dataURLtoFile(dataurl, filename) {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) u8arr[n] = bstr.charCodeAt(n);
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  function collectSkuRows() {
+    return Array.from(document.querySelectorAll('#salesBody tr')).map((row, idx) => ({
+      no: idx + 1,
+      sku: row.querySelector('.item-sku')?.value || '',
+      size: row.querySelector('.item-size')?.value || '',
+      price: parseFloat(row.querySelector('.item-price')?.dataset.raw || '0') || 0
+    })).filter(i => i.sku || i.size || i.price);
+  }
+
+  /* ─── Save ─── */
   function saveForm() {
-    // Check sales vs cashIn match
-    let salesTotal = 0;
-    document.querySelectorAll('#salesBody .num-input').forEach(i => salesTotal += parseFloat(i.dataset.raw) || 0);
-    const cashIn = parseFloat(document.getElementById('cashIn').dataset.raw) || 0;
-    if (cashIn > 0 && Math.abs(salesTotal - cashIn) >= 0.01) {
-      const diff = salesTotal - cashIn;
-      const sign = diff > 0 ? '+' : '';
-      alert(`ไม่สามารถบันทึกได้\nยอดรายการขายเงินสด (${salesTotal.toLocaleString('th-TH',{minimumFractionDigits:2})}) ไม่ตรงกับเงินสดรับมา (${cashIn.toLocaleString('th-TH',{minimumFractionDigits:2})})\nต่างกัน ${sign}${diff.toLocaleString('th-TH',{minimumFractionDigits:2})} บาท`);
+    if (!document.getElementById('branchSelect').value) {
+      showToast('กรุณาเลือกสาขา', true);
       return;
     }
+    if (!document.getElementById('dateDisplay').dataset.selected) {
+      showToast('กรุณาเลือกวันที่', true);
+      return;
+    }
+
+    // ตรวจ sales match
+    let salesTotalSku = 0;
+    document.querySelectorAll('#salesBody .num-input').forEach(i => {
+      salesTotalSku += parseFloat(i.dataset.raw) || 0;
+    });
+    const cashIn = parseFloat(document.getElementById('cashIn').dataset.raw) || 0;
+    if (cashIn > 0 && Math.abs(salesTotalSku - cashIn) >= 0.01) {
+      const diff = salesTotalSku - cashIn;
+      const sign = diff > 0 ? '+' : '';
+      showToast(`ยอดไม่ตรง — ต่างกัน ${sign}${diff.toLocaleString('th-TH',{minimumFractionDigits:2})} บาท`, true);
+      return;
+    }
+
     const remain = parseFloat(document.getElementById('cashRemain').textContent.replace(/,/g,'')) || 0;
     if (remain > 2000) {
       document.getElementById('modalRemainAmt').textContent =
@@ -920,63 +939,121 @@
   function closeModal() { document.getElementById('cashModal').classList.remove('active'); }
   function confirmSave() { closeModal(); doSave(); }
 
-async function doSave() {
-  try {
-    const fd = new FormData();
+  async function doSave() {
+    const btn = document.getElementById('btnSave');
+    const oldText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'กำลังบันทึก...';
 
-    fd.append('branch', document.querySelector('.branch-select').value || '');
-    fd.append('sale_date', document.getElementById('dateDisplay')?.dataset.value || document.getElementById('dateDisplay')?.value || '');
-    fd.append('remarks', document.querySelector('.notes-area')?.value || '');
+    try {
+      // 1) Collect SKU items
+      const skuItems = collectSkuRows();
+      let skuTotal = 0;
+      document.querySelectorAll('#salesBody .num-input').forEach(i => skuTotal += parseFloat(i.dataset.raw) || 0);
 
-    fd.append('pay_qr', document.querySelectorAll('.field-input')[0]?.dataset.raw || 0);
-    fd.append('pay_ghl', document.querySelectorAll('.field-input')[1]?.dataset.raw || 0);
-    fd.append('pay_ttb_spare', document.querySelectorAll('.field-input')[2]?.dataset.raw || 0);
-    fd.append('pay_wechat', document.querySelectorAll('.field-input')[3]?.dataset.raw || 0);
-    fd.append('pay_ktb', document.querySelectorAll('.field-input')[4]?.dataset.raw || 0);
-    fd.append('pay_scb', document.querySelectorAll('.field-input')[5]?.dataset.raw || 0);
-    fd.append('pay_ttb_org', document.querySelectorAll('.field-input')[6]?.dataset.raw || 0);
-    fd.append('pay_cash', document.getElementById('cashPayment')?.dataset.raw || 0);
-    fd.append('totalSales', document.querySelector('.field-input.highlight')?.dataset.raw || 0);
+      // 2) Date — use dataset.selected (ISO)
+      const saleDate = document.getElementById('dateDisplay')?.dataset.selected || '';
 
-    fd.append('cash_start', document.getElementById('cashStart')?.dataset.raw || 0);
-    fd.append('cash_received', document.getElementById('cashIn')?.dataset.raw || 0);
-    fd.append('cash_deposit', document.getElementById('cashDeposit')?.dataset.raw || 0);
-    fd.append('cash_balance', document.getElementById('cashRemain')?.textContent.replace(/,/g, '') || 0);
+      // 3) Cash balance
+      const cashBalance = parseFloat(
+        document.getElementById('cashRemain').textContent.replace(/,/g, '')
+      ) || 0;
 
-    const res = await fetch('/submit-sales', {
-      method: 'POST',
-      body: fd
-    });
+      // 4) Build FormData
+      const fd = new FormData();
 
-    const data = await res.json();
+      fd.append('branch', document.getElementById('branchSelect').value || '');
+      fd.append('sale_date', saleDate);
+      fd.append('remarks', document.querySelector('[name="remarks"]')?.value || '');
 
-    if (!data.ok) {
-      alert('ส่งเข้า Lark ไม่สำเร็จ: ' + (data.message || 'ไม่ทราบสาเหตุ'));
-      console.error(data);
-      return;
+      // Payment channels
+      ['pay_qr','pay_ghl','pay_ttb_spare','pay_wechat','pay_ktb','pay_scb','pay_ttb_org','pay_cash'].forEach(n => {
+        const el = document.querySelector(`[name="${n}"]`);
+        fd.append(n, el?.dataset.raw || '0');
+      });
+      fd.append('totalSales', document.querySelector('[name="totalSales"]')?.dataset.raw || '0');
+
+      // Cash check
+      fd.append('cash_start', document.getElementById('cashStart')?.dataset.raw || '0');
+      fd.append('cash_received', document.getElementById('cashIn')?.dataset.raw || '0');
+      fd.append('cash_deposit', document.getElementById('cashDeposit')?.dataset.raw || '0');
+      fd.append('cash_balance', cashBalance.toFixed(2));
+
+      // Voucher
+      fd.append('voucher_500', document.querySelector('[name="voucher_500"]')?.value || '0');
+      fd.append('voucher_1000', document.querySelector('[name="voucher_1000"]')?.value || '0');
+
+      // SKU
+      fd.append('skuTotal', skuTotal.toFixed(2));
+      fd.append('skuItems', JSON.stringify(skuItems));
+
+      // Recorder
+      fd.append('recorder_name', document.querySelector('[name="recorder_name"]')?.value || '');
+
+      // Checkboxes
+      if (document.getElementById('cbShipment')?.checked) fd.append('shipment_confirmed', 'on');
+      if (document.getElementById('cbCashPolicy')?.checked) fd.append('cash_policy_ack', 'on');
+
+      // Signature → file
+      const sigData = canvas.toDataURL('image/png');
+      // Only attach if user has actually drawn
+      if (hasSignature()) {
+        fd.append('signature', dataURLtoFile(sigData, `signature_${Date.now()}.png`));
+      }
+
+      // GHL files (multiple)
+      ghlFiles.forEach((f, i) => {
+        fd.append('ghl_file', dataURLtoFile(f.src, f.name || `ghl_${i}.png`));
+      });
+      // Cash deposit slips (multiple)
+      slipFiles.forEach((f, i) => {
+        fd.append('cash_deposit_slip', dataURLtoFile(f.src, f.name || `slip_${i}.png`));
+      });
+      // Voucher photos (multiple)
+      voucherFiles.forEach((f, i) => {
+        fd.append('voucher_photo', dataURLtoFile(f.src, f.name || `voucher_${i}.png`));
+      });
+
+      // 5) Send
+      const res = await fetch('/submit-sales', { method: 'POST', body: fd });
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        console.error('Server error:', data);
+        showToast('ส่งเข้า Lark ไม่สำเร็จ: ' + (data.message || 'ไม่ทราบสาเหตุ'), true);
+        return;
+      }
+
+      showToast('✓ บันทึกเข้า Lark สำเร็จแล้ว');
+      setTimeout(() => clearForm(true), 1500);
+
+    } catch (err) {
+      console.error(err);
+      showToast('เกิดข้อผิดพลาด: ' + err.message, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = oldText;
     }
-
-    alert('บันทึกเข้า Lark สำเร็จแล้ว');
-  } catch (err) {
-    console.error(err);
-    alert('เกิดข้อผิดพลาดตอนส่งข้อมูล: ' + err.message);
   }
-}
 
   document.getElementById('cashModal').addEventListener('click', e => {
     if (e.target === e.currentTarget) closeModal();
   });
 
   /* ─── Clear ─── */
-  function clearForm() {
-    if (!confirm('ล้างข้อมูลทั้งหมดใช่ไหม?')) return;
-    document.querySelectorAll('input[type=text]').forEach(el => { el.value=''; el.dataset.raw=''; });
-    document.querySelectorAll('textarea').forEach(el => el.value='');
-    document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked=false);
-    document.getElementById('salesTotal').textContent='0.00';
-    document.getElementById('cashRemain').textContent='0.00';
+  function clearForm(skipConfirm = false) {
+    if (!skipConfirm && !confirm('ล้างข้อมูลทั้งหมดใช่ไหม?')) return;
+    document.querySelectorAll('input[type=text]').forEach(el => {
+      if (el.id === 'dateDisplay') return; // keep date
+      el.value = ''; el.dataset.raw = '';
+    });
+    document.querySelectorAll('textarea').forEach(el => el.value = '');
+    document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+    document.getElementById('salesTotal').textContent = '0.00';
+    document.getElementById('cashRemain').textContent = '0.00';
     document.getElementById('cashRemainBox').classList.remove('over');
     document.getElementById('cashRemain').classList.remove('over');
+    document.getElementById('salesMatchMsg').style.display = 'none';
     ghlFiles.length = 0; renderGhlPreviews();
     slipFiles.length = 0; renderSlipPreviews();
     voucherFiles.length = 0; renderVoucherPreviews();
@@ -987,6 +1064,7 @@ async function doSave() {
   const canvas = document.getElementById('sigCanvas');
   const ctx = canvas.getContext('2d');
   let drawing = false, lx = 0, ly = 0;
+  let _hasSig = false;
 
   function pos(e) {
     const r = canvas.getBoundingClientRect();
@@ -995,13 +1073,17 @@ async function doSave() {
   }
   ctx.strokeStyle='#D9AE5D'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.lineJoin='round';
 
+  function hasSignature() { return _hasSig; }
+
   canvas.addEventListener('mousedown',  e => { drawing=true; const p=pos(e); lx=p.x; ly=p.y; });
-  canvas.addEventListener('mousemove',  e => { if(!drawing) return; const p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; });
+  canvas.addEventListener('mousemove',  e => { if(!drawing) return; const p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; _hasSig=true; });
   canvas.addEventListener('mouseup',    () => drawing=false);
   canvas.addEventListener('mouseleave', () => drawing=false);
   canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing=true; const p=pos(e); lx=p.x; ly=p.y; }, {passive:false});
-  canvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!drawing) return; const p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; }, {passive:false});
+  canvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!drawing) return; const p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; _hasSig=true; }, {passive:false});
   canvas.addEventListener('touchend',   () => drawing=false);
+
+  function clearSig() { ctx.clearRect(0,0,canvas.width,canvas.height); _hasSig = false; }
 
   /* ─── Thai Buddhist Date Picker ─── */
   function toBuddhistDate(d) {
@@ -1016,6 +1098,13 @@ async function doSave() {
     return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear() + 543}`;
   }
 
+  function localISO(d) {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
   const today     = new Date();
   const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
 
@@ -1025,12 +1114,11 @@ async function doSave() {
 
   // Default = today
   dateDisplay.value = toBuddhistDate(today);
-  dateDisplay.dataset.selected = today.toISOString().slice(0,10);
+  dateDisplay.dataset.selected = localISO(today);
 
-  // Build options
   [
-    { label: `วันนี้ — ${thaiMonthName(today)}`,       val: today,     iso: today.toISOString().slice(0,10) },
-    { label: `เมื่อวาน — ${thaiMonthName(yesterday)}`, val: yesterday, iso: yesterday.toISOString().slice(0,10) },
+    { label: `วันนี้ — ${thaiMonthName(today)}`,       val: today,     iso: localISO(today) },
+    { label: `เมื่อวาน — ${thaiMonthName(yesterday)}`, val: yesterday, iso: localISO(yesterday) },
   ].forEach(opt => {
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -1075,28 +1163,28 @@ async function doSave() {
   document.addEventListener('click', () => { datePicker.style.display = 'none'; });
   datePicker.addEventListener('click', e => e.stopPropagation());
 
+  /* ─── File previews ─── */
   const slipFiles = [];
+  const voucherFiles = [];
+  const ghlFiles = [];
 
   function handleSlipFiles(input) {
     Array.from(input.files).forEach(file => {
       if (!file.type.startsWith('image/')) return;
       const reader = new FileReader();
       reader.onload = e => {
-        const id = Date.now() + Math.random();
-        slipFiles.push({ id, src: e.target.result });
+        slipFiles.push({ id: Date.now() + Math.random(), name: file.name, src: e.target.result });
         renderSlipPreviews();
       };
       reader.readAsDataURL(file);
     });
     input.value = '';
   }
-
   function removeSlipFile(id) {
     const idx = slipFiles.findIndex(f => f.id === id);
     if (idx > -1) slipFiles.splice(idx, 1);
     renderSlipPreviews();
   }
-
   function renderSlipPreviews() {
     const wrap = document.getElementById('slipPreview');
     wrap.innerHTML = '';
@@ -1108,28 +1196,23 @@ async function doSave() {
     });
   }
 
-  const voucherFiles = [];
-
   function handleVoucherFiles(input) {
     Array.from(input.files).forEach(file => {
       if (!file.type.startsWith('image/')) return;
       const reader = new FileReader();
       reader.onload = e => {
-        const id = Date.now() + Math.random();
-        voucherFiles.push({ id, name: file.name, src: e.target.result });
+        voucherFiles.push({ id: Date.now() + Math.random(), name: file.name, src: e.target.result });
         renderVoucherPreviews();
       };
       reader.readAsDataURL(file);
     });
     input.value = '';
   }
-
   function removeVoucherFile(id) {
     const idx = voucherFiles.findIndex(f => f.id === id);
     if (idx > -1) voucherFiles.splice(idx, 1);
     renderVoucherPreviews();
   }
-
   function renderVoucherPreviews() {
     const wrap  = document.getElementById('voucherPreview');
     const count = document.getElementById('voucherCount');
@@ -1144,29 +1227,23 @@ async function doSave() {
     count.textContent = voucherFiles.length > 0 ? `${voucherFiles.length} รูป` : '';
   }
 
-  /* ─── GHL Multi-image upload ─── */
-  const ghlFiles = [];
-
   function handleGhlFiles(input) {
     Array.from(input.files).forEach(file => {
       if (!file.type.startsWith('image/')) return;
       const reader = new FileReader();
       reader.onload = e => {
-        const id = Date.now() + Math.random();
-        ghlFiles.push({ id, name: file.name, src: e.target.result });
+        ghlFiles.push({ id: Date.now() + Math.random(), name: file.name, src: e.target.result });
         renderGhlPreviews();
       };
       reader.readAsDataURL(file);
     });
-    input.value = ''; // reset so same file can be re-added
+    input.value = '';
   }
-
   function removeGhlFile(id) {
     const idx = ghlFiles.findIndex(f => f.id === id);
     if (idx > -1) ghlFiles.splice(idx, 1);
     renderGhlPreviews();
   }
-
   function renderGhlPreviews() {
     const wrap = document.getElementById('ghlPreview');
     const count = document.getElementById('ghlCount');
@@ -1175,16 +1252,11 @@ async function doSave() {
       const div = document.createElement('div');
       div.className = 'ghl-thumb';
       div.title = f.name;
-      div.innerHTML = `
-        <img src="${f.src}" alt="${f.name}">
-        <div class="ghl-thumb-del" onclick="removeGhlFile(${f.id})">×</div>
-      `;
+      div.innerHTML = `<img src="${f.src}" alt="${f.name}"><div class="ghl-thumb-del" onclick="removeGhlFile(${f.id})">×</div>`;
       wrap.appendChild(div);
     });
     count.textContent = ghlFiles.length > 0 ? `${ghlFiles.length} รูป` : '';
   }
-
-  function clearSig() { ctx.clearRect(0,0,canvas.width,canvas.height); }
 </script>
 </body>
 </html>
