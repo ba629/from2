@@ -220,7 +220,7 @@ function buildFields(body, fileMap) {
     'หมายเหตุ': body.remarks || '',
     'ชื่อผู้บันทึก': body.recorder_name || '',
 
-    'ยินยอมเก็บข้อมูล': boolValue(body.privacy_consent),
+    // นำ 'ยินยอมเก็บข้อมูล' ออก เพราะในตารางไม่มีคอลัมน์นี้
     'รับทราบนโยบายเงินสด': boolValue(body.cash_policy_ack),
     'ยืนยัน Shipment Salesforce': boolValue(body.shipment_confirmed),
 
@@ -234,7 +234,8 @@ function buildFields(body, fileMap) {
   // วันที่
   const dateTs = dateToTimestamp(body.sale_date);
   if (dateTs !== null) {
-    fields['วันที่ขาย'] = dateTs;
+    // ✅ แก้ไขชื่อฟิลด์ตรงนี้ให้ตรงกับในตาราง Lark Base
+    fields['ยอดขายวันที่'] = dateTs; 
   }
 
   return fields;
