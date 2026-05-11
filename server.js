@@ -100,6 +100,7 @@ async function getTableFields() {
     });
 
     console.log('📋 Table schema loaded. Fields:', Object.keys(map).length);
+    console.log('📋 Field names:', Object.keys(map).join(' | '));
     const primary = items.find(f => f.is_primary);
     if (primary) {
       console.log(`🔑 Primary field: "${primary.field_name}" (type=${primary.type}, ui_type=${primary.ui_type})`);
@@ -220,7 +221,6 @@ function buildFields(body, fileMap) {
     'หมายเหตุ': body.remarks || '',
     'ชื่อผู้บันทึก': body.recorder_name || '',
 
-    // นำ 'ยินยอมเก็บข้อมูล' ออก เพราะในตารางไม่มีคอลัมน์นี้
     'รับทราบนโยบายเงินสด': boolValue(body.cash_policy_ack),
     'ยืนยัน Shipment Salesforce': boolValue(body.shipment_confirmed),
 
@@ -231,31 +231,16 @@ function buildFields(body, fileMap) {
     'ลายเซ็น': fileMap.signature || []
   };
 
-  // วันที่
+  // ✅ วันที่ — ชื่อฟิลด์ใน Lark Base คือ "ยอดขายวันที่"
   const dateTs = dateToTimestamp(body.sale_date);
   if (dateTs !== null) {
-    // ✅ แก้ไขชื่อฟิลด์ตรงนี้ให้ตรงกับในตาราง Lark Base
-    fields['ยอดขายวันที่'] = dateTs; 
+    fields['ยอดขายวันที่'] = dateTs;
   }
 
   return fields;
 }
 
 // ✨ Lark Bitable field types
-//   1 = Text                     → string
-//   2 = Number                   → number
-//   3 = SingleSelect             → string
-//   4 = MultiSelect              → string[]
-//   5 = DateTime                 → number (ms timestamp)
-//   7 = Checkbox                 → boolean
-//   11 = Person                  → object[]
-//   13 = Phone                   → string
-//   15 = Hyperlink/Url           → object {text, link}
-//   17 = Attachment              → object[] {file_token}
-//   18 = SingleLink              → array
-//   19 = Lookup (readonly)
-//   20 = Formula (readonly)
-//   1001-1005 = Created/Modified/AutoNumber (readonly)
 const READONLY_TYPES = new Set([19, 20, 1001, 1002, 1003, 1004, 1005]);
 
 function coerceValueByType(val, fieldType) {
@@ -352,8 +337,10 @@ function sanitizeFields(fields, schema) {
   if (skipped.length)  console.log('⚠️  Skipped (not in schema):', skipped.join(', '));
   if (readonly.length) console.log('⚠️  Skipped (readonly):     ', readonly.join(', '));
   if (empty.length)    console.log('⚠️  Skipped (empty):        ', empty.join(', '));
-  if (coerced.length)  console.log('🔄 Coerced:');
-  coerced.forEach(c => console.log('   ', c));
+  if (coerced.length) {
+    console.log('🔄 Coerced:');
+    coerced.forEach(c => console.log('   ', c));
+  }
 
   return out;
 }
@@ -395,7 +382,6 @@ app.get('/test-create', async (_req, res) => {
     const appToken = await resolveAppToken();
     const schema = await getTableFields();
 
-    // สร้าง payload แบบมินิมัล
     const testFields = sanitizeFields({
       'หมายเหตุ': 'TEST จาก /test-create ' + new Date().toISOString()
     }, schema);
@@ -450,17 +436,20 @@ app.post('/submit-sales', upload.any(), async (req, res) => {
       console.log('   Files:', req.files.map(f => `${f.fieldname}(${f.originalname})`).join(', '));
     }
 
+    console.log('📦 Body keys received:', Object.keys(req.body).join(', '));
+
     // อัปโหลดไฟล์
     const fileMap = await uploadFilesByField(req.files);
     console.log('✅ Files uploaded. fileMap keys:', Object.keys(fileMap));
 
     // สร้าง fields
     const rawFields = buildFields(req.body, fileMap);
-    console.log('📅 sale_date input:', req.body.sale_date, '→ ts:', rawFields['วันที่ขาย']);
+    console.log('📅 sale_date input:', req.body.sale_date, '→ ts:', rawFields['ยอดขายวันที่']);
 
     // ✨ Sanitize ตาม schema
     const fields = sanitizeFields(rawFields, schema);
     console.log('📝 Final fields count:', Object.keys(fields).length);
+    console.log('📝 Final field names:', Object.keys(fields).join(', '));
 
     if (Object.keys(fields).length === 0) {
       throw new Error('ไม่มีข้อมูลที่จะส่ง — กรุณากรอกข้อมูลอย่างน้อย 1 ช่อง');

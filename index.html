@@ -288,7 +288,7 @@
   .consent-box { background:rgba(217,174,93,0.025); border:1px solid rgba(217,174,93,0.1); padding:14px 18px; margin-bottom:18px; font-size:11px; color:var(--text-muted); line-height:1.72; }
   .checkbox-row { display:flex; align-items:flex-start; gap:9px; margin-top:9px; }
   .lux-cb { width:13px; height:13px; accent-color:var(--gold); flex-shrink:0; margin-top:2px; cursor: pointer; }
-  
+
   /* Animations & Error Shake */
   .error-shake { animation: shake 0.4s; color: var(--red) !important; font-weight: 500; }
   @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} }
@@ -331,7 +331,7 @@
   .modal-btn-confirm:hover { background:#c94a4a; }
 
   /* TOAST */
-  .toast { position:fixed; bottom:28px; right:28px; z-index:2000; background:linear-gradient(135deg,var(--gold),#B8922A); color:var(--dark); padding:14px 26px; font-family:'Sarabun',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.08em; box-shadow:0 6px 24px rgba(217,174,93,0.4); animation:fadeIn 0.3s ease; }
+  .toast { position:fixed; bottom:28px; right:28px; z-index:2000; background:linear-gradient(135deg,var(--gold),#B8922A); color:var(--dark); padding:14px 26px; font-family:'Sarabun',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.08em; box-shadow:0 6px 24px rgba(217,174,93,0.4); animation:fadeIn 0.3s ease; max-width: 90vw; }
   .toast.error { background:linear-gradient(135deg,#E05C5C,#c94a4a); color:#fff; }
 
   /* DIVIDER */
@@ -750,7 +750,6 @@
   document.querySelectorAll('.num-input').forEach(bindNumInput);
 
   /* ─── Calculation Logic ─── */
-  // คำนวณยอดขายรวมอัตโนมัติ
   function calcPaymentSum() {
     const fields = ['pay_qr','pay_ghl','pay_ttb_spare','pay_wechat','pay_ktb','pay_scb','pay_ttb_org','pay_cash'];
     let sum = 0;
@@ -847,7 +846,7 @@
     document.getElementById('captchaQ').textContent = `${capA} + ${capB} = `;
     document.getElementById('captchaAns').value = '';
   }
-  genCaptcha(); // Initialize on load
+  genCaptcha();
 
   /* ─── Toast ─── */
   function showToast(message, isError = false) {
@@ -880,7 +879,6 @@
 
   /* ─── Save & Validations ─── */
   function saveForm() {
-    // 1. ตรวจสอบข้อมูลสาขาและวันที่
     if (!document.getElementById('branchSelect').value) {
       showToast('กรุณาเลือกสาขา', true); return;
     }
@@ -888,19 +886,16 @@
       showToast('กรุณาเลือกวันที่', true); return;
     }
 
-    // 2. Validate GHL Slip (บังคับแนบรูปถ้ามียอด)
     const ghlAmt = parseFloat(document.querySelector('[name="pay_ghl"]').dataset.raw || 0);
     if (ghlAmt > 0 && ghlFiles.length === 0) {
       showToast('กรุณาแนบสลิปเครื่องรูดบัตร GHL', true); return;
     }
 
-    // 3. Validate Cash Deposit Slip (บังคับแนบรูปถ้ามียอด)
     const depAmt = parseFloat(document.getElementById('cashDeposit').dataset.raw || 0);
     if (depAmt > 0 && slipFiles.length === 0) {
       showToast('กรุณาแนบสลิปฝากเงินสด', true); return;
     }
 
-    // 4. Validate Sales Match Check
     let salesTotalSku = 0;
     document.querySelectorAll('#salesBody .num-input').forEach(i => {
       salesTotalSku += parseFloat(i.dataset.raw) || 0;
@@ -913,7 +908,6 @@
       return;
     }
 
-    // 5. บังคับกดยืนยัน Shipment
     const cbShipment = document.getElementById('cbShipment');
     const lblShipment = document.getElementById('lblShipment');
     if (!cbShipment.checked) {
@@ -922,12 +916,10 @@
       showToast('กรุณายืนยันการกดรับ Shipment', true); return;
     }
 
-    // 6. บังคับกดยอมรับเงื่อนไขนโยบาย
     if (!document.getElementById('cbCashPolicy').checked) {
       showToast('กรุณากดรับรองว่าข้อมูลเป็นความจริง', true); return;
     }
 
-    // 7. บังคับกรอกชื่อและลายเซ็น
     if (!document.querySelector('[name="recorder_name"]').value.trim()) {
       showToast('กรุณากรอกชื่อผู้บันทึก', true); return;
     }
@@ -935,31 +927,28 @@
       showToast('กรุณาเซ็นชื่อผู้บันทึก', true); return;
     }
 
-    // 8. Validate Captcha
     const ans = parseInt(document.getElementById('captchaAns').value);
     if (isNaN(ans) || ans !== (capA + capB)) {
-      showToast('กรุณาตอบคำถาม Verification ให้ถูกต้อง', true); 
-      genCaptcha(); // สุ่มเลขใหม่ถ้าตอบผิด
+      showToast('กรุณาตอบคำถาม Verification ให้ถูกต้อง', true);
+      genCaptcha();
       return;
     }
 
-    // 9. ตรวจสอบเงินสดคงเหลือเพื่อเปิด Modal หรือ Save เลย
     const remain = parseFloat(document.getElementById('cashRemain').textContent.replace(/,/g,'')) || 0;
     if (remain > 2000) {
       document.getElementById('modalRemainAmt').textContent =
         remain.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' บาท';
       document.getElementById('cashModal').classList.add('active');
     } else {
-      doSave(); // ถ้าเงินไม่เกิน 2000 บันทึกได้เลย
+      doSave();
     }
   }
 
   function closeModal() { document.getElementById('cashModal').classList.remove('active'); }
-  
-  // กดปุ่มยอมรับและบันทึกในหน้า Modal
-  function confirmSave() { 
-    closeModal(); 
-    doSave(); 
+
+  function confirmSave() {
+    closeModal();
+    doSave();
   }
 
   async function doSave() {
@@ -1011,25 +1000,39 @@
       slipFiles.forEach((f, i) => fd.append('cash_deposit_slip', dataURLtoFile(f.src, f.name || `slip_${i}.png`)));
       voucherFiles.forEach((f, i) => fd.append('voucher_photo', dataURLtoFile(f.src, f.name || `voucher_${i}.png`)));
 
-      // จำลองการส่งข้อมูล (ปรับแก้ API Endpoint ได้ที่นี่)
-      /* const res = await fetch('/submit-sales', { method: 'POST', body: fd });
-      const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.message || 'ไม่ทราบสาเหตุ');
-      */
-      
-      // Delay จำลอง
-      await new Promise(r => setTimeout(r, 1000));
+      // ✅ ส่งข้อมูลจริงไปยัง backend
+      console.log('📤 Submitting form data to /submit-sales...');
+      const res = await fetch('/submit-sales', {
+        method: 'POST',
+        body: fd
+      });
 
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseErr) {
+        throw new Error(`Server response ไม่ใช่ JSON (status ${res.status}). Server อาจไม่ได้รัน หรือเกิด error`);
+      }
+
+      console.log('📥 Server response:', data);
+
+      if (!res.ok || !data.ok) {
+        const msg = data?.message || `HTTP ${res.status}`;
+        console.error('❌ Server rejected:', data);
+        throw new Error(msg);
+      }
+
+      console.log('✅ Saved record successfully:', data.record);
       showToast('✓ บันทึกข้อมูลสำเร็จแล้ว');
       setTimeout(() => clearForm(true), 1500);
 
     } catch (err) {
-      console.error(err);
+      console.error('❌ Submit error:', err);
       showToast('เกิดข้อผิดพลาด: ' + err.message, true);
     } finally {
       btn.disabled = false;
       btn.textContent = oldText;
-      genCaptcha(); // สุ่ม Captcha ใหม่
+      genCaptcha();
     }
   }
 
@@ -1055,7 +1058,7 @@
     slipFiles.length = 0; renderSlipPreviews();
     voucherFiles.length = 0; renderVoucherPreviews();
     clearSig();
-    genCaptcha(); // สุ่ม Captcha ใหม่ตอนล้างฟอร์ม
+    genCaptcha();
   }
 
   /* ─── Signature canvas ─── */
@@ -1255,53 +1258,6 @@
     count.textContent = ghlFiles.length > 0 ? `${ghlFiles.length} รูป` : '';
   }
 </script>
-<script>
-let captchaText = "";
 
-function generateCaptcha() {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    captchaText = "";
-
-    for (let i = 0; i < 6; i++) {
-        captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-
-    const canvas = document.getElementById("captchaCanvas");
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#2b2620";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.font = "bold 34px Arial";
-
-    for (let i = 0; i < captchaText.length; i++) {
-        const x = 20 + i * 30;
-        const y = 42;
-        const angle = (Math.random() - 0.5) * 0.5;
-
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(angle);
-        ctx.fillStyle = "#D9AE5D";
-        ctx.fillText(captchaText[i], 0, 0);
-        ctx.restore();
-    }
-
-    for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-        ctx.strokeStyle = "rgba(217,174,93,.3)";
-        ctx.stroke();
-    }
-}
-
-generateCaptcha();
-</script>
-  
 </body>
 </html>
