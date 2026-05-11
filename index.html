@@ -395,6 +395,93 @@
   .field-divider { height:1px; background:var(--gold-border); margin:10px 0; opacity:0.4; }
 
   @keyframes fadeIn { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
+/* ===== CAPTCHA ===== */
+
+.captcha-wrapper{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-top:18px;
+    padding:18px;
+    border:1px solid rgba(217,174,93,.35);
+    background:rgba(255,255,255,.02);
+    border-radius:12px;
+}
+
+#captchaCanvas{
+    border:1px solid rgba(217,174,93,.45);
+    border-radius:10px;
+    background:#2b2620;
+    box-shadow:0 0 12px rgba(217,174,93,.08);
+}
+
+#captchaInput{
+    height:52px;
+    background:#2f2a24;
+    border:1px solid rgba(217,174,93,.35);
+    color:#f5e6c8;
+    padding:0 16px;
+    border-radius:10px;
+    font-size:18px;
+    letter-spacing:2px;
+    outline:none;
+    width:180px;
+}
+
+#captchaInput:focus{
+    border-color:#D9AE5D;
+    box-shadow:0 0 10px rgba(217,174,93,.25);
+}
+
+.refresh-captcha{
+    cursor:pointer;
+    color:#D9AE5D;
+    font-size:24px;
+    transition:.25s;
+    user-select:none;
+}
+
+.refresh-captcha:hover{
+    transform:rotate(180deg);
+}
+
+/* ===== CAPTCHA ===== */
+
+.captcha-wrapper{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-top:18px;
+    padding:18px;
+    border:1px solid rgba(217,174,93,.35);
+    background:rgba(255,255,255,.02);
+    border-radius:12px;
+}
+
+#captchaCanvas{
+    border:1px solid rgba(217,174,93,.45);
+    border-radius:10px;
+    background:#2b2620;
+}
+
+#captchaInput{
+    height:52px;
+    background:#2f2a24;
+    border:1px solid rgba(217,174,93,.35);
+    color:#f5e6c8;
+    padding:0 16px;
+    border-radius:10px;
+    font-size:18px;
+    width:180px;
+}
+
+.refresh-captcha{
+    cursor:pointer;
+    color:#D9AE5D;
+    font-size:24px;
+}
+
+  
 </style>
 </head>
 <body>
@@ -707,6 +794,24 @@
     </div>
   </div>
 
+  <!-- CAPTCHA -->
+<div class="captcha-wrapper">
+
+    <canvas id="captchaCanvas" width="220" height="60"></canvas>
+
+    <input
+        type="text"
+        id="captchaInput"
+        placeholder="พิมพ์ตามที่เห็น"
+    >
+
+    <div class="refresh-captcha" onclick="generateCaptcha()">
+        ↻
+    </div>
+
+</div>
+
+  
   <!-- ปุ่ม -->
   <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
     <button class="btn btn-clear" onclick="clearForm()">ล้างข้อมูล</button>
@@ -1258,5 +1363,53 @@
     count.textContent = ghlFiles.length > 0 ? `${ghlFiles.length} รูป` : '';
   }
 </script>
+<script>
+let captchaText = "";
+
+function generateCaptcha() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    captchaText = "";
+
+    for (let i = 0; i < 6; i++) {
+        captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    const canvas = document.getElementById("captchaCanvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#2b2620";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = "bold 34px Arial";
+
+    for (let i = 0; i < captchaText.length; i++) {
+        const x = 20 + i * 30;
+        const y = 42;
+        const angle = (Math.random() - 0.5) * 0.5;
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.fillStyle = "#D9AE5D";
+        ctx.fillText(captchaText[i], 0, 0);
+        ctx.restore();
+    }
+
+    for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.strokeStyle = "rgba(217,174,93,.3)";
+        ctx.stroke();
+    }
+}
+
+generateCaptcha();
+</script>
+  
 </body>
 </html>
