@@ -201,16 +201,16 @@
   .panel-header { padding:13px 20px; border-bottom:1px solid rgba(217,174,93,0.13); font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:0.28em; color:var(--gold); text-transform:uppercase; background:rgba(217,174,93,0.04); }
   .panel-body { padding:18px 20px; }
 
-  /* ── ยืดหยุ่น GRID CONFIG ── */
+  /* ── ปรับปรุงระบบ DYNAMIC GRID — เมื่อซ่อนจะขยายช่องอื่นเติมเต็มเต็มหน้าจอพอดี ── */
   .main-grid { 
     display: grid; 
-    grid-template-columns: 340px 280px; 
+    grid-template-columns: 1fr 1fr; /* ตอนปิด เริ่มต้นแบ่ง 2 ฝั่งเท่ากันเต็ม 100% ไม่โล่ง */
     gap: 18px; 
     margin-bottom: 18px;
     transition: grid-template-columns 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
   .main-grid.show-sales {
-    grid-template-columns: 340px 280px 1fr;
+    grid-template-columns: 340px 280px 1fr; /* ตอนเปิด ขยับขนาดหดให้พอดีเพื่อให้กล่องสินค้าขึ้นมา */
   }
   .bottom-row { display:grid; grid-template-columns:1fr; gap:18px; margin-bottom:18px; }
 
@@ -261,7 +261,7 @@
   .voucher-input { width:70px; background:rgba(217,174,93,0.04); border:1px solid rgba(217,174,93,0.15); color:var(--text-primary); padding:4px 8px; font-family:'Sarabun',sans-serif; font-size:13px; font-weight:400; text-align:center; outline:none; transition:border-color 0.2s; }
   .voucher-input:focus { border-color:var(--gold); }
 
-  /* SALES TABLE — ดีไซน์โมเดิร์น สบายตาขึ้น */
+  /* SALES TABLE — ดีไซน์ตารางสินค้าให้พรีเมียม สบายตาและพิมพ์ง่ายขึ้น */
   .sales-table { width:100%; border-collapse:collapse; margin-top: 5px; }
   .sales-table th { text-align:left; font-size:9.5px; letter-spacing:0.15em; color:var(--gold); text-transform:uppercase; padding:10px 12px; border-bottom:1px solid var(--gold-border); font-weight:500; background: rgba(217,174,93,0.03); }
   .sales-table td { padding:10px 12px; border-bottom:1px solid rgba(217,174,93,0.08); vertical-align:middle; }
@@ -339,24 +339,6 @@
   .modal-btn-cancel:hover { border-color:var(--gold); color:var(--gold); }
   .modal-btn-confirm { background:var(--red); border-color:var(--red); color:#fff; font-weight:600; }
   .modal-btn-confirm:hover { background:#c94a4a; }
-
-  @keyframes fadeIn { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
-
-  /* ── RESPONSIVE MOBILE ── */
-  @media (max-width: 992px) {
-    .main-grid { grid-template-columns: 1fr !important; }
-    .bottom-row { grid-template-columns: 1fr; }
-    .header { flex-direction: column; align-items: flex-start; gap: 18px; }
-    .page-title { text-align: left; }
-    .panel-body { padding: 16px 14px; }
-    .sig-canvas { width: 100% !important; }
-    .sig-panel-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-    .action-bar { flex-direction: column; align-items: flex-start; }
-    .footer-actions { width: 100%; flex-direction: column; }
-    .footer-actions .captcha-wrap { justify-content: space-between; width: 100%; }
-    .footer-actions .btn { width: 100%; text-align: center; justify-content: center; }
-    .btn-group { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
-  }
 </style>
 </head>
 <body>
@@ -759,7 +741,7 @@
 
   document.querySelectorAll('.num-input').forEach(bindNumInput);
 
-  /* ─── Toggle Sales Section (เปิด-ปิดขยับทั้งแผงสินค้า) ─── */
+  /* ─── Toggle Sales Section (ซ่อนแผงทั้งย่อและสลับรูปแบบ Grid) ─── */
   function toggleSalesSection() {
     const cb = document.getElementById('cbToggleSales');
     const grid = document.getElementById('mainGrid');
@@ -1159,7 +1141,7 @@
       if (el.id !== 'cbToggleSales') el.checked = false;
     });
     
-    // ตั้งค่าเริ่มต้นของระบบเปิด/ปิดตารางสินค้าให้กลับเป็น 'ปิด' เสมอ
+    // รีเซ็ตสวิตช์เปิด/ปิดตารางสินค้าให้กลับเป็น 'ปิด' และจัดระเบียบ Grid กลับมาสมดุลย์เต็มหน้าจอ
     document.getElementById('cbToggleSales').checked = false;
     document.getElementById('mainGrid').classList.remove('show-sales');
     document.getElementById('salesPanelWrapper').style.display = 'none';
