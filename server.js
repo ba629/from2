@@ -23,9 +23,10 @@ fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    const safeName = file.originalname.replace(/[\\/:*?"<>|]/g, '_');
-    cb(null, `${Date.now()}-${safeName}`);
+  filename: (_req, file, cb) => { 
+    const ext = path.extname(file.originalname);
+    const randomStr = Math.random().toString(36).substring(2, 10);
+    cb(null, `${Date.now()}-${randomStr}${ext}`);
   }
 });
 
