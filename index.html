@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>แบบฟอร์มบันทึกยอดขายรายวัน</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- เพิ่ม SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
   :root {
     --gold: #D9AE5D;
@@ -330,9 +332,16 @@
   .modal-btn-confirm { background:var(--red); border-color:var(--red); color:#fff; font-weight:600; }
   .modal-btn-confirm:hover { background:#c94a4a; }
 
-  /* TOAST */
-  .toast { position:fixed; bottom:28px; right:28px; z-index:2000; background:linear-gradient(135deg,var(--gold),#B8922A); color:var(--dark); padding:14px 26px; font-family:'Sarabun',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.08em; box-shadow:0 6px 24px rgba(217,174,93,0.4); animation:fadeIn 0.3s ease; max-width: 90vw; }
-  .toast.error { background:linear-gradient(135deg,#E05C5C,#c94a4a); color:#fff; }
+  /* ── SWEETALERT 2 ── */
+  .swal2-popup {
+    font-family: 'Sarabun', sans-serif !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--gold-border) !important;
+  }
+  .swal2-title {
+    font-family: 'Cormorant Garamond', serif !important;
+    letter-spacing: 0.05em;
+  }
 
   /* DIVIDER */
   .field-divider { height:1px; background:var(--gold-border); margin:10px 0; opacity:0.4; }
@@ -849,13 +858,31 @@
   }
   genCaptcha();
 
-  /* ─── Toast ─── */
+  /* ─── Toast -> เปลี่ยนเป็น SweetAlert2 ─── */
   function showToast(message, isError = false) {
-    const toast = document.createElement('div');
-    toast.className = 'toast' + (isError ? ' error' : '');
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3500);
+    const isOriginal = document.body.classList.contains('original');
+    const isLight = document.body.classList.contains('light');
+    
+    let bgColor = '#38332A'; // Dark Mode
+    let txtColor = '#F5EDDA';
+    
+    if (isOriginal) {
+      bgColor = '#FFFFFF';
+      txtColor = '#1C1C1C';
+    } else if (isLight) {
+      bgColor = '#F9F6F0';
+      txtColor = '#1A1208';
+    }
+
+    Swal.fire({
+      icon: isError ? 'warning' : 'success',
+      title: isError ? 'แจ้งเตือน' : 'สำเร็จ',
+      text: message,
+      confirmButtonText: 'ตกลง',
+      confirmButtonColor: '#D9AE5D',
+      background: bgColor,
+      color: txtColor
+    });
   }
 
   /* ─── Helpers ─── */
@@ -1024,12 +1051,43 @@
       }
 
       console.log('✅ Saved record successfully:', data.record);
-      showToast('✓ บันทึกข้อมูลสำเร็จแล้ว');
-      setTimeout(() => clearForm(true), 1500);
+      
+      // ดึงสีพื้นหลังตามธีมปัจจุบัน
+      const isOriginal = document.body.classList.contains('original');
+      const isLight = document.body.classList.contains('light');
+      let bgColor = isOriginal ? '#FFFFFF' : (isLight ? '#F9F6F0' : '#38332A');
+      let txtColor = isOriginal ? '#1C1C1C' : (isLight ? '#1A1208' : '#F5EDDA');
+
+      Swal.fire({
+        icon: 'success',
+        title: 'บันทึกข้อมูลสำเร็จ!',
+        text: 'ระบบได้บันทึกข้อมูลยอดขายของคุณเรียบร้อยแล้ว',
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#D9AE5D',
+        background: bgColor,
+        color: txtColor,
+        allowOutsideClick: false
+      }).then(() => {
+        clearForm(true); // ล้างข้อมูลหลังจากกดปุ่มตกลง
+      });
 
     } catch (err) {
       console.error('❌ Submit error:', err);
-      showToast('เกิดข้อผิดพลาด: ' + err.message, true);
+      
+      const isOriginal = document.body.classList.contains('original');
+      const isLight = document.body.classList.contains('light');
+      let bgColor = isOriginal ? '#FFFFFF' : (isLight ? '#F9F6F0' : '#38332A');
+      let txtColor = isOriginal ? '#1C1C1C' : (isLight ? '#1A1208' : '#F5EDDA');
+
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message,
+        confirmButtonText: 'ลองใหม่อีกครั้ง',
+        confirmButtonColor: '#E05C5C', // สีแดงสำหรับ Error
+        background: bgColor,
+        color: txtColor
+      });
     } finally {
       btn.disabled = false;
       btn.textContent = oldText;
