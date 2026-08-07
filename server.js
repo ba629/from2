@@ -204,7 +204,7 @@ function buildFields(body, fileMap) {
     'ไทยพาณิชย์ 0198': numberValue(body.pay_scb),
     'TTB 6417': numberValue(body.pay_ttb_org),
     'เงินสด': numberValue(body.pay_cash),
-    'CDC': numberValue(body.pay_cdc),
+    'CDS': numberValue(body.pay_CDS),
     'ยอดขายทั้งหมด': numberValue(body.totalSales),
 
     'เงินสดตั้งต้น': numberValue(body.cash_start),
