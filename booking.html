@@ -702,7 +702,12 @@ const branchById = id => BRANCHES.find(b => b.id === id);
 const serviceById = id => SERVICES.find(s => s.id === id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function hoursOf(branch, date){ return branch.hours[date.getDay()]; }
+function hoursOf(branch, date){
+  const fallback = ['10:00','20:00'];
+  if (!branch || !Array.isArray(branch.hours)) return fallback;
+  const hours = branch.hours[date.getDay()];
+  return Array.isArray(hours) && hours.length >= 2 ? hours : fallback;
+}
 
 function isBranchClosed(branch, dateStr){
   if (branch.closed) return true;
@@ -787,6 +792,56 @@ function saveBookingsLocal(){ if (!apiConfigured) lsSet(LS.bookings, bookings); 
 function saveBranchesLocal(){ if (!apiConfigured) lsSet(LS.branches, BRANCHES); }
 function saveServicesLocal(){ if (!apiConfigured) lsSet(LS.services, SERVICES); }
 
+// Lark Base อาจส่งค่า Single select/Rich text เป็น object หรือ array
+// และในตารางอาจมีแถวว่างที่ยังไม่มีข้อมูลจริง จึงต้องจัดรูปก่อนนำไปแสดง
+function larkText(value){
+  if (value === undefined || value === null) return '';
+  if (Array.isArray(value)) return value.map(larkText).filter(Boolean).join(' ').trim();
+  if (typeof value === 'object') return larkText(value.text ?? value.name ?? value.value ?? value.label ?? '');
+  return String(value).trim();
+}
+
+function normalizeArea(value){
+  const area = larkText(value).toLowerCase().replace(/\s+/g, ' ').trim();
+  if (!area) return '';
+  if (area === 'bkk' || area.includes('bangkok') || area.includes('กรุงเทพ') || area.includes('ปริมณฑล')) return 'bkk';
+  if (area === 'up' || area.includes('upcountry') || area.includes('province') || area.includes('ต่างจังหวัด')) return 'up';
+  return '';
+}
+
+function normalizeBranches(items){
+  if (!Array.isArray(items)) return [];
+  return items.map(raw => {
+    if (!raw || typeof raw !== 'object') return null;
+    const id = larkText(raw.id);
+    const seed = BRANCHES_SEED.find(b => b.id === id);
+    const name = larkText(raw.name) || seed?.name || '';
+    const area = normalizeArea(raw.area) || seed?.area || '';
+    if (!id || !name || !area) return null;
+    const validHours = Array.isArray(raw.hours) && raw.hours.length === 7;
+    return {
+      ...(seed || {}),
+      ...raw,
+      id,
+      name,
+      area,
+      hours: validHours ? raw.hours : (seed?.hours || every('10:00','20:00')),
+    };
+  }).filter(Boolean);
+}
+
+function normalizeServices(items){
+  if (!Array.isArray(items)) return [];
+  return items.map(raw => {
+    if (!raw || typeof raw !== 'object') return null;
+    const id = larkText(raw.id);
+    const seed = SERVICES_SEED.find(s => s.id === id);
+    const name = larkText(raw.name) || seed?.name || '';
+    if (!id || !name) return null;
+    return { ...(seed || {}), ...raw, id, name, mins:Number(raw.mins) || seed?.mins || 30 };
+  }).filter(Boolean);
+}
+
 async function loadBookings(){
   loadMyCodes();
   if (apiConfigured){
@@ -806,12 +861,16 @@ async function refreshBookings(){
 async function loadBranchesServices(){
   if (apiConfigured){
     const rb = await apiCall('listBranches');
-    BRANCHES = (rb && Array.isArray(rb.branches) && rb.branches.length) ? rb.branches : JSON.parse(JSON.stringify(BRANCHES_SEED));
+    const apiBranches = normalizeBranches(rb?.branches);
+    BRANCHES = apiBranches.length ? apiBranches : JSON.parse(JSON.stringify(BRANCHES_SEED));
     const rs = await apiCall('listServices');
-    SERVICES = (rs && Array.isArray(rs.services) && rs.services.length) ? rs.services : JSON.parse(JSON.stringify(SERVICES_SEED));
+    const apiServices = normalizeServices(rs?.services);
+    SERVICES = apiServices.length ? apiServices : JSON.parse(JSON.stringify(SERVICES_SEED));
   } else {
-    BRANCHES = lsGet(LS.branches, null) || JSON.parse(JSON.stringify(BRANCHES_SEED));
-    SERVICES = lsGet(LS.services, null) || JSON.parse(JSON.stringify(SERVICES_SEED));
+    const localBranches = normalizeBranches(lsGet(LS.branches, null));
+    const localServices = normalizeServices(lsGet(LS.services, null));
+    BRANCHES = localBranches.length ? localBranches : JSON.parse(JSON.stringify(BRANCHES_SEED));
+    SERVICES = localServices.length ? localServices : JSON.parse(JSON.stringify(SERVICES_SEED));
     if (!lsGet(LS.branches, null)) saveBranchesLocal();
     if (!lsGet(LS.services, null)) saveServicesLocal();
   }
