@@ -747,7 +747,7 @@ function slotsFor(branch, dateStr, mins){
       ทุกคนเห็นตรงกัน แอดมินเห็นภาพรวมจริง ต้องตั้งค่า n8n (ดู setup-n8n-lark.md)
    ไม่ได้ใช้ window.storage อีกต่อไป (ใช้ได้แค่ใน Claude.ai เท่านั้น)
    ═══════════════════════════════════════════════ */
-const API_URL = ''; // ใส่ URL webhook จาก n8n ตรงนี้ถ้าต้องการข้อมูลรวมศูนย์ — เว้นว่างไว้ = ใช้ localStorage อย่างเดียว พร้อมใช้งานทันที
+const API_URL = '/api/suitcube'; // เว้นว่างไว้ = ใช้ localStorage อย่างเดียว | ใส่ path/URL ของ backend (n8n หรือ Express) เพื่อข้อมูลรวมศูนย์ผ่าน Lark Base
 const ADMIN_PIN = '1234'; // PIN หลังบ้านแบบง่าย — ทำงานฝั่ง client เท่านั้น ไม่ใช่ระบบความปลอดภัยจริง
 const LS = { my:'suitcube:my-codes', bookings:'suitcube:bookings-local', branches:'suitcube:branches-local', services:'suitcube:services-local' };
 
@@ -1525,11 +1525,11 @@ document.addEventListener('click', async (e) => {
     if ((d.closedFrom && !d.closedTo) || (!d.closedFrom && d.closedTo)){ toast('กรุณากรอกวันที่ปิด-เปิดให้ครบทั้งสองช่อง หรือเว้นว่างทั้งคู่'); return; }
     if (d.closedFrom && d.closedTo && d.closedTo < d.closedFrom){ toast('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่มปิด'); return; }
     const hours = every(d.hOpen, d.hClose);
-    const closedFrom = d.closedFrom || undefined, closedTo = d.closedTo || undefined;
-    const photo = d.photo || undefined;
+    const closedFrom = d.closedFrom || null, closedTo = d.closedTo || null;
+    const photo = d.photo || null;
     const isNew = S.adminEditId === 'new';
     const fields = { name:d.name.trim(), nameEn:d.nameEn.trim(), district:d.district.trim(), districtEn:d.districtEn.trim(),
-      loc:d.loc.trim(), locEn:d.locEn.trim(), map:d.map.trim(), area:d.area, parking:d.parking.trim()||undefined,
+      loc:d.loc.trim(), locEn:d.locEn.trim(), map:d.map.trim(), area:d.area, parking:d.parking.trim()||null,
       closed: isNew ? false : !!d.closed, closedFrom, closedTo, photo, hours };
     if (!isNew) fields.id = S.adminEditId;
     const r = await apiCall('saveBranch', fields);
@@ -1554,7 +1554,7 @@ document.addEventListener('click', async (e) => {
     if ((d.closedFrom && !d.closedTo) || (!d.closedFrom && d.closedTo)){ toast('กรุณากรอกวันที่ปิด-เปิดให้ครบทั้งสองช่อง หรือเว้นว่างทั้งคู่'); return; }
     if (d.closedFrom && d.closedTo && d.closedTo < d.closedFrom){ toast('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่มปิด'); return; }
     const b = branchById(S.adminEditId);
-    const r = await apiCall('saveBranch', { id:S.adminEditId, closedFrom:d.closedFrom||undefined, closedTo:d.closedTo||undefined });
+    const r = await apiCall('saveBranch', { id:S.adminEditId, closedFrom:d.closedFrom||null, closedTo:d.closedTo||null });
     if (r === null && apiConfigured){ toast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     if (b){
       if (d.closedFrom && d.closedTo){ b.closedFrom = d.closedFrom; b.closedTo = d.closedTo; }
