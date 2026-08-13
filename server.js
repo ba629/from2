@@ -25,6 +25,11 @@ app.get('/booking', (_req, res) => {
   res.sendFile(path.join(__dirname, 'booking.html'));
 });
 
+// ✨ Route สำหรับเปิดหน้าจองคิว SUITCUBE (ระบบใหม่)
+app.get('/queue', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'suitcube_booking.html'));
+});
+
 const uploadDir = path.join(__dirname, 'uploads');
 fs.mkdirSync(uploadDir, { recursive: true });
 
@@ -54,6 +59,11 @@ const larkClient = new lark.Client({
   domain: lark.Domain.Lark,
   loggerLevel: lark.LoggerLevel.warn
 });
+
+// ✨ เพิ่มระบบจองคิว SUITCUBE — endpoint ใหม่ POST /api/suitcube
+// ใช้ larkClient ตัวเดียวกับด้านบน ไม่กระทบโค้ดเดิม (/submit-sales, /api/booking ฯลฯ) เลย
+const registerSuitcubeApi = require('./suitcube-api');
+registerSuitcubeApi(app, larkClient);
 
 // ✨ resolve wiki token → real bitable app_token
 let cachedAppToken = null;
@@ -569,6 +579,8 @@ app.listen(PORT, () => {
   console.log('Useful endpoints:');
   console.log(`  GET  /               — sales form page`);
   console.log(`  GET  /booking        — booking page`);
+  console.log(`  GET  /queue          — SUITCUBE queue booking page`);
+  console.log(`  POST /api/suitcube   — SUITCUBE queue booking API`);
   console.log(`  GET  /health         — health check`);
   console.log(`  GET  /test-resolve   — verify app token resolution`);
   console.log(`  GET  /test-schema    — list all table fields + primary key`);
