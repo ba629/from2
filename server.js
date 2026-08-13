@@ -61,9 +61,9 @@ const larkClient = new lark.Client({
 });
 
 // ✨ เพิ่มระบบจองคิว SUITCUBE — endpoint ใหม่ POST /api/suitcube
-// ใช้ larkClient ตัวเดียวกับด้านบน ไม่กระทบโค้ดเดิม (/submit-sales, /api/booking ฯลฯ) เลย
+// ใช้แอป Lark ของตัวเอง (แยกจาก larkClient ด้านบนที่ /submit-sales ใช้อยู่) — ไม่กระทบโค้ดเดิมเลย
 const registerSuitcubeApi = require('./suitcube-api');
-registerSuitcubeApi(app, larkClient);
+registerSuitcubeApi(app);
 
 // ✨ resolve wiki token → real bitable app_token
 let cachedAppToken = null;
