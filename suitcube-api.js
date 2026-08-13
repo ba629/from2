@@ -5,12 +5,17 @@
  * รับ { action, ...payload } แล้วไปอ่าน/เขียน Lark Base 3 ตาราง
  * (Branches, Services, Bookings — คนละ Base App กันตามที่ตั้งไว้)
  *
+ * ใช้ Lark App "ของตัวเอง" แยกต่างหากจากแอปที่ /submit-sales ใช้อยู่เดิม
+ * (จะได้ไม่ต้องไปยุ่งกับแอปเดิมที่ทำงานอยู่แล้ว เลือกได้อิสระว่าจะใช้แอปไหน)
+ *
  * วิธีใช้ใน server.js เดิม (ไม่ต้องแก้โค้ดเดิมเลย แค่เพิ่ม 2 บรรทัด):
  *
  *   const registerSuitcubeApi = require('./suitcube-api');
- *   registerSuitcubeApi(app, larkClient);
+ *   registerSuitcubeApi(app);
  *
- * ต้องมี env vars เพิ่มเติมนี้ใน .env (นอกเหนือจาก LARK_APP_ID / LARK_APP_SECRET เดิม):
+ * ต้องมี env vars เพิ่มเติมนี้ใน .env (แยกจาก LARK_APP_ID / LARK_APP_SECRET เดิมโดยสิ้นเชิง):
+ *   LARK_SUITCUBE_APP_ID=...       ← App ID ของแอปที่จะใช้กับระบบจองคิว (เช่น "น้องเสียงใส")
+ *   LARK_SUITCUBE_APP_SECRET=...   ← App Secret ของแอปตัวเดียวกัน
  *   LARK_BOOKINGS_APP_TOKEN=...
  *   LARK_BOOKINGS_TABLE_ID=...
  *   LARK_BRANCHES_APP_TOKEN=...
@@ -20,7 +25,19 @@
  * ─────────────────────────────────────────────
  */
 
-module.exports = function registerSuitcubeApi(app, larkClient) {
+const lark = require('@larksuiteoapi/node-sdk');
+
+module.exports = function registerSuitcubeApi(app, larkClientOverride) {
+  // ใช้ larkClient ที่ส่งเข้ามา (ถ้ามี) หรือสร้างตัวใหม่ของตัวเองจาก LARK_SUITCUBE_APP_ID/SECRET
+  // ปกติแนะนำให้ "ไม่ส่ง" larkClientOverride เข้ามา เพื่อให้ระบบจองคิวใช้แอป Lark ของตัวเอง
+  // แยกจากแอปที่ /submit-sales ใช้อยู่เดิมโดยสิ้นเชิง
+  const larkClient = larkClientOverride || new lark.Client({
+    appId: process.env.LARK_SUITCUBE_APP_ID,
+    appSecret: process.env.LARK_SUITCUBE_APP_SECRET,
+    domain: lark.Domain.Lark,
+    loggerLevel: lark.LoggerLevel.warn,
+  });
+
   const TABLES = {
     bookings: { appToken: process.env.LARK_BOOKINGS_APP_TOKEN, tableId: process.env.LARK_BOOKINGS_TABLE_ID },
     branches: { appToken: process.env.LARK_BRANCHES_APP_TOKEN, tableId: process.env.LARK_BRANCHES_TABLE_ID },
@@ -28,6 +45,10 @@ module.exports = function registerSuitcubeApi(app, larkClient) {
   };
 
   function checkTablesEnv() {
+    if (!larkClientOverride) {
+      if (!process.env.LARK_SUITCUBE_APP_ID) throw new Error('ยังไม่ได้ตั้งค่า .env: LARK_SUITCUBE_APP_ID');
+      if (!process.env.LARK_SUITCUBE_APP_SECRET) throw new Error('ยังไม่ได้ตั้งค่า .env: LARK_SUITCUBE_APP_SECRET');
+    }
     const missing = [];
     for (const [key, cfg] of Object.entries(TABLES)) {
       if (!cfg.appToken) missing.push(`LARK_${key.toUpperCase()}_APP_TOKEN`);
