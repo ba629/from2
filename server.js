@@ -14,8 +14,15 @@ app.use(cors({ origin: process.env.ALLOWED_ORIGIN || '*' }));
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// ===== Page Routes =====
+
 app.get('/', (_req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// ✨ Route สำหรับเปิดหน้าฟอร์มจองคิว
+app.get('/booking', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'booking.html'));
 });
 
 const uploadDir = path.join(__dirname, 'uploads');
@@ -347,7 +354,7 @@ function sanitizeFields(fields, schema) {
   return out;
 }
 
-// ===== Routes =====
+// ===== API Routes =====
 
 app.get('/health', (_req, res) => {
   res.json({ ok: true, message: 'server พร้อมใช้งาน' });
@@ -420,6 +427,7 @@ app.get('/test-create', async (_req, res) => {
   }
 });
 
+// ── API บันทึกยอดขาย (ระบบเดิม) ──
 app.post('/submit-sales', upload.any(), async (req, res) => {
   console.log('\n========================================');
   console.log('=== SUBMIT-SALES START ===');
@@ -500,9 +508,67 @@ app.post('/submit-sales', upload.any(), async (req, res) => {
   }
 });
 
+// ── API บันทึกการจองคิว (ระบบใหม่) ──
+app.post('/api/booking', async (req, res) => {
+  console.log('\n========================================');
+  console.log('=== BOOKING SUBMIT START ===');
+  console.log('========================================');
+
+  try {
+    checkEnv();
+
+    const { branch, service, date, time, name, phone, guestCount, note } = req.body;
+    const bookingId = 'SUIT-' + Math.floor(1000 + Math.random() * 9000);
+
+    const appToken = await resolveAppToken();
+    // 💡 ถ้ามีการแยก Table ID สำหรับการจองคิวใน .env ให้ใช้ LARK_BOOKING_TABLE_ID (ถ้าไม่มีจะใช้ LARK_TABLE_ID เดิม)
+    const bookingTableId = process.env.LARK_BOOKING_TABLE_ID || process.env.LARK_TABLE_ID;
+
+    const bookingFields = {
+      "Booking ID": bookingId,
+      "Branch": branch || '',
+      "Service": service || '',
+      "Booking Date": dateToTimestamp(date),
+      "Time Slot": time || '',
+      "Customer Name": name || '',
+      "Phone": phone || '',
+      "Guest Count": Number(guestCount) || 1,
+      "Note": note || '-',
+      "Status": "Confirm"
+    };
+
+    console.log('📨 Sending booking to Lark Base:', bookingFields);
+
+    const createRes = await larkClient.bitable.appTableRecord.create({
+      path: {
+        app_token: appToken,
+        table_id: bookingTableId
+      },
+      data: { fields: bookingFields }
+    });
+
+    if (createRes.code && createRes.code !== 0) {
+      console.error('❌ Lark Base rejected booking:', createRes);
+      return res.status(400).json({
+        success: false,
+        message: `Lark Error: ${createRes.msg}`
+      });
+    }
+
+    console.log('✅ BOOKING SUCCESS ID:', bookingId);
+    res.json({ success: true, bookingId: bookingId });
+
+  } catch (err) {
+    console.error('❌ BOOKING ERROR:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running: http://localhost:${PORT}`);
   console.log('Useful endpoints:');
+  console.log(`  GET  /               — sales form page`);
+  console.log(`  GET  /booking        — booking page`);
   console.log(`  GET  /health         — health check`);
   console.log(`  GET  /test-resolve   — verify app token resolution`);
   console.log(`  GET  /test-schema    — list all table fields + primary key`);
