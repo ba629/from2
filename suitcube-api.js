@@ -134,12 +134,58 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   const SERVICE_STR_FIELDS = ['id', 'name', 'nameEn', 'nameZh', 'desc', 'descEn', 'descZh', 'ico'];
   const BOOKING_STR_FIELDS = ['code', 'branchId', 'serviceId', 'time', 'name', 'phone', 'note', 'status'];
 
+  const FIELD_ALIASES = {
+    id: ['id', 'ID', 'Branch ID', 'Service ID', 'Branch Code', 'Service Code', 'branch_id', 'service_id', 'รหัส', 'รหัสสาขา', 'รหัสบริการ'],
+    name: ['name', 'Name', 'Branch', 'Service', 'Branch Name', 'Service Name', 'Branch Name (TH)', 'Service Name (TH)', 'ชื่อ', 'ชื่อสาขา', 'ชื่อบริการ'],
+    nameEn: ['nameEn', 'Name EN', 'English Name', 'ชื่อภาษาอังกฤษ'],
+    nameZh: ['nameZh', 'Name ZH', 'Chinese Name', 'ชื่อภาษาจีน'],
+    area: ['area', 'Area', 'Region', 'Zone', 'พื้นที่', 'ภูมิภาค', 'โซน', 'ประเภทสาขา'],
+    district: ['district', 'District', 'เขต/อำเภอ', 'เขต', 'อำเภอ'],
+    loc: ['loc', 'Location', 'Address', 'ตำแหน่ง', 'ที่อยู่'],
+    map: ['map', 'Map', 'Map URL', 'Google Maps', 'ลิงก์แผนที่'],
+    photo: ['photo', 'Photo', 'Image', 'รูปภาพ'],
+  };
+
+  function larkText(value) {
+    if (value === undefined || value === null) return '';
+    if (Array.isArray(value)) return value.map(larkText).filter(Boolean).join(' ').trim();
+    if (typeof value === 'object') return larkText(value.text ?? value.name ?? value.value ?? value.label ?? value.link ?? '');
+    return String(value).trim();
+  }
+
+  function fieldText(fields, key) {
+    const aliases = FIELD_ALIASES[key] || [key];
+    for (const name of aliases) {
+      const value = larkText(fields[name]);
+      if (value) return value;
+    }
+    return '';
+  }
+
+  function normalizeArea(value) {
+    const area = larkText(value).toLowerCase().replace(/\s+/g, ' ').trim();
+    if (area === 'bkk' || area.includes('bangkok') || area.includes('กรุงเทพ') || area.includes('ปริมณฑล')) return 'bkk';
+    if (area === 'up' || area.includes('upcountry') || area.includes('province') || area.includes('ต่างจังหวัด')) return 'up';
+    return area;
+  }
+
+  function larkBoolean(value) {
+    if (typeof value === 'boolean') return value;
+    const text = larkText(value).toLowerCase();
+    return ['true', '1', 'yes', 'on', 'ปิด'].includes(text);
+  }
+
   function branchFromRecord(rec) {
     const f = rec.fields || {};
     const out = {};
-    BRANCH_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
-    out.closed = !!f.closed;
-    if (f.hours) { try { out.hours = JSON.parse(f.hours); } catch (e) { /* ignore malformed */ } }
+    BRANCH_STR_FIELDS.forEach((k) => {
+      const value = fieldText(f, k);
+      if (value) out[k] = value;
+    });
+    out.area = normalizeArea(out.area);
+    out.closed = larkBoolean(f.closed ?? f.Closed ?? f['ปิดรับจอง']);
+    if (Array.isArray(f.hours)) out.hours = f.hours;
+    else if (f.hours) { try { out.hours = JSON.parse(larkText(f.hours)); } catch (e) { /* ignore malformed */ } }
     const cf = tsToDateStr(f.closedFrom), ct = tsToDateStr(f.closedTo);
     if (cf) out.closedFrom = cf;
     if (ct) out.closedTo = ct;
@@ -150,7 +196,10 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   function serviceFromRecord(rec) {
     const f = rec.fields || {};
     const out = {};
-    SERVICE_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
+    SERVICE_STR_FIELDS.forEach((k) => {
+      const value = fieldText(f, k);
+      if (value) out[k] = value;
+    });
     out.mins = Number(f.mins) || 0;
     out._recordId = rec.record_id;
     return out;
@@ -203,17 +252,19 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   const handlers = {
     async listBranches() {
       const items = await listRecords('branches');
-      return { branches: items.map(branchFromRecord) };
+      // Lark Base มักมีแถวเปล่าค้างอยู่ ห้ามส่งแถวเหล่านั้นไปแทนข้อมูลตั้งต้นของหน้าเว็บ
+      const branches = items.map(branchFromRecord).filter((b) => b.id && b.name && ['bkk', 'up'].includes(b.area));
+      return { branches };
     },
 
     async listServices() {
       const items = await listRecords('services');
-      return { services: items.map(serviceFromRecord) };
+      return { services: items.map(serviceFromRecord).filter((s) => s.id && s.name) };
     },
 
     async listBookings() {
       const items = await listRecords('bookings');
-      return { bookings: items.map(bookingFromRecord) };
+      return { bookings: items.map(bookingFromRecord).filter((b) => b.code && b.branchId && b.serviceId) };
     },
 
     async createBooking(payload) {
