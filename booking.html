@@ -399,7 +399,6 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
     <select class="nav__lang" id="navLang">
       <option value="th">TH</option>
       <option value="en">EN</option>
-      <option value="zh">中</option>
     </select>
     <button class="nav__btn" id="navMine">คิวของฉัน</button>
   </div>
@@ -550,20 +549,20 @@ const T = {
   heroTitle:         { th:'จองคิวเข้ารับบริการ', en:'Book Your Appointment', zh:'预约到店服务' },
   heroSub:           { th:'งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ', en:'Bespoke tailoring, made to measure', zh:'定制西装工艺，为您量身打造' },
   chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch', zh:'选择方便的分店' },
-  branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่างและช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
+  branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
   areaBkk:           { th:'กรุงเทพฯ & ปริมณฑล', en:'Bangkok & Vicinity', zh:'曼谷及周边' },
   areaUp:            { th:'ต่างจังหวัด', en:'Upcountry', zh:'外府' },
   walkin:            { th:'ระบบการจองสร้างขึ้นเพื่ออำนวยความสะดวกให้กับลูกค้า หากเวลาในช่วงดังกล่าวเต็ม ลูกค้ายังสามารถ Walk-in เพื่อรับบริการได้ตามปกติ',
                         en:'This booking system is here for your convenience. If a time slot is full, you can still walk in for service as usual.',
                         zh:'预约系统旨在为顾客提供便利，如所需时段已满，顾客仍可现场排队（Walk-in）正常接受服务' },
-  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, ราชพฤกษ์', en:'Search branch, e.g. Siam, Ratchapruek', zh:'搜索分店，例如 暹罗、拉查帕' },
+  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, พระรามสาม', en:'Search branch, e.g. Siam, Rama 3', zh:'搜索分店，例如 暹罗、拉查帕' },
   noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
   noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
-  whatService:       { th:'ต้องการใช้บริการอะไร', en:'What service would you like?', zh:'需要什么服务' },
-  serviceSub:        { th:name=>`ที่สาขา${name} · เวลาที่ใช้จะกำหนดช่วงคิวให้อัตโนมัติ`, en:name=>`At ${name} · the duration sets your queue slot automatically`, zh:name=>`于${name}分店 · 服务时长将自动决定排队时段` },
+  whatService:       { th:'เลือกบริการสำหรับคุณ', en:'Choose Your Service', zh:'需要什么服务' },
+  serviceSub:        { th:name=>`ที่สาขา${name} · เวลาที่ใช้เข้ารับบริการ จะกำหนดช่วงเวลาคิวให้อัตโนมัติตามบริการที่คุณเลือก`, en:name=>`At ${name} · Your appointment time will be automatically scheduled based on the service you select.`, zh:name=>`于${name}分店 · 服务时长将自动决定排队时段` },
   min:               { th:m=>`${m} นาที`, en:m=>`${m} min`, zh:m=>`${m} 分钟` },
   detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
-  peopleCount:       { th:'จำนวนคน', en:'Number of people', zh:'人数' },
+  peopleCount:       { th:'จำนวนผู้เข้ารับบริการ', en:'Number of people', zh:'人数' },
   selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ${dur} เป็นเวลาโดยประมาณ`, en:(name,dur)=>`Selected service: ${name}, approx. ${dur}`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
   chooseDatetime:    { th:'เลือกวันและเวลา', en:'Choose date & time', zh:'选择日期与时间' },
   datetimeSub:       { th:(b,s,m)=>`${b} · ${s} (${m} นาที)`, en:(b,s,m)=>`${b} · ${s} (${m} min)`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
@@ -582,7 +581,7 @@ const T = {
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
   detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
   fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
-  namePh:            { th:'เช่น ภูมิรินทร์ ใจดี', en:'e.g. John Doe', zh:'例如：李明' },
+  namePh:            { th:'', en:'e.g. John Doe', zh:'例如：李明' },
   nameErr:           { th:'กรุณากรอกชื่อผู้จอง', en:'Please enter your name', zh:'请输入姓名' },
   phone:             { th:'เบอร์โทรศัพท์', en:'Phone number', zh:'电话号码' },
   phoneErr:          { th:'กรอกเบอร์ 9–10 หลัก ขึ้นต้นด้วย 0', en:'Enter a 9–10 digit number starting with 0', zh:'请输入以 0 开头的 9–10 位数字' },
@@ -600,7 +599,8 @@ const T = {
   kAppt:             { th:'นัดหมาย', en:'Appointment', zh:'预约时间' },
   kStatus:           { th:'สถานะ', en:'Status', zh:'状态' },
   takesAbout:        { th:m=>`ใช้เวลาประมาณ ${m} นาที`, en:m=>`Takes about ${m} min`, zh:m=>`约需 ${m} 分钟` },
-  reviewNote:        { th:'กรณี Walk-in หรือลูกค้ามาไม่ตรงเวลาที่ได้จองไว้ หากพนักงานกำลังให้บริการลูกค้าท่านอื่นอยู่ อาจมีระยะเวลารอคิวเล็กน้อย โดยพนักงานจะรีบเข้ามาดูแลคุณลูกค้าโดยเร็วที่สุดค่ะ',
+  reviewNote:        { th:'เมื่อมาถึงร้าน แจ้งพนักงานว่ามีการจองคิวมา พนักงานจะเตรียมบริการตามช่วงเวลาที่จองไว้ หากมีลูกค้าก่อนหน้าที่อยู่ระหว่างรับบริการอาจใช้เวลารอเล็กน้อย <br>
+                          สำหรับ Walk-in หรือมาไม่ตรงเวลาที่จองไว้ อาจมีระยะเวลารอคิวเพิ่มเติม โดยพนักงานจะรีบเข้ามาดูแลท่านโดยเร็วที่สุด',
                         en:'For walk-ins, or if you arrive outside your booked time, staff may be assisting another customer and there could be a short wait. Our team will attend to you as quickly as possible.',
                         zh:'如为现场排队（Walk-in），或您到店时间与预约时段不符，若工作人员正在为其他顾客服务，可能需要稍作等候，我们会尽快为您提供服务' },
   queueCode:         { th:'รหัสคิว', en:'Queue code', zh:'排队号码' },
@@ -609,7 +609,7 @@ const T = {
   addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
   cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
   doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
-  doneSub:           { th:'แสดงรหัสคิวนี้กับพนักงานเมื่อถึงสาขา', en:'Show this code to staff when you arrive', zh:'到店后请出示此号码给工作人员' },
+  doneSub:           { th:'แสดงคิวกับพนักงานเมื่อถึงสาขา', en:'Show this code to staff when you arrive', zh:'到店后请出示此号码给工作人员' },
   storageFail:       { th:'อุปกรณ์นี้บันทึกคิวไว้ไม่ได้ กรุณาบันทึกภาพหน้าจอไว้เป็นหลักฐาน', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'此设备无法保存预约，请截图作为凭证' },
   myBookings:        { th:'คิวของฉัน', en:'My bookings', zh:'我的预约' },
   footerContact:     { th:'ติดต่อเรา', en:'Contact us', zh:'联系我们' },
