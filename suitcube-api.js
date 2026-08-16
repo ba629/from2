@@ -390,7 +390,19 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
 
     async listServices() {
       const items = await listRecords('services');
-      return { services: await Promise.all(items.map(serviceFromRecord)) };
+      const raw = await Promise.all(items.map(serviceFromRecord));
+      const seen = new Set();
+      const services = [];
+      for (const s of raw) {
+        const idKey = s.id ? `id:${String(s.id)}` : '';
+        const nameKey = `name:${String(s.name||'').trim().toLowerCase()}|nameEn:${String(s.nameEn||'').trim().toLowerCase()}|mins:${Number(s.mins)||0}`;
+        const key = idKey || nameKey;
+        if (seen.has(key) || seen.has(nameKey)) continue;
+        seen.add(key);
+        seen.add(nameKey);
+        services.push(s);
+      }
+      return { services };
     },
 
     async listBookings() {
