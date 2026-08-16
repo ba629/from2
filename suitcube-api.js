@@ -82,25 +82,28 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     },
   };
 
-  // แปลงชื่อฟิลด์ฝั่งโค้ด → ชื่อคอลัมน์จริงใน Lark (ตัดฟิลด์ที่ map เป็น null ทิ้ง)
-  function toLarkFields(tableKey, fields) {
-    const map = FIELD_MAP[tableKey];
+  // แปลงชื่อฟิลด์ฝั่งโค้ด → ชื่อคอลัมน์จริงใน Lark (ตัดฟิลด์ที่ตารางไม่มีทิ้ง)
+  async function toLarkFields(tableKey, fields) {
     const out = {};
+    const skipped = [];
     for (const [k, v] of Object.entries(fields)) {
-      const larkName = map[k];
-      if (!larkName) continue; // null หรือไม่มีใน map = ตารางไม่มีคอลัมน์นี้ ข้ามไป
+      const larkName = await resolveFieldName(tableKey, k);
+      if (!larkName) { skipped.push(k); continue; }
       out[larkName] = v;
+    }
+    if (skipped.length) {
+      console.log(`[suitcube-api] ⚠️  ตาราง ${tableKey} ไม่มีคอลัมน์: ${skipped.join(', ')} (ข้ามไป)`);
     }
     return out;
   }
 
   // แปลงกลับ: ชื่อคอลัมน์จริงใน Lark → ชื่อฟิลด์ฝั่งโค้ด
-  function fromLarkFields(tableKey, larkFields) {
-    const map = FIELD_MAP[tableKey];
+  async function fromLarkFields(tableKey, larkFields, codeNames) {
     const out = {};
-    for (const [codeName, larkName] of Object.entries(map)) {
-      if (!larkName) continue;
-      if (larkFields && larkFields[larkName] !== undefined) out[codeName] = larkFields[larkName];
+    if (!larkFields) return out;
+    for (const codeName of codeNames) {
+      const larkName = await resolveFieldName(tableKey, codeName);
+      if (larkName && larkFields[larkName] !== undefined) out[codeName] = larkFields[larkName];
     }
     return out;
   }
@@ -137,6 +140,45 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   // ═══════════════════════════════════════════════
   // ตัวช่วยเรียก Lark Bitable API แบบทั่วไป (ใช้ได้ทั้ง 3 ตาราง)
   // ═══════════════════════════════════════════════
+
+  /* ═══════════════════════════════════════════════
+     จับคู่ชื่อคอลัมน์อัตโนมัติ
+     ═══════════════════════════════════════════════
+     อ่านชื่อคอลัมน์จริงจาก Lark มาเทียบกับชื่อที่โค้ดใช้ โดยไม่สนใจ
+     ตัวพิมพ์เล็ก-ใหญ่ / เว้นวรรค / ขีดล่าง
+     เช่น "Created At", "createdAt", "created_at", "CREATED AT" → ถือว่าตรงกันหมด
+     ทำให้ไม่ต้องมานั่งแก้ชื่อให้ตรงเป๊ะทีละตัว
+     ถ้าจับคู่อัตโนมัติไม่ได้ ค่อยไปดู FIELD_MAP ด้านบนเป็นตัวสำรอง
+     ═══════════════════════════════════════════════ */
+  const normalize = (s) => String(s).toLowerCase().replace(/[\s_\-]/g, '');
+  const schemaCache = {}; // { tableKey: { normalizedName: realLarkName } }
+
+  async function getFieldSchema(tableKey) {
+    if (schemaCache[tableKey]) return schemaCache[tableKey];
+    const { appToken, tableId } = TABLES[tableKey];
+    const res = await larkClient.bitable.appTableField.list({
+      path: { app_token: appToken, table_id: tableId },
+      params: { page_size: 100 },
+    });
+    const map = {};
+    (res.data?.items || []).forEach((f) => { map[normalize(f.field_name)] = f.field_name; });
+    schemaCache[tableKey] = map;
+    console.log(`[suitcube-api] โหลด schema ${tableKey}: ${Object.values(map).join(' | ')}`);
+    return map;
+  }
+
+  // หาชื่อคอลัมน์จริงใน Lark จากชื่อฟิลด์ฝั่งโค้ด
+  // ลำดับ: (1) จับคู่อัตโนมัติจาก schema จริง (2) ใช้ alias ใน FIELD_MAP (3) หาไม่เจอ = null
+  async function resolveFieldName(tableKey, codeName) {
+    const schema = await getFieldSchema(tableKey);
+    // (1) ชื่อตรงกันแบบ normalize
+    if (schema[normalize(codeName)]) return schema[normalize(codeName)];
+    // (2) ลองใช้ alias ที่ตั้งไว้ใน FIELD_MAP
+    const alias = FIELD_MAP[tableKey] && FIELD_MAP[tableKey][codeName];
+    if (alias && schema[normalize(alias)]) return schema[normalize(alias)];
+    return null;
+  }
+
   async function listRecords(tableKey) {
     const { appToken, tableId } = TABLES[tableKey];
     let items = [];
@@ -154,7 +196,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
 
   async function findRecordByField(tableKey, fieldName, value) {
     const items = await listRecords(tableKey);
-    const larkName = FIELD_MAP[tableKey][fieldName] || fieldName;
+    const larkName = (await resolveFieldName(tableKey, fieldName)) || fieldName;
     return items.find((it) => it.fields?.[larkName] === value);
   }
 
@@ -162,7 +204,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     const { appToken, tableId } = TABLES[tableKey];
     const res = await larkClient.bitable.appTableRecord.create({
       path: { app_token: appToken, table_id: tableId },
-      data: { fields: toLarkFields(tableKey, fields) },
+      data: { fields: await toLarkFields(tableKey, fields) },
     });
     if (res.code && res.code !== 0) throw new Error(`Lark create failed (${tableKey}): ${res.msg}`);
     return res.data.record;
@@ -172,7 +214,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     const { appToken, tableId } = TABLES[tableKey];
     const res = await larkClient.bitable.appTableRecord.update({
       path: { app_token: appToken, table_id: tableId, record_id: recordId },
-      data: { fields: toLarkFields(tableKey, fields) },
+      data: { fields: await toLarkFields(tableKey, fields) },
     });
     if (res.code && res.code !== 0) throw new Error(`Lark update failed (${tableKey}): ${res.msg}`);
     return res.data.record;
@@ -196,8 +238,9 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   const SERVICE_STR_FIELDS = ['id', 'name', 'nameEn', 'nameZh', 'desc', 'descEn', 'descZh', 'ico'];
   const BOOKING_STR_FIELDS = ['code', 'branchId', 'serviceId', 'time', 'name', 'phone', 'note', 'status'];
 
-  function branchFromRecord(rec) {
-    const f = fromLarkFields('branches', rec.fields);
+  async function branchFromRecord(rec) {
+    const f = await fromLarkFields('branches', rec.fields,
+      [...BRANCH_STR_FIELDS, 'closed', 'hours', 'closedFrom', 'closedTo']);
     const out = {};
     BRANCH_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
     out.closed = !!f.closed;
@@ -209,8 +252,8 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     return out;
   }
 
-  function serviceFromRecord(rec) {
-    const f = fromLarkFields('services', rec.fields);
+  async function serviceFromRecord(rec) {
+    const f = await fromLarkFields('services', rec.fields, [...SERVICE_STR_FIELDS, 'mins']);
     const out = {};
     SERVICE_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
     out.mins = Number(f.mins) || 0;
@@ -218,8 +261,9 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     return out;
   }
 
-  function bookingFromRecord(rec) {
-    const f = fromLarkFields('bookings', rec.fields);
+  async function bookingFromRecord(rec) {
+    const f = await fromLarkFields('bookings', rec.fields,
+      [...BOOKING_STR_FIELDS, 'people', 'date', 'createdAt']);
     const out = {};
     BOOKING_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
     out.people = Number(f.people) || 1;
@@ -265,17 +309,17 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   const handlers = {
     async listBranches() {
       const items = await listRecords('branches');
-      return { branches: items.map(branchFromRecord) };
+      return { branches: await Promise.all(items.map(branchFromRecord)) };
     },
 
     async listServices() {
       const items = await listRecords('services');
-      return { services: items.map(serviceFromRecord) };
+      return { services: await Promise.all(items.map(serviceFromRecord)) };
     },
 
     async listBookings() {
       const items = await listRecords('bookings');
-      return { bookings: items.map(bookingFromRecord) };
+      return { bookings: await Promise.all(items.map(bookingFromRecord)) };
     },
 
     async createBooking(payload) {
@@ -289,7 +333,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
       fields.date = dateStrToTs(payload.date);
       fields.createdAt = payload.createdAt ? new Date(payload.createdAt).getTime() : Date.now();
       const rec = await createRecord('bookings', fields);
-      return { booking: bookingFromRecord(rec) };
+      return { booking: await bookingFromRecord(rec) };
     },
 
     async cancelBooking(payload) {
@@ -308,14 +352,14 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
         });
         const updated = await updateRecord('branches', rec.record_id, fields);
         // updateRecord ของ Lark คืนเฉพาะฟิลด์ที่แก้ บาง SDK คืนไม่ครบ — merge กับของเดิมให้ชัวร์
-        return { branch: branchFromRecord({ record_id: rec.record_id, fields: { ...rec.fields, ...fields, id: payload.id } }) };
+        return { branch: await branchFromRecord({ record_id: rec.record_id, fields: { ...rec.fields, ...(await toLarkFields('branches', fields)), ...(await toLarkFields('branches', { id: payload.id })) } }) };
       }
       // สร้างสาขาใหม่
       const id = 'b' + Date.now();
       const fields = buildFields({ ...payload, id }, BRANCH_STR_FIELDS, { hasClosed: true, hasHours: true, hasSchedule: true });
       fields.closed = false;
       const rec = await createRecord('branches', fields);
-      return { branch: branchFromRecord(rec) };
+      return { branch: await branchFromRecord(rec) };
     },
 
     async saveService(payload) {
@@ -324,12 +368,12 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
         if (!rec) throw new Error('ไม่พบบริการ id: ' + payload.id);
         const fields = buildFields(payload, SERVICE_STR_FIELDS.filter((k) => k !== 'id'), { hasMins: true });
         const updated = await updateRecord('services', rec.record_id, fields);
-        return { service: serviceFromRecord({ record_id: rec.record_id, fields: { ...rec.fields, ...fields, id: payload.id } }) };
+        return { service: await serviceFromRecord({ record_id: rec.record_id, fields: { ...rec.fields, ...(await toLarkFields('services', fields)), ...(await toLarkFields('services', { id: payload.id })) } }) };
       }
       const id = 's' + Date.now();
       const fields = buildFields({ ...payload, id }, SERVICE_STR_FIELDS, { hasMins: true });
       const rec = await createRecord('services', fields);
-      return { service: serviceFromRecord(rec) };
+      return { service: await serviceFromRecord(rec) };
     },
 
     async deleteService(payload) {
