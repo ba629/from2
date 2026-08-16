@@ -82,14 +82,16 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     },
   };
 
-  // แปลงชื่อฟิลด์ฝั่งโค้ด → ชื่อคอลัมน์จริงใน Lark (ตัดฟิลด์ที่ตารางไม่มีทิ้ง)
+  // แปลงชื่อฟิลด์ฝั่งโค้ด → ชื่อคอลัมน์จริงใน Lark + แปลงค่าให้ตรงชนิดคอลัมน์
   async function toLarkFields(tableKey, fields) {
     const out = {};
     const skipped = [];
     for (const [k, v] of Object.entries(fields)) {
-      const larkName = await resolveFieldName(tableKey, k);
-      if (!larkName) { skipped.push(k); continue; }
-      out[larkName] = v;
+      const fld = await resolveField(tableKey, k);
+      if (!fld) { skipped.push(k); continue; }
+      const coerced = coerceByType(v, fld.type);
+      if (coerced === undefined) continue;
+      out[fld.name] = coerced;
     }
     if (skipped.length) {
       console.log(`[suitcube-api] ⚠️  ตาราง ${tableKey} ไม่มีคอลัมน์: ${skipped.join(', ')} (ข้ามไป)`);
@@ -98,12 +100,17 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   }
 
   // แปลงกลับ: ชื่อคอลัมน์จริงใน Lark → ชื่อฟิลด์ฝั่งโค้ด
+  // (multi-select อ่านกลับมาเป็น array → คลี่เป็นค่าเดียวให้โค้ดใช้ต่อได้)
   async function fromLarkFields(tableKey, larkFields, codeNames) {
     const out = {};
     if (!larkFields) return out;
     for (const codeName of codeNames) {
-      const larkName = await resolveFieldName(tableKey, codeName);
-      if (larkName && larkFields[larkName] !== undefined) out[codeName] = larkFields[larkName];
+      const fld = await resolveField(tableKey, codeName);
+      if (!fld) continue;
+      let v = larkFields[fld.name];
+      if (v === undefined) continue;
+      if (Array.isArray(v) && fld.type === 4) v = v.length ? String(v[0]) : '';
+      out[codeName] = v;
     }
     return out;
   }
@@ -126,9 +133,31 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   // ═══════════════════════════════════════════════
   // ตัวช่วยแปลงวันที่ (Lark เก็บ Date เป็น timestamp มิลลิวินาที)
   // ═══════════════════════════════════════════════
+  // แปลงค่าที่อ่านจาก Lark ให้เป็น timestamp ตัวเลข
+  // รองรับทั้ง number, ข้อความตัวเลข ("1787184000000"), และข้อความวันที่ ("2026-08-20")
+  // เผื่อกรณีคอลัมน์ถูกตั้งเป็นชนิด Text แทน DateTime
+  function toTimestamp(v) {
+    if (v === undefined || v === null || v === '') return null;
+    if (typeof v === 'number') return Number.isFinite(v) ? v : null;
+    const s = String(v).trim();
+    if (/^\d+$/.test(s)) { const n = Number(s); return Number.isFinite(n) ? n : null; }
+    const t = new Date(s).getTime();
+    return Number.isFinite(t) ? t : null;
+  }
+
+  // อ่านค่า boolean แบบทนทาน (เผื่อคอลัมน์เป็น Text เก็บคำว่า "false"/"0")
+  function toBool(v) {
+    if (typeof v === 'boolean') return v;
+    if (v === undefined || v === null) return false;
+    const s = String(v).trim().toLowerCase();
+    return !(s === '' || s === 'false' || s === '0' || s === 'no');
+  }
+
   function tsToDateStr(ts) {
-    if (ts === undefined || ts === null) return undefined;
-    const d = new Date(ts);
+    const n = toTimestamp(ts);
+    if (n === null) return undefined;
+    const d = new Date(n);
+    if (isNaN(d.getTime())) return undefined;
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
   function dateStrToTs(s) {
@@ -151,7 +180,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
      ถ้าจับคู่อัตโนมัติไม่ได้ ค่อยไปดู FIELD_MAP ด้านบนเป็นตัวสำรอง
      ═══════════════════════════════════════════════ */
   const normalize = (s) => String(s).toLowerCase().replace(/[\s_\-]/g, '');
-  const schemaCache = {}; // { tableKey: { normalizedName: realLarkName } }
+  const schemaCache = {}; // { tableKey: { normalizedName: { name, type } } }
 
   async function getFieldSchema(tableKey) {
     if (schemaCache[tableKey]) return schemaCache[tableKey];
@@ -161,22 +190,68 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
       params: { page_size: 100 },
     });
     const map = {};
-    (res.data?.items || []).forEach((f) => { map[normalize(f.field_name)] = f.field_name; });
+    (res.data?.items || []).forEach((f) => {
+      map[normalize(f.field_name)] = { name: f.field_name, type: f.type };
+    });
     schemaCache[tableKey] = map;
-    console.log(`[suitcube-api] โหลด schema ${tableKey}: ${Object.values(map).join(' | ')}`);
+    const desc = Object.values(map).map((f) => `${f.name}(t${f.type})`).join(' | ');
+    console.log(`[suitcube-api] โหลด schema ${tableKey}: ${desc}`);
     return map;
   }
 
-  // หาชื่อคอลัมน์จริงใน Lark จากชื่อฟิลด์ฝั่งโค้ด
-  // ลำดับ: (1) จับคู่อัตโนมัติจาก schema จริง (2) ใช้ alias ใน FIELD_MAP (3) หาไม่เจอ = null
-  async function resolveFieldName(tableKey, codeName) {
+  // หาข้อมูลคอลัมน์จริงใน Lark จากชื่อฟิลด์ฝั่งโค้ด → { name, type } หรือ null
+  async function resolveField(tableKey, codeName) {
     const schema = await getFieldSchema(tableKey);
-    // (1) ชื่อตรงกันแบบ normalize
     if (schema[normalize(codeName)]) return schema[normalize(codeName)];
-    // (2) ลองใช้ alias ที่ตั้งไว้ใน FIELD_MAP
     const alias = FIELD_MAP[tableKey] && FIELD_MAP[tableKey][codeName];
     if (alias && schema[normalize(alias)]) return schema[normalize(alias)];
     return null;
+  }
+
+  async function resolveFieldName(tableKey, codeName) {
+    const f = await resolveField(tableKey, codeName);
+    return f ? f.name : null;
+  }
+
+  /* ═══════════════════════════════════════════════
+     แปลงค่าให้ตรงกับชนิดคอลัมน์จริงใน Lark
+     ═══════════════════════════════════════════════
+     Lark Bitable field types: 1=Text 2=Number 3=SingleSelect 4=MultiSelect
+     5=DateTime 7=Checkbox 11=User 13=Phone 15=Url 17=Attachment
+     ตั้งคอลัมน์เป็นชนิดไหนก็ได้ ระบบจะแปลงค่าให้เอง
+     ═══════════════════════════════════════════════ */
+  function coerceByType(val, type) {
+    if (val === null || val === undefined) return val;
+    switch (type) {
+      case 2: { // Number
+        if (val === '') return null;
+        const n = typeof val === 'number' ? val : Number(String(val).replace(/,/g, ''));
+        return Number.isFinite(n) ? n : null;
+      }
+      case 4: // MultiSelect — ต้องเป็น array เสมอ
+        if (Array.isArray(val)) return val.map(String);
+        if (val === '' ) return [];
+        return [String(val)];
+      case 5: { // DateTime — ต้องเป็น timestamp (ตัวเลข)
+        if (val === '' ) return null;
+        const ts = typeof val === 'number' ? val : new Date(val).getTime();
+        return Number.isFinite(ts) ? ts : null;
+      }
+      case 7: // Checkbox
+        return typeof val === 'boolean' ? val : (val === 'true' || val === '1' || val === 1);
+      case 15: // Url
+        if (val === '' ) return null;
+        return typeof val === 'string' ? { text: val, link: val } : val;
+      case 17: // Attachment
+        return Array.isArray(val) ? val : undefined;
+      case 3:  // SingleSelect
+      case 1:  // Text
+      case 13: // Phone
+      default:
+        if (Array.isArray(val)) return val.join(', ');
+        if (typeof val === 'boolean') return val ? 'true' : 'false';
+        return val === '' ? '' : String(val);
+    }
   }
 
   async function listRecords(tableKey) {
@@ -243,7 +318,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
       [...BRANCH_STR_FIELDS, 'closed', 'hours', 'closedFrom', 'closedTo']);
     const out = {};
     BRANCH_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
-    out.closed = !!f.closed;
+    out.closed = toBool(f.closed);
     if (f.hours) { try { out.hours = JSON.parse(f.hours); } catch (e) { /* ignore malformed */ } }
     const cf = tsToDateStr(f.closedFrom), ct = tsToDateStr(f.closedTo);
     if (cf) out.closedFrom = cf;
@@ -268,7 +343,8 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     BOOKING_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
     out.people = Number(f.people) || 1;
     out.date = tsToDateStr(f.date);
-    out.createdAt = f.createdAt ? new Date(f.createdAt).toISOString() : undefined;
+    const cts = toTimestamp(f.createdAt);
+    out.createdAt = cts !== null ? new Date(cts).toISOString() : undefined;
     out._recordId = rec.record_id;
     return out;
   }
