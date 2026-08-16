@@ -157,11 +157,76 @@ async function deleteRecord(tableKey, recordId) {
   });
 }
 
+const schemaCache = {};
+
+function normalizeFieldName(s) {
+  return String(s).toLowerCase().replace(/[\s_\-]/g, '');
+}
+
+async function getFieldSchema(tableKey) {
+  if (schemaCache[tableKey]) return schemaCache[tableKey];
+  const { appToken, tableId } = TABLES[tableKey];
+  const res = await larkClient.bitable.appTableField.list({
+    path: { app_token: appToken, table_id: tableId },
+    params: { page_size: 100 },
+  });
+  const map = {};
+  for (const f of (res.data?.items || [])) {
+    map[normalizeFieldName(f.field_name)] = { name: f.field_name, type: f.type };
+  }
+  schemaCache[tableKey] = map;
+  return map;
+}
+
+async function coerceFieldsForLark(tableKey, fields) {
+  const schema = await getFieldSchema(tableKey);
+  const out = {};
+  for (const [key, value] of Object.entries(fields)) {
+    const fld = schema[normalizeFieldName(key)];
+    if (!fld || value === undefined) continue;
+    switch (fld.type) {
+      case 2: {
+        if (value === '' || value === null) out[fld.name] = null;
+        else {
+          const n = Number(String(value).replace(/,/g, ''));
+          out[fld.name] = Number.isFinite(n) ? n : null;
+        }
+        break;
+      }
+      case 3:
+        out[fld.name] = Array.isArray(value) ? String(value[0] ?? '') : String(value ?? '');
+        break;
+      case 4:
+        out[fld.name] = Array.isArray(value) ? value.map(String) : (value === '' || value === null ? [] : [String(value)]);
+        break;
+      case 5: {
+        if (value === '' || value === null) out[fld.name] = null;
+        else if (typeof value === 'number') out[fld.name] = value;
+        else {
+          const ts = new Date(value).getTime();
+          out[fld.name] = Number.isFinite(ts) ? ts : null;
+        }
+        break;
+      }
+      case 7:
+        out[fld.name] = typeof value === 'boolean' ? value : ['true','1','yes'].includes(String(value).trim().toLowerCase());
+        break;
+      case 15:
+        out[fld.name] = typeof value === 'object' ? value : (value ? { text: String(value), link: String(value) } : null);
+        break;
+      default:
+        out[fld.name] = Array.isArray(value) ? value.map(String).join(', ') : (value === null ? '' : String(value));
+        break;
+    }
+  }
+  return out;
+}
+
 async function createRecord(tableKey, fields) {
   const { appToken, tableId } = TABLES[tableKey];
   const res = await larkClient.bitable.appTableRecord.create({
     path: { app_token: appToken, table_id: tableId },
-    data: { fields },
+    data: { fields: await coerceFieldsForLark(tableKey, fields) },
   });
   if (res.code && res.code !== 0) throw new Error(res.msg);
   return res.data.record;
@@ -188,6 +253,7 @@ function branchToFields(b) {
     district: b.district, districtEn: b.districtEn, districtZh: b.districtZh,
     loc: b.loc, locEn: b.locEn, locZh: b.locZh,
     map: b.map, area: b.area,
+    photo: b.photo || '',
     closed: false,
     hours: JSON.stringify(b.hours),
   };
