@@ -371,10 +371,11 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .arow__sched{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--brass-ink);background:var(--brass-tint);flex:none}
 .photoupload{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  height:110px;border-radius:var(--r-md);background:var(--surface-2);border:1.5px dashed var(--hairline);
+  width:100%;max-width:260px;aspect-ratio:4/3;border-radius:var(--r-md);
+  background:var(--surface-2);border:1.5px dashed var(--hairline);
   color:var(--brass-ink);font-size:13px;font-weight:500;cursor:pointer;
 }
-.photoprev{position:relative;height:110px;border-radius:var(--r-md);overflow:hidden}
+.photoprev{position:relative;width:100%;max-width:260px;aspect-ratio:4/3;border-radius:var(--r-md);overflow:hidden;background:var(--surface-2)}
 .photoprev img{width:100%;height:100%;object-fit:cover;display:block}
 .photoprev__x{
   position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;
@@ -390,7 +391,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 </head>
 <body>
 <div class="app">
-  <div class="topbar">SUITCUBE · PERSONALITY PEOPLE PLANET</div>
+  <div class="topbar">SUITCUBE · งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ</div>
   <div class="nav">
     <button class="nav__btn" id="navBack" aria-label="ย้อนกลับ">
       <svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 1L1.5 8l7 7"/></svg>
@@ -399,6 +400,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
     <select class="nav__lang" id="navLang">
       <option value="th">TH</option>
       <option value="en">EN</option>
+      <option value="zh">中</option>
     </select>
     <button class="nav__btn" id="navMine">คิวของฉัน</button>
   </div>
@@ -549,20 +551,20 @@ const T = {
   heroTitle:         { th:'จองคิวเข้ารับบริการ', en:'Book Your Appointment', zh:'预约到店服务' },
   heroSub:           { th:'งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ', en:'Bespoke tailoring, made to measure', zh:'定制西装工艺，为您量身打造' },
   chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch', zh:'选择方便的分店' },
-  branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
+  branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่างและช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
   areaBkk:           { th:'กรุงเทพฯ & ปริมณฑล', en:'Bangkok & Vicinity', zh:'曼谷及周边' },
   areaUp:            { th:'ต่างจังหวัด', en:'Upcountry', zh:'外府' },
   walkin:            { th:'ระบบการจองสร้างขึ้นเพื่ออำนวยความสะดวกให้กับลูกค้า หากเวลาในช่วงดังกล่าวเต็ม ลูกค้ายังสามารถ Walk-in เพื่อรับบริการได้ตามปกติ',
                         en:'This booking system is here for your convenience. If a time slot is full, you can still walk in for service as usual.',
                         zh:'预约系统旨在为顾客提供便利，如所需时段已满，顾客仍可现场排队（Walk-in）正常接受服务' },
-  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, พระรามสาม', en:'Search branch, e.g. Siam, Rama 3', zh:'搜索分店，例如 暹罗、拉查帕' },
+  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, ราชพฤกษ์', en:'Search branch, e.g. Siam, Ratchapruek', zh:'搜索分店，例如 暹罗、拉查帕' },
   noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
   noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
-  whatService:       { th:'เลือกบริการสำหรับคุณ', en:'Choose Your Service', zh:'需要什么服务' },
-  serviceSub:        { th:name=>`ที่สาขา${name} · เวลาที่ใช้เข้ารับบริการ จะกำหนดช่วงเวลาคิวให้อัตโนมัติตามบริการที่คุณเลือก`, en:name=>`At ${name} · Your appointment time will be automatically scheduled based on the service you select.`, zh:name=>`于${name}分店 · 服务时长将自动决定排队时段` },
+  whatService:       { th:'ต้องการใช้บริการอะไร', en:'What service would you like?', zh:'需要什么服务' },
+  serviceSub:        { th:name=>`ที่สาขา${name} · เวลาที่ใช้จะกำหนดช่วงคิวให้อัตโนมัติ`, en:name=>`At ${name} · the duration sets your queue slot automatically`, zh:name=>`于${name}分店 · 服务时长将自动决定排队时段` },
   min:               { th:m=>`${m} นาที`, en:m=>`${m} min`, zh:m=>`${m} 分钟` },
   detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
-  peopleCount:       { th:'จำนวนผู้เข้ารับบริการ', en:'Number of people', zh:'人数' },
+  peopleCount:       { th:'จำนวนคน', en:'Number of people', zh:'人数' },
   selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ${dur} เป็นเวลาโดยประมาณ`, en:(name,dur)=>`Selected service: ${name}, approx. ${dur}`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
   chooseDatetime:    { th:'เลือกวันและเวลา', en:'Choose date & time', zh:'选择日期与时间' },
   datetimeSub:       { th:(b,s,m)=>`${b} · ${s} (${m} นาที)`, en:(b,s,m)=>`${b} · ${s} (${m} min)`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
@@ -581,7 +583,7 @@ const T = {
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
   detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
   fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
-  namePh:            { th:'', en:'e.g. John Doe', zh:'例如：李明' },
+  namePh:            { th:'เช่น ภูมิรินทร์ ใจดี', en:'e.g. John Doe', zh:'例如：李明' },
   nameErr:           { th:'กรุณากรอกชื่อผู้จอง', en:'Please enter your name', zh:'请输入姓名' },
   phone:             { th:'เบอร์โทรศัพท์', en:'Phone number', zh:'电话号码' },
   phoneErr:          { th:'กรอกเบอร์ 9–10 หลัก ขึ้นต้นด้วย 0', en:'Enter a 9–10 digit number starting with 0', zh:'请输入以 0 开头的 9–10 位数字' },
@@ -599,19 +601,16 @@ const T = {
   kAppt:             { th:'นัดหมาย', en:'Appointment', zh:'预约时间' },
   kStatus:           { th:'สถานะ', en:'Status', zh:'状态' },
   takesAbout:        { th:m=>`ใช้เวลาประมาณ ${m} นาที`, en:m=>`Takes about ${m} min`, zh:m=>`约需 ${m} 分钟` },
-  reviewNote:        { th:`เมื่อมาถึงร้าน แจ้งพนักงานว่ามีการจองคิวมา พนักงานจะเตรียมบริการตามช่วงเวลาที่จองไว้ หากมีลูกค้าก่อนหน้าที่อยู่ระหว่างรับบริการอาจใช้เวลารอเล็กน้อย <br>
-                          สำหรับ Walk-in หรือมาไม่ตรงเวลาที่จองไว้ อาจมีระยะเวลารอคิวเพิ่มเติม โดยพนักงานจะรีบเข้ามาดูแลท่านโดยเร็วที่สุด`,
-                        en:`When you arrive, please let our staff know you have a booking. They will prepare your service for the time slot you reserved. If another customer is still being served, there may be a short wait. <br>
-                          For walk-ins, or if you arrive outside your booked time, the wait may be longer. Our team will attend to you as quickly as possible.`,
-                        zh:`到店后请告知工作人员您已预约，我们会按照您预约的时段为您安排服务。如前一位顾客仍在服务中，可能需要稍作等候。<br>
-                          如为现场排队（Walk-in），或您到店时间与预约时段不符，等候时间可能会延长，我们会尽快为您提供服务` },
+  reviewNote:        { th:'กรณี Walk-in หรือลูกค้ามาไม่ตรงเวลาที่ได้จองไว้ หากพนักงานกำลังให้บริการลูกค้าท่านอื่นอยู่ อาจมีระยะเวลารอคิวเล็กน้อย โดยพนักงานจะรีบเข้ามาดูแลคุณลูกค้าโดยเร็วที่สุดค่ะ',
+                        en:'For walk-ins, or if you arrive outside your booked time, staff may be assisting another customer and there could be a short wait. Our team will attend to you as quickly as possible.',
+                        zh:'如为现场排队（Walk-in），或您到店时间与预约时段不符，若工作人员正在为其他顾客服务，可能需要稍作等候，我们会尽快为您提供服务' },
   queueCode:         { th:'รหัสคิว', en:'Queue code', zh:'排队号码' },
   cancelled:         { th:'ยกเลิกแล้ว', en:'Cancelled', zh:'已取消' },
   openMap:           { th:'เปิดแผนที่', en:'Open map', zh:'打开地图' },
   addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
   cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
   doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
-  doneSub:           { th:'แสดงคิวกับพนักงานเมื่อถึงสาขา', en:'Show this code to staff when you arrive', zh:'到店后请出示此号码给工作人员' },
+  doneSub:           { th:'แสดงรหัสคิวนี้กับพนักงานเมื่อถึงสาขา', en:'Show this code to staff when you arrive', zh:'到店后请出示此号码给工作人员' },
   storageFail:       { th:'อุปกรณ์นี้บันทึกคิวไว้ไม่ได้ กรุณาบันทึกภาพหน้าจอไว้เป็นหลักฐาน', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'此设备无法保存预约，请截图作为凭证' },
   myBookings:        { th:'คิวของฉัน', en:'My bookings', zh:'我的预约' },
   footerContact:     { th:'ติดต่อเรา', en:'Contact us', zh:'联系我们' },
@@ -704,12 +703,7 @@ const branchById = id => BRANCHES.find(b => b.id === id);
 const serviceById = id => SERVICES.find(s => s.id === id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function hoursOf(branch, date){
-  const fallback = ['10:00','20:00'];
-  if (!branch || !Array.isArray(branch.hours)) return fallback;
-  const hours = branch.hours[date.getDay()];
-  return Array.isArray(hours) && hours.length >= 2 ? hours : fallback;
-}
+function hoursOf(branch, date){ return branch.hours[date.getDay()]; }
 
 function isBranchClosed(branch, dateStr){
   if (branch.closed) return true;
@@ -794,56 +788,6 @@ function saveBookingsLocal(){ if (!apiConfigured) lsSet(LS.bookings, bookings); 
 function saveBranchesLocal(){ if (!apiConfigured) lsSet(LS.branches, BRANCHES); }
 function saveServicesLocal(){ if (!apiConfigured) lsSet(LS.services, SERVICES); }
 
-// Lark Base อาจส่งค่า Single select/Rich text เป็น object หรือ array
-// และในตารางอาจมีแถวว่างที่ยังไม่มีข้อมูลจริง จึงต้องจัดรูปก่อนนำไปแสดง
-function larkText(value){
-  if (value === undefined || value === null) return '';
-  if (Array.isArray(value)) return value.map(larkText).filter(Boolean).join(' ').trim();
-  if (typeof value === 'object') return larkText(value.text ?? value.name ?? value.value ?? value.label ?? '');
-  return String(value).trim();
-}
-
-function normalizeArea(value){
-  const area = larkText(value).toLowerCase().replace(/\s+/g, ' ').trim();
-  if (!area) return '';
-  if (area === 'bkk' || area.includes('bangkok') || area.includes('กรุงเทพ') || area.includes('ปริมณฑล')) return 'bkk';
-  if (area === 'up' || area.includes('upcountry') || area.includes('province') || area.includes('ต่างจังหวัด')) return 'up';
-  return '';
-}
-
-function normalizeBranches(items){
-  if (!Array.isArray(items)) return [];
-  return items.map(raw => {
-    if (!raw || typeof raw !== 'object') return null;
-    const id = larkText(raw.id);
-    const seed = BRANCHES_SEED.find(b => b.id === id);
-    const name = larkText(raw.name) || seed?.name || '';
-    const area = normalizeArea(raw.area) || seed?.area || '';
-    if (!id || !name || !area) return null;
-    const validHours = Array.isArray(raw.hours) && raw.hours.length === 7;
-    return {
-      ...(seed || {}),
-      ...raw,
-      id,
-      name,
-      area,
-      hours: validHours ? raw.hours : (seed?.hours || every('10:00','20:00')),
-    };
-  }).filter(Boolean);
-}
-
-function normalizeServices(items){
-  if (!Array.isArray(items)) return [];
-  return items.map(raw => {
-    if (!raw || typeof raw !== 'object') return null;
-    const id = larkText(raw.id);
-    const seed = SERVICES_SEED.find(s => s.id === id);
-    const name = larkText(raw.name) || seed?.name || '';
-    if (!id || !name) return null;
-    return { ...(seed || {}), ...raw, id, name, mins:Number(raw.mins) || seed?.mins || 30 };
-  }).filter(Boolean);
-}
-
 async function loadBookings(){
   loadMyCodes();
   if (apiConfigured){
@@ -863,16 +807,12 @@ async function refreshBookings(){
 async function loadBranchesServices(){
   if (apiConfigured){
     const rb = await apiCall('listBranches');
-    const apiBranches = normalizeBranches(rb?.branches);
-    BRANCHES = apiBranches.length ? apiBranches : JSON.parse(JSON.stringify(BRANCHES_SEED));
+    BRANCHES = (rb && Array.isArray(rb.branches) && rb.branches.length) ? rb.branches : JSON.parse(JSON.stringify(BRANCHES_SEED));
     const rs = await apiCall('listServices');
-    const apiServices = normalizeServices(rs?.services);
-    SERVICES = apiServices.length ? apiServices : JSON.parse(JSON.stringify(SERVICES_SEED));
+    SERVICES = (rs && Array.isArray(rs.services) && rs.services.length) ? rs.services : JSON.parse(JSON.stringify(SERVICES_SEED));
   } else {
-    const localBranches = normalizeBranches(lsGet(LS.branches, null));
-    const localServices = normalizeServices(lsGet(LS.services, null));
-    BRANCHES = localBranches.length ? localBranches : JSON.parse(JSON.stringify(BRANCHES_SEED));
-    SERVICES = localServices.length ? localServices : JSON.parse(JSON.stringify(SERVICES_SEED));
+    BRANCHES = lsGet(LS.branches, null) || JSON.parse(JSON.stringify(BRANCHES_SEED));
+    SERVICES = lsGet(LS.services, null) || JSON.parse(JSON.stringify(SERVICES_SEED));
     if (!lsGet(LS.branches, null)) saveBranchesLocal();
     if (!lsGet(LS.services, null)) saveServicesLocal();
   }
@@ -1302,7 +1242,7 @@ function adminLogin(){
       <input id="f-pin" data-admink="adminPin" type="password" inputmode="numeric" value="${esc(S.adminPin)}" placeholder="••••" autocomplete="off">
       <p class="err">PIN ไม่ถูกต้อง</p>
     </div>
-    <div class="note">หน้านี้เป็นการป้องกันด้วย PIN ฝั่งหน้าเว็บ (client-side) กรุณาติดต่อ BA หากไม่ทราบรหัส </div>
+    <div class="note">หน้านี้เป็นการป้องกันด้วย PIN ฝั่งหน้าเว็บ (client-side) เพื่อความสะดวกในการสาธิตเท่านั้น ไม่ใช่ระบบรักษาความปลอดภัยจริง — สำหรับใช้งานจริงควรมีระบบยืนยันตัวตนฝั่งเซิร์ฟเวอร์</div>
   `;
 }
 
@@ -1784,22 +1724,34 @@ document.addEventListener('click', (e) => {
 });
 
 /* ── ไฟล์ปฏิทิน (.ics) ── */
-/* ── ประมวลผลรูปภาพสาขาที่อัปโหลด (ย่อขนาด + บีบอัด) ── */
+/* ── ประมวลผลรูปภาพสาขาที่อัปโหลด (ย่อขนาด + บีบอัด) ──
+   ปรับขนาด/คุณภาพอัตโนมัติจนกว่าไฟล์จะเล็กพอเก็บลง Lark ได้
+   (ช่องข้อความของ Lark มีขีดจำกัดความยาว รูปใหญ่เกินจะบันทึกไม่ผ่าน)   */
+const PHOTO_MAX_BYTES = 92000; // ~92 KB หลังแปลง base64 — เผื่อไว้ให้ปลอดภัย
+
 function processPhotoFile(file){
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
       const img = new Image();
       img.onload = () => {
-        const maxW = 480;
-        const scale = Math.min(1, maxW / img.width);
-        const w = Math.max(1, Math.round(img.width * scale));
-        const h = Math.max(1, Math.round(img.height * scale));
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', 0.72));
+        // ไล่ลองจากคมชัดสุดไปเล็กสุด หยุดทันทีที่ได้ขนาดที่พอดี
+        const attempts = [[700,0.80],[700,0.70],[600,0.78],[600,0.68],[480,0.72],[400,0.65]];
+        let last = null;
+        for (const [maxW, q] of attempts){
+          const scale = Math.min(1, maxW / img.width);
+          const w = Math.max(1, Math.round(img.width * scale));
+          const h = Math.max(1, Math.round(img.height * scale));
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          const dataUrl = canvas.toDataURL('image/jpeg', q);
+          last = dataUrl;
+          if (dataUrl.length <= PHOTO_MAX_BYTES) return resolve(dataUrl);
+        }
+        // ถ้ายังใหญ่เกินทุกระดับ ให้ใช้ตัวเล็กสุดที่ได้
+        resolve(last);
       };
       img.onerror = () => reject(new Error('image load failed'));
       img.src = reader.result;
