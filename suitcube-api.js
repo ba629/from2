@@ -44,6 +44,67 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     services: { appToken: process.env.LARK_SERVICES_APP_TOKEN, tableId: process.env.LARK_SERVICES_TABLE_ID },
   };
 
+  /* ═══════════════════════════════════════════════
+     แผนที่ชื่อคอลัมน์ (Field Name Mapping)
+     ═══════════════════════════════════════════════
+     ซ้ายมือ = ชื่อที่โค้ด/แอปใช้ | ขวามือ = ชื่อคอลัมน์จริงใน Lark Base
+     ถ้าคอลัมน์ใน Lark ชื่อตรงกับโค้ดอยู่แล้ว ใส่ชื่อเดิมซ้ำได้เลย
+     ถ้าตารางไม่มีคอลัมน์นั้น ให้ใส่ null → ระบบจะข้ามฟิลด์นั้นไปเลย ไม่ error
+     ═══════════════════════════════════════════════ */
+  const FIELD_MAP = {
+    bookings: {
+      code:      'Booking ID',
+      branchId:  'Branch',
+      serviceId: 'Service',
+      date:      'Booking Date',
+      time:      'Time Slot',
+      people:    'Pax',
+      name:      'Customer Name',
+      phone:     'Phone',
+      note:      'Note',
+      status:    'Status',
+      createdAt: 'Created At',   // ⚠️ ต้องสร้างคอลัมน์ชนิด Date ชื่อ "Created At" ในตาราง Bookings ก่อน
+                                 //    (ถ้าตั้งชื่อคอลัมน์เป็นอย่างอื่น ให้แก้ตรงนี้ให้ตรง
+                                 //     หรือถ้าไม่อยากเก็บเวลาสร้าง ให้เปลี่ยนกลับเป็น null)
+    },
+    branches: {
+      id:'id', name:'name', nameEn:'nameEn', nameZh:'nameZh',
+      district:'district', districtEn:'districtEn', districtZh:'districtZh',
+      loc:'loc', locEn:'locEn', locZh:'locZh',
+      parking:'parking', parkingEn:'parkingEn', parkingZh:'parkingZh',
+      map:'map', area:'area', photo:'photo',
+      closed:'closed', closedFrom:'closedFrom', closedTo:'closedTo', hours:'hours',
+    },
+    services: {
+      id:'id', name:'name', nameEn:'nameEn', nameZh:'nameZh',
+      desc:'desc', descEn:'descEn', descZh:'descZh',
+      mins:'mins', ico:'ico',
+    },
+  };
+
+  // แปลงชื่อฟิลด์ฝั่งโค้ด → ชื่อคอลัมน์จริงใน Lark (ตัดฟิลด์ที่ map เป็น null ทิ้ง)
+  function toLarkFields(tableKey, fields) {
+    const map = FIELD_MAP[tableKey];
+    const out = {};
+    for (const [k, v] of Object.entries(fields)) {
+      const larkName = map[k];
+      if (!larkName) continue; // null หรือไม่มีใน map = ตารางไม่มีคอลัมน์นี้ ข้ามไป
+      out[larkName] = v;
+    }
+    return out;
+  }
+
+  // แปลงกลับ: ชื่อคอลัมน์จริงใน Lark → ชื่อฟิลด์ฝั่งโค้ด
+  function fromLarkFields(tableKey, larkFields) {
+    const map = FIELD_MAP[tableKey];
+    const out = {};
+    for (const [codeName, larkName] of Object.entries(map)) {
+      if (!larkName) continue;
+      if (larkFields && larkFields[larkName] !== undefined) out[codeName] = larkFields[larkName];
+    }
+    return out;
+  }
+
   function checkTablesEnv() {
     if (!larkClientOverride) {
       if (!process.env.LARK_SUITCUBE_APP_ID) throw new Error('ยังไม่ได้ตั้งค่า .env: LARK_SUITCUBE_APP_ID');
@@ -93,14 +154,15 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
 
   async function findRecordByField(tableKey, fieldName, value) {
     const items = await listRecords(tableKey);
-    return items.find((it) => it.fields?.[fieldName] === value);
+    const larkName = FIELD_MAP[tableKey][fieldName] || fieldName;
+    return items.find((it) => it.fields?.[larkName] === value);
   }
 
   async function createRecord(tableKey, fields) {
     const { appToken, tableId } = TABLES[tableKey];
     const res = await larkClient.bitable.appTableRecord.create({
       path: { app_token: appToken, table_id: tableId },
-      data: { fields },
+      data: { fields: toLarkFields(tableKey, fields) },
     });
     if (res.code && res.code !== 0) throw new Error(`Lark create failed (${tableKey}): ${res.msg}`);
     return res.data.record;
@@ -110,7 +172,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     const { appToken, tableId } = TABLES[tableKey];
     const res = await larkClient.bitable.appTableRecord.update({
       path: { app_token: appToken, table_id: tableId, record_id: recordId },
-      data: { fields },
+      data: { fields: toLarkFields(tableKey, fields) },
     });
     if (res.code && res.code !== 0) throw new Error(`Lark update failed (${tableKey}): ${res.msg}`);
     return res.data.record;
@@ -134,58 +196,12 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   const SERVICE_STR_FIELDS = ['id', 'name', 'nameEn', 'nameZh', 'desc', 'descEn', 'descZh', 'ico'];
   const BOOKING_STR_FIELDS = ['code', 'branchId', 'serviceId', 'time', 'name', 'phone', 'note', 'status'];
 
-  const FIELD_ALIASES = {
-    id: ['id', 'ID', 'Branch ID', 'Service ID', 'Branch Code', 'Service Code', 'branch_id', 'service_id', 'รหัส', 'รหัสสาขา', 'รหัสบริการ'],
-    name: ['name', 'Name', 'Branch', 'Service', 'Branch Name', 'Service Name', 'Branch Name (TH)', 'Service Name (TH)', 'ชื่อ', 'ชื่อสาขา', 'ชื่อบริการ'],
-    nameEn: ['nameEn', 'Name EN', 'English Name', 'ชื่อภาษาอังกฤษ'],
-    nameZh: ['nameZh', 'Name ZH', 'Chinese Name', 'ชื่อภาษาจีน'],
-    area: ['area', 'Area', 'Region', 'Zone', 'พื้นที่', 'ภูมิภาค', 'โซน', 'ประเภทสาขา'],
-    district: ['district', 'District', 'เขต/อำเภอ', 'เขต', 'อำเภอ'],
-    loc: ['loc', 'Location', 'Address', 'ตำแหน่ง', 'ที่อยู่'],
-    map: ['map', 'Map', 'Map URL', 'Google Maps', 'ลิงก์แผนที่'],
-    photo: ['photo', 'Photo', 'Image', 'รูปภาพ'],
-  };
-
-  function larkText(value) {
-    if (value === undefined || value === null) return '';
-    if (Array.isArray(value)) return value.map(larkText).filter(Boolean).join(' ').trim();
-    if (typeof value === 'object') return larkText(value.text ?? value.name ?? value.value ?? value.label ?? value.link ?? '');
-    return String(value).trim();
-  }
-
-  function fieldText(fields, key) {
-    const aliases = FIELD_ALIASES[key] || [key];
-    for (const name of aliases) {
-      const value = larkText(fields[name]);
-      if (value) return value;
-    }
-    return '';
-  }
-
-  function normalizeArea(value) {
-    const area = larkText(value).toLowerCase().replace(/\s+/g, ' ').trim();
-    if (area === 'bkk' || area.includes('bangkok') || area.includes('กรุงเทพ') || area.includes('ปริมณฑล')) return 'bkk';
-    if (area === 'up' || area.includes('upcountry') || area.includes('province') || area.includes('ต่างจังหวัด')) return 'up';
-    return area;
-  }
-
-  function larkBoolean(value) {
-    if (typeof value === 'boolean') return value;
-    const text = larkText(value).toLowerCase();
-    return ['true', '1', 'yes', 'on', 'ปิด'].includes(text);
-  }
-
   function branchFromRecord(rec) {
-    const f = rec.fields || {};
+    const f = fromLarkFields('branches', rec.fields);
     const out = {};
-    BRANCH_STR_FIELDS.forEach((k) => {
-      const value = fieldText(f, k);
-      if (value) out[k] = value;
-    });
-    out.area = normalizeArea(out.area);
-    out.closed = larkBoolean(f.closed ?? f.Closed ?? f['ปิดรับจอง']);
-    if (Array.isArray(f.hours)) out.hours = f.hours;
-    else if (f.hours) { try { out.hours = JSON.parse(larkText(f.hours)); } catch (e) { /* ignore malformed */ } }
+    BRANCH_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
+    out.closed = !!f.closed;
+    if (f.hours) { try { out.hours = JSON.parse(f.hours); } catch (e) { /* ignore malformed */ } }
     const cf = tsToDateStr(f.closedFrom), ct = tsToDateStr(f.closedTo);
     if (cf) out.closedFrom = cf;
     if (ct) out.closedTo = ct;
@@ -194,19 +210,16 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   }
 
   function serviceFromRecord(rec) {
-    const f = rec.fields || {};
+    const f = fromLarkFields('services', rec.fields);
     const out = {};
-    SERVICE_STR_FIELDS.forEach((k) => {
-      const value = fieldText(f, k);
-      if (value) out[k] = value;
-    });
+    SERVICE_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
     out.mins = Number(f.mins) || 0;
     out._recordId = rec.record_id;
     return out;
   }
 
   function bookingFromRecord(rec) {
-    const f = rec.fields || {};
+    const f = fromLarkFields('bookings', rec.fields);
     const out = {};
     BOOKING_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
     out.people = Number(f.people) || 1;
@@ -252,19 +265,17 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
   const handlers = {
     async listBranches() {
       const items = await listRecords('branches');
-      // Lark Base มักมีแถวเปล่าค้างอยู่ ห้ามส่งแถวเหล่านั้นไปแทนข้อมูลตั้งต้นของหน้าเว็บ
-      const branches = items.map(branchFromRecord).filter((b) => b.id && b.name && ['bkk', 'up'].includes(b.area));
-      return { branches };
+      return { branches: items.map(branchFromRecord) };
     },
 
     async listServices() {
       const items = await listRecords('services');
-      return { services: items.map(serviceFromRecord).filter((s) => s.id && s.name) };
+      return { services: items.map(serviceFromRecord) };
     },
 
     async listBookings() {
       const items = await listRecords('bookings');
-      return { bookings: items.map(bookingFromRecord).filter((b) => b.code && b.branchId && b.serviceId) };
+      return { bookings: items.map(bookingFromRecord) };
     },
 
     async createBooking(payload) {
