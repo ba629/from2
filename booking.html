@@ -723,6 +723,16 @@ function openStatus(branch){
   return { open:true, text: left <= 60 ? tt('closingSoon', c) : tt('openUntilTime', c) };
 }
 
+function effectiveMins(service, people=1){
+  const base = Number(service?.mins) || 0;
+  return Math.max(0, base * Math.max(1, Number(people) || 1));
+}
+
+function bookingMins(bk){
+  const sv = serviceById(bk?.serviceId);
+  return effectiveMins(sv, bk?.people || 1);
+}
+
 function slotsFor(branch, dateStr, mins){
   const date = parseYmd(dateStr);
   const [o,c] = hoursOf(branch, date);
@@ -788,6 +798,23 @@ function saveBookingsLocal(){ if (!apiConfigured) lsSet(LS.bookings, bookings); 
 function saveBranchesLocal(){ if (!apiConfigured) lsSet(LS.branches, BRANCHES); }
 function saveServicesLocal(){ if (!apiConfigured) lsSet(LS.services, SERVICES); }
 
+function dedupeServices(list){
+  const seen = new Set();
+  const out = [];
+  for (const s of (Array.isArray(list) ? list : [])) {
+    const idKey = s.id ? `id:${String(s.id)}` : '';
+    const nameKey = `name:${String(s.name||'').trim().toLowerCase()}|nameEn:${String(s.nameEn||'').trim().toLowerCase()}|mins:${Number(s.mins)||0}`;
+    const key = idKey || nameKey;
+    if (seen.has(key)) continue;
+    // Also collapse accidental duplicate records with different IDs but identical service identity.
+    if (seen.has(nameKey)) continue;
+    seen.add(key);
+    seen.add(nameKey);
+    out.push(s);
+  }
+  return out;
+}
+
 async function loadBookings(){
   loadMyCodes();
   if (apiConfigured){
@@ -809,17 +836,24 @@ async function loadBranchesServices(){
     const rb = await apiCall('listBranches');
     BRANCHES = (rb && Array.isArray(rb.branches) && rb.branches.length) ? rb.branches : JSON.parse(JSON.stringify(BRANCHES_SEED));
     const rs = await apiCall('listServices');
-    SERVICES = (rs && Array.isArray(rs.services) && rs.services.length) ? rs.services : JSON.parse(JSON.stringify(SERVICES_SEED));
+    SERVICES = dedupeServices((rs && Array.isArray(rs.services) && rs.services.length) ? rs.services : JSON.parse(JSON.stringify(SERVICES_SEED)));
   } else {
     BRANCHES = lsGet(LS.branches, null) || JSON.parse(JSON.stringify(BRANCHES_SEED));
-    SERVICES = lsGet(LS.services, null) || JSON.parse(JSON.stringify(SERVICES_SEED));
+    SERVICES = dedupeServices(lsGet(LS.services, null) || JSON.parse(JSON.stringify(SERVICES_SEED)));
     if (!lsGet(LS.branches, null)) saveBranchesLocal();
     if (!lsGet(LS.services, null)) saveServicesLocal();
   }
 }
 
-function isTaken(branchId, date, time){
-  return bookings.some(b => b.status === 'active' && b.branchId === branchId && b.date === date && b.time === time);
+function isTaken(branchId, date, time, durationMins=0){
+  const start = toMin(time);
+  const end = start + Math.max(0, Number(durationMins) || 0);
+  return bookings.some(b => {
+    if (b.status !== 'active' || b.branchId !== branchId || b.date !== date) return false;
+    const bs = toMin(b.time);
+    const be = bs + bookingMins(b);
+    return start < be && end > bs;
+  });
 }
 function makeCode(){
   const s = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -997,7 +1031,7 @@ function screenService(){
     </div>
     ${sel ? `
       <div class="eyebrow">${tt('detailsHeading')}</div>
-      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(sel.mins, S.lang))}</p>
+      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(effectiveMins(sel, S.people), S.lang))}</p>
     ` : ''}
   `;
 }
@@ -1017,7 +1051,8 @@ function screenDatetime(){
     </div>`;
 
   const dateClosed = isBranchClosed(b, S.date);
-  const slots = dateClosed ? [] : slotsFor(b, S.date, sv.mins);
+  const totalMins = effectiveMins(sv, S.people);
+  const slots = dateClosed ? [] : slotsFor(b, S.date, totalMins);
   const groups = [
     [tt('morning'), slots.filter(s => toMin(s.t) < 13*60)],
     [tt('afternoon'), slots.filter(s => toMin(s.t) >= 13*60 && toMin(s.t) < 17*60)],
@@ -1028,7 +1063,7 @@ function screenDatetime(){
 
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
-    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), sv.mins)}</p>
+    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), totalMins)}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
     ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` :
@@ -1036,13 +1071,13 @@ function screenDatetime(){
       <div class="eyebrow">${label}</div>
       <div class="slots">
         ${items.map(s => {
-          const taken = isTaken(b.id, S.date, s.t);
+          const taken = isTaken(b.id, S.date, s.t, totalMins);
           const dis = !s.ok || taken;
           return `<button class="slot mono ${S.time===s.t?'is-on':''}" data-time="${s.t}" ${dis?'disabled':''} title="${taken?tt('alreadyBooked'):''}">${s.t}</button>`;
         }).join('')}
       </div>`).join('')
       : `<div class="empty"><b>${tt('noSlots')}</b>${tt('noSlotsSub')}<br><br>${tt('walkin')}</div>`}
-    <div class="note">${tt('slotNote', sv.mins)}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
+    <div class="note">${tt('slotNote', totalMins)}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
   `;
 }
 
@@ -1071,13 +1106,14 @@ function screenForm(){
 
 function screenReview(){
   const b = branchById(S.branchId), sv = serviceById(S.serviceId);
-  const end = toHHMM(toMin(S.time) + sv.mins);
+  const totalMins = effectiveMins(sv, S.people);
+  const end = toHHMM(toMin(S.time) + totalMins);
   return `
     <h1 class="h1">${tt('reviewTitle')}</h1>
     <p class="sub">${tt('reviewSub')}</p>
     <div class="sum">
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', sv.mins)}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', totalMins)}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kDate')}</span><span class="sum__v">${longDate(S.date)}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('kTime')}</span><span class="sum__v mono">${S.time} – ${end}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${S.people}</span></div>
@@ -1100,7 +1136,7 @@ function ticketHTML(bk, opts = {}){
       <div class="ticket__perf"></div>
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}</span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+sv.mins)}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+effectiveMins(sv, bk.people))}</small></span></div>
       ${bk.people ? `<div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${bk.people}</span></div>` : ''}
       ${bk.status==='cancelled'?`<div class="sum__row"><span class="sum__k">${tt('kStatus')}</span><span class="sum__v" style="color:var(--closed)">${tt('cancelled')}</span></div>`:''}
       <div class="sum__row" style="gap:8px">
@@ -1642,7 +1678,7 @@ document.addEventListener('click', async (e) => {
 
   if (t.id === 'confirm'){
     await refreshBookings();
-    if (isTaken(S.branchId, S.date, S.time)){ toast(tt('slotTaken')); go('datetime'); return; }
+    if (isTaken(S.branchId, S.date, S.time, effectiveMins(serviceById(S.serviceId), S.people))){ toast(tt('slotTaken')); go('datetime'); return; }
     const draft = {
       branchId:S.branchId, serviceId:S.serviceId, date:S.date, time:S.time, people:S.people,
       name:S.name.trim(), phone:S.phone.replace(/[-\s]/g,''), note:S.note.trim(),
