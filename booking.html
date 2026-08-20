@@ -523,8 +523,13 @@ const SERVICES_SEED = [
    2. ภาษา
    ═══════════════════════════════════════════════ */
 function fmtDuration(mins, lang){
-  if (mins % 60 === 0){
-    const h = mins / 60;
+  const h = Math.floor(mins / 60), m = mins % 60;
+  if (h && m){
+    if (lang === 'en') return `${h} hr ${m} min`;
+    if (lang === 'zh') return `${h} 小时 ${m} 分钟`;
+    return `${h} ชั่วโมง ${m} นาที`;
+  }
+  if (h){
     if (lang === 'en') return `${h} hour${h>1?'s':''}`;
     if (lang === 'zh') return `${h} 小时`;
     return `${h} ชั่วโมง`;
@@ -704,6 +709,8 @@ const longDate = s => {
 };
 const branchById = id => BRANCHES.find(b => b.id === id);
 const serviceById = id => SERVICES.find(s => s.id === id);
+// เวลาที่ใช้จริง = เวลาต่อคน × จำนวนคน (เช่น 1 ชม./คน, 2 คน = 2 ชม.)
+const svcMins = (s, people) => (s ? s.mins : 0) * Math.max(1, Number(people) || 1);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 function hoursOf(branch, date){ return branch.hours[date.getDay()]; }
@@ -827,8 +834,19 @@ async function loadBranchesServices(){
   }
 }
 
-function isTaken(branchId, date, time){
-  return bookings.some(b => b.status === 'active' && b.branchId === branchId && b.date === date && b.time === time);
+// เช็คว่าช่วงเวลาที่จะจองทับกับคิวเดิมหรือไม่
+// (เดิมเช็คแค่เวลาเริ่มตรงกันเป๊ะ — พอคิวยาวหลายชั่วโมงจะจองซ้อนทับกันได้)
+function isTaken(branchId, date, time, mins){
+  const startNew = toMin(time);
+  const endNew = startNew + (mins || 0);
+  return bookings.some(b => {
+    if (b.status !== 'active' || b.branchId !== branchId || b.date !== date) return false;
+    const sv = serviceById(b.serviceId);
+    const startOld = toMin(b.time);
+    const endOld = startOld + (svcMins(sv, b.people) || SLOT_STEP);
+    if (!mins) return startOld === startNew;      // เผื่อกรณีไม่รู้ความยาว ใช้แบบเดิม
+    return startOld < endNew && startNew < endOld; // ทับกันจริงหรือไม่
+  });
 }
 function makeCode(){
   const s = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -1006,7 +1024,7 @@ function screenService(){
     </div>
     ${sel ? `
       <div class="eyebrow">${tt('detailsHeading')}</div>
-      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(sel.mins, S.lang))}</p>
+      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(svcMins(sel, S.people), S.lang))}</p>
     ` : ''}
   `;
 }
@@ -1026,7 +1044,7 @@ function screenDatetime(){
     </div>`;
 
   const dateClosed = isBranchClosed(b, S.date);
-  const slots = dateClosed ? [] : slotsFor(b, S.date, sv.mins);
+  const slots = dateClosed ? [] : slotsFor(b, S.date, svcMins(sv, S.people));
   const groups = [
     [tt('morning'), slots.filter(s => toMin(s.t) < 13*60)],
     [tt('afternoon'), slots.filter(s => toMin(s.t) >= 13*60 && toMin(s.t) < 17*60)],
@@ -1041,7 +1059,7 @@ function screenDatetime(){
 
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
-    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), sv.mins)}</p>
+    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), svcMins(sv, S.people))}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
     ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` :
@@ -1050,13 +1068,13 @@ function screenDatetime(){
       <div class="eyebrow">${label}</div>
       <div class="slots">
         ${items.map(s => {
-          const taken = isTaken(b.id, S.date, s.t);
+          const taken = isTaken(b.id, S.date, s.t, svcMins(sv, S.people));
           const dis = !s.ok || taken;
           return `<button class="slot mono ${S.time===s.t?'is-on':''}" data-time="${s.t}" ${dis?'disabled':''} title="${taken?tt('alreadyBooked'):''}">${s.t}</button>`;
         }).join('')}
       </div>`).join('')
       : `<div class="empty"><b>${tt('noSlots')}</b>${tt('noSlotsSub')}<br><br>${tt('walkin')}</div>`}
-    <div class="note">${tt('slotNote', sv.mins)}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
+    <div class="note">${tt('slotNote', svcMins(sv, S.people))}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
   `;
 }
 
@@ -1085,13 +1103,13 @@ function screenForm(){
 
 function screenReview(){
   const b = branchById(S.branchId), sv = serviceById(S.serviceId);
-  const end = toHHMM(toMin(S.time) + sv.mins);
+  const end = toHHMM(toMin(S.time) + svcMins(sv, S.people));
   return `
     <h1 class="h1">${tt('reviewTitle')}</h1>
     <p class="sub">${tt('reviewSub')}</p>
     <div class="sum">
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', sv.mins)}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', svcMins(sv, S.people))}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kDate')}</span><span class="sum__v">${longDate(S.date)}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('kTime')}</span><span class="sum__v mono">${S.time} – ${end}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${S.people}</span></div>
@@ -1114,7 +1132,7 @@ function ticketHTML(bk, opts = {}){
       <div class="ticket__perf"></div>
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}</span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+sv.mins)}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+svcMins(sv, bk.people))}</small></span></div>
       ${bk.people ? `<div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${bk.people}</span></div>` : ''}
       ${bk.status==='cancelled'?`<div class="sum__row"><span class="sum__k">${tt('kStatus')}</span><span class="sum__v" style="color:var(--closed)">${tt('cancelled')}</span></div>`:''}
       <div class="sum__row" style="gap:8px">
@@ -1676,8 +1694,8 @@ document.addEventListener('click', async (e) => {
     render(); return;
   }
 
-  if (t.dataset.peopleminus){ S.people = Math.max(1, S.people - 1); render(); return; }
-  if (t.dataset.peopleplus){ S.people = Math.min(10, S.people + 1); render(); return; }
+  if (t.dataset.peopleminus){ S.people = Math.max(1, S.people - 1); S.time = null; render(); return; }
+  if (t.dataset.peopleplus){ S.people = Math.min(10, S.people + 1); S.time = null; render(); return; }
 
 
   if (t.dataset.time){ S.time = (S.time === t.dataset.time) ? null : t.dataset.time; render(); return; }
@@ -1712,7 +1730,7 @@ document.addEventListener('click', async (e) => {
 
   if (t.id === 'confirm'){
     await refreshBookings();
-    if (isTaken(S.branchId, S.date, S.time)){ toast(tt('slotTaken')); go('datetime'); return; }
+    if (isTaken(S.branchId, S.date, S.time, svcMins(serviceById(S.serviceId), S.people))){ toast(tt('slotTaken')); go('datetime'); return; }
     const draft = {
       branchId:S.branchId, serviceId:S.serviceId, date:S.date, time:S.time, people:S.people,
       name:S.name.trim(), phone:S.phone.replace(/[-\s]/g,''), note:S.note.trim(),
@@ -1838,7 +1856,7 @@ function downloadICS(bk){
   const pad = n => String(n).padStart(2,'0');
   const fmt = (d) => d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
   const start = new Date(bk.date + 'T' + bk.time + ':00');
-  const end = new Date(start.getTime() + sv.mins*60000);
+  const end = new Date(start.getTime() + svcMins(sv, bk.people)*60000);
   const ics = [
     'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//SUITCUBE//Queue//TH','BEGIN:VEVENT',
     'UID:' + bk.code + '@suitcube',
