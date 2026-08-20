@@ -390,19 +390,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
 
     async listServices() {
       const items = await listRecords('services');
-      const raw = await Promise.all(items.map(serviceFromRecord));
-      const seen = new Set();
-      const services = [];
-      for (const s of raw) {
-        const idKey = s.id ? `id:${String(s.id)}` : '';
-        const nameKey = `name:${String(s.name||'').trim().toLowerCase()}|nameEn:${String(s.nameEn||'').trim().toLowerCase()}|mins:${Number(s.mins)||0}`;
-        const key = idKey || nameKey;
-        if (seen.has(key) || seen.has(nameKey)) continue;
-        seen.add(key);
-        seen.add(nameKey);
-        services.push(s);
-      }
-      return { services };
+      return { services: await Promise.all(items.map(serviceFromRecord)) };
     },
 
     async listBookings() {
@@ -468,6 +456,13 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
       const rec = await findRecordByField('services', 'id', payload.id);
       if (!rec) throw new Error('ไม่พบบริการ id: ' + payload.id);
       await deleteRecordById('services', rec.record_id);
+      return { ok: true };
+    },
+
+    async deleteBranch(payload) {
+      const rec = await findRecordByField('branches', 'id', payload.id);
+      if (!rec) throw new Error('ไม่พบสาขา id: ' + payload.id);
+      await deleteRecordById('branches', rec.record_id);
       return { ok: true };
     },
   };
