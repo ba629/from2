@@ -710,7 +710,8 @@ const longDate = s => {
 const branchById = id => BRANCHES.find(b => b.id === id);
 const serviceById = id => SERVICES.find(s => s.id === id);
 // เวลาที่ใช้จริง = เวลาต่อคน × จำนวนคน (เช่น 1 ชม./คน, 2 คน = 2 ชม.)
-const svcMins = (s, people) => (s ? s.mins : 0) * Math.max(1, Number(people) || 1);
+const svcMins = (s, people) => (s ? Number(s.mins) || 0 : 0) * Math.max(1, Number(people) || 1);
+const slotRange = (time, s, people) => `${time} – ${toHHMM(toMin(time) + svcMins(s, people))}`;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 function hoursOf(branch, date){ return branch.hours[date.getDay()]; }
@@ -1070,7 +1071,7 @@ function screenDatetime(){
         ${items.map(s => {
           const taken = isTaken(b.id, S.date, s.t, svcMins(sv, S.people));
           const dis = !s.ok || taken;
-          return `<button class="slot mono ${S.time===s.t?'is-on':''}" data-time="${s.t}" ${dis?'disabled':''} title="${taken?tt('alreadyBooked'):''}">${s.t}</button>`;
+          return `<button class="slot mono ${S.time===s.t?'is-on':''}" data-time="${s.t}" ${dis?'disabled':''} title="${taken?tt('alreadyBooked'):''}">${slotRange(s.t, sv, S.people)}</button>`;
         }).join('')}
       </div>`).join('')
       : `<div class="empty"><b>${tt('noSlots')}</b>${tt('noSlotsSub')}<br><br>${tt('walkin')}</div>`}
@@ -1176,7 +1177,7 @@ function barHTML(){
     case 'service':
       return `<button class="btn" id="next" ${S.serviceId?'':'disabled'}>${tt('next')}</button>`;
     case 'datetime':
-      return `${S.time?`<p class="bar__hint">${tt('hintDatetime', longDate(S.date), S.time)}</p>`:''}
+      return `${S.time?`<p class="bar__hint">${tt('hintDatetime', longDate(S.date), slotRange(S.time, serviceById(S.serviceId), S.people))}</p>`:''}
               <button class="btn" id="next" ${S.time?'':'disabled'}>${S.time?tt('next'):tt('pickTimeFirst')}</button>`;
     case 'form':
       return `<button class="btn" id="next">${tt('reviewDetails')}</button>`;
@@ -1465,7 +1466,7 @@ function adminBookings(){
           <span style="font-size:11px;color:${bk.status==='active'?'var(--open)':'var(--closed)'}">${bk.status==='active'?'ใช้งานอยู่':'ยกเลิกแล้ว'}</span>
         </div>
         <div style="font-size:13px">${esc(bk.name)} · <span class="mono">${esc(bk.phone)}</span>${bk.people?` · ${bk.people} คน`:''}</div>
-        <div style="font-size:12px;color:var(--muted)">${b?esc(b.name):'-'} · ${sv?esc(sv.name):'-'} · ${bk.date} ${bk.time}</div>
+        <div style="font-size:12px;color:var(--muted)">${b?esc(b.name):'-'} · ${sv?esc(sv.name):'-'} · ${bk.date} ${slotRange(bk.time, sv, bk.people)}</div>
         ${bk.status==='active' ? `<button class="btn btn--danger btn--sm" style="width:auto;padding:6px 12px" data-admincancel="${bk.code}">ยกเลิกคิวนี้</button>` : ''}
       </div>`;
     }).join('') : `<div class="empty"><b>ไม่พบรายการจอง</b>ลองเปลี่ยนตัวกรองด้านบน</div>`}
