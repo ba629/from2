@@ -577,9 +577,11 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  slotNote:          { th:m=>`คิวสุดท้ายของวันเริ่มได้ไม่เกิน ${LAST_SLOT} น. และคิวของวันนี้ต้องจองล่วงหน้าอย่างน้อย 6 ชั่วโมง`,
-                        en:m=>`The last slot of the day starts no later than ${LAST_SLOT}, and same-day bookings need at least 6 hours' notice.`,
-                        zh:m=>`当天最后一个时段最晚 ${LAST_SLOT} 开始，当日预约需至少提前 6 小时` },
+  cutoffPassed:      { th:()=>`เลยเวลารับจองของวันนี้แล้ว (รับจองถึง ${SAME_DAY_CUTOFF} น.)`, en:()=>`Today's booking cut-off has passed (bookings close at ${SAME_DAY_CUTOFF})`, zh:()=>`今日预约时间已截止（截止 ${SAME_DAY_CUTOFF}）` },
+  cutoffPassedSub:   { th:'กรุณาเลือกวันถัดไปด้านบน หรือ Walk-in เข้ามาที่สาขาได้ตามปกติ', en:'Please pick another day above, or simply walk in to the branch.', zh:'请在上方选择其他日期，或直接到店现场排队' },
+  slotNote:          { th:m=>`คิวสุดท้ายของวันเริ่มได้ไม่เกิน ${LAST_SLOT} น. · หากต้องการจองคิวของวันนี้ กรุณาจองก่อน ${SAME_DAY_CUTOFF} น. เลยเวลานี้แล้วกรุณาเลือกวันถัดไป`,
+                        en:m=>`The last slot of the day starts no later than ${LAST_SLOT}. Same-day bookings must be made before ${SAME_DAY_CUTOFF} — after that, please pick another day.`,
+                        zh:m=>`当天最后一个时段最晚 ${LAST_SLOT} 开始 · 当日预约请于 ${SAME_DAY_CUTOFF} 前完成，超过此时间请选择其他日期` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
   detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
   fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
@@ -685,8 +687,8 @@ const M_FULL = ['มกราคม','กุมภาพันธ์','มีน
 const M_FULL_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const M_FULL_ZH = M_SHORT_ZH;
 const SLOT_STEP = 30;      // นาทีต่อ 1 ช่วงคิว
-const LEAD_MINS = 360;     // ต้องจองล่วงหน้าอย่างน้อย 6 ชม.
-const LAST_SLOT = '16:00'; // คิวสุดท้ายของวัน เริ่มได้ไม่เกินเวลานี้
+const SAME_DAY_CUTOFF = '10:00'; // จองคิวของ "วันนี้" ได้ถึงเวลานี้เท่านั้น เลยแล้วต้องจองวันอื่น
+const LAST_SLOT = '16:00';       // คิวสุดท้ายของวัน เริ่มได้ไม่เกินเวลานี้
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -729,12 +731,16 @@ function slotsFor(branch, dateStr, mins){
   const [o,c] = hoursOf(branch, date);
   const now = new Date();
   const isToday = ymd(now) === dateStr;
-  const earliest = isToday ? now.getHours()*60 + now.getMinutes() + LEAD_MINS : -1;
+  const nowMin = now.getHours()*60 + now.getMinutes();
+  // จองวันนี้: ต้องกดจองก่อน SAME_DAY_CUTOFF และคิวต้องยังไม่ผ่านไป
+  // จองวันอื่น: ไม่มีข้อจำกัด
+  const sameDayOpen = !isToday || nowMin < toMin(SAME_DAY_CUTOFF);
   // คิวสุดท้ายต้องเริ่มไม่เกิน LAST_SLOT และต้องจบก่อนร้านปิดด้วย
   const latestStart = Math.min(toMin(LAST_SLOT), toMin(c) - mins);
   const out = [];
   for (let m = toMin(o); m <= latestStart; m += SLOT_STEP){
-    out.push({ t: toHHMM(m), ok: m >= earliest });
+    const ok = sameDayOpen && (!isToday || m > nowMin);
+    out.push({ t: toHHMM(m), ok });
   }
   return out;
 }
@@ -1028,6 +1034,10 @@ function screenDatetime(){
   ].filter(g => g[1].length);
 
   const [o,c] = hoursOf(b, sel);
+  // เลยเวลาตัดรอบของวันนี้แล้วหรือยัง (จะได้อธิบายให้ชัด แทนที่จะโชว์ปุ่มจางๆ เฉยๆ)
+  const _now = new Date();
+  const cutoffPassed = (ymd(_now) === S.date) &&
+    (_now.getHours()*60 + _now.getMinutes()) >= toMin(SAME_DAY_CUTOFF);
 
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
@@ -1035,6 +1045,7 @@ function screenDatetime(){
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
     ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` :
+      cutoffPassed ? `<div class="empty"><b>${tt('cutoffPassed')}</b>${tt('cutoffPassedSub')}</div>` :
       groups.length ? groups.map(([label, items]) => `
       <div class="eyebrow">${label}</div>
       <div class="slots">
