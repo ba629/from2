@@ -577,9 +577,9 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  slotNote:          { th:m=>`คิวสุดท้ายของวันจะเผื่อเวลาบริการ ${m} นาทีก่อนร้านปิด และคิวของวันนี้ต้องจองล่วงหน้าอย่างน้อย 1 ชั่วโมง`,
-                        en:m=>`The last slot of the day allows ${m} minutes before closing, and same-day bookings need at least 1 hour's notice.`,
-                        zh:m=>`当天最后一个时段会预留 ${m} 分钟至打烊前，当日预约需至少提前 1 小时` },
+  slotNote:          { th:m=>`คิวสุดท้ายของวันเริ่มได้ไม่เกิน ${LAST_SLOT} น. และคิวของวันนี้ต้องจองล่วงหน้าอย่างน้อย 6 ชั่วโมง`,
+                        en:m=>`The last slot of the day starts no later than ${LAST_SLOT}, and same-day bookings need at least 6 hours' notice.`,
+                        zh:m=>`当天最后一个时段最晚 ${LAST_SLOT} 开始，当日预约需至少提前 6 小时` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
   detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
   fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
@@ -685,7 +685,8 @@ const M_FULL = ['มกราคม','กุมภาพันธ์','มีน
 const M_FULL_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const M_FULL_ZH = M_SHORT_ZH;
 const SLOT_STEP = 30;      // นาทีต่อ 1 ช่วงคิว
-const LEAD_MINS = 60;      // จองล่วงหน้าอย่างน้อย 1 ชม.
+const LEAD_MINS = 360;     // ต้องจองล่วงหน้าอย่างน้อย 6 ชม.
+const LAST_SLOT = '16:00'; // คิวสุดท้ายของวัน เริ่มได้ไม่เกินเวลานี้
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -723,24 +724,16 @@ function openStatus(branch){
   return { open:true, text: left <= 60 ? tt('closingSoon', c) : tt('openUntilTime', c) };
 }
 
-function effectiveMins(service, people=1){
-  const base = Number(service?.mins) || 0;
-  return Math.max(0, base * Math.max(1, Number(people) || 1));
-}
-
-function bookingMins(bk){
-  const sv = serviceById(bk?.serviceId);
-  return effectiveMins(sv, bk?.people || 1);
-}
-
 function slotsFor(branch, dateStr, mins){
   const date = parseYmd(dateStr);
   const [o,c] = hoursOf(branch, date);
   const now = new Date();
   const isToday = ymd(now) === dateStr;
   const earliest = isToday ? now.getHours()*60 + now.getMinutes() + LEAD_MINS : -1;
+  // คิวสุดท้ายต้องเริ่มไม่เกิน LAST_SLOT และต้องจบก่อนร้านปิดด้วย
+  const latestStart = Math.min(toMin(LAST_SLOT), toMin(c) - mins);
   const out = [];
-  for (let m = toMin(o); m + mins <= toMin(c); m += SLOT_STEP){
+  for (let m = toMin(o); m <= latestStart; m += SLOT_STEP){
     out.push({ t: toHHMM(m), ok: m >= earliest });
   }
   return out;
@@ -798,23 +791,6 @@ function saveBookingsLocal(){ if (!apiConfigured) lsSet(LS.bookings, bookings); 
 function saveBranchesLocal(){ if (!apiConfigured) lsSet(LS.branches, BRANCHES); }
 function saveServicesLocal(){ if (!apiConfigured) lsSet(LS.services, SERVICES); }
 
-function dedupeServices(list){
-  const seen = new Set();
-  const out = [];
-  for (const s of (Array.isArray(list) ? list : [])) {
-    const idKey = s.id ? `id:${String(s.id)}` : '';
-    const nameKey = `name:${String(s.name||'').trim().toLowerCase()}|nameEn:${String(s.nameEn||'').trim().toLowerCase()}|mins:${Number(s.mins)||0}`;
-    const key = idKey || nameKey;
-    if (seen.has(key)) continue;
-    // Also collapse accidental duplicate records with different IDs but identical service identity.
-    if (seen.has(nameKey)) continue;
-    seen.add(key);
-    seen.add(nameKey);
-    out.push(s);
-  }
-  return out;
-}
-
 async function loadBookings(){
   loadMyCodes();
   if (apiConfigured){
@@ -836,24 +812,17 @@ async function loadBranchesServices(){
     const rb = await apiCall('listBranches');
     BRANCHES = (rb && Array.isArray(rb.branches) && rb.branches.length) ? rb.branches : JSON.parse(JSON.stringify(BRANCHES_SEED));
     const rs = await apiCall('listServices');
-    SERVICES = dedupeServices((rs && Array.isArray(rs.services) && rs.services.length) ? rs.services : JSON.parse(JSON.stringify(SERVICES_SEED)));
+    SERVICES = (rs && Array.isArray(rs.services) && rs.services.length) ? rs.services : JSON.parse(JSON.stringify(SERVICES_SEED));
   } else {
     BRANCHES = lsGet(LS.branches, null) || JSON.parse(JSON.stringify(BRANCHES_SEED));
-    SERVICES = dedupeServices(lsGet(LS.services, null) || JSON.parse(JSON.stringify(SERVICES_SEED)));
+    SERVICES = lsGet(LS.services, null) || JSON.parse(JSON.stringify(SERVICES_SEED));
     if (!lsGet(LS.branches, null)) saveBranchesLocal();
     if (!lsGet(LS.services, null)) saveServicesLocal();
   }
 }
 
-function isTaken(branchId, date, time, durationMins=0){
-  const start = toMin(time);
-  const end = start + Math.max(0, Number(durationMins) || 0);
-  return bookings.some(b => {
-    if (b.status !== 'active' || b.branchId !== branchId || b.date !== date) return false;
-    const bs = toMin(b.time);
-    const be = bs + bookingMins(b);
-    return start < be && end > bs;
-  });
+function isTaken(branchId, date, time){
+  return bookings.some(b => b.status === 'active' && b.branchId === branchId && b.date === date && b.time === time);
 }
 function makeCode(){
   const s = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -870,7 +839,7 @@ const _today0 = new Date();
 let S = { step:'branch', lang:'th', area:'bkk', q:'', branchId:null, serviceId:null,
           date:ymd(_today0), time:null, name:'', phone:'', note:'', last:null, touched:false, people:1,
           admin:false, adminStep:'login', adminPin:'', adminEditId:null, adminDraft:null,
-          adminBFilter:'', adminDFilter:'', adminPinErr:false };
+          adminBFilter:'', adminDFilter:'', adminPinErr:false, adminBSort:'custom' };
 
 const view = document.getElementById('view');
 const bar = document.getElementById('bar');
@@ -1031,7 +1000,7 @@ function screenService(){
     </div>
     ${sel ? `
       <div class="eyebrow">${tt('detailsHeading')}</div>
-      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(effectiveMins(sel, S.people), S.lang))}</p>
+      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(sel.mins, S.lang))}</p>
     ` : ''}
   `;
 }
@@ -1051,8 +1020,7 @@ function screenDatetime(){
     </div>`;
 
   const dateClosed = isBranchClosed(b, S.date);
-  const totalMins = effectiveMins(sv, S.people);
-  const slots = dateClosed ? [] : slotsFor(b, S.date, totalMins);
+  const slots = dateClosed ? [] : slotsFor(b, S.date, sv.mins);
   const groups = [
     [tt('morning'), slots.filter(s => toMin(s.t) < 13*60)],
     [tt('afternoon'), slots.filter(s => toMin(s.t) >= 13*60 && toMin(s.t) < 17*60)],
@@ -1063,7 +1031,7 @@ function screenDatetime(){
 
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
-    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), totalMins)}</p>
+    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), sv.mins)}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
     ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` :
@@ -1071,13 +1039,13 @@ function screenDatetime(){
       <div class="eyebrow">${label}</div>
       <div class="slots">
         ${items.map(s => {
-          const taken = isTaken(b.id, S.date, s.t, totalMins);
+          const taken = isTaken(b.id, S.date, s.t);
           const dis = !s.ok || taken;
           return `<button class="slot mono ${S.time===s.t?'is-on':''}" data-time="${s.t}" ${dis?'disabled':''} title="${taken?tt('alreadyBooked'):''}">${s.t}</button>`;
         }).join('')}
       </div>`).join('')
       : `<div class="empty"><b>${tt('noSlots')}</b>${tt('noSlotsSub')}<br><br>${tt('walkin')}</div>`}
-    <div class="note">${tt('slotNote', totalMins)}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
+    <div class="note">${tt('slotNote', sv.mins)}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
   `;
 }
 
@@ -1106,14 +1074,13 @@ function screenForm(){
 
 function screenReview(){
   const b = branchById(S.branchId), sv = serviceById(S.serviceId);
-  const totalMins = effectiveMins(sv, S.people);
-  const end = toHHMM(toMin(S.time) + totalMins);
+  const end = toHHMM(toMin(S.time) + sv.mins);
   return `
     <h1 class="h1">${tt('reviewTitle')}</h1>
     <p class="sub">${tt('reviewSub')}</p>
     <div class="sum">
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', totalMins)}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', sv.mins)}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kDate')}</span><span class="sum__v">${longDate(S.date)}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('kTime')}</span><span class="sum__v mono">${S.time} – ${end}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${S.people}</span></div>
@@ -1136,7 +1103,7 @@ function ticketHTML(bk, opts = {}){
       <div class="ticket__perf"></div>
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}</span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+effectiveMins(sv, bk.people))}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+sv.mins)}</small></span></div>
       ${bk.people ? `<div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${bk.people}</span></div>` : ''}
       ${bk.status==='cancelled'?`<div class="sum__row"><span class="sum__k">${tt('kStatus')}</span><span class="sum__v" style="color:var(--closed)">${tt('cancelled')}</span></div>`:''}
       <div class="sum__row" style="gap:8px">
@@ -1301,11 +1268,39 @@ function adminHome(){
   `;
 }
 
+function sortedBranchesForAdmin(){
+  const list = [...BRANCHES];
+  const byName = (a,b) => String(a.name||'').localeCompare(String(b.name||''), 'th');
+  switch (S.adminBSort){
+    case 'name':      return list.sort(byName);
+    case 'nameDesc':  return list.sort((a,b) => byName(b,a));
+    case 'area':      return list.sort((a,b) =>
+                        (a.area===b.area) ? byName(a,b) : (a.area==='bkk' ? -1 : 1));
+    case 'status':    return list.sort((a,b) => {
+                        const ca = isBranchClosed(a, ymd(new Date())) ? 1 : 0;
+                        const cb = isBranchClosed(b, ymd(new Date())) ? 1 : 0;
+                        return ca === cb ? byName(a,b) : ca - cb;
+                      });
+    default:          return list; // 'custom' = ตามลำดับที่บันทึกไว้เดิม
+  }
+}
+
 function adminBranches(){
+  const list = sortedBranchesForAdmin();
   return `
     <h1 class="h1">จัดการสาขา</h1>
     <p class="sub">${BRANCHES.length} สาขาทั้งหมด</p>
-    ${BRANCHES.map(b => `
+    <div class="field" style="margin-bottom:14px">
+      <label for="admBSort">จัดเรียงตาม</label>
+      <select id="admBSort" data-admbsort="1" style="width:100%;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2);border:none;outline:0;font-size:16px">
+        <option value="custom"   ${S.adminBSort==='custom'?'selected':''}>ลำดับเดิม (ตามที่เพิ่มไว้)</option>
+        <option value="name"     ${S.adminBSort==='name'?'selected':''}>ชื่อสาขา ก → ฮ</option>
+        <option value="nameDesc" ${S.adminBSort==='nameDesc'?'selected':''}>ชื่อสาขา ฮ → ก</option>
+        <option value="area"     ${S.adminBSort==='area'?'selected':''}>โซน (กรุงเทพฯ ก่อน)</option>
+        <option value="status"   ${S.adminBSort==='status'?'selected':''}>สถานะ (เปิดรับจองก่อน)</option>
+      </select>
+    </div>
+    ${list.map(b => `
       <div class="arow">
         <div class="arow__main">
           <div class="arow__name">${esc(b.name)}${b.closed?' <span class="arow__tag">ปิดรับจอง</span>':''}${(b.closedFrom && b.closedTo)?` <span class="arow__tag arow__tag--sched">ปิดอัตโนมัติ ${b.closedFrom.slice(5)} – ${b.closedTo.slice(5)}</span>`:''}</div>
@@ -1316,6 +1311,9 @@ function adminBranches(){
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
         </button>
         <button class="arow__edit" data-editbranch="${b.id}">แก้ไข</button>
+        <button class="arow__del" data-delbranch="${b.id}" title="ลบสาขา">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0-1 14a1 1 0 01-1 1H7a1 1 0 01-1-1L5 6"/></svg>
+        </button>
       </div>`).join('')}
   `;
 }
@@ -1461,7 +1459,7 @@ function adminBarHTML(){
    9. เหตุการณ์
    ═══════════════════════════════════════════════ */
 document.addEventListener('click', async (e) => {
-  const t = e.target.closest('[data-area],[data-branch],[data-service],[data-peopleminus],[data-peopleplus],[data-time],[data-map],[data-cancel],[data-ics],[data-adminopen],[data-adminnav],[data-toggleclose],[data-editbranch],[data-schedulebranch],[data-admdclearsched],[data-removephoto],[data-editservice],[data-delservice],[data-admincancel],[data-admdarea],[data-admdclosed],[data-footermine],#next,#confirm,#again,#mine,#adminLoginBtn,#adminAddBranch,#adminSaveBranch,#adminSaveSchedule,#adminAddService,#adminSaveService');
+  const t = e.target.closest('[data-area],[data-branch],[data-service],[data-peopleminus],[data-peopleplus],[data-time],[data-map],[data-cancel],[data-ics],[data-adminopen],[data-adminnav],[data-toggleclose],[data-editbranch],[data-delbranch],[data-schedulebranch],[data-admdclearsched],[data-removephoto],[data-editservice],[data-delservice],[data-admincancel],[data-admdarea],[data-admdclosed],[data-footermine],#next,#confirm,#again,#mine,#adminLoginBtn,#adminAddBranch,#adminSaveBranch,#adminSaveSchedule,#adminAddService,#adminSaveService');
   if (!t) return;
 
   if (t.dataset.map){ e.stopPropagation(); window.open(t.dataset.map, '_blank', 'noopener'); return; }
@@ -1487,8 +1485,9 @@ document.addEventListener('click', async (e) => {
     const b = branchById(t.dataset.editbranch);
     if (!b) return;
     S.adminEditId = b.id;
-    S.adminDraft = { name:b.name, nameEn:b.nameEn, district:b.district, districtEn:b.districtEn,
-      loc:b.loc, locEn:b.locEn, map:b.map, area:b.area, parking:b.parking||'', closed:!!b.closed,
+    S.adminDraft = { name:b.name||'', nameEn:b.nameEn||'', district:b.district||'', districtEn:b.districtEn||'',
+      loc:b.loc||'', locEn:b.locEn||'', map:b.map||'', area:b.area||'bkk', parking:b.parking||'', closed:!!b.closed,
+      nameZh:b.nameZh||'', districtZh:b.districtZh||'', locZh:b.locZh||'', parkingZh:b.parkingZh||'',
       closedFrom:b.closedFrom||'', closedTo:b.closedTo||'', photo:b.photo||null,
       hOpen:(b.hours && b.hours[1] ? b.hours[1][0] : '10:00'), hClose:(b.hours && b.hours[1] ? b.hours[1][1] : '21:00') };
     S.adminStep = 'branch-edit'; render(); return;
@@ -1514,8 +1513,27 @@ document.addEventListener('click', async (e) => {
     const s = serviceById(t.dataset.editservice);
     if (!s) return;
     S.adminEditId = s.id;
-    S.adminDraft = { name:s.name, nameEn:s.nameEn, desc:s.desc, descEn:s.descEn, mins:s.mins };
+    S.adminDraft = { name:s.name||'', nameEn:s.nameEn||'', desc:s.desc||'', descEn:s.descEn||'',
+      nameZh:s.nameZh||'', descZh:s.descZh||'', mins:s.mins||30 };
     S.adminStep = 'service-edit'; render(); return;
+  }
+
+  if (t.dataset.delbranch){
+    const b = branchById(t.dataset.delbranch);
+    if (!b) return;
+    if (BRANCHES.length <= 1){ toast('ต้องมีสาขาอย่างน้อย 1 สาขา'); return; }
+    const active = bookings.filter(x => x.branchId === b.id && x.status === 'active').length;
+    const warn = active
+      ? `\n\n⚠ สาขานี้มีคิวที่ยังไม่ถูกยกเลิกอยู่ ${active} คิว การลบจะทำให้คิวเหล่านั้นหาสาขาไม่เจอ\nหากต้องการแค่หยุดรับจองชั่วคราว แนะนำให้ใช้สวิตช์ปิดรับจองแทน`
+      : '';
+    if (!confirm(`ลบสาขา "${b.name}" ใช่หรือไม่?${warn}`)) return;
+    const r = await apiCall('deleteBranch', { id:b.id });
+    if (r === null && apiConfigured){ toast('ลบไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
+    BRANCHES = BRANCHES.filter(x => x.id !== b.id);
+    if (S.branchId === b.id) S.branchId = null;
+    saveBranchesLocal();
+    render(); toast('ลบสาขาแล้ว');
+    return;
   }
 
   if (t.dataset.delservice){
@@ -1558,16 +1576,19 @@ document.addEventListener('click', async (e) => {
 
   if (t.id === 'adminSaveBranch'){
     const d = S.adminDraft;
-    if (!d.name.trim()){ toast('กรุณากรอกชื่อสาขา'); return; }
+    const sv = (x) => String(x == null ? '' : x).trim();   // ปลอดภัยแม้ค่าเป็น undefined
+    if (!sv(d.name)){ toast('กรุณากรอกชื่อสาขา'); return; }
     if ((d.closedFrom && !d.closedTo) || (!d.closedFrom && d.closedTo)){ toast('กรุณากรอกวันที่ปิด-เปิดให้ครบทั้งสองช่อง หรือเว้นว่างทั้งคู่'); return; }
     if (d.closedFrom && d.closedTo && d.closedTo < d.closedFrom){ toast('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่มปิด'); return; }
-    const hours = every(d.hOpen, d.hClose);
+    const hours = every(d.hOpen || '10:00', d.hClose || '21:00');
     const closedFrom = d.closedFrom || null, closedTo = d.closedTo || null;
     const photo = d.photo || null;
     const isNew = S.adminEditId === 'new';
-    const fields = { name:d.name.trim(), nameEn:d.nameEn.trim(), district:d.district.trim(), districtEn:d.districtEn.trim(),
-      loc:d.loc.trim(), locEn:d.locEn.trim(), map:d.map.trim(), area:d.area, parking:d.parking.trim()||null,
+    const fields = { name:sv(d.name), nameEn:sv(d.nameEn), district:sv(d.district), districtEn:sv(d.districtEn),
+      loc:sv(d.loc), locEn:sv(d.locEn), map:sv(d.map), area:d.area || 'bkk', parking:sv(d.parking) || null,
       closed: isNew ? false : !!d.closed, closedFrom, closedTo, photo, hours };
+    // ฟิลด์ภาษาจีนไม่มีช่องให้กรอกในฟอร์ม — ส่งค่าเดิมกลับไปด้วย ไม่งั้นจะถูกลบทิ้งทุกครั้งที่แก้ไข
+    ['nameZh','districtZh','locZh','parkingZh'].forEach(k => { if (d[k]) fields[k] = d[k]; });
     if (!isNew) fields.id = S.adminEditId;
     const r = await apiCall('saveBranch', fields);
     if (r === null && apiConfigured){ toast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
@@ -1610,11 +1631,13 @@ document.addEventListener('click', async (e) => {
 
   if (t.id === 'adminSaveService'){
     const d = S.adminDraft;
-    if (!d.name.trim()){ toast('กรุณากรอกชื่อบริการ'); return; }
+    const sv = (x) => String(x == null ? '' : x).trim();
+    if (!sv(d.name)){ toast('กรุณากรอกชื่อบริการ'); return; }
     const mins = Math.max(5, parseInt(d.mins, 10) || 30);
     const isNew = S.adminEditId === 'new';
     const ico = '<path d="M12 3l4 2 5 3-2 3-3-1v11H8V10L5 11 3 8l5-3 4-2zM9 3.5a3 3 0 006 0"/>';
-    const fields = { name:d.name.trim(), nameEn:d.nameEn.trim(), desc:d.desc.trim(), descEn:d.descEn.trim(), mins, ico };
+    const fields = { name:sv(d.name), nameEn:sv(d.nameEn), desc:sv(d.desc), descEn:sv(d.descEn), mins, ico };
+    ['nameZh','descZh'].forEach(k => { if (d[k]) fields[k] = d[k]; });
     if (!isNew) fields.id = S.adminEditId;
     const r = await apiCall('saveService', fields);
     if (r === null && apiConfigured){ toast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
@@ -1678,7 +1701,7 @@ document.addEventListener('click', async (e) => {
 
   if (t.id === 'confirm'){
     await refreshBookings();
-    if (isTaken(S.branchId, S.date, S.time, effectiveMins(serviceById(S.serviceId), S.people))){ toast(tt('slotTaken')); go('datetime'); return; }
+    if (isTaken(S.branchId, S.date, S.time)){ toast(tt('slotTaken')); go('datetime'); return; }
     const draft = {
       branchId:S.branchId, serviceId:S.serviceId, date:S.date, time:S.time, people:S.people,
       name:S.name.trim(), phone:S.phone.replace(/[-\s]/g,''), note:S.note.trim(),
@@ -1719,6 +1742,7 @@ document.addEventListener('change', (e) => {
     S.date = e.target.value; S.time = null; render();
   }
   if (e.target.dataset.admfilter === 'branch'){ S.adminBFilter = e.target.value; render(); }
+  if (e.target.dataset.admbsort){ S.adminBSort = e.target.value; render(); }
   if (e.target.dataset.admfilter === 'date'){ S.adminDFilter = e.target.value; render(); }
   if (e.target.dataset.photoupload && e.target.files && e.target.files[0]){
     const file = e.target.files[0];
