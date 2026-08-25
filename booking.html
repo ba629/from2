@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>SUITCUBE — จองคิวสาขา</title>
+<title>SUITCUBE — Booking</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -565,7 +565,7 @@ const T = {
   searchPh:          { th:'ค้นหาสาขา เช่น สยาม, ราชพฤกษ์', en:'Search branch, e.g. Siam, Ratchapruek', zh:'搜索分店，例如 暹罗、拉查帕' },
   noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
   noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
-  whatService:       { th:'ต้องการใช้บริการอะไร', en:'What service would you like?', zh:'需要什么服务' },
+  whatService:       { th:'บริการที่คุณเลือก', en:'What service would you like?', zh:'需要什么服务' },
   serviceSub:        { th:name=>`ที่สาขา${name} · เวลาที่ใช้จะกำหนดช่วงคิวให้อัตโนมัติ`, en:name=>`At ${name} · the duration sets your queue slot automatically`, zh:name=>`于${name}分店 · 服务时长将自动决定排队时段` },
   min:               { th:m=>`${m} นาที`, en:m=>`${m} min`, zh:m=>`${m} 分钟` },
   detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
@@ -582,9 +582,9 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  cutoffPassed:      { th:()=>`เลยเวลารับจองของวันนี้แล้ว (รับจองถึง ${SAME_DAY_CUTOFF} น.)`, en:()=>`Today's booking cut-off has passed (bookings close at ${SAME_DAY_CUTOFF})`, zh:()=>`今日预约时间已截止（截止 ${SAME_DAY_CUTOFF}）` },
-  cutoffPassedSub:   { th:'กรุณาเลือกวันถัดไปด้านบน หรือ Walk-in เข้ามาที่สาขาได้ตามปกติ', en:'Please pick another day above, or simply walk in to the branch.', zh:'请在上方选择其他日期，或直接到店现场排队' },
-  slotNote:          { th:m=>`คิวสุดท้ายของวันเริ่มได้ไม่เกิน ${LAST_SLOT} น. · หากต้องการจองคิวของวันนี้ กรุณาจองก่อน ${SAME_DAY_CUTOFF} น. เลยเวลานี้แล้วกรุณาเลือกวันถัดไป`,
+  cutoffPassed:      { th:()=>`คิวภายในวันสามารถจองล่วงหน้าได้ 6 ชั่วโมง (เปิดจองถึง ${SAME_DAY_CUTOFF} น. ของวัน)`, en:()=>`Today's booking cut-off has passed (bookings close at ${SAME_DAY_CUTOFF})`, zh:()=>`今日预约时间已截止（截止 ${SAME_DAY_CUTOFF}）` },
+  cutoffPassedSub:   { th:'ขณะนี้เลยเวลารับจองแล้ว คุณลูกค้าสามารถเลือกจองวันถัดไป หรือ Walk-in เข้ามารับบริการได้ตามปกติค่ะ อาจมีระยะเวลาในการรอคิวเล็กน้อย', en:'Please pick another day above, or simply walk in to the branch.', zh:'请在上方选择其他日期，或直接到店现场排队' },
+  slotNote:          { th:m=>`คิวสุดท้ายของวันเริ่มได้ไม่เกิน ${LAST_SLOT} น. · หากต้องการจองคิวของวันนี้ กรุณาจองก่อน ${SAME_DAY_CUTOFF} น. หากเลยเวลานี้แล้วกรุณาเลือกวันถัดไป`,
                         en:m=>`The last slot of the day starts no later than ${LAST_SLOT}. Same-day bookings must be made before ${SAME_DAY_CUTOFF} — after that, please pick another day.`,
                         zh:m=>`当天最后一个时段最晚 ${LAST_SLOT} 开始 · 当日预约请于 ${SAME_DAY_CUTOFF} 前完成，超过此时间请选择其他日期` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
