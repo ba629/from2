@@ -980,8 +980,8 @@ function footerHTML(){
         <div class="footer__tag">${tt('heroSub')}</div>
       </div>
       <div class="footer__social">
-        <a class="footer__icon" href="#" onclick="return false" aria-label="Line">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9-.1.5-.6 2-.7 2.4 0 0-.1.4.2.5.3.1.7-.1.7-.1 1-.4 4.9-2.9 6.6-4.8C19.9 15.1 22 13.2 22 11c0-4.4-4.5-8-10-8z"/></svg>
+        <a class="footer__icon" href="https://line.me/R/ti/p/@suitcube" target="_blank" rel="noopener noreferrer" aria-label="Line">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9-.1.5-.6 2-.7 2.4 0 0-.1.4.2.5.3.1.7-.1 1-.4 4.9-2.9 6.6-4.8 6.6-7.9 0-4.4-4.5-8-10.1-8z"/></svg>
         </a>
         <a class="footer__icon" href="https://www.facebook.com/suitcube/?locale=th_TH" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8h2V4h-2a4 4 0 00-4 4v2H9v4h2v8h4v-8h2.51.5-4H15V8z"/></svg>
@@ -989,11 +989,7 @@ function footerHTML(){
         <a class="footer__icon" href="https://www.instagram.com/suitcube" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
          </a>
-         <a class="footer__icon" href="https://line.me/R/ti/p/@suitcube" target="_blank" rel="noopener noreferrer" aria-label="Line" style="display: inline-flex; align-items: center; gap: 4px; text-decoration: none; color: inherit;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9-.1.5-.6 2-.7 2.4 0 0-.1.4.2.5.3.1.7-.1 1-.4 4.9-2.9 6.6-4.8 6.6-7.9 0-4.4-4.5-8-10.1-8z"/></svg>
-          <span>@suitcube</span>
-        </a>
-      </div>
+         </div>
       <div class="footer__rule"></div>
       <div class="footer__links">
         <a data-footermine="1">${tt('myBookings')}</a>
@@ -1279,7 +1275,7 @@ function adminLogin(){
       <input id="f-pin" data-admink="adminPin" type="password" inputmode="numeric" value="${esc(S.adminPin)}" placeholder="••••" autocomplete="off">
       <p class="err">PIN ไม่ถูกต้อง</p>
     </div>
-    <div class="note">หน้านี้เป็นการป้องกันด้วย PIN ฝั่งหน้าเว็บ (client-side) เพื่อความสะดวกในการสาธิตเท่านั้น ไม่ใช่ระบบรักษาความปลอดภัยจริง — สำหรับใช้งานจริงควรมีระบบยืนยันตัวตนฝั่งเซิร์ฟเวอร์</div>
+    <div class="note">ใส่ Password สำหรับการเข้าถึงการจัดการหน้าเว็บไซต์</div>
   `;
 }
 
