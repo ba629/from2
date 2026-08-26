@@ -645,7 +645,7 @@ const T = {
   formIncomplete:    { th:'กรอกข้อมูลให้ครบก่อนไปต่อ', en:'Please complete the form to continue', zh:'请填写完整信息后再继续' },
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
   icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
-  calendarOpened:    { th:'เลือกแอปปฏิทินเพื่อเพิ่มนัดหมายได้เลย', en:'Choose your calendar app to add the appointment', zh:'请选择日历应用添加预约' },
+  calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
   sameDayCutoff:     { th:'การจองคิวภายในวันเดียวกัน เปิดรับถึง 16:00 น. เท่านั้น กรุณาเลือกวันถัดไป', en:'Same-day bookings close at 4:00 PM. Please choose another date.', zh:'当天预约于下午 4 点截止，请选择其他日期。' },
   openAt:            { th:o=>`เปิด ${o} น.`, en:o=>`Opens ${o}`, zh:o=>`${o} 开始营业` },
   closedToday:       { th:'ปิดแล้ววันนี้', en:'Closed for today', zh:'今日已打烊' },
@@ -1870,38 +1870,62 @@ async function addToCalendar(bk){
   const b = branchById(bk.branchId), sv = serviceById(bk.serviceId);
   const pad = n => String(n).padStart(2,'0');
   const fmt = (d) => d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
-  const start = new Date(bk.date + 'T' + bk.time + ':00');
+  // เวลานัดของสาขาเป็นเวลาไทยเสมอ ป้องกันเวลาเลื่อนเมื่อผู้ใช้เปิดจากอุปกรณ์ต่างเขตเวลา
+  const start = new Date(bk.date + 'T' + bk.time + ':00+07:00');
   const end = new Date(start.getTime() + svcMins(sv, bk.people)*60000);
+  const title = 'SUITCUBE ' + sname(sv) + ' (' + bk.code + ')';
+  const location = 'SUITCUBE ' + bname(b) + ' — ' + bloc(b);
+  const description = bloc(b) + ' - ' + b.map;
   const ics = [
     'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//SUITCUBE//Queue//TH','BEGIN:VEVENT',
     'UID:' + bk.code + '@suitcube',
     'DTSTAMP:' + fmt(new Date()),
     'DTSTART:' + fmt(start),
     'DTEND:' + fmt(end),
-    'SUMMARY:SUITCUBE ' + sname(sv) + ' (' + bk.code + ')',
-    'LOCATION:SUITCUBE ' + bname(b),
-    'DESCRIPTION:' + bloc(b).replace(/,/g,'\\,') + ' - ' + b.map,
+    'SUMMARY:' + title.replace(/,/g,'\\,'),
+    'LOCATION:' + location.replace(/,/g,'\\,'),
+    'DESCRIPTION:' + description.replace(/,/g,'\\,'),
     'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
   const fileName = bk.code + '.ics';
   const blob = new Blob(['\ufeff' + ics], {type:'text/calendar;charset=utf-8'});
-  const file = typeof File === 'function' ? new File([blob], fileName, {type:'text/calendar'}) : null;
+  const ua = navigator.userAgent || '';
+  const isAndroid = /Android/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
 
-  // Android/iOS: เปิดแผง Share ของระบบ เพื่อเลือก Calendar ได้ทันที
-  if (file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-    try {
-      await navigator.share({ files:[file], title:'SUITCUBE ' + sname(sv), text:longDate(bk.date) + ' ' + bk.time });
-      toast(tt('calendarOpened'));
-      return;
-    } catch (err) {
-      if (err && err.name === 'AbortError') return;
-      // ถ้าเครื่องแชร์ไฟล์ไม่ได้ ให้ใช้การดาวน์โหลดมาตรฐานด้านล่าง
-    }
+  // Android: เปิดหน้าสร้างนัดของ Google Calendar โดยกรอกข้อมูลให้ครบแล้ว
+  // ผู้ใช้เหลือเพียงกด “บันทึก” — ไม่ผ่านเมนู Share
+  if (isAndroid){
+    const params = new URLSearchParams({
+      action:'TEMPLATE',
+      text:title,
+      dates:fmt(start) + '/' + fmt(end),
+      details:description,
+      location:location,
+      ctz:'Asia/Bangkok'
+    });
+    const calendarUrl = 'https://calendar.google.com/calendar/render?' + params.toString();
+    const opened = window.open(calendarUrl, '_blank');
+    if (opened) opened.opener = null;
+    else window.location.href = calendarUrl;
+    toast(tt('calendarOpened'));
+    return;
   }
 
-  // Windows และเบราว์เซอร์รุ่นเก่า: ดาวน์โหลด .ics ซึ่งเปิดด้วย Outlook,
-  // Apple Calendar และ Google Calendar (ผ่านการ Import) ได้
   const url = URL.createObjectURL(blob);
+
+  // iPhone/iPad: เปิดไฟล์นัดหมายตรง ๆ ให้กด “เพิ่ม” ครั้งเดียว
+  // เปิดไฟล์นัดหมายโดยตรง จึงไม่แสดงเมนู Share
+  if (isIOS){
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    toast(tt('calendarOpened'));
+    return;
+  }
+
+  // Windows และเบราว์เซอร์อื่น: ดาวน์โหลด .ics เพื่อเปิดด้วย Outlook/Calendar
   const a = document.createElement('a');
   a.href = url; a.download = fileName; a.rel = 'noopener';
   document.body.appendChild(a); a.click(); a.remove();
