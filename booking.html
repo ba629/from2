@@ -75,7 +75,7 @@ html,body{background:var(--bg)}
 
 .nav{
   position:sticky;top:0;z-index:40;height:var(--nav-h);
-  display:grid;grid-template-columns:54px 1fr 38px 66px;align-items:center;gap:2px;
+  display:grid;grid-template-columns:54px 1fr 58px 88px;align-items:center;gap:4px;
   background:var(--surface);
   background:color-mix(in srgb,var(--bg) 78%,transparent);
   backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
@@ -83,7 +83,7 @@ html,body{background:var(--bg)}
 }
 .nav__title{text-align:center;font-size:15px;font-weight:600;letter-spacing:.01em}
 .nav__btn{font-size:14px;color:var(--brass-ink);font-weight:500;padding:8px;display:flex;align-items:center;gap:3px}
-.nav__btn:last-child{justify-content:flex-end}
+.nav__btn:last-child{justify-content:flex-end;white-space:nowrap}
 .nav__btn:disabled{opacity:0;pointer-events:none}
 .nav__lang{
   justify-self:center;font-size:10.5px;font-weight:600;letter-spacing:.03em;color:var(--brass-ink);
@@ -105,9 +105,8 @@ html,body{background:var(--bg)}
     radial-gradient(120% 90% at 15% 0%, rgba(239,193,92,.22), transparent 55%),
     linear-gradient(155deg, var(--ci-black) 0%, var(--ci-black-2) 55%, #1A1A1A 100%);
 }
-.hero__illust{position:absolute;right:6px;bottom:0;opacity:.9}
-@media (min-width:640px){ .hero__illust{width:270px;height:240px;right:24px} }
-@media (min-width:1024px){ .hero__illust{width:340px;height:300px;right:48px} }
+.hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.hero__video[hidden]{display:none}
 .hero__scrim{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.15) 55%, transparent 80%)}
 .hero__text{position:absolute;left:20px;right:20px;bottom:18px;color:#F6EFDE}
 .hero__eyebrow{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-ink);margin-bottom:6px}
@@ -570,9 +569,9 @@ const T = {
   min:               { th:m=>`${m} นาที`, en:m=>`${m} min`, zh:m=>`${m} 分钟` },
   detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
   peopleCount:       { th:'จำนวนคน', en:'Number of people', zh:'人数' },
-  selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ${dur} เป็นเวลาโดยประมาณ`, en:(name,dur)=>`Selected service: ${name}, approx. ${dur}`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
+  selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ใช้เวลาโดยประมาณ ${dur} / ท่าน`, en:(name,dur)=>`Selected service: ${name} · approx. ${dur} / person`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
   chooseDatetime:    { th:'เลือกวันและเวลา', en:'Choose date & time', zh:'选择日期与时间' },
-  datetimeSub:       { th:(b,s,m)=>`${b} · ${s} (${m} นาที)`, en:(b,s,m)=>`${b} · ${s} (${m} min)`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
+  datetimeSub:       { th:(b,s,m,p)=>`${b} · ${s} (${m} นาที/ท่าน) · ${p} คน`, en:(b,s,m,p)=>`${b} · ${s} (${m} min/person) · ${p} people`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
   today:             { th:'วันนี้', en:'Today', zh:'今天' },
   tomorrow:          { th:'พรุ่งนี้', en:'Tomorrow', zh:'明天' },
   openUntil:         { th:(d,o,c)=>`${d} · เปิด ${o}–${c} น.`, en:(d,o,c)=>`${d} · Open ${o}–${c}`, zh:(d,o,c)=>`${d} · 营业时间 ${o}–${c}` },
@@ -582,11 +581,9 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  cutoffPassed:      { th:()=>`คิวภายในวันสามารถจองล่วงหน้าได้ 6 ชั่วโมง (เปิดจองถึง ${SAME_DAY_CUTOFF} น. ของวัน)`, en:()=>`Today's booking cut-off has passed (bookings close at ${SAME_DAY_CUTOFF})`, zh:()=>`今日预约时间已截止（截止 ${SAME_DAY_CUTOFF}）` },
-  cutoffPassedSub:   { th:'ขณะนี้เลยเวลารับจองแล้ว คุณลูกค้าสามารถเลือกจองวันถัดไป หรือ Walk-in เข้ามารับบริการได้ตามปกติค่ะ อาจมีระยะเวลาในการรอคิวเล็กน้อย', en:'Please pick another day above, or simply walk in to the branch.', zh:'请在上方选择其他日期，或直接到店现场排队' },
-  slotNote:          { th:m=>`คิวสุดท้ายของวันเริ่มได้ไม่เกิน ${LAST_SLOT} น. · หากต้องการจองคิวของวันนี้ กรุณาจองก่อน ${SAME_DAY_CUTOFF} น. หากเลยเวลานี้แล้วกรุณาเลือกวันถัดไป`,
-                        en:m=>`The last slot of the day starts no later than ${LAST_SLOT}. Same-day bookings must be made before ${SAME_DAY_CUTOFF} — after that, please pick another day.`,
-                        zh:m=>`当天最后一个时段最晚 ${LAST_SLOT} 开始 · 当日预约请于 ${SAME_DAY_CUTOFF} 前完成，超过此时间请选择其他日期` },
+  slotNote:          { th:(p,d)=>`เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · เลือก ${p} คน · ระยะเวลารวมโดยประมาณ ${d}`,
+                        en:(p,d)=>`Available times follow this branch’s opening hours · ${p} people · approx. total duration ${d}`,
+                        zh:(p,d)=>`可预约时间依分店营业时间显示` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
   detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
   fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
@@ -617,7 +614,7 @@ const T = {
   addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
   cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
   doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
-  doneSub:           { th:'แสดงรหัสคิวนี้กับพนักงานเมื่อถึงสาขา', en:'Show this code to staff when you arrive', zh:'到店后请出示此号码给工作人员' },
+  doneSub:           { th:'กรุณาแสดงคิวนี้ หรือแจ้งพนักงานว่าลูกค้ามีการจองคิวผ่านระบบมาแล้ว', en:'Please show this booking, or tell our staff that you booked through the system.', zh:'到店后请出示此号码给工作人员' },
   storageFail:       { th:'อุปกรณ์นี้บันทึกคิวไว้ไม่ได้ กรุณาบันทึกภาพหน้าจอไว้เป็นหลักฐาน', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'此设备无法保存预约，请截图作为凭证' },
   myBookings:        { th:'คิวของฉัน', en:'My bookings', zh:'我的预约' },
   footerContact:     { th:'ติดต่อเรา', en:'Contact us', zh:'联系我们' },
@@ -692,8 +689,6 @@ const M_FULL = ['มกราคม','กุมภาพันธ์','มีน
 const M_FULL_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const M_FULL_ZH = M_SHORT_ZH;
 const SLOT_STEP = 30;      // นาทีต่อ 1 ช่วงคิว
-const SAME_DAY_CUTOFF = '10:00'; // จองคิวของ "วันนี้" ได้ถึงเวลานี้เท่านั้น เลยแล้วต้องจองวันอื่น
-const LAST_SLOT = '16:00';       // คิวสุดท้ายของวัน เริ่มได้ไม่เกินเวลานี้
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -709,6 +704,23 @@ const longDate = s => {
 };
 const branchById = id => BRANCHES.find(b => b.id === id);
 const serviceById = id => SERVICES.find(s => s.id === id);
+// ป้องกันไอคอนบริการซ้ำ โดยเลือกไอคอนตามประเภทบริการก่อน แล้วค่อย fallback ไปใช้ ico จาก Lark
+function serviceIcon(s){
+  const label = `${s?.id || ''} ${s?.name || ''} ${s?.nameEn || ''}`.toLowerCase();
+  if (/วัดตัว|measure|measurement|tailor/.test(label)){
+    // สายวัด
+    return '<path d="M4 7.5A3.5 3.5 0 017.5 4h9A3.5 3.5 0 0120 7.5v9a3.5 3.5 0 01-3.5 3.5h-9A3.5 3.5 0 014 16.5v-9z"/><path d="M7 8h2M7 11h4M7 14h2M7 17h4M16 7v10"/>';
+  }
+  if (/รับสินค้า|pickup|ฟิตติ้ง|fitting/.test(label)){
+    // ถุงสินค้า
+    return '<path d="M4 8h16l-1 12H5L4 8zM8 8V6a4 4 0 018 0v2"/>';
+  }
+  if (/เลือกชม|product|view|browse/.test(label)){
+    // เสื้อ
+    return '<path d="M12 3l4 2 5 3-2 3-3-1v11H8V10L5 11 3 8l5-3 4-2zM9 3.5a3 3 0 006 0"/>';
+  }
+  return s?.ico || '<circle cx="12" cy="12" r="8"/><path d="M8 12h8"/>';
+}
 // เวลาที่ใช้จริง = เวลาต่อคน × จำนวนคน (เช่น 1 ชม./คน, 2 คน = 2 ชม.)
 const svcMins = (s, people) => (s ? Number(s.mins) || 0 : 0) * Math.max(1, Number(people) || 1);
 const slotRange = (time, s, people) => `${time} – ${toHHMM(toMin(time) + svcMins(s, people))}`;
@@ -740,14 +752,11 @@ function slotsFor(branch, dateStr, mins){
   const now = new Date();
   const isToday = ymd(now) === dateStr;
   const nowMin = now.getHours()*60 + now.getMinutes();
-  // จองวันนี้: ต้องกดจองก่อน SAME_DAY_CUTOFF และคิวต้องยังไม่ผ่านไป
-  // จองวันอื่น: ไม่มีข้อจำกัด
-  const sameDayOpen = !isToday || nowMin < toMin(SAME_DAY_CUTOFF);
-  // คิวสุดท้ายต้องเริ่มไม่เกิน LAST_SLOT และต้องจบก่อนร้านปิดด้วย
-  const latestStart = Math.min(toMin(LAST_SLOT), toMin(c) - mins);
+  // เวลาจองอิงตามเวลาเปิด–ปิดของสาขา และต้องจบบริการก่อนร้านปิด
+  const latestStart = toMin(c) - mins;
   const out = [];
   for (let m = toMin(o); m <= latestStart; m += SLOT_STEP){
-    const ok = sameDayOpen && (!isToday || m > nowMin);
+    const ok = !isToday || m > nowMin;
     out.push({ t: toHHMM(m), ok });
   }
   return out;
@@ -766,6 +775,8 @@ function slotsFor(branch, dateStr, mins){
    ไม่ได้ใช้ window.storage อีกต่อไป (ใช้ได้แค่ใน Claude.ai เท่านั้น)
    ═══════════════════════════════════════════════ */
 const API_URL = '/api/suitcube'; // เว้นว่างไว้ = ใช้ localStorage อย่างเดียว | ใส่ path/URL ของ backend (n8n หรือ Express) เพื่อข้อมูลรวมศูนย์ผ่าน Lark Base
+// TODO: ใส่ path วิดีโอ Hero ตรงนี้ภายหลัง เช่น '/assets/suitcube-booking.mp4'
+const HERO_VIDEO_PATH = 'VIDEO_PATH_HERE.mp4';
 const ADMIN_PIN = '1234'; // PIN หลังบ้านแบบง่าย — ทำงานฝั่ง client เท่านั้น ไม่ใช่ระบบความปลอดภัยจริง
 const LS = { my:'suitcube:my-codes', bookings:'suitcube:bookings-local', branches:'suitcube:branches-local', services:'suitcube:services-local' };
 
@@ -801,25 +812,42 @@ async function apiCall(action, payload = {}){
 
 function loadMyCodes(){ myCodes = lsGet(LS.my, []); }
 function saveMyCodes(){ lsSet(LS.my, myCodes); }
-function saveBookingsLocal(){ if (!apiConfigured) lsSet(LS.bookings, bookings); }
+function saveBookingsLocal(){ lsSet(LS.bookings, bookings); }
 function saveBranchesLocal(){ if (!apiConfigured) lsSet(LS.branches, BRANCHES); }
 function saveServicesLocal(){ if (!apiConfigured) lsSet(LS.services, SERVICES); }
 
 async function loadBookings(){
   loadMyCodes();
+  const cached = lsGet(LS.bookings, []);
   if (apiConfigured){
     const r = await apiCall('listBookings');
-    bookings = (r && Array.isArray(r.bookings)) ? r.bookings : [];
-    storageOK = !!r;
+    if (r && Array.isArray(r.bookings)){
+      bookings = r.bookings;
+      saveBookingsLocal();
+      storageOK = true;
+    } else {
+      // ถ้า API ล่มชั่วคราว ให้ยังเห็นคิวที่เคยโหลด/จองไว้ในเครื่อง
+      bookings = cached;
+      storageOK = cached.length > 0;
+    }
   } else {
-    bookings = lsGet(LS.bookings, []);
+    bookings = cached;
     storageOK = true;
   }
 }
 async function refreshBookings(){
   if (!apiConfigured) return;
   const r = await apiCall('listBookings');
-  if (r && Array.isArray(r.bookings)) bookings = r.bookings;
+  if (r && Array.isArray(r.bookings)){
+    bookings = r.bookings;
+    saveBookingsLocal();
+  }
+}
+async function goMine(){
+  // เปิดหน้าคิวทันทีจากข้อมูลในเครื่องก่อน เพื่อให้ปุ่มตอบสนองเสมอ
+  go('mine');
+  await refreshBookings();
+  if (S.step === 'mine') render();
 }
 async function loadBranchesServices(){
   if (apiConfigured){
@@ -893,29 +921,12 @@ function go(step){
    6. หน้าจอ
    ═══════════════════════════════════════════════ */
 function heroHTML(){
+  const video = HERO_VIDEO_PATH && !HERO_VIDEO_PATH.startsWith('VIDEO_PATH_HERE')
+    ? `<video class="hero__video" autoplay muted loop playsinline preload="metadata" src="${esc(HERO_VIDEO_PATH)}" onerror="this.hidden=true"></video>`
+    : '';
   return `
     <div class="hero__bg"></div>
-    <svg class="hero__illust" width="210" height="186" viewBox="0 0 210 186" fill="none">
-      <g opacity="0.55" stroke="#F6EFDE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-        <!-- ไม้แขวน -->
-        <path d="M71 8a4 4 0 108 0"/>
-        <!-- เสื้อสูท -->
-        <path d="M75 16c-9 0-16 6-16 14v5l-27 11 7 18 20-8v70a5 5 0 005 5h22a5 5 0 005-5V56l20 8 7-18-27-11v-5c0-8-7-14-16-14z"/>
-        <path d="M59 30l16 18 16-18"/>
-        <!-- เนคไท -->
-        <path d="M69 46h12l-6 11z"/>
-        <path d="M71 57h8l-4 60z"/>
-        <!-- รองเท้าคู่ -->
-        <g transform="translate(46,148)">
-          <path d="M2 16V11q0-4 5-5l22-4q6-1 10 3l4 4q2 2 2 4v1q0 1-1 1H3q-1 0-1-1z"/>
-          <path d="M12 5v6"/>
-        </g>
-        <g transform="translate(84,155)">
-          <path d="M2 16V11q0-4 5-5l22-4q6-1 10 3l4 4q2 2 2 4v1q0 1-1 1H3q-1 0-1-1z"/>
-          <path d="M12 5v6"/>
-        </g>
-      </g>
-    </svg>
+    ${video}
     <div class="hero__scrim"></div>
     <div class="hero__text">
       <div class="hero__eyebrow">SUITCUBE APPOINTMENT</div>
@@ -1003,7 +1014,7 @@ function screenService(){
     <div class="svcgrid">
       ${SERVICES.map(s => `
         <button class="svcpill ${S.serviceId===s.id?'is-on':''}" data-service="${s.id}">
-          <span class="svcpill__ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${s.ico}</svg></span>
+          <span class="svcpill__ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${serviceIcon(s)}</svg></span>
           <span class="svcpill__name">${esc(sname(s))}</span>
         </button>`).join('')}
     </div>
@@ -1019,7 +1030,7 @@ function screenService(){
     </div>
     ${sel ? `
       <div class="eyebrow">${tt('detailsHeading')}</div>
-      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(svcMins(sel, S.people), S.lang))}</p>
+      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(Number(sel.mins) || 0, S.lang))}</p>
     ` : ''}
   `;
 }
@@ -1047,18 +1058,12 @@ function screenDatetime(){
   ].filter(g => g[1].length);
 
   const [o,c] = hoursOf(b, sel);
-  // เลยเวลาตัดรอบของวันนี้แล้วหรือยัง (จะได้อธิบายให้ชัด แทนที่จะโชว์ปุ่มจางๆ เฉยๆ)
-  const _now = new Date();
-  const cutoffPassed = (ymd(_now) === S.date) &&
-    (_now.getHours()*60 + _now.getMinutes()) >= toMin(SAME_DAY_CUTOFF);
-
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
-    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), svcMins(sv, S.people))}</p>
+    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
     ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` :
-      cutoffPassed ? `<div class="empty"><b>${tt('cutoffPassed')}</b>${tt('cutoffPassedSub')}</div>` :
       groups.length ? groups.map(([label, items]) => `
       <div class="eyebrow">${label}</div>
       <div class="slots">
@@ -1069,7 +1074,7 @@ function screenDatetime(){
         }).join('')}
       </div>`).join('')
       : `<div class="empty"><b>${tt('noSlots')}</b>${tt('noSlotsSub')}<br><br>${tt('walkin')}</div>`}
-    <div class="note">${tt('slotNote', svcMins(sv, S.people))}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
+    <div class="note">${tt('slotNote', S.people, fmtDuration(svcMins(sv, S.people), S.lang))}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
   `;
 }
 
@@ -1736,7 +1741,7 @@ document.addEventListener('click', async (e) => {
     const bk = (r && r.booking) ? r.booking : { code: makeCode(), ...draft };
     bookings.push(bk);
     saveBookingsLocal();
-    myCodes.push(bk.code);
+    if (bk.code && !myCodes.includes(bk.code)) myCodes.push(bk.code);
     saveMyCodes();
     S.last = bk;
     go('done');
@@ -1748,9 +1753,9 @@ document.addEventListener('click', async (e) => {
     go('branch'); return;
   }
 
-  if (t.id === 'mine'){ go('mine'); return; }
+  if (t.id === 'mine'){ await goMine(); return; }
 
-  if (t.dataset.footermine){ go('mine'); return; }
+  if (t.dataset.footermine){ await goMine(); return; }
 });
 
 document.addEventListener('input', (e) => {
@@ -1787,9 +1792,10 @@ navBack.addEventListener('click', () => {
   const order = { service:'branch', datetime:'service', form:'datetime', review:'form', done:'branch', mine:'branch' };
   go(order[S.step] || 'branch');
 });
-navMine.addEventListener('click', () => {
+navMine.addEventListener('click', async () => {
   if (S.admin){ S.admin = false; S.adminStep = 'login'; render(); return; }
-  go(S.step === 'mine' ? 'branch' : 'mine');
+  if (S.step === 'mine') go('branch');
+  else await goMine();
 });
 navLang.addEventListener('change', () => { S.lang = navLang.value; render(); });
 
