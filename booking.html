@@ -645,6 +645,8 @@ const T = {
   formIncomplete:    { th:'กรอกข้อมูลให้ครบก่อนไปต่อ', en:'Please complete the form to continue', zh:'请填写完整信息后再继续' },
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
   icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
+  calendarOpened:    { th:'เลือกแอปปฏิทินเพื่อเพิ่มนัดหมายได้เลย', en:'Choose your calendar app to add the appointment', zh:'请选择日历应用添加预约' },
+  sameDayCutoff:     { th:'การจองคิวภายในวันเดียวกัน เปิดรับถึง 16:00 น. เท่านั้น กรุณาเลือกวันถัดไป', en:'Same-day bookings close at 4:00 PM. Please choose another date.', zh:'当天预约于下午 4 点截止，请选择其他日期。' },
   openAt:            { th:o=>`เปิด ${o} น.`, en:o=>`Opens ${o}`, zh:o=>`${o} 开始营业` },
   closedToday:       { th:'ปิดแล้ววันนี้', en:'Closed for today', zh:'今日已打烊' },
   closedForBooking:  { th:'ปิดรับจองชั่วคราว', en:'Booking temporarily closed', zh:'暂停接受预约' },
@@ -689,6 +691,7 @@ const M_FULL = ['มกราคม','กุมภาพันธ์','มีน
 const M_FULL_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const M_FULL_ZH = M_SHORT_ZH;
 const SLOT_STEP = 30;      // นาทีต่อ 1 ช่วงคิว
+const SAME_DAY_CUTOFF_MIN = 16 * 60; // ปิดรับการสร้างคิวของ “วันนี้” เวลา 16:00 น.
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -726,6 +729,10 @@ const svcMins = (s, people) => (s ? Number(s.mins) || 0 : 0) * Math.max(1, Numbe
 const slotRange = (time, s, people) => `${time} – ${toHHMM(toMin(time) + svcMins(s, people))}`;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+function isSameDayCutoffPassed(dateStr, now = new Date()){
+  return dateStr === ymd(now) && (now.getHours()*60 + now.getMinutes()) >= SAME_DAY_CUTOFF_MIN;
+}
+
 function hoursOf(branch, date){ return branch.hours[date.getDay()]; }
 
 function isBranchClosed(branch, dateStr){
@@ -752,6 +759,7 @@ function slotsFor(branch, dateStr, mins){
   const now = new Date();
   const isToday = ymd(now) === dateStr;
   const nowMin = now.getHours()*60 + now.getMinutes();
+  if (isSameDayCutoffPassed(dateStr, now)) return [];
   // เวลาจองอิงตามเวลาเปิด–ปิดของสาขา และต้องจบบริการก่อนร้านปิด
   const latestStart = toMin(c) - mins;
   const out = [];
@@ -1050,6 +1058,7 @@ function screenDatetime(){
     </div>`;
 
   const dateClosed = isBranchClosed(b, S.date);
+  const cutoffPassed = isSameDayCutoffPassed(S.date, now);
   const slots = dateClosed ? [] : slotsFor(b, S.date, svcMins(sv, S.people));
   const groups = [
     [tt('morning'), slots.filter(s => toMin(s.t) < 13*60)],
@@ -1063,7 +1072,8 @@ function screenDatetime(){
     <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
-    ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` :
+    ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` : cutoffPassed ?
+      `<div class="empty"><b>${tt('sameDayCutoff')}</b></div>` :
       groups.length ? groups.map(([label, items]) => `
       <div class="eyebrow">${label}</div>
       <div class="slots">
@@ -1700,7 +1710,7 @@ document.addEventListener('click', async (e) => {
 
   if (t.dataset.time){ S.time = (S.time === t.dataset.time) ? null : t.dataset.time; render(); return; }
 
-  if (t.dataset.ics){ downloadICS(bookings.find(b => b.code === t.dataset.ics)); return; }
+  if (t.dataset.ics){ await addToCalendar(bookings.find(b => b.code === t.dataset.ics)); return; }
 
   if (t.dataset.cancel){
     const bk = bookings.find(b => b.code === t.dataset.cancel);
@@ -1717,7 +1727,10 @@ document.addEventListener('click', async (e) => {
   if (t.id === 'next'){
     if (S.step === 'branch') go('service');
     else if (S.step === 'service') go('datetime');
-    else if (S.step === 'datetime') go('form');
+    else if (S.step === 'datetime'){
+      if (isSameDayCutoffPassed(S.date)){ S.time = null; render(); toast(tt('sameDayCutoff')); return; }
+      go('form');
+    }
     else if (S.step === 'form'){
       S.touched = true;
       const okName = !!S.name.trim();
@@ -1729,6 +1742,7 @@ document.addEventListener('click', async (e) => {
   }
 
   if (t.id === 'confirm'){
+    if (isSameDayCutoffPassed(S.date)){ S.time = null; toast(tt('sameDayCutoff')); go('datetime'); return; }
     await refreshBookings();
     if (isTaken(S.branchId, S.date, S.time, svcMins(serviceById(S.serviceId), S.people))){ toast(tt('slotTaken')); go('datetime'); return; }
     const draft = {
@@ -1851,7 +1865,7 @@ function processPhotoFile(file){
   });
 }
 
-function downloadICS(bk){
+async function addToCalendar(bk){
   if (!bk) return;
   const b = branchById(bk.branchId), sv = serviceById(bk.serviceId);
   const pad = n => String(n).padStart(2,'0');
@@ -1869,10 +1883,29 @@ function downloadICS(bk){
     'DESCRIPTION:' + bloc(b).replace(/,/g,'\\,') + ' - ' + b.map,
     'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
-  const url = URL.createObjectURL(new Blob([ics], {type:'text/calendar'}));
+  const fileName = bk.code + '.ics';
+  const blob = new Blob(['\ufeff' + ics], {type:'text/calendar;charset=utf-8'});
+  const file = typeof File === 'function' ? new File([blob], fileName, {type:'text/calendar'}) : null;
+
+  // Android/iOS: เปิดแผง Share ของระบบ เพื่อเลือก Calendar ได้ทันที
+  if (file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+    try {
+      await navigator.share({ files:[file], title:'SUITCUBE ' + sname(sv), text:longDate(bk.date) + ' ' + bk.time });
+      toast(tt('calendarOpened'));
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return;
+      // ถ้าเครื่องแชร์ไฟล์ไม่ได้ ให้ใช้การดาวน์โหลดมาตรฐานด้านล่าง
+    }
+  }
+
+  // Windows และเบราว์เซอร์รุ่นเก่า: ดาวน์โหลด .ics ซึ่งเปิดด้วย Outlook,
+  // Apple Calendar และ Google Calendar (ผ่านการ Import) ได้
+  const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = bk.code + '.ics'; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  a.href = url; a.download = fileName; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
   toast(tt('icsDownloaded'));
 }
 
