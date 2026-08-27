@@ -357,6 +357,25 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
   opacity:0;pointer-events:none;transition:.3s var(--ease);box-shadow:var(--shadow)
 }
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
+.booking-popup{
+  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(14,12,9,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.booking-popup[hidden]{display:none}
+.booking-popup__card{
+  width:min(100%,430px);padding:26px 22px 22px;border-radius:22px;background:var(--bg);
+  border:1px solid var(--hairline);box-shadow:0 22px 70px rgba(0,0,0,.32);text-align:center;
+}
+.booking-popup__icon{
+  width:54px;height:54px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--brass-tint);color:var(--brass-ink);
+}
+.booking-popup__title{margin:0;color:var(--wool);font-family:var(--font-display);font-size:24px;line-height:1.25}
+.booking-popup__message{margin:10px 0 18px;color:var(--muted);font-size:14px;line-height:1.75}
+.booking-popup__queue{margin:0 0 18px;padding:13px;border-radius:var(--r-md);background:var(--surface-2)}
+.booking-popup__queue-label{display:block;margin-bottom:3px;color:var(--muted);font-size:11px}
+.booking-popup__queue-code{display:block;color:var(--wool);font-family:var(--font-display);font-size:25px;font-weight:700;letter-spacing:.08em}
+body.popup-open{overflow:hidden}
 .skeleton{height:64px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow);margin-bottom:9px;animation:pulse 1.4s ease-in-out infinite}
 
 /* ── admin (หลังบ้าน) ─────────────────── */
@@ -417,6 +436,20 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
   <div class="bar" id="bar"></div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="booking-popup" id="bookingSuccessPopup" role="dialog" aria-modal="true" aria-labelledby="bookingSuccessTitle" aria-describedby="bookingSuccessMessage" hidden>
+  <div class="booking-popup__card">
+    <div class="booking-popup__icon" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2 class="booking-popup__title" id="bookingSuccessTitle"></h2>
+    <p class="booking-popup__message" id="bookingSuccessMessage"></p>
+    <div class="booking-popup__queue">
+      <span class="booking-popup__queue-label" id="bookingSuccessQueueLabel"></span>
+      <strong class="booking-popup__queue-code" id="bookingSuccessQueueCode"></strong>
+    </div>
+    <button type="button" class="btn btn--ci" id="bookingSuccessAck"></button>
+  </div>
+</div>
 
 <script>
 /* ═══════════════════════════════════════════════
@@ -615,6 +648,10 @@ const T = {
   cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
   doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
   doneSub:           { th:'กรุณาแสดงคิวนี้ หรือแจ้งพนักงานว่าลูกค้ามีการจองคิวผ่านระบบมาแล้ว', en:'Please show this booking, or tell our staff that you booked through the system.', zh:'到店后请出示此号码给工作人员' },
+  successPopupTitle: { th:'จองคิวเรียบร้อยแล้ว', en:'Your booking is confirmed', zh:'预约成功' },
+  successPopupMessage:{ th:'กรุณาบันทึกหน้าจอหมายเลขคิวไว้ เพื่อใช้ยืนยันการจองเมื่อมาถึงร้าน เมื่อถึงร้าน กรุณาแสดงหมายเลขคิวที่หน้าเคาน์เตอร์ หรือแจ้งพนักงานว่าท่านได้จองคิวผ่านระบบแล้ว', en:'Please take a screenshot of your queue number and keep it to verify your booking when you arrive. At the store, please show the queue number at the counter or tell a staff member that you booked through the system.', zh:'请截屏保存排队号码，以便到店时确认预约。到店后，请在柜台出示排队号码，或告知工作人员您已通过系统预约。' },
+  popupQueueNumber: { th:'หมายเลขคิว', en:'Queue number', zh:'排队号码' },
+  acknowledge:      { th:'รับแซ่บ', en:'OK', zh:'知道了' },
   storageFail:       { th:'อุปกรณ์นี้บันทึกคิวไว้ไม่ได้ กรุณาบันทึกภาพหน้าจอไว้เป็นหลักฐาน', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'此设备无法保存预约，请截图作为凭证' },
   myBookings:        { th:'คิวของฉัน', en:'My bookings', zh:'我的预约' },
   footerContact:     { th:'ติดต่อเรา', en:'Contact us', zh:'联系我们' },
@@ -981,6 +1018,32 @@ const navLang = document.getElementById('navLang');
 const tape = document.getElementById('tape');
 const hero = document.getElementById('hero');
 const tapeFill = document.getElementById('tapeFill');
+const bookingSuccessPopup = document.getElementById('bookingSuccessPopup');
+const bookingSuccessTitle = document.getElementById('bookingSuccessTitle');
+const bookingSuccessMessage = document.getElementById('bookingSuccessMessage');
+const bookingSuccessQueueLabel = document.getElementById('bookingSuccessQueueLabel');
+const bookingSuccessQueueCode = document.getElementById('bookingSuccessQueueCode');
+const bookingSuccessAck = document.getElementById('bookingSuccessAck');
+
+function showBookingSuccessPopup(booking){
+  bookingSuccessTitle.textContent = tt('successPopupTitle');
+  bookingSuccessMessage.textContent = tt('successPopupMessage');
+  bookingSuccessQueueLabel.textContent = tt('popupQueueNumber');
+  bookingSuccessQueueCode.textContent = booking && booking.code ? booking.code : '-';
+  bookingSuccessAck.textContent = tt('acknowledge');
+  bookingSuccessPopup.hidden = false;
+  document.body.classList.add('popup-open');
+  bookingSuccessAck.focus();
+}
+
+async function acknowledgeBookingSuccess(){
+  if (bookingSuccessPopup.hidden) return;
+  bookingSuccessPopup.hidden = true;
+  document.body.classList.remove('popup-open');
+  await goMine();
+}
+
+bookingSuccessAck.addEventListener('click', acknowledgeBookingSuccess);
 
 function toast(msg){
   const el = document.getElementById('toast');
@@ -1840,6 +1903,7 @@ document.addEventListener('click', async (e) => {
     saveMyCodes();
     S.last = bk;
     go('done');
+    showBookingSuccessPopup(bk);
     return;
   }
 
