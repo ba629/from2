@@ -646,9 +646,9 @@ const T = {
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
   icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
   calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
-  weekdayBookingRule:{ th:'วันจันทร์–ศุกร์ ต้องจองล่วงหน้าอย่างน้อย 6 ชั่วโมง และเวลาเริ่มคิวต้องไม่เกิน 16:00 น. กรุณาเลือกเวลาใหม่', en:'Monday–Friday bookings require at least 6 hours’ notice, and the appointment must start no later than 4:00 PM. Please choose another time.', zh:'周一至周五须至少提前 6 小时预约，且预约开始时间不得晚于下午 4 点。请选择其他时间。' },
+  weekdayBookingRule:{ th:'วันจันทร์–ศุกร์ ต้องจองล่วงหน้าอย่างน้อย 6 ชั่วโมง หากจองคิวภายในวันเดียวกันต้องยืนยันไม่เกิน 10:00 น. และเวลาเริ่มคิวต้องไม่เกิน 16:00 น. กรุณาเลือกเวลาใหม่', en:'Monday–Friday bookings require at least 6 hours’ notice. Same-day bookings must be confirmed by 10:00 AM, and the appointment must start no later than 4:00 PM. Please choose another time.', zh:'周一至周五须至少提前 6 小时预约。当日预约须在上午 10 点前确认，且预约开始时间不得晚于下午 4 点。请选择其他时间。' },
   weekendBookingRule:{ th:'วันเสาร์–อาทิตย์ ต้องจองล่วงหน้าอย่างน้อย 1 วัน (24 ชั่วโมง) กรุณาเลือกวันหรือเวลาใหม่', en:'Saturday–Sunday bookings require at least 1 day (24 hours) notice. Please choose another date or time.', zh:'周六及周日须至少提前 1 天（24 小时）预约。请选择其他日期或时间。' },
-  weekdayRuleNote:  { th:'จันทร์–ศุกร์: จองล่วงหน้าอย่างน้อย 6 ชั่วโมง · เริ่มคิวได้ช้าที่สุด 16:00 น.', en:'Monday–Friday: book at least 6 hours ahead · latest appointment start 4:00 PM', zh:'周一至周五：至少提前 6 小时预约 · 最晚下午 4 点开始' },
+  weekdayRuleNote:  { th:'จันทร์–ศุกร์: จองล่วงหน้าอย่างน้อย 6 ชั่วโมง · คิวภายในวันยืนยันได้ถึง 10:00 น. · เริ่มคิวช้าที่สุด 16:00 น.', en:'Monday–Friday: book at least 6 hours ahead · confirm same-day bookings by 10:00 AM · latest appointment start 4:00 PM', zh:'周一至周五：至少提前 6 小时预约 · 当日预约须在上午 10 点前确认 · 最晚下午 4 点开始' },
   weekendRuleNote:  { th:'เสาร์–อาทิตย์: จองล่วงหน้าอย่างน้อย 1 วัน (24 ชั่วโมง)', en:'Saturday–Sunday: book at least 1 day (24 hours) ahead', zh:'周六及周日：至少提前 1 天（24 小时）预约' },
   noRuleSlots:      { th:'ไม่มีเวลาที่จองได้ตามเงื่อนไขในวันนี้', en:'No times meet the advance-booking rule for this day', zh:'当天没有符合提前预约规则的时段' },
   timeUnavailable:  { th:'เวลานี้ไม่สามารถจองได้แล้ว กรุณาเลือกเวลาใหม่', en:'This time is no longer available. Please choose another time.', zh:'该时段已无法预约，请选择其他时间。' },
@@ -698,6 +698,7 @@ const M_FULL_ZH = M_SHORT_ZH;
 const SLOT_STEP = 30;                 // นาทีต่อ 1 ช่วงคิว
 const WEEKDAY_LEAD_MIN = 6 * 60;      // จันทร์–ศุกร์: จองล่วงหน้าอย่างน้อย 6 ชั่วโมง
 const WEEKEND_LEAD_MIN = 24 * 60;     // เสาร์–อาทิตย์: จองล่วงหน้าอย่างน้อย 1 วัน
+const WEEKDAY_SAME_DAY_CUTOFF_MIN = 10 * 60; // จันทร์–ศุกร์: ยืนยันคิวภายในวันได้ช้าที่สุด 10:00 น.
 const WEEKDAY_LAST_START_MIN = 16 * 60; // จันทร์–ศุกร์: เวลาเริ่มคิวช้าที่สุด 16:00 น.
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
@@ -754,9 +755,13 @@ function bookingRuleViolation(dateStr, timeStr, now = new Date()){
   const weekday = isWeekdayDate(dateStr);
   if (weekday && toMin(timeStr) > WEEKDAY_LAST_START_MIN) return 'weekdayBookingRule';
 
-  // คิดเป็นนาทีเต็ม เพื่อให้ 09:00 จอง 15:00 ได้ตรงตามกติกา 6 ชั่วโมง
+  // คิดเป็นนาทีเต็ม เพื่อให้เวลานัดที่ห่างครบ 6 ชั่วโมงจองได้ตรงตามกติกา
   const bookedAt = new Date(now);
   bookedAt.setSeconds(0, 0);
+  const bookingMinute = bookedAt.getHours() * 60 + bookedAt.getMinutes();
+  if (weekday && dateStr === ymd(bookedAt) && bookingMinute > WEEKDAY_SAME_DAY_CUTOFF_MIN){
+    return 'weekdayBookingRule';
+  }
   const leadMin = weekday ? WEEKDAY_LEAD_MIN : WEEKEND_LEAD_MIN;
   const earliest = new Date(bookedAt.getTime() + leadMin * 60000);
   return appointmentDateTime(dateStr, timeStr) < earliest
