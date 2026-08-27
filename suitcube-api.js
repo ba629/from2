@@ -22,6 +22,10 @@
  *   LARK_BRANCHES_TABLE_ID=...
  *   LARK_SERVICES_APP_TOKEN=...
  *   LARK_SERVICES_TABLE_ID=...
+ *
+ * ตาราง Booking ต้องมีคอลัมน์เพิ่ม:
+ *   ลูกค้ารับทราบ  → ชนิด Checkbox (จำเป็น)
+ *   Service ID      → ชนิด Text (ไม่บังคับ; ใช้เก็บ ID ภายใน โดยช่อง Service จะเก็บชื่อบริการ)
  * ─────────────────────────────────────────────
  */
 
@@ -55,7 +59,8 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     bookings: {
       code:      'Booking ID',
       branchId:  'Branch',
-      serviceId: 'Service',
+      serviceId: 'Service ID',       // ไม่บังคับ — ถ้ามีคอลัมน์นี้จะเก็บ ID ไว้ใช้อ้างอิงภายใน
+      serviceName:'Service',         // ช่อง Service ที่ลูกค้าเห็น เก็บชื่อบริการแทน ID
       date:      'Booking Date',
       time:      'Time Slot',
       people:    'Pax',
@@ -63,6 +68,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
       phone:     'Phone',
       note:      'Note',
       status:    'Status',
+      acknowledged:'ลูกค้ารับทราบ', // ต้องเป็นคอลัมน์ชนิด Checkbox
       createdAt: 'Created At',   // ⚠️ ต้องสร้างคอลัมน์ชนิด Date ชื่อ "Created At" ในตาราง Bookings ก่อน
                                  //    (ถ้าตั้งชื่อคอลัมน์เป็นอย่างอื่น ให้แก้ตรงนี้ให้ตรง
                                  //     หรือถ้าไม่อยากเก็บเวลาสร้าง ให้เปลี่ยนกลับเป็น null)
@@ -213,6 +219,24 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     return f ? f.name : null;
   }
 
+  // สร้าง Checkbox ให้เองเมื่อยังไม่มี (ต้องให้ Lark App มีสิทธิ์จัดการ Base)
+  async function ensureBookingAcknowledgedField() {
+    const existing = await resolveField('bookings', 'acknowledged');
+    if (existing) return existing;
+    const { appToken, tableId } = TABLES.bookings;
+    const fieldName = FIELD_MAP.bookings.acknowledged;
+    const res = await larkClient.bitable.appTableField.create({
+      path: { app_token: appToken, table_id: tableId },
+      data: { field_name: fieldName, type: 7 }, // 7 = Checkbox
+    });
+    if (res.code && res.code !== 0) throw new Error(`Lark create field failed: ${res.msg}`);
+    delete schemaCache.bookings;
+    const created = await resolveField('bookings', 'acknowledged');
+    if (!created) throw new Error('สร้างคอลัมน์ "ลูกค้ารับทราบ" แล้ว แต่ยังอ่าน schema ไม่พบ');
+    console.log('[suitcube-api] ✅ สร้างคอลัมน์ Checkbox "ลูกค้ารับทราบ" แล้ว');
+    return created;
+  }
+
   /* ═══════════════════════════════════════════════
      แปลงค่าให้ตรงกับชนิดคอลัมน์จริงใน Lark
      ═══════════════════════════════════════════════
@@ -311,7 +335,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     'loc', 'locEn', 'locZh', 'map', 'area', 'parking', 'parkingEn', 'parkingZh', 'photo',
   ];
   const SERVICE_STR_FIELDS = ['id', 'name', 'nameEn', 'nameZh', 'desc', 'descEn', 'descZh', 'ico'];
-  const BOOKING_STR_FIELDS = ['code', 'branchId', 'serviceId', 'time', 'name', 'phone', 'note', 'status'];
+  const BOOKING_STR_FIELDS = ['code', 'branchId', 'serviceId', 'serviceName', 'time', 'name', 'phone', 'note', 'status'];
 
   async function branchFromRecord(rec) {
     const f = await fromLarkFields('branches', rec.fields,
@@ -336,22 +360,57 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     return out;
   }
 
-  async function bookingFromRecord(rec) {
+  const serviceLookupKey = (value) => String(value || '').trim().toLocaleLowerCase();
+
+  async function loadServiceLookups() {
+    const records = await listRecords('services');
+    const services = await Promise.all(records.map(serviceFromRecord));
+    const byId = new Map();
+    const byName = new Map();
+    services.forEach((service) => {
+      if (service.id) byId.set(String(service.id), service);
+      [service.name, service.nameEn, service.nameZh].forEach((name) => {
+        if (name) byName.set(serviceLookupKey(name), service);
+      });
+    });
+    return { byId, byName };
+  }
+
+  function applyServiceLookupToBooking(out, lookups) {
+    if (!lookups) return out;
+    const rawId = out.serviceId ? String(out.serviceId) : '';
+    const rawName = out.serviceName ? String(out.serviceName) : '';
+    // รองรับทั้งข้อมูลใหม่ (Service เป็นชื่อ) และข้อมูลเก่า (Service เคยเก็บ ID)
+    const service = (rawId && lookups.byId.get(rawId))
+      || (rawName && lookups.byId.get(rawName))
+      || (rawName && lookups.byName.get(serviceLookupKey(rawName)));
+    if (service) {
+      out.serviceId = service.id;
+      out.serviceName = service.name || service.nameEn || service.nameZh || rawName || rawId;
+    } else if (!out.serviceId && rawName) {
+      // เก็บค่าเดิมไว้เป็น fallback สำหรับรายการเก่าที่บริการถูกลบไปแล้ว
+      out.serviceId = rawName;
+    }
+    return out;
+  }
+
+  async function bookingFromRecord(rec, serviceLookups) {
     const f = await fromLarkFields('bookings', rec.fields,
-      [...BOOKING_STR_FIELDS, 'people', 'date', 'createdAt']);
+      [...BOOKING_STR_FIELDS, 'people', 'date', 'createdAt', 'acknowledged']);
     const out = {};
     BOOKING_STR_FIELDS.forEach((k) => { if (f[k] !== undefined && f[k] !== '') out[k] = f[k]; });
     out.people = Number(f.people) || 1;
     out.date = tsToDateStr(f.date);
+    out.acknowledged = toBool(f.acknowledged);
     const cts = toTimestamp(f.createdAt);
     out.createdAt = cts !== null ? new Date(cts).toISOString() : undefined;
     out._recordId = rec.record_id;
-    return out;
+    return applyServiceLookupToBooking(out, serviceLookups);
   }
 
   // สร้าง fields object สำหรับเขียนเข้า Lark — ใส่เฉพาะ key ที่มีอยู่จริงใน payload
   // (สำคัญ: รองรับการอัปเดตบางส่วน เช่น toggle ปิดรับจองที่ส่งมาแค่ {id, closed})
-  function buildFields(payload, strFields, { hasHours, hasClosed, hasSchedule, hasMins, hasPeople, hasDate, hasStatus, hasCreatedAt } = {}) {
+  function buildFields(payload, strFields, { hasHours, hasClosed, hasSchedule, hasMins, hasPeople, hasDate, hasStatus, hasCreatedAt, hasAcknowledged } = {}) {
     const out = {};
     strFields.forEach((k) => {
       if (payload[k] !== undefined) out[k] = payload[k] === null ? '' : String(payload[k]);
@@ -369,6 +428,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     if (hasDate && payload.date !== undefined) out.date = dateStrToTs(payload.date);
     if (hasStatus && payload.status !== undefined) out.status = payload.status;
     if (hasCreatedAt && payload.createdAt !== undefined) out.createdAt = new Date(payload.createdAt).getTime();
+    if (hasAcknowledged && payload.acknowledged !== undefined) out.acknowledged = !!payload.acknowledged;
     return out;
   }
 
@@ -394,22 +454,46 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride) {
     },
 
     async listBookings() {
-      const items = await listRecords('bookings');
-      return { bookings: await Promise.all(items.map(bookingFromRecord)) };
+      const [items, serviceLookups] = await Promise.all([
+        listRecords('bookings'),
+        loadServiceLookups(),
+      ]);
+      return { bookings: await Promise.all(items.map((rec) => bookingFromRecord(rec, serviceLookups))) };
     },
 
     async createBooking(payload) {
       const code = makeCode();
+      // พยายามสร้าง Checkbox อัตโนมัติ แต่ไม่ให้การขาดสิทธิ์แก้ schema ทำให้ลูกค้าจองคิวไม่ได้
+      try {
+        await ensureBookingAcknowledgedField();
+      } catch (err) {
+        console.warn('[suitcube-api] ยังสร้างคอลัมน์ "ลูกค้ารับทราบ" ไม่ได้:', err.message);
+      }
+      const serviceLookups = await loadServiceLookups();
+      const selectedService = serviceLookups.byId.get(String(payload.serviceId || ''))
+        || serviceLookups.byName.get(serviceLookupKey(payload.serviceName));
+      if (!selectedService) throw new Error('ไม่พบบริการที่เลือก: ' + (payload.serviceId || payload.serviceName || '-'));
+      const serviceName = selectedService.name || selectedService.nameEn || selectedService.nameZh || selectedService.id;
       const fields = buildFields(
-        { ...payload, code },
-        ['code', 'branchId', 'serviceId', 'time', 'name', 'phone', 'note'],
-        { hasPeople: true, hasDate: true, hasStatus: true, hasCreatedAt: true }
+        { ...payload, code, serviceId: selectedService.id, serviceName, acknowledged: false },
+        ['code', 'branchId', 'serviceId', 'serviceName', 'time', 'name', 'phone', 'note'],
+        { hasPeople: true, hasDate: true, hasStatus: true, hasCreatedAt: true, hasAcknowledged: true }
       );
       fields.status = payload.status || 'active';
       fields.date = dateStrToTs(payload.date);
       fields.createdAt = payload.createdAt ? new Date(payload.createdAt).getTime() : Date.now();
+      fields.acknowledged = false;
       const rec = await createRecord('bookings', fields);
-      return { booking: await bookingFromRecord(rec) };
+      return { booking: await bookingFromRecord(rec, serviceLookups) };
+    },
+
+    async acknowledgeBooking(payload) {
+      if (!payload.code) throw new Error('กรุณาระบุ Booking ID');
+      await ensureBookingAcknowledgedField();
+      const rec = await findRecordByField('bookings', 'code', payload.code);
+      if (!rec) throw new Error('ไม่พบรหัสคิวนี้: ' + payload.code);
+      await updateRecord('bookings', rec.record_id, { acknowledged: true });
+      return { ok: true, acknowledged: true };
     },
 
     async cancelBooking(payload) {
