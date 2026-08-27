@@ -646,7 +646,12 @@ const T = {
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
   icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
   calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
-  sameDayCutoff:     { th:'การจองคิวภายในวันเดียวกัน เปิดรับถึง 16:00 น. เท่านั้น กรุณาเลือกวันถัดไป', en:'Same-day bookings close at 4:00 PM. Please choose another date.', zh:'当天预约于下午 4 点截止，请选择其他日期。' },
+  weekdayBookingRule:{ th:'วันจันทร์–ศุกร์ ต้องจองล่วงหน้าอย่างน้อย 6 ชั่วโมง และเวลาเริ่มคิวต้องไม่เกิน 16:00 น. กรุณาเลือกเวลาใหม่', en:'Monday–Friday bookings require at least 6 hours’ notice, and the appointment must start no later than 4:00 PM. Please choose another time.', zh:'周一至周五须至少提前 6 小时预约，且预约开始时间不得晚于下午 4 点。请选择其他时间。' },
+  weekendBookingRule:{ th:'วันเสาร์–อาทิตย์ ต้องจองล่วงหน้าอย่างน้อย 1 วัน (24 ชั่วโมง) กรุณาเลือกวันหรือเวลาใหม่', en:'Saturday–Sunday bookings require at least 1 day (24 hours) notice. Please choose another date or time.', zh:'周六及周日须至少提前 1 天（24 小时）预约。请选择其他日期或时间。' },
+  weekdayRuleNote:  { th:'จันทร์–ศุกร์: จองล่วงหน้าอย่างน้อย 6 ชั่วโมง · เริ่มคิวได้ช้าที่สุด 16:00 น.', en:'Monday–Friday: book at least 6 hours ahead · latest appointment start 4:00 PM', zh:'周一至周五：至少提前 6 小时预约 · 最晚下午 4 点开始' },
+  weekendRuleNote:  { th:'เสาร์–อาทิตย์: จองล่วงหน้าอย่างน้อย 1 วัน (24 ชั่วโมง)', en:'Saturday–Sunday: book at least 1 day (24 hours) ahead', zh:'周六及周日：至少提前 1 天（24 小时）预约' },
+  noRuleSlots:      { th:'ไม่มีเวลาที่จองได้ตามเงื่อนไขในวันนี้', en:'No times meet the advance-booking rule for this day', zh:'当天没有符合提前预约规则的时段' },
+  timeUnavailable:  { th:'เวลานี้ไม่สามารถจองได้แล้ว กรุณาเลือกเวลาใหม่', en:'This time is no longer available. Please choose another time.', zh:'该时段已无法预约，请选择其他时间。' },
   openAt:            { th:o=>`เปิด ${o} น.`, en:o=>`Opens ${o}`, zh:o=>`${o} 开始营业` },
   closedToday:       { th:'ปิดแล้ววันนี้', en:'Closed for today', zh:'今日已打烊' },
   closedForBooking:  { th:'ปิดรับจองชั่วคราว', en:'Booking temporarily closed', zh:'暂停接受预约' },
@@ -690,8 +695,10 @@ const M_SHORT_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9�
 const M_FULL = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const M_FULL_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const M_FULL_ZH = M_SHORT_ZH;
-const SLOT_STEP = 30;      // นาทีต่อ 1 ช่วงคิว
-const SAME_DAY_CUTOFF_MIN = 16 * 60; // ปิดรับการสร้างคิวของ “วันนี้” เวลา 16:00 น.
+const SLOT_STEP = 30;                 // นาทีต่อ 1 ช่วงคิว
+const WEEKDAY_LEAD_MIN = 6 * 60;      // จันทร์–ศุกร์: จองล่วงหน้าอย่างน้อย 6 ชั่วโมง
+const WEEKEND_LEAD_MIN = 24 * 60;     // เสาร์–อาทิตย์: จองล่วงหน้าอย่างน้อย 1 วัน
+const WEEKDAY_LAST_START_MIN = 16 * 60; // จันทร์–ศุกร์: เวลาเริ่มคิวช้าที่สุด 16:00 น.
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -729,8 +736,32 @@ const svcMins = (s, people) => (s ? Number(s.mins) || 0 : 0) * Math.max(1, Numbe
 const slotRange = (time, s, people) => `${time} – ${toHHMM(toMin(time) + svcMins(s, people))}`;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function isSameDayCutoffPassed(dateStr, now = new Date()){
-  return dateStr === ymd(now) && (now.getHours()*60 + now.getMinutes()) >= SAME_DAY_CUTOFF_MIN;
+function isWeekdayDate(dateStr){
+  const day = parseYmd(dateStr).getDay();
+  return day >= 1 && day <= 5;
+}
+
+function appointmentDateTime(dateStr, timeStr){
+  const d = parseYmd(dateStr);
+  const [h,m] = timeStr.split(':').map(Number);
+  d.setHours(h, m, 0, 0);
+  return d;
+}
+
+// คืน key ของข้อความผิดเงื่อนไข หรือ null เมื่อเวลานัดจองได้
+function bookingRuleViolation(dateStr, timeStr, now = new Date()){
+  if (!dateStr || !timeStr) return null;
+  const weekday = isWeekdayDate(dateStr);
+  if (weekday && toMin(timeStr) > WEEKDAY_LAST_START_MIN) return 'weekdayBookingRule';
+
+  // คิดเป็นนาทีเต็ม เพื่อให้ 09:00 จอง 15:00 ได้ตรงตามกติกา 6 ชั่วโมง
+  const bookedAt = new Date(now);
+  bookedAt.setSeconds(0, 0);
+  const leadMin = weekday ? WEEKDAY_LEAD_MIN : WEEKEND_LEAD_MIN;
+  const earliest = new Date(bookedAt.getTime() + leadMin * 60000);
+  return appointmentDateTime(dateStr, timeStr) < earliest
+    ? (weekday ? 'weekdayBookingRule' : 'weekendBookingRule')
+    : null;
 }
 
 function hoursOf(branch, date){ return branch.hours[date.getDay()]; }
@@ -753,21 +784,28 @@ function openStatus(branch){
   return { open:true, text: left <= 60 ? tt('closingSoon', c) : tt('openUntilTime', c) };
 }
 
-function slotsFor(branch, dateStr, mins){
+function slotsFor(branch, dateStr, mins, now = new Date()){
   const date = parseYmd(dateStr);
   const [o,c] = hoursOf(branch, date);
-  const now = new Date();
-  const isToday = ymd(now) === dateStr;
-  const nowMin = now.getHours()*60 + now.getMinutes();
-  if (isSameDayCutoffPassed(dateStr, now)) return [];
   // เวลาจองอิงตามเวลาเปิด–ปิดของสาขา และต้องจบบริการก่อนร้านปิด
-  const latestStart = toMin(c) - mins;
+  // วันจันทร์–ศุกร์จำกัดเวลาเริ่มคิวไม่เกิน 16:00 น.
+  const latestStart = Math.min(
+    toMin(c) - mins,
+    isWeekdayDate(dateStr) ? WEEKDAY_LAST_START_MIN : Number.POSITIVE_INFINITY
+  );
   const out = [];
   for (let m = toMin(o); m <= latestStart; m += SLOT_STEP){
-    const ok = !isToday || m > nowMin;
-    out.push({ t: toHHMM(m), ok });
+    const t = toHHMM(m);
+    out.push({ t, ok: !bookingRuleViolation(dateStr, t, now) });
   }
   return out;
+}
+
+function bookingSelectionViolation(branch, dateStr, timeStr, mins, now = new Date()){
+  const rule = bookingRuleViolation(dateStr, timeStr, now);
+  if (rule) return rule;
+  const slot = slotsFor(branch, dateStr, mins, now).find(s => s.t === timeStr);
+  return slot && slot.ok ? null : 'timeUnavailable';
 }
 
 /* ═══════════════════════════════════════════════
@@ -1078,8 +1116,10 @@ function screenDatetime(){
     </div>`;
 
   const dateClosed = isBranchClosed(b, S.date);
-  const cutoffPassed = isSameDayCutoffPassed(S.date, now);
-  const slots = dateClosed ? [] : slotsFor(b, S.date, svcMins(sv, S.people));
+  const weekday = isWeekdayDate(S.date);
+  const ruleNote = tt(weekday ? 'weekdayRuleNote' : 'weekendRuleNote');
+  const slots = dateClosed ? [] : slotsFor(b, S.date, svcMins(sv, S.people), now);
+  const hasRuleSlot = slots.some(s => s.ok);
   const groups = [
     [tt('morning'), slots.filter(s => toMin(s.t) < 13*60)],
     [tt('afternoon'), slots.filter(s => toMin(s.t) >= 13*60 && toMin(s.t) < 17*60)],
@@ -1092,8 +1132,8 @@ function screenDatetime(){
     <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
-    ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` : cutoffPassed ?
-      `<div class="empty"><b>${tt('sameDayCutoff')}</b></div>` :
+    ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` : !hasRuleSlot ?
+      `<div class="empty"><b>${tt('noRuleSlots')}</b>${ruleNote}<br><br>${tt('noSlotsSub')}</div>` :
       groups.length ? groups.map(([label, items]) => `
       <div class="eyebrow">${label}</div>
       <div class="slots">
@@ -1104,7 +1144,7 @@ function screenDatetime(){
         }).join('')}
       </div>`).join('')
       : `<div class="empty"><b>${tt('noSlots')}</b>${tt('noSlotsSub')}<br><br>${tt('walkin')}</div>`}
-    <div class="note">${tt('slotNote', S.people, fmtDuration(svcMins(sv, S.people), S.lang))}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
+    <div class="note">${tt('slotNote', S.people, fmtDuration(svcMins(sv, S.people), S.lang))}<br>${ruleNote}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
   `;
 }
 
@@ -1748,7 +1788,11 @@ document.addEventListener('click', async (e) => {
     if (S.step === 'branch') go('service');
     else if (S.step === 'service') go('datetime');
     else if (S.step === 'datetime'){
-      if (isSameDayCutoffPassed(S.date)){ S.time = null; render(); toast(tt('sameDayCutoff')); return; }
+      const violation = bookingSelectionViolation(
+        branchById(S.branchId), S.date, S.time,
+        svcMins(serviceById(S.serviceId), S.people)
+      );
+      if (violation){ S.time = null; render(); toast(tt(violation)); return; }
       go('form');
     }
     else if (S.step === 'form'){
@@ -1762,7 +1806,11 @@ document.addEventListener('click', async (e) => {
   }
 
   if (t.id === 'confirm'){
-    if (isSameDayCutoffPassed(S.date)){ S.time = null; toast(tt('sameDayCutoff')); go('datetime'); return; }
+    const violation = bookingSelectionViolation(
+      branchById(S.branchId), S.date, S.time,
+      svcMins(serviceById(S.serviceId), S.people)
+    );
+    if (violation){ S.time = null; toast(tt(violation)); go('datetime'); return; }
     await refreshBookings();
     if (isTaken(S.branchId, S.date, S.time, svcMins(serviceById(S.serviceId), S.people))){ toast(tt('slotTaken')); go('datetime'); return; }
     const draft = {
