@@ -651,7 +651,9 @@ const T = {
   successPopupTitle: { th:'จองคิวเรียบร้อยแล้ว', en:'Your booking is confirmed', zh:'预约成功' },
   successPopupMessage:{ th:'กรุณาบันทึกหน้าจอหมายเลขคิวไว้ เพื่อใช้ยืนยันการจองเมื่อมาถึงร้าน เมื่อถึงร้าน กรุณาแสดงหมายเลขคิวที่หน้าเคาน์เตอร์ หรือแจ้งพนักงานว่าท่านได้จองคิวผ่านระบบแล้ว', en:'Please take a screenshot of your queue number and keep it to verify your booking when you arrive. At the store, please show the queue number at the counter or tell a staff member that you booked through the system.', zh:'请截屏保存排队号码，以便到店时确认预约。到店后，请在柜台出示排队号码，或告知工作人员您已通过系统预约。' },
   popupQueueNumber: { th:'หมายเลขคิว', en:'Queue number', zh:'排队号码' },
-  acknowledge:      { th:'รับแซ่บ', en:'OK', zh:'知道了' },
+  acknowledge:      { th:'รับทราบ', en:'OK', zh:'知道了' },
+  ackSaving:        { th:'กำลังบันทึก...', en:'Saving...', zh:'正在保存…' },
+  ackSaveFail:      { th:'บันทึกการรับทราบไม่สำเร็จ กรุณากดอีกครั้ง', en:'Could not save your acknowledgement. Please try again.', zh:'未能保存确认，请重试。' },
   storageFail:       { th:'อุปกรณ์นี้บันทึกคิวไว้ไม่ได้ กรุณาบันทึกภาพหน้าจอไว้เป็นหลักฐาน', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'此设备无法保存预约，请截图作为凭证' },
   myBookings:        { th:'คิวของฉัน', en:'My bookings', zh:'我的预约' },
   footerContact:     { th:'ติดต่อเรา', en:'Contact us', zh:'联系我们' },
@@ -1024,6 +1026,7 @@ const bookingSuccessMessage = document.getElementById('bookingSuccessMessage');
 const bookingSuccessQueueLabel = document.getElementById('bookingSuccessQueueLabel');
 const bookingSuccessQueueCode = document.getElementById('bookingSuccessQueueCode');
 const bookingSuccessAck = document.getElementById('bookingSuccessAck');
+let bookingAckBusy = false;
 
 function showBookingSuccessPopup(booking){
   bookingSuccessTitle.textContent = tt('successPopupTitle');
@@ -1031,13 +1034,37 @@ function showBookingSuccessPopup(booking){
   bookingSuccessQueueLabel.textContent = tt('popupQueueNumber');
   bookingSuccessQueueCode.textContent = booking && booking.code ? booking.code : '-';
   bookingSuccessAck.textContent = tt('acknowledge');
+  bookingSuccessAck.disabled = false;
+  bookingAckBusy = false;
   bookingSuccessPopup.hidden = false;
   document.body.classList.add('popup-open');
   bookingSuccessAck.focus();
 }
 
 async function acknowledgeBookingSuccess(){
-  if (bookingSuccessPopup.hidden) return;
+  if (bookingSuccessPopup.hidden || bookingAckBusy) return;
+  bookingAckBusy = true;
+  bookingSuccessAck.disabled = true;
+  bookingSuccessAck.textContent = tt('ackSaving');
+
+  const booking = S.last;
+  const result = booking && booking.code
+    ? await apiCall('acknowledgeBooking', { code:booking.code })
+    : null;
+  if (result === null && apiConfigured){
+    bookingAckBusy = false;
+    bookingSuccessAck.disabled = false;
+    bookingSuccessAck.textContent = tt('acknowledge');
+    toast(tt('ackSaveFail'));
+    return;
+  }
+
+  if (booking){
+    booking.acknowledged = true;
+    const saved = bookings.find(b => b.code === booking.code);
+    if (saved) saved.acknowledged = true;
+    saveBookingsLocal();
+  }
   bookingSuccessPopup.hidden = true;
   document.body.classList.remove('popup-open');
   await goMine();
@@ -1889,10 +1916,13 @@ document.addEventListener('click', async (e) => {
     if (violation){ S.time = null; toast(tt(violation)); go('datetime'); return; }
     await refreshBookings();
     if (isTaken(S.branchId, S.date, S.time, svcMins(serviceById(S.serviceId), S.people))){ toast(tt('slotTaken')); go('datetime'); return; }
+    const selectedService = serviceById(S.serviceId);
     const draft = {
-      branchId:S.branchId, serviceId:S.serviceId, date:S.date, time:S.time, people:S.people,
+      branchId:S.branchId, serviceId:S.serviceId,
+      serviceName:selectedService ? (selectedService.name || selectedService.nameEn || selectedService.nameZh || S.serviceId) : S.serviceId,
+      date:S.date, time:S.time, people:S.people,
       name:S.name.trim(), phone:S.phone.replace(/[-\s]/g,''), note:S.note.trim(),
-      status:'active', createdAt:new Date().toISOString()
+      status:'active', acknowledged:false, createdAt:new Date().toISOString()
     };
     const r = await apiCall('createBooking', draft);
     if (r === null && apiConfigured){ toast('จองไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
