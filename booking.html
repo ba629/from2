@@ -717,7 +717,15 @@ const T = {
   dateLabel:         { th:'วันที่จอง', en:'Booking date', zh:'预约日期' },
 };
 function tt(key, ...args){
-  const entry = T[key][S.lang];
+  const source = T[key];
+
+  if (Array.isArray(source)) {
+    return source
+      .map(item => item[S.lang] || item.en || item.th || '')
+      .join('<br><br>');
+  }
+
+  const entry = source?.[S.lang] || source?.en || source?.th || '';
   return typeof entry === 'function' ? entry(...args) : entry;
 }
 function bname(b){ return S.lang==='zh' ? (b.nameZh||b.nameEn||b.name) : S.lang==='en' ? (b.nameEn||b.name) : b.name; }
