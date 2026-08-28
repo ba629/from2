@@ -638,18 +638,18 @@ const T = {
   kNotes:            { th:'หมายเหตุ', en:'Notes', zh:'备注' },
   kAppt:             { th:'นัดหมาย', en:'Appointment', zh:'预约时间' },
   kStatus:           { th:'สถานะ', en:'Status', zh:'状态' },
-  takesAbout:        { th:m=>`ใช้เวลาประมาณ ${m} นาที`, en:m=>`Takes about ${m} min`, zh:m=>`约需 ${m} 分钟` },
- reviewNote: {
-  note1: {
-                      th: 'หากท่านไม่สามารถเข้ารับบริการได้ตรงตามเวลาที่จองไว้ ทางร้านขอสงวนสิทธิ์ในการให้บริการลูกค้าคิวถัดไป',
-                      en: 'If you are unable to arrive at your reserved time, the store reserves the right to serve the next customer in line.'
-   },
-  note2: {
-                      th: 'หากหน้าร้านให้บริการลูกค้าท่านอื่นอยู่ในคิวก่อนหน้า ท่านจะได้รับบริการเป็นคิวถัดไปโดยเร็วที่สุดค่ะ',
-                      en: 'If our staff are assisting another customer ahead of you, you will be served as soon as possible in the next available queue.'
-  }
-},
-  queueCode:         { th:'รหัสคิว', en:'Queue code', zh:'排队号码' },
+ takesAbout: { th: (m) => `ใช้เวลาประมาณ ${m} นาที`, en: (m) => `Takes about ${m} min`, zh: (m) => `约需 ${m} 分钟` },
+  reviewNote: {
+    note1: {
+      th: 'หากท่านไม่สามารถเข้ารับบริการได้ตรงตามเวลาที่จองไว้ ทางร้านขอสงวนสิทธิ์ในการให้บริการลูกค้าคิวถัดไป',
+      en: 'If you are unable to arrive at your reserved time, the store reserves the right to serve the next customer in line.'
+    },
+    note2: {
+      th: 'หากหน้าร้านให้บริการลูกค้าท่านอื่นอยู่ในคิวก่อนหน้า ท่านจะได้รับบริการเป็นคิวถัดไปโดยเร็วที่สุดค่ะ',
+      en: 'If our staff are assisting another customer ahead of you, you will be served as soon as possible in the next available queue.'
+    }
+  },
+  queueCode: { th: 'รหัสคิว', en: 'Queue code', zh: '排队号码' },
   cancelled:         { th:'ยกเลิกแล้ว', en:'Cancelled', zh:'已取消' },
   openMap:           { th:'เปิดแผนที่', en:'Open map', zh:'打开地图' },
   addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
