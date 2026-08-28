@@ -409,7 +409,7 @@ body.popup-open{overflow:hidden}
 </head>
 <body>
 <div class="app">
-  <div class="topbar">SUITCUBE · งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ</div>
+  <div class="topbar">SUITCUBE · ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ</div>
   <div class="nav">
     <button class="nav__btn" id="navBack" aria-label="ย้อนกลับ">
       <svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 1L1.5 8l7 7"/></svg>
@@ -519,7 +519,7 @@ const BRANCHES_SEED = [
 
   { id:'centralworld', name:'เซ็นทรัลเวิลด์', nameEn:'CentralWorld', nameZh:'CentralWorld', area:'bkk', district:'ปทุมวัน', districtEn:'Pathumwan', districtZh:'巴吞旺',
     loc:'โซน Central Department Store ชั้น 5 โซน Men Wear', locEn:'Central Department Store zone, 5th floor, Men\'s Wear', locZh:'Central 百货区 5 楼男装区',
-    map:'https://maps.app.goo.gl/X4iMRq2FDEwGiShy7', hours:every('10:00','21:00') },
+    map:'https://maps.app.goo.gl/X4iMRq2FDEwGiShy7', hours:every('10:00','22:00') },
 
   { id:'westgate', name:'เซ็นทรัลเวสต์เกต', nameEn:'Central Westgate', nameZh:'Central Westgate', area:'bkk', district:'บางใหญ่', districtEn:'Bang Yai', districtZh:'邦艾',
     loc:'โซน Central Department Store ชั้น 3 โซน Men Wear ตรงข้ามร้านสตาร์บัคส์', locEn:'Central Department Store zone, 3rd floor, Men\'s Wear, opposite Starbucks', locZh:'Central 百货区 3 楼男装区，星巴克对面',
@@ -586,15 +586,16 @@ function fmtDateShort(dateStr, lang){
 }
 const T = {
   heroTitle:         { th:'จองคิวเข้ารับบริการ', en:'Book Your Appointment', zh:'预约到店服务' },
-  heroSub:           { th:'งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ', en:'Bespoke tailoring, made to measure', zh:'定制西装工艺，为您量身打造' },
-  chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch', zh:'选择方便的分店' },
+  heroSub:           { th:'ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ', en:'Thailand’s No. 1 Suit Brand
+Offering ready-to-wear suits with professional alterations, as well as bespoke tailoring for a fit that’s uniquely yours.'},
+  chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch'},
   branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่างและช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
   areaBkk:           { th:'กรุงเทพฯ & ปริมณฑล', en:'Bangkok & Vicinity', zh:'曼谷及周边' },
   areaUp:            { th:'ต่างจังหวัด', en:'Upcountry', zh:'外府' },
   walkin:            { th:'ระบบการจองสร้างขึ้นเพื่ออำนวยความสะดวกให้กับลูกค้า หากเวลาในช่วงดังกล่าวเต็ม ลูกค้ายังสามารถ Walk-in เพื่อรับบริการได้ตามปกติ',
                         en:'This booking system is here for your convenience. If a time slot is full, you can still walk in for service as usual.',
                         zh:'预约系统旨在为顾客提供便利，如所需时段已满，顾客仍可现场排队（Walk-in）正常接受服务' },
-  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, ราชพฤกษ์', en:'Search branch, e.g. Siam, Ratchapruek', zh:'搜索分店，例如 暹罗、拉查帕' },
+  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, พระรามสาม', en:'Search branch, e.g. Siam, Rama3', zh:'搜索分店，例如 暹罗、拉查帕' },
   noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
   noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
   whatService:       { th:'บริการที่คุณเลือก', en:'What service would you like?', zh:'需要什么服务' },
@@ -618,9 +619,10 @@ const T = {
                         en:(p,d)=>`Available times follow this branch’s opening hours · ${p} people · approx. total duration ${d}`,
                         zh:(p,d)=>`可预约时间依分店营业时间显示` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
-  detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
-  fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
-  namePh:            { th:'เช่น ภูมิรินทร์ ใจดี', en:'e.g. John Doe', zh:'例如：李明' },
+  detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น <span style="color: red;">*</span>กรุณาพิมพ์ข้อมูลให้ครบถ้วน', 
+                         en:'Used only to confirm your booking and contact you <span style="color: red;">*</span>Please fill in all information' },
+  fullName:          { th:'ชื่อผู้จอง', en:'Full name', zh:'姓名' },
+  namePh:            { th:'กรุณากรอกชื่อ', en:'Please enter your name'},
   nameErr:           { th:'กรุณากรอกชื่อผู้จอง', en:'Please enter your name', zh:'请输入姓名' },
   phone:             { th:'เบอร์โทรศัพท์', en:'Phone number', zh:'电话号码' },
   phoneErr:          { th:'กรอกเบอร์ 9–10 หลัก ขึ้นต้นด้วย 0', en:'Enter a 9–10 digit number starting with 0', zh:'请输入以 0 开头的 9–10 位数字' },
