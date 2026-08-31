@@ -614,8 +614,9 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  slotNote:          { th:(p,d)=>`เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · เลือก ${p} คน · ระยะเวลารวมโดยประมาณ ${d}`,
-                        en:(p,d)=>`Available times follow this branch’s opening hours · ${p} people · approx. total duration ${d}`,
+  slotNote:          { th:(p,d)=>`เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · เลือก ${p} คน · ระยะเวลารวมโดยประมาณ $ หากช่วงเวลาที่ท่านต้องการจองเต็ม ท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ
+                     {d}`,
+                        en:(p,d)=>`Available times follow this branch’s opening hours · ${p} people · approx. total duration $ If your desired booking time is fully booked, walk-ins are welcome as usual.{d}`,
                         zh:(p,d)=>`可预约时间依分店营业时间显示` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
   detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น <span style="color: red;">**กรุณาพิมพ์ข้อมูลให้ครบถ้วน**</span>', 
