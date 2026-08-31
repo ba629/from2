@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>SUITCUBE — Booking</title>
+<title>SUITCUBE — จองคิวสาขา</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -75,7 +75,7 @@ html,body{background:var(--bg)}
 
 .nav{
   position:sticky;top:0;z-index:40;height:var(--nav-h);
-  display:grid;grid-template-columns:54px 1fr 58px 88px;align-items:center;gap:4px;
+  display:grid;grid-template-columns:54px 1fr 38px 66px;align-items:center;gap:2px;
   background:var(--surface);
   background:color-mix(in srgb,var(--bg) 78%,transparent);
   backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
@@ -83,7 +83,7 @@ html,body{background:var(--bg)}
 }
 .nav__title{text-align:center;font-size:15px;font-weight:600;letter-spacing:.01em}
 .nav__btn{font-size:14px;color:var(--brass-ink);font-weight:500;padding:8px;display:flex;align-items:center;gap:3px}
-.nav__btn:last-child{justify-content:flex-end;white-space:nowrap}
+.nav__btn:last-child{justify-content:flex-end}
 .nav__btn:disabled{opacity:0;pointer-events:none}
 .nav__lang{
   justify-self:center;font-size:10.5px;font-weight:600;letter-spacing:.03em;color:var(--brass-ink);
@@ -105,8 +105,9 @@ html,body{background:var(--bg)}
     radial-gradient(120% 90% at 15% 0%, rgba(239,193,92,.22), transparent 55%),
     linear-gradient(155deg, var(--ci-black) 0%, var(--ci-black-2) 55%, #1A1A1A 100%);
 }
-.hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.hero__video[hidden]{display:none}
+.hero__illust{position:absolute;right:6px;bottom:0;opacity:.9}
+@media (min-width:640px){ .hero__illust{width:270px;height:240px;right:24px} }
+@media (min-width:1024px){ .hero__illust{width:340px;height:300px;right:48px} }
 .hero__scrim{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.15) 55%, transparent 80%)}
 .hero__text{position:absolute;left:20px;right:20px;bottom:18px;color:#F6EFDE}
 .hero__eyebrow{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-ink);margin-bottom:6px}
@@ -357,25 +358,6 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
   opacity:0;pointer-events:none;transition:.3s var(--ease);box-shadow:var(--shadow)
 }
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
-.booking-popup{
-  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
-  padding:20px;background:rgba(14,12,9,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-.booking-popup[hidden]{display:none}
-.booking-popup__card{
-  width:min(100%,430px);padding:26px 22px 22px;border-radius:22px;background:var(--bg);
-  border:1px solid var(--hairline);box-shadow:0 22px 70px rgba(0,0,0,.32);text-align:center;
-}
-.booking-popup__icon{
-  width:54px;height:54px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:var(--brass-tint);color:var(--brass-ink);
-}
-.booking-popup__title{margin:0;color:var(--wool);font-family:var(--font-display);font-size:24px;line-height:1.25}
-.booking-popup__message{margin:10px 0 18px;color:var(--muted);font-size:14px;line-height:1.75}
-.booking-popup__queue{margin:0 0 18px;padding:13px;border-radius:var(--r-md);background:var(--surface-2)}
-.booking-popup__queue-label{display:block;margin-bottom:3px;color:var(--muted);font-size:11px}
-.booking-popup__queue-code{display:block;color:var(--wool);font-family:var(--font-display);font-size:25px;font-weight:700;letter-spacing:.08em}
-body.popup-open{overflow:hidden}
 .skeleton{height:64px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow);margin-bottom:9px;animation:pulse 1.4s ease-in-out infinite}
 
 /* ── admin (หลังบ้าน) ─────────────────── */
@@ -409,7 +391,7 @@ body.popup-open{overflow:hidden}
 </head>
 <body>
 <div class="app">
-  <div class="topbar">SUITCUBE · ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ</div>
+  <div class="topbar">SUITCUBE · งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ</div>
   <div class="nav">
     <button class="nav__btn" id="navBack" aria-label="ย้อนกลับ">
       <svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 1L1.5 8l7 7"/></svg>
@@ -418,7 +400,7 @@ body.popup-open{overflow:hidden}
     <select class="nav__lang" id="navLang">
       <option value="th">TH</option>
       <option value="en">EN</option>
-     
+      <option value="zh">中</option>
     </select>
     <button class="nav__btn" id="navMine">คิวของฉัน</button>
   </div>
@@ -436,20 +418,6 @@ body.popup-open{overflow:hidden}
   <div class="bar" id="bar"></div>
 </div>
 <div class="toast" id="toast"></div>
-<div class="booking-popup" id="bookingSuccessPopup" role="dialog" aria-modal="true" aria-labelledby="bookingSuccessTitle" aria-describedby="bookingSuccessMessage" hidden>
-  <div class="booking-popup__card">
-    <div class="booking-popup__icon" aria-hidden="true">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-    </div>
-    <h2 class="booking-popup__title" id="bookingSuccessTitle"></h2>
-    <p class="booking-popup__message" id="bookingSuccessMessage"></p>
-    <div class="booking-popup__queue">
-      <span class="booking-popup__queue-label" id="bookingSuccessQueueLabel"></span>
-      <strong class="booking-popup__queue-code" id="bookingSuccessQueueCode"></strong>
-    </div>
-    <button type="button" class="btn btn--ci" id="bookingSuccessAck"></button>
-  </div>
-</div>
 
 <script>
 /* ═══════════════════════════════════════════════
@@ -519,7 +487,7 @@ const BRANCHES_SEED = [
 
   { id:'centralworld', name:'เซ็นทรัลเวิลด์', nameEn:'CentralWorld', nameZh:'CentralWorld', area:'bkk', district:'ปทุมวัน', districtEn:'Pathumwan', districtZh:'巴吞旺',
     loc:'โซน Central Department Store ชั้น 5 โซน Men Wear', locEn:'Central Department Store zone, 5th floor, Men\'s Wear', locZh:'Central 百货区 5 楼男装区',
-    map:'https://maps.app.goo.gl/X4iMRq2FDEwGiShy7', hours:every('10:00','22:00') },
+    map:'https://maps.app.goo.gl/X4iMRq2FDEwGiShy7', hours:every('10:00','21:00') },
 
   { id:'westgate', name:'เซ็นทรัลเวสต์เกต', nameEn:'Central Westgate', nameZh:'Central Westgate', area:'bkk', district:'บางใหญ่', districtEn:'Bang Yai', districtZh:'邦艾',
     loc:'โซน Central Department Store ชั้น 3 โซน Men Wear ตรงข้ามร้านสตาร์บัคส์', locEn:'Central Department Store zone, 3rd floor, Men\'s Wear, opposite Starbucks', locZh:'Central 百货区 3 楼男装区，星巴克对面',
@@ -586,25 +554,25 @@ function fmtDateShort(dateStr, lang){
 }
 const T = {
   heroTitle:         { th:'จองคิวเข้ารับบริการ', en:'Book Your Appointment', zh:'预约到店服务' },
-  heroSub:           { th: 'ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ', en: 'Thailand’s No. 1 Suit Brand Offering ready-to-wear suits with professional alterations, as well as bespoke tailoring for a fit that’s uniquely yours.' },
-  chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch'},
+  heroSub:           { th:'งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ', en:'Bespoke tailoring, made to measure', zh:'定制西装工艺，为您量身打造' },
+  chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch', zh:'选择方便的分店' },
   branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่างและช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
   areaBkk:           { th:'กรุงเทพฯ & ปริมณฑล', en:'Bangkok & Vicinity', zh:'曼谷及周边' },
   areaUp:            { th:'ต่างจังหวัด', en:'Upcountry', zh:'外府' },
   walkin:            { th:'ระบบการจองสร้างขึ้นเพื่ออำนวยความสะดวกให้กับลูกค้า หากเวลาในช่วงดังกล่าวเต็ม ลูกค้ายังสามารถ Walk-in เพื่อรับบริการได้ตามปกติ',
                         en:'This booking system is here for your convenience. If a time slot is full, you can still walk in for service as usual.',
                         zh:'预约系统旨在为顾客提供便利，如所需时段已满，顾客仍可现场排队（Walk-in）正常接受服务' },
-  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, พระรามสาม', en:'Search branch, e.g. Siam, Rama3', zh:'搜索分店，例如 暹罗、拉查帕' },
+  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, ราชพฤกษ์', en:'Search branch, e.g. Siam, Ratchapruek', zh:'搜索分店，例如 暹罗、拉查帕' },
   noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
   noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
-  whatService:       { th:'บริการที่คุณเลือก', en:'What service would you like?', zh:'需要什么服务' },
+  whatService:       { th:'ต้องการใช้บริการอะไร', en:'What service would you like?', zh:'需要什么服务' },
   serviceSub:        { th:name=>`ที่สาขา${name} · เวลาที่ใช้จะกำหนดช่วงคิวให้อัตโนมัติ`, en:name=>`At ${name} · the duration sets your queue slot automatically`, zh:name=>`于${name}分店 · 服务时长将自动决定排队时段` },
   min:               { th:m=>`${m} นาที`, en:m=>`${m} min`, zh:m=>`${m} 分钟` },
   detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
   peopleCount:       { th:'จำนวนคน', en:'Number of people', zh:'人数' },
-  selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ใช้เวลาโดยประมาณ ${dur} / ท่าน`, en:(name,dur)=>`Selected service: ${name} · approx. ${dur} / person`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
+  selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ${dur} เป็นเวลาโดยประมาณ`, en:(name,dur)=>`Selected service: ${name}, approx. ${dur}`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
   chooseDatetime:    { th:'เลือกวันและเวลา', en:'Choose date & time', zh:'选择日期与时间' },
-  datetimeSub:       { th:(b,s,m,p)=>`${b} · ${s} (${m} นาที/ท่าน) · ${p} คน`, en:(b,s,m,p)=>`${b} · ${s} (${m} min/person) · ${p} people`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
+  datetimeSub:       { th:(b,s,m)=>`${b} · ${s} (${fmtDuration(m,'th')})`, en:(b,s,m)=>`${b} · ${s} (${fmtDuration(m,'en')})`, zh:(b,s,m)=>`${b} · ${s}（${fmtDuration(m,'zh')}）` },
   today:             { th:'วันนี้', en:'Today', zh:'今天' },
   tomorrow:          { th:'พรุ่งนี้', en:'Tomorrow', zh:'明天' },
   openUntil:         { th:(d,o,c)=>`${d} · เปิด ${o}–${c} น.`, en:(d,o,c)=>`${d} · Open ${o}–${c}`, zh:(d,o,c)=>`${d} · 营业时间 ${o}–${c}` },
@@ -614,15 +582,15 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  slotNote:          { th:(p,d)=>`เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · หากช่วงเวลาที่ท่านต้องการจองเต็ม ท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ
-                     {d}`,
-                        en:(p,d)=>`Available times follow this branch’s opening hours · If your desired booking time is fully booked, walk-ins are welcome as usual.{d}`,
-                        zh:(p,d)=>`可预约时间依分店营业时间显示` },
+  cutoffPassed:      { th:()=>`เลยเวลารับจองของวันนี้แล้ว (รับจองถึง ${SAME_DAY_CUTOFF} น.)`, en:()=>`Today's booking cut-off has passed (bookings close at ${SAME_DAY_CUTOFF})`, zh:()=>`今日预约时间已截止（截止 ${SAME_DAY_CUTOFF}）` },
+  cutoffPassedSub:   { th:'กรุณาเลือกวันถัดไปด้านบน หรือ Walk-in เข้ามาที่สาขาได้ตามปกติ', en:'Please pick another day above, or simply walk in to the branch.', zh:'请在上方选择其他日期，或直接到店现场排队' },
+  slotNote:          { th:m=>`คิวสุดท้ายของวันเริ่มได้ไม่เกิน ${LAST_SLOT} น. · หากต้องการจองคิวของวันนี้ กรุณาจองก่อน ${SAME_DAY_CUTOFF} น. เลยเวลานี้แล้วกรุณาเลือกวันถัดไป`,
+                        en:m=>`The last slot of the day starts no later than ${LAST_SLOT}. Same-day bookings must be made before ${SAME_DAY_CUTOFF} — after that, please pick another day.`,
+                        zh:m=>`当天最后一个时段最晚 ${LAST_SLOT} 开始 · 当日预约请于 ${SAME_DAY_CUTOFF} 前完成，超过此时间请选择其他日期` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
-  detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น <span style="color: red;">**กรุณาพิมพ์ข้อมูลให้ครบถ้วน**</span>', 
-                         en:'Used only to confirm your booking and contact you <span style="color: red;">**Please fill in all information**</span>' },
-  fullName:          { th:'ชื่อผู้จอง', en:'Full name', zh:'姓名' },
-  namePh:            { th:'กรุณากรอกชื่อ', en:'Please enter your name'},
+  detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
+  fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
+  namePh:            { th:'เช่น ภูมิรินทร์ ใจดี', en:'e.g. John Doe', zh:'例如：李明' },
   nameErr:           { th:'กรุณากรอกชื่อผู้จอง', en:'Please enter your name', zh:'请输入姓名' },
   phone:             { th:'เบอร์โทรศัพท์', en:'Phone number', zh:'电话号码' },
   phoneErr:          { th:'กรอกเบอร์ 9–10 หลัก ขึ้นต้นด้วย 0', en:'Enter a 9–10 digit number starting with 0', zh:'请输入以 0 开头的 9–10 位数字' },
@@ -639,30 +607,17 @@ const T = {
   kNotes:            { th:'หมายเหตุ', en:'Notes', zh:'备注' },
   kAppt:             { th:'นัดหมาย', en:'Appointment', zh:'预约时间' },
   kStatus:           { th:'สถานะ', en:'Status', zh:'状态' },
- takesAbout:         { th: (m) => `ใช้เวลาประมาณ ${m} นาที`, en: (m) => `Takes about ${m} min`, zh: (m) => `约需 ${m} 分钟` },
-  reviewNote: [
-    {
-      th: 'หากท่านไม่สามารถเข้ารับบริการได้ตรงตามเวลาที่จองไว้ ทางร้านขอสงวนสิทธิ์ในการให้บริการลูกค้าคิวถัดไป',
-      en: 'If you are unable to arrive at your reserved time, the store reserves the right to serve the next customer in line.'
-    },
-    {
-      th: 'หากหน้าร้านให้บริการลูกค้าท่านอื่นอยู่ในคิวก่อนหน้า ท่านจะได้รับบริการเป็นคิวถัดไปโดยเร็วที่สุดค่ะ',
-      en: 'If our staff are assisting another customer ahead of you, you will be served as soon as possible in the next available queue.'
-    }
-  ],
-  queueCode: { th: 'รหัสคิว', en: 'Queue code', zh: '排队号码' },
+  takesAbout:        { th:m=>`ใช้เวลาประมาณ ${fmtDuration(m,'th')}`, en:m=>`Takes about ${fmtDuration(m,'en')}`, zh:m=>`约需 ${fmtDuration(m,'zh')}` },
+  reviewNote:        { th:'กรณี Walk-in หรือลูกค้ามาไม่ตรงเวลาที่ได้จองไว้ หากพนักงานกำลังให้บริการลูกค้าท่านอื่นอยู่ อาจมีระยะเวลารอคิวเล็กน้อย โดยพนักงานจะรีบเข้ามาดูแลคุณลูกค้าโดยเร็วที่สุดค่ะ',
+                        en:'For walk-ins, or if you arrive outside your booked time, staff may be assisting another customer and there could be a short wait. Our team will attend to you as quickly as possible.',
+                        zh:'如为现场排队（Walk-in），或您到店时间与预约时段不符，若工作人员正在为其他顾客服务，可能需要稍作等候，我们会尽快为您提供服务' },
+  queueCode:         { th:'รหัสคิว', en:'Queue code', zh:'排队号码' },
   cancelled:         { th:'ยกเลิกแล้ว', en:'Cancelled', zh:'已取消' },
   openMap:           { th:'เปิดแผนที่', en:'Open map', zh:'打开地图' },
   addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
   cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
   doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
-  doneSub:           { th:'กรุณาแสดงคิวนี้ หรือแจ้งพนักงานว่าลูกค้ามีการจองคิวผ่านระบบมาแล้ว', en:'Please show this booking, or tell our staff that you booked through the system.', zh:'到店后请出示此号码给工作人员' },
-  successPopupTitle: { th:'จองคิวเรียบร้อยแล้ว', en:'Your booking is confirmed', zh:'预约成功' },
-  successPopupMessage:{ th:'กรุณาบันทึกหน้าจอหมายเลขคิวไว้ เพื่อใช้ยืนยันการจองเมื่อมาถึงร้าน เมื่อถึงร้าน กรุณาแสดงหมายเลขคิวที่หน้าเคาน์เตอร์ หรือแจ้งพนักงานว่าท่านได้จองคิวผ่านระบบแล้ว', en:'Please take a screenshot of your queue number and keep it to verify your booking when you arrive. At the store, please show the queue number at the counter or tell a staff member that you booked through the system.', zh:'请截屏保存排队号码，以便到店时确认预约。到店后，请在柜台出示排队号码，或告知工作人员您已通过系统预约。' },
-  popupQueueNumber: { th:'หมายเลขคิว', en:'Queue number', zh:'排队号码' },
-  acknowledge:      { th:'รับทราบ', en:'OK', zh:'知道了' },
-  ackSaving:        { th:'กำลังบันทึก...', en:'Saving...', zh:'正在保存…' },
-  ackSaveFail:      { th:'บันทึกการรับทราบไม่สำเร็จ กรุณากดอีกครั้ง', en:'Could not save your acknowledgement. Please try again.', zh:'未能保存确认，请重试。' },
+  doneSub:           { th:'แสดงรหัสคิวนี้กับพนักงานเมื่อถึงสาขา', en:'Show this code to staff when you arrive', zh:'到店后请出示此号码给工作人员' },
   storageFail:       { th:'อุปกรณ์นี้บันทึกคิวไว้ไม่ได้ กรุณาบันทึกภาพหน้าจอไว้เป็นหลักฐาน', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'此设备无法保存预约，请截图作为凭证' },
   myBookings:        { th:'คิวของฉัน', en:'My bookings', zh:'我的预约' },
   footerContact:     { th:'ติดต่อเรา', en:'Contact us', zh:'联系我们' },
@@ -693,14 +648,6 @@ const T = {
   formIncomplete:    { th:'กรอกข้อมูลให้ครบก่อนไปต่อ', en:'Please complete the form to continue', zh:'请填写完整信息后再继续' },
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
   icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
-  calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
-  weekdayBookingRule:{ th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. เปิดคิวเข้ารับบริการถึง 16:00 น. เท่านั้น (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) for service times up to 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五的当日预约须在上午 10 点前确认，预约时间须至少提前 6 小时，且不得晚于下午 4 点开始。请选择其他日期或时间。' },
-  weekendBookingRule:{ th:'วันเสาร์–อาทิตย์ต้องจองตั้งแต่วันก่อนวันนัด ไม่เปิดรับการจองภายในวันเดียวกัน กรุณาเลือกวันถัดไป', en:'Saturday–Sunday appointments must be booked before the appointment date. Same-day booking is unavailable. Please choose another date.', zh:'周六及周日须在预约日期之前预订，不接受当天预约。请选择其他日期。' },
-  weekdayRuleNote:  { th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. เปิดคิวเข้ารับบริการถึง 16:00 น. เท่านั้น (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) for service times up to 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五当日预约：上午 10 点前确认 · 至少提前 6 小时 · 最晚下午 4 点开始' },
-  weekendRuleNote:  { th:'เสาร์–อาทิตย์: ต้องจองตั้งแต่วันก่อนวันนัด', en:'Saturday–Sunday: book before the appointment date', zh:'周六及周日：须在预约日期之前预订' },
-  futureRuleNote:   { th:'จองล่วงหน้าก่อนวันนัด: เลือกเวลาได้ตามเวลาเปิด–ปิดของสาขาตามปกติ', en:'Booking before the appointment date: all regular branch hours are available', zh:'提前预约：可按分店正常营业时间选择时段' },
-  noRuleSlots:      { th:'ไม่มีเวลาที่จองได้ตามเงื่อนไขในวันนี้', en:'No times meet the advance-booking rule for this day', zh:'当天没有符合提前预约规则的时段' },
-  timeUnavailable:  { th:'เวลานี้ไม่สามารถจองได้แล้ว กรุณาเลือกเวลาใหม่', en:'This time is no longer available. Please choose another time.', zh:'该时段已无法预约，请选择其他时间。' },
   openAt:            { th:o=>`เปิด ${o} น.`, en:o=>`Opens ${o}`, zh:o=>`${o} 开始营业` },
   closedToday:       { th:'ปิดแล้ววันนี้', en:'Closed for today', zh:'今日已打烊' },
   closedForBooking:  { th:'ปิดรับจองชั่วคราว', en:'Booking temporarily closed', zh:'暂停接受预约' },
@@ -718,15 +665,7 @@ const T = {
   dateLabel:         { th:'วันที่จอง', en:'Booking date', zh:'预约日期' },
 };
 function tt(key, ...args){
-  const source = T[key];
-
-  if (Array.isArray(source)) {
-    return source
-      .map(item => item[S.lang] || item.en || item.th || '')
-      .join('<br><br>');
-  }
-
-  const entry = source?.[S.lang] || source?.en || source?.th || '';
+  const entry = T[key][S.lang];
   return typeof entry === 'function' ? entry(...args) : entry;
 }
 function bname(b){ return S.lang==='zh' ? (b.nameZh||b.nameEn||b.name) : S.lang==='en' ? (b.nameEn||b.name) : b.name; }
@@ -752,10 +691,9 @@ const M_SHORT_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9�
 const M_FULL = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const M_FULL_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const M_FULL_ZH = M_SHORT_ZH;
-const SLOT_STEP = 30;                 // นาทีต่อ 1 ช่วงคิว
-const WEEKDAY_LEAD_MIN = 6 * 60;      // เฉพาะคิวภายในวัน จ–ศ: ล่วงหน้าอย่างน้อย 6 ชั่วโมง
-const WEEKDAY_SAME_DAY_CUTOFF_MIN = 10 * 60; // จันทร์–ศุกร์: ยืนยันคิวภายในวันได้ช้าที่สุด 10:00 น.
-const WEEKDAY_LAST_START_MIN = 16 * 60; // เฉพาะคิวภายในวัน จ–ศ: เวลาเริ่มคิวช้าที่สุด 16:00 น.
+const SLOT_STEP = 30;      // นาทีต่อ 1 ช่วงคิว
+const SAME_DAY_CUTOFF = '10:00'; // จองคิวของ "วันนี้" ได้ถึงเวลานี้เท่านั้น เลยแล้วต้องจองวันอื่น
+const LAST_SLOT = '16:00';       // คิวสุดท้ายของวัน ต้อง "จบ" ไม่เกินเวลานี้ (ไม่ใช่แค่เริ่ม)
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -771,65 +709,9 @@ const longDate = s => {
 };
 const branchById = id => BRANCHES.find(b => b.id === id);
 const serviceById = id => SERVICES.find(s => s.id === id);
-// ป้องกันไอคอนบริการซ้ำ โดยเลือกไอคอนตามประเภทบริการก่อน แล้วค่อย fallback ไปใช้ ico จาก Lark
-function serviceIcon(s){
-  const label = `${s?.id || ''} ${s?.name || ''} ${s?.nameEn || ''}`.toLowerCase();
-  if (/วัดตัว|measure|measurement|tailor/.test(label)){
-    // สายวัด
-    return '<path d="M4 7.5A3.5 3.5 0 017.5 4h9A3.5 3.5 0 0120 7.5v9a3.5 3.5 0 01-3.5 3.5h-9A3.5 3.5 0 014 16.5v-9z"/><path d="M7 8h2M7 11h4M7 14h2M7 17h4M16 7v10"/>';
-  }
-  if (/รับสินค้า|pickup|ฟิตติ้ง|fitting/.test(label)){
-    // ถุงสินค้า
-    return '<path d="M4 8h16l-1 12H5L4 8zM8 8V6a4 4 0 018 0v2"/>';
-  }
-  if (/เลือกชม|product|view|browse/.test(label)){
-    // เสื้อ
-    return '<path d="M12 3l4 2 5 3-2 3-3-1v11H8V10L5 11 3 8l5-3 4-2zM9 3.5a3 3 0 006 0"/>';
-  }
-  return s?.ico || '<circle cx="12" cy="12" r="8"/><path d="M8 12h8"/>';
-}
 // เวลาที่ใช้จริง = เวลาต่อคน × จำนวนคน (เช่น 1 ชม./คน, 2 คน = 2 ชม.)
-const svcMins = (s, people) => (s ? Number(s.mins) || 0 : 0) * Math.max(1, Number(people) || 1);
-const slotRange = (time, s, people) => `${time} – ${toHHMM(toMin(time) + svcMins(s, people))}`;
+const svcMins = (s, people) => (s ? s.mins : 0) * Math.max(1, Number(people) || 1);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function isWeekdayDate(dateStr){
-  const day = parseYmd(dateStr).getDay();
-  return day >= 1 && day <= 5;
-}
-
-function appointmentDateTime(dateStr, timeStr){
-  const d = parseYmd(dateStr);
-  const [h,m] = timeStr.split(':').map(Number);
-  d.setHours(h, m, 0, 0);
-  return d;
-}
-
-// คืน key ของข้อความผิดเงื่อนไข หรือ null เมื่อเวลานัดจองได้
-function bookingRuleViolation(dateStr, timeStr, now = new Date()){
-  if (!dateStr || !timeStr) return null;
-  const bookedAt = new Date(now);
-  bookedAt.setSeconds(0, 0);
-  const todayStr = ymd(bookedAt);
-
-  // หากเลือกวันนัดล่วงหน้า ให้จองตามเวลาเปิด–ปิดสาขาได้ตามปกติ
-  if (dateStr > todayStr) return null;
-  if (dateStr < todayStr) return 'timeUnavailable';
-
-  // เสาร์–อาทิตย์ต้องจองจากวันก่อนหน้า จึงไม่เปิดคิวภายในวันเดียวกัน
-  const weekday = isWeekdayDate(dateStr);
-  if (!weekday) return 'weekendBookingRule';
-
-  if (toMin(timeStr) > WEEKDAY_LAST_START_MIN) return 'weekdayBookingRule';
-  const bookingMinute = bookedAt.getHours() * 60 + bookedAt.getMinutes();
-  if (bookingMinute > WEEKDAY_SAME_DAY_CUTOFF_MIN){
-    return 'weekdayBookingRule';
-  }
-  const earliest = new Date(bookedAt.getTime() + WEEKDAY_LEAD_MIN * 60000);
-  return appointmentDateTime(dateStr, timeStr) < earliest
-    ? 'weekdayBookingRule'
-    : null;
-}
 
 function hoursOf(branch, date){ return branch.hours[date.getDay()]; }
 
@@ -851,29 +733,25 @@ function openStatus(branch){
   return { open:true, text: left <= 60 ? tt('closingSoon', c) : tt('openUntilTime', c) };
 }
 
-function slotsFor(branch, dateStr, mins, now = new Date()){
+function slotsFor(branch, dateStr, mins){
   const date = parseYmd(dateStr);
   const [o,c] = hoursOf(branch, date);
-  // เวลาจองอิงตามเวลาเปิด–ปิดของสาขา และต้องจบบริการก่อนร้านปิด
-  // จำกัดเริ่มคิว 16:00 น. เฉพาะการจองคิวภายในวัน จ–ศ เท่านั้น
-  const sameDayWeekday = dateStr === ymd(now) && isWeekdayDate(dateStr);
-  const latestStart = Math.min(
-    toMin(c) - mins,
-    sameDayWeekday ? WEEKDAY_LAST_START_MIN : Number.POSITIVE_INFINITY
-  );
+  const now = new Date();
+  const isToday = ymd(now) === dateStr;
+  const nowMin = now.getHours()*60 + now.getMinutes();
+  // จองวันนี้: ต้องกดจองก่อน SAME_DAY_CUTOFF และคิวต้องยังไม่ผ่านไป
+  // จองวันอื่น: ไม่มีข้อจำกัด
+  const sameDayOpen = !isToday || nowMin < toMin(SAME_DAY_CUTOFF);
+  // คิวสุดท้ายต้องเริ่มไม่เกิน LAST_SLOT และต้องจบก่อนร้านปิดด้วย
+  // คิวสุดท้ายของวันต้อง "จบ" ไม่เกิน LAST_SLOT (ไม่ใช่แค่ "เริ่ม" ไม่เกิน)
+  // เช่น LAST_SLOT=16:00, บริการ 60 นาที → เริ่มได้ล่าสุด 15:00 (จบพอดี 16:00)
+  const latestStart = Math.min(toMin(LAST_SLOT) - mins, toMin(c) - mins);
   const out = [];
   for (let m = toMin(o); m <= latestStart; m += SLOT_STEP){
-    const t = toHHMM(m);
-    out.push({ t, ok: !bookingRuleViolation(dateStr, t, now) });
+    const ok = sameDayOpen && (!isToday || m > nowMin);
+    out.push({ t: toHHMM(m), ok });
   }
   return out;
-}
-
-function bookingSelectionViolation(branch, dateStr, timeStr, mins, now = new Date()){
-  const rule = bookingRuleViolation(dateStr, timeStr, now);
-  if (rule) return rule;
-  const slot = slotsFor(branch, dateStr, mins, now).find(s => s.t === timeStr);
-  return slot && slot.ok ? null : 'timeUnavailable';
 }
 
 /* ═══════════════════════════════════════════════
@@ -889,8 +767,6 @@ function bookingSelectionViolation(branch, dateStr, timeStr, mins, now = new Dat
    ไม่ได้ใช้ window.storage อีกต่อไป (ใช้ได้แค่ใน Claude.ai เท่านั้น)
    ═══════════════════════════════════════════════ */
 const API_URL = '/api/suitcube'; // เว้นว่างไว้ = ใช้ localStorage อย่างเดียว | ใส่ path/URL ของ backend (n8n หรือ Express) เพื่อข้อมูลรวมศูนย์ผ่าน Lark Base
-// TODO: ใส่ path วิดีโอ Hero ตรงนี้ภายหลัง เช่น '/assets/suitcube-booking.mp4'
-const HERO_VIDEO_PATH = '/Video/1440x240.mp4';
 const ADMIN_PIN = '1234'; // PIN หลังบ้านแบบง่าย — ทำงานฝั่ง client เท่านั้น ไม่ใช่ระบบความปลอดภัยจริง
 const LS = { my:'suitcube:my-codes', bookings:'suitcube:bookings-local', branches:'suitcube:branches-local', services:'suitcube:services-local' };
 
@@ -900,26 +776,6 @@ let BRANCHES = [];
 let SERVICES = [];
 let storageOK = true;
 let apiConfigured = !!API_URL;
-
-// iOS ต้องเปิด .ics จาก URL ที่ตอบกลับเป็น text/calendar จริง จึงใช้ Service Worker
-// ตัวเล็กที่วางคู่กับไฟล์ HTML (ทำงานเมื่อเว็บเปิดผ่าน HTTPS หรือ localhost)
-let calendarSWActive = false;
-let calendarSWReady = null;
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
-  calendarSWReady = navigator.serviceWorker
-    .register('./suitcube-calendar-sw.js', {scope:'./'})
-    .then(() => navigator.serviceWorker.ready)
-    .then(registration => { calendarSWActive = true; return registration; })
-    .catch(err => { console.warn('Calendar helper unavailable:', err); return null; });
-}
-
-function servedCalendarURL(ics, fileName){
-  if (!calendarSWActive) return null;
-  const url = new URL('./suitcube-calendar-event.ics', location.href);
-  url.searchParams.set('name', fileName);
-  url.searchParams.set('data', ics);
-  return url.href;
-}
 
 function lsGet(key, fallback){
   try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; }
@@ -946,42 +802,25 @@ async function apiCall(action, payload = {}){
 
 function loadMyCodes(){ myCodes = lsGet(LS.my, []); }
 function saveMyCodes(){ lsSet(LS.my, myCodes); }
-function saveBookingsLocal(){ lsSet(LS.bookings, bookings); }
+function saveBookingsLocal(){ if (!apiConfigured) lsSet(LS.bookings, bookings); }
 function saveBranchesLocal(){ if (!apiConfigured) lsSet(LS.branches, BRANCHES); }
 function saveServicesLocal(){ if (!apiConfigured) lsSet(LS.services, SERVICES); }
 
 async function loadBookings(){
   loadMyCodes();
-  const cached = lsGet(LS.bookings, []);
   if (apiConfigured){
     const r = await apiCall('listBookings');
-    if (r && Array.isArray(r.bookings)){
-      bookings = r.bookings;
-      saveBookingsLocal();
-      storageOK = true;
-    } else {
-      // ถ้า API ล่มชั่วคราว ให้ยังเห็นคิวที่เคยโหลด/จองไว้ในเครื่อง
-      bookings = cached;
-      storageOK = cached.length > 0;
-    }
+    bookings = (r && Array.isArray(r.bookings)) ? r.bookings : [];
+    storageOK = !!r;
   } else {
-    bookings = cached;
+    bookings = lsGet(LS.bookings, []);
     storageOK = true;
   }
 }
 async function refreshBookings(){
   if (!apiConfigured) return;
   const r = await apiCall('listBookings');
-  if (r && Array.isArray(r.bookings)){
-    bookings = r.bookings;
-    saveBookingsLocal();
-  }
-}
-async function goMine(){
-  // เปิดหน้าคิวทันทีจากข้อมูลในเครื่องก่อน เพื่อให้ปุ่มตอบสนองเสมอ
-  go('mine');
-  await refreshBookings();
-  if (S.step === 'mine') render();
+  if (r && Array.isArray(r.bookings)) bookings = r.bookings;
 }
 async function loadBranchesServices(){
   if (apiConfigured){
@@ -1037,57 +876,6 @@ const navLang = document.getElementById('navLang');
 const tape = document.getElementById('tape');
 const hero = document.getElementById('hero');
 const tapeFill = document.getElementById('tapeFill');
-const bookingSuccessPopup = document.getElementById('bookingSuccessPopup');
-const bookingSuccessTitle = document.getElementById('bookingSuccessTitle');
-const bookingSuccessMessage = document.getElementById('bookingSuccessMessage');
-const bookingSuccessQueueLabel = document.getElementById('bookingSuccessQueueLabel');
-const bookingSuccessQueueCode = document.getElementById('bookingSuccessQueueCode');
-const bookingSuccessAck = document.getElementById('bookingSuccessAck');
-let bookingAckBusy = false;
-
-function showBookingSuccessPopup(booking){
-  bookingSuccessTitle.textContent = tt('successPopupTitle');
-  bookingSuccessMessage.textContent = tt('successPopupMessage');
-  bookingSuccessQueueLabel.textContent = tt('popupQueueNumber');
-  bookingSuccessQueueCode.textContent = booking && booking.code ? booking.code : '-';
-  bookingSuccessAck.textContent = tt('acknowledge');
-  bookingSuccessAck.disabled = false;
-  bookingAckBusy = false;
-  bookingSuccessPopup.hidden = false;
-  document.body.classList.add('popup-open');
-  bookingSuccessAck.focus();
-}
-
-async function acknowledgeBookingSuccess(){
-  if (bookingSuccessPopup.hidden || bookingAckBusy) return;
-  bookingAckBusy = true;
-  bookingSuccessAck.disabled = true;
-  bookingSuccessAck.textContent = tt('ackSaving');
-
-  const booking = S.last;
-  const result = booking && booking.code
-    ? await apiCall('acknowledgeBooking', { code:booking.code })
-    : null;
-  if (result === null && apiConfigured){
-    bookingAckBusy = false;
-    bookingSuccessAck.disabled = false;
-    bookingSuccessAck.textContent = tt('acknowledge');
-    toast(tt('ackSaveFail'));
-    return;
-  }
-
-  if (booking){
-    booking.acknowledged = true;
-    const saved = bookings.find(b => b.code === booking.code);
-    if (saved) saved.acknowledged = true;
-    saveBookingsLocal();
-  }
-  bookingSuccessPopup.hidden = true;
-  document.body.classList.remove('popup-open');
-  await goMine();
-}
-
-bookingSuccessAck.addEventListener('click', acknowledgeBookingSuccess);
 
 function toast(msg){
   const el = document.getElementById('toast');
@@ -1106,12 +894,29 @@ function go(step){
    6. หน้าจอ
    ═══════════════════════════════════════════════ */
 function heroHTML(){
-  const video = HERO_VIDEO_PATH && !HERO_VIDEO_PATH.startsWith('VIDEO_PATH_HERE')
-    ? `<video class="hero__video" autoplay muted loop playsinline preload="metadata" src="${esc(HERO_VIDEO_PATH)}" onerror="this.hidden=true"></video>`
-    : '';
   return `
     <div class="hero__bg"></div>
-    ${video}
+    <svg class="hero__illust" width="210" height="186" viewBox="0 0 210 186" fill="none">
+      <g opacity="0.55" stroke="#F6EFDE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <!-- ไม้แขวน -->
+        <path d="M71 8a4 4 0 108 0"/>
+        <!-- เสื้อสูท -->
+        <path d="M75 16c-9 0-16 6-16 14v5l-27 11 7 18 20-8v70a5 5 0 005 5h22a5 5 0 005-5V56l20 8 7-18-27-11v-5c0-8-7-14-16-14z"/>
+        <path d="M59 30l16 18 16-18"/>
+        <!-- เนคไท -->
+        <path d="M69 46h12l-6 11z"/>
+        <path d="M71 57h8l-4 60z"/>
+        <!-- รองเท้าคู่ -->
+        <g transform="translate(46,148)">
+          <path d="M2 16V11q0-4 5-5l22-4q6-1 10 3l4 4q2 2 2 4v1q0 1-1 1H3q-1 0-1-1z"/>
+          <path d="M12 5v6"/>
+        </g>
+        <g transform="translate(84,155)">
+          <path d="M2 16V11q0-4 5-5l22-4q6-1 10 3l4 4q2 2 2 4v1q0 1-1 1H3q-1 0-1-1z"/>
+          <path d="M12 5v6"/>
+        </g>
+      </g>
+    </svg>
     <div class="hero__scrim"></div>
     <div class="hero__text">
       <div class="hero__eyebrow">SUITCUBE APPOINTMENT</div>
@@ -1172,21 +977,27 @@ function footerHTML(){
   return `
     <footer class="footer">
       <div class="footer__top">
-        <div class="footer__brand"><a href="https://www.suitcube.com/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">SUITCUBE</a></div>
+        <div class="footer__brand">SUITCUBE</div>
         <div class="footer__tag">${tt('heroSub')}</div>
       </div>
       <div class="footer__social">
-        <a class="footer__icon" href="https://line.me/R/ti/p/@suitcube" target="_blank" rel="noopener noreferrer" aria-label="Line">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9-.1.5-.6 2-.7 2.4 0 0-.1.4.2.5.3.1.7-.1 1-.4 4.9-2.9 6.6-4.8 6.6-7.9 0-4.4-4.5-8-10.1-8z"/></svg>
+        <a class="footer__icon" href="#" onclick="return false" aria-label="Line">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9-.1.5-.6 2-.7 2.4 0 0-.1.4.2.5.3.1.7-.1.7-.1 1-.4 4.9-2.9 6.6-4.8C19.9 15.1 22 13.2 22 11c0-4.4-4.5-8-10-8z"/></svg>
         </a>
-        <a class="footer__icon" href="https://www.facebook.com/suitcube/?locale=th_TH" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8h2V4h-2a4 4 0 00-4 4v2H9v4h2v8h4v-8h2.51.5-4H15V8z"/></svg>
-         </a>
-        <a class="footer__icon" href="https://www.instagram.com/suitcube" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-         </a>
-         </div>
-         <div class="footer__copy">SUITCUBE — สงวนลิขสิทธิ์ทุกประการ</div>
+        <a class="footer__icon" href="#" onclick="return false" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8h2V4h-2a4 4 0 00-4 4v2H9v4h2v8h4v-8h2.5l.5-4H15V8z"/></svg>
+        </a>
+        <a class="footer__icon" href="#" onclick="return false" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+      <div class="footer__rule"></div>
+      <div class="footer__links">
+        <a data-footermine="1">${tt('myBookings')}</a>
+        <span>·</span>
+        <a href="#" onclick="return false">${tt('footerContact')}</a>
+      </div>
+      <div class="footer__copy">© ${year} SUITCUBE — สงวนลิขสิทธิ์ทุกประการ</div>
     </footer>`;
 }
 
@@ -1199,7 +1010,7 @@ function screenService(){
     <div class="svcgrid">
       ${SERVICES.map(s => `
         <button class="svcpill ${S.serviceId===s.id?'is-on':''}" data-service="${s.id}">
-          <span class="svcpill__ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${serviceIcon(s)}</svg></span>
+          <span class="svcpill__ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${s.ico}</svg></span>
           <span class="svcpill__name">${esc(sname(s))}</span>
         </button>`).join('')}
     </div>
@@ -1215,7 +1026,7 @@ function screenService(){
     </div>
     ${sel ? `
       <div class="eyebrow">${tt('detailsHeading')}</div>
-      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(Number(sel.mins) || 0, S.lang))}</p>
+      <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(svcMins(sel, S.people), S.lang))}</p>
     ` : ''}
   `;
 }
@@ -1235,11 +1046,7 @@ function screenDatetime(){
     </div>`;
 
   const dateClosed = isBranchClosed(b, S.date);
-  const weekday = isWeekdayDate(S.date);
-  const sameDay = S.date === todayStr;
-  const ruleNote = tt(!sameDay ? 'futureRuleNote' : (weekday ? 'weekdayRuleNote' : 'weekendRuleNote'));
-  const slots = dateClosed ? [] : slotsFor(b, S.date, svcMins(sv, S.people), now);
-  const hasRuleSlot = slots.some(s => s.ok);
+  const slots = dateClosed ? [] : slotsFor(b, S.date, svcMins(sv, S.people));
   const groups = [
     [tt('morning'), slots.filter(s => toMin(s.t) < 13*60)],
     [tt('afternoon'), slots.filter(s => toMin(s.t) >= 13*60 && toMin(s.t) < 17*60)],
@@ -1247,24 +1054,29 @@ function screenDatetime(){
   ].filter(g => g[1].length);
 
   const [o,c] = hoursOf(b, sel);
+  // เลยเวลาตัดรอบของวันนี้แล้วหรือยัง (จะได้อธิบายให้ชัด แทนที่จะโชว์ปุ่มจางๆ เฉยๆ)
+  const _now = new Date();
+  const cutoffPassed = (ymd(_now) === S.date) &&
+    (_now.getHours()*60 + _now.getMinutes()) >= toMin(SAME_DAY_CUTOFF);
+
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
-    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}</p>
+    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), svcMins(sv, S.people))}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
-    ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` : !hasRuleSlot ?
-      `<div class="empty"><b>${tt('noRuleSlots')}</b>${ruleNote}<br><br>${tt('noSlotsSub')}</div>` :
+    ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` :
+      cutoffPassed ? `<div class="empty"><b>${tt('cutoffPassed')}</b>${tt('cutoffPassedSub')}</div>` :
       groups.length ? groups.map(([label, items]) => `
       <div class="eyebrow">${label}</div>
       <div class="slots">
         ${items.map(s => {
           const taken = isTaken(b.id, S.date, s.t, svcMins(sv, S.people));
           const dis = !s.ok || taken;
-          return `<button class="slot mono ${S.time===s.t?'is-on':''}" data-time="${s.t}" ${dis?'disabled':''} title="${taken?tt('alreadyBooked'):''}">${slotRange(s.t, sv, S.people)}</button>`;
+          return `<button class="slot mono ${S.time===s.t?'is-on':''}" data-time="${s.t}" ${dis?'disabled':''} title="${taken?tt('alreadyBooked'):''}">${s.t}</button>`;
         }).join('')}
       </div>`).join('')
       : `<div class="empty"><b>${tt('noSlots')}</b>${tt('noSlotsSub')}<br><br>${tt('walkin')}</div>`}
-    <div class="note">${tt('slotNote', S.people, fmtDuration(svcMins(sv, S.people), S.lang))}<br>${ruleNote}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
+    <div class="note">${tt('slotNote', svcMins(sv, S.people))}${bholiday(b) ? '<br>' + esc(bholiday(b)) : ''}</div>
   `;
 }
 
@@ -1366,7 +1178,7 @@ function barHTML(){
     case 'service':
       return `<button class="btn" id="next" ${S.serviceId?'':'disabled'}>${tt('next')}</button>`;
     case 'datetime':
-      return `${S.time?`<p class="bar__hint">${tt('hintDatetime', longDate(S.date), slotRange(S.time, serviceById(S.serviceId), S.people))}</p>`:''}
+      return `${S.time?`<p class="bar__hint">${tt('hintDatetime', longDate(S.date), S.time)}</p>`:''}
               <button class="btn" id="next" ${S.time?'':'disabled'}>${S.time?tt('next'):tt('pickTimeFirst')}</button>`;
     case 'form':
       return `<button class="btn" id="next">${tt('reviewDetails')}</button>`;
@@ -1464,7 +1276,7 @@ function adminLogin(){
       <input id="f-pin" data-admink="adminPin" type="password" inputmode="numeric" value="${esc(S.adminPin)}" placeholder="••••" autocomplete="off">
       <p class="err">PIN ไม่ถูกต้อง</p>
     </div>
-    <div class="note">ใส่ Password สำหรับการเข้าถึงการจัดการหน้าเว็บไซต์</div>
+    <div class="note">หน้านี้เป็นการป้องกันด้วย PIN ฝั่งหน้าเว็บ (client-side) เพื่อความสะดวกในการสาธิตเท่านั้น ไม่ใช่ระบบรักษาความปลอดภัยจริง — สำหรับใช้งานจริงควรมีระบบยืนยันตัวตนฝั่งเซิร์ฟเวอร์</div>
   `;
 }
 
@@ -1655,7 +1467,7 @@ function adminBookings(){
           <span style="font-size:11px;color:${bk.status==='active'?'var(--open)':'var(--closed)'}">${bk.status==='active'?'ใช้งานอยู่':'ยกเลิกแล้ว'}</span>
         </div>
         <div style="font-size:13px">${esc(bk.name)} · <span class="mono">${esc(bk.phone)}</span>${bk.people?` · ${bk.people} คน`:''}</div>
-        <div style="font-size:12px;color:var(--muted)">${b?esc(b.name):'-'} · ${sv?esc(sv.name):'-'} · ${bk.date} ${slotRange(bk.time, sv, bk.people)}</div>
+        <div style="font-size:12px;color:var(--muted)">${b?esc(b.name):'-'} · ${sv?esc(sv.name):'-'} · ${bk.date} ${bk.time}</div>
         ${bk.status==='active' ? `<button class="btn btn--danger btn--sm" style="width:auto;padding:6px 12px" data-admincancel="${bk.code}">ยกเลิกคิวนี้</button>` : ''}
       </div>`;
     }).join('') : `<div class="empty"><b>ไม่พบรายการจอง</b>ลองเปลี่ยนตัวกรองด้านบน</div>`}
@@ -1890,7 +1702,7 @@ document.addEventListener('click', async (e) => {
 
   if (t.dataset.time){ S.time = (S.time === t.dataset.time) ? null : t.dataset.time; render(); return; }
 
-  if (t.dataset.ics){ await addToCalendar(bookings.find(b => b.code === t.dataset.ics)); return; }
+  if (t.dataset.ics){ downloadICS(bookings.find(b => b.code === t.dataset.ics)); return; }
 
   if (t.dataset.cancel){
     const bk = bookings.find(b => b.code === t.dataset.cancel);
@@ -1907,14 +1719,7 @@ document.addEventListener('click', async (e) => {
   if (t.id === 'next'){
     if (S.step === 'branch') go('service');
     else if (S.step === 'service') go('datetime');
-    else if (S.step === 'datetime'){
-      const violation = bookingSelectionViolation(
-        branchById(S.branchId), S.date, S.time,
-        svcMins(serviceById(S.serviceId), S.people)
-      );
-      if (violation){ S.time = null; render(); toast(tt(violation)); return; }
-      go('form');
-    }
+    else if (S.step === 'datetime') go('form');
     else if (S.step === 'form'){
       S.touched = true;
       const okName = !!S.name.trim();
@@ -1926,31 +1731,22 @@ document.addEventListener('click', async (e) => {
   }
 
   if (t.id === 'confirm'){
-    const violation = bookingSelectionViolation(
-      branchById(S.branchId), S.date, S.time,
-      svcMins(serviceById(S.serviceId), S.people)
-    );
-    if (violation){ S.time = null; toast(tt(violation)); go('datetime'); return; }
     await refreshBookings();
     if (isTaken(S.branchId, S.date, S.time, svcMins(serviceById(S.serviceId), S.people))){ toast(tt('slotTaken')); go('datetime'); return; }
-    const selectedService = serviceById(S.serviceId);
     const draft = {
-      branchId:S.branchId, serviceId:S.serviceId,
-      serviceName:selectedService ? (selectedService.name || selectedService.nameEn || selectedService.nameZh || S.serviceId) : S.serviceId,
-      date:S.date, time:S.time, people:S.people,
+      branchId:S.branchId, serviceId:S.serviceId, date:S.date, time:S.time, people:S.people,
       name:S.name.trim(), phone:S.phone.replace(/[-\s]/g,''), note:S.note.trim(),
-      status:'active', acknowledged:false, createdAt:new Date().toISOString()
+      status:'active', createdAt:new Date().toISOString()
     };
     const r = await apiCall('createBooking', draft);
     if (r === null && apiConfigured){ toast('จองไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     const bk = (r && r.booking) ? r.booking : { code: makeCode(), ...draft };
     bookings.push(bk);
     saveBookingsLocal();
-    if (bk.code && !myCodes.includes(bk.code)) myCodes.push(bk.code);
+    myCodes.push(bk.code);
     saveMyCodes();
     S.last = bk;
     go('done');
-    showBookingSuccessPopup(bk);
     return;
   }
 
@@ -1959,9 +1755,9 @@ document.addEventListener('click', async (e) => {
     go('branch'); return;
   }
 
-  if (t.id === 'mine'){ await goMine(); return; }
+  if (t.id === 'mine'){ go('mine'); return; }
 
-  if (t.dataset.footermine){ await goMine(); return; }
+  if (t.dataset.footermine){ go('mine'); return; }
 });
 
 document.addEventListener('input', (e) => {
@@ -1998,10 +1794,9 @@ navBack.addEventListener('click', () => {
   const order = { service:'branch', datetime:'service', form:'datetime', review:'form', done:'branch', mine:'branch' };
   go(order[S.step] || 'branch');
 });
-navMine.addEventListener('click', async () => {
+navMine.addEventListener('click', () => {
   if (S.admin){ S.admin = false; S.adminStep = 'login'; render(); return; }
-  if (S.step === 'mine') go('branch');
-  else await goMine();
+  go(S.step === 'mine' ? 'branch' : 'mine');
 });
 navLang.addEventListener('change', () => { S.lang = navLang.value; render(); });
 
@@ -2057,108 +1852,28 @@ function processPhotoFile(file){
   });
 }
 
-async function addToCalendar(bk){
+function downloadICS(bk){
   if (!bk) return;
   const b = branchById(bk.branchId), sv = serviceById(bk.serviceId);
   const pad = n => String(n).padStart(2,'0');
   const fmt = (d) => d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
-  const icsEscape = value => String(value)
-    .replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,');
-  const foldICSLine = line => {
-    const parts = []; let current = ''; let bytes = 0;
-    for (const char of Array.from(line)){
-      const charBytes = new TextEncoder().encode(char).length;
-      const limit = parts.length ? 74 : 75;
-      if (current && bytes + charBytes > limit){
-        parts.push(current); current = ' ' + char; bytes = 1 + charBytes;
-      } else {
-        current += char; bytes += charBytes;
-      }
-    }
-    if (current) parts.push(current);
-    return parts.join('\r\n');
-  };
-  // เวลานัดของสาขาเป็นเวลาไทยเสมอ ป้องกันเวลาเลื่อนเมื่อผู้ใช้เปิดจากอุปกรณ์ต่างเขตเวลา
-  const start = new Date(bk.date + 'T' + bk.time + ':00+07:00');
+  const start = new Date(bk.date + 'T' + bk.time + ':00');
   const end = new Date(start.getTime() + svcMins(sv, bk.people)*60000);
-  const title = 'SUITCUBE ' + sname(sv) + ' (' + bk.code + ')';
-  const location = 'SUITCUBE ' + bname(b) + ' — ' + bloc(b);
-  const description = bloc(b) + ' - ' + b.map;
   const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH',
-    'PRODID:-//SUITCUBE//Booking//TH','BEGIN:VEVENT',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//SUITCUBE//Queue//TH','BEGIN:VEVENT',
     'UID:' + bk.code + '@suitcube',
     'DTSTAMP:' + fmt(new Date()),
     'DTSTART:' + fmt(start),
     'DTEND:' + fmt(end),
-    'SUMMARY:' + icsEscape(title),
-    'LOCATION:' + icsEscape(location),
-    'DESCRIPTION:' + icsEscape(description),
-    'STATUS:CONFIRMED','TRANSP:OPAQUE',
+    'SUMMARY:SUITCUBE ' + sname(sv) + ' (' + bk.code + ')',
+    'LOCATION:SUITCUBE ' + bname(b),
+    'DESCRIPTION:' + bloc(b).replace(/,/g,'\\,') + ' - ' + b.map,
     'END:VEVENT','END:VCALENDAR'
-  ].map(foldICSLine).join('\r\n') + '\r\n';
-  const fileName = bk.code + '.ics';
-  // ห้ามเติม BOM หน้า BEGIN:VCALENDAR เพราะ Apple Calendar บางรุ่นจะอ่านไม่ออก
-  const blob = new Blob([ics], {type:'text/calendar;charset=utf-8;method=PUBLISH'});
-  const ua = navigator.userAgent || '';
-  const isAndroid = /Android/i.test(ua);
-  const isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
-
-  // Android: ส่ง ACTION_INSERT ไปยัง Calendar app ที่ติดตั้งในเครื่องโดยตรง
-  // ถ้า Chrome/เครื่องไม่อนุญาต จึงค่อย fallback เป็นไฟล์ .ics (ไม่เปิดหน้า Google เว็บ)
-  if (isAndroid){
-    const params = new URLSearchParams({
-      action:'TEMPLATE',
-      text:title,
-      dates:fmt(start) + '/' + fmt(end),
-      details:description,
-      location:location,
-      ctz:'Asia/Bangkok'
-    });
-    const calendarUrl = 'https://calendar.google.com/calendar/render?' + params.toString();
-    const nativeFallbackUrl = servedCalendarURL(ics, fileName) || calendarUrl;
-    const intentUrl = 'intent://com.android.calendar/events#Intent;' +
-      'scheme=content;' +
-      'action=android.intent.action.INSERT;' +
-      'category=android.intent.category.BROWSABLE;' +
-      'type=vnd.android.cursor.dir/event;' +
-      'S.title=' + encodeURIComponent(title) + ';' +
-      'S.description=' + encodeURIComponent(description) + ';' +
-      'S.eventLocation=' + encodeURIComponent(location) + ';' +
-      'l.beginTime=' + start.getTime() + ';' +
-      'l.endTime=' + end.getTime() + ';' +
-      'S.browser_fallback_url=' + encodeURIComponent(nativeFallbackUrl) + ';end';
-    window.location.href = intentUrl;
-    toast(tt('calendarOpened'));
-    return;
-  }
-
-  const url = URL.createObjectURL(blob);
-
-  // iPhone/iPad: เปิดไฟล์ปฏิทินในแท็บปัจจุบัน เพื่อให้ iOS ส่งต่อให้
-  // Apple Calendar โดยไม่ผ่าน Share sheet
-  if (isIOS){
-    if (calendarSWReady) await calendarSWReady;
-    const iosCalendarUrl = servedCalendarURL(ics, fileName);
-    if (iosCalendarUrl){
-      URL.revokeObjectURL(url);
-      window.location.assign(iosCalendarUrl);
-      return;
-    }
-    // กรณีเปิดไฟล์ HTML ตรง ๆ หรือไม่ได้ใช้ HTTPS: ดาวน์โหลดไฟล์เป็นทางสำรอง
-    const a = document.createElement('a');
-    a.href = url; a.download = fileName; a.rel = 'noopener';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 120000);
-    toast(tt('calendarOpened'));
-    return;
-  }
-
-  // Windows และเบราว์เซอร์อื่น: ดาวน์โหลด .ics เพื่อเปิดด้วย Outlook/Calendar
+  ].join('\r\n');
+  const url = URL.createObjectURL(new Blob([ics], {type:'text/calendar'}));
   const a = document.createElement('a');
-  a.href = url; a.download = fileName; a.rel = 'noopener';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 3000);
+  a.href = url; a.download = bk.code + '.ics'; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
   toast(tt('icsDownloaded'));
 }
 
