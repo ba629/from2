@@ -413,7 +413,6 @@ body.popup-open{overflow:hidden}
 .toggle span{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:.18s var(--ease)}
 .toggle.is-on{background:var(--open)}
 .toggle.is-on span{transform:translateX(16px)}
-.btn btn--ghost btn--sm{display:none}
 @keyframes pulse{50%{opacity:.55}}
 </style>
 </head>
@@ -683,7 +682,6 @@ const T = {
   queueCode: { th: 'รหัสคิว', en: 'Queue code', zh: '排队号码' },
   cancelled:         { th:'ยกเลิกแล้ว', en:'Cancelled', zh:'已取消' },
   openMap:           { th:'เปิดแผนที่', en:'Open map', zh:'打开地图' },
-  addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
   cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
   doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
   doneSub:           { th:'กรุณาแสดงคิวนี้ หรือแจ้งพนักงานว่าลูกค้ามีการจองคิวผ่านระบบมาแล้ว', en:'Please show this booking, or tell our staff that you booked through the system.', zh:'到店后请出示此号码给工作人员' },
@@ -726,8 +724,6 @@ const T = {
   cancelledToast:    { th:'ยกเลิกคิวแล้ว', en:'Booking cancelled', zh:'预约已取消' },
   formIncomplete:    { th:'กรอกข้อมูลให้ครบก่อนไปต่อ', en:'Please complete the form to continue', zh:'请填写完整信息后再继续' },
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
-  icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
-  calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
   weekdayBookingRule:{ th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. ต้องให้บริการเสร็จภายใน 16:00 น. (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五的当日预约须在上午 10 点前确认，预约时间须至少提前 6 小时，且服务须在下午 4 点前结束。请选择其他日期或时间。' },
   weekendBookingRule:{ th:'วันเสาร์–อาทิตย์ต้องจองตั้งแต่วันก่อนวันนัด ไม่เปิดรับการจองภายในวันเดียวกัน กรุณาเลือกวันถัดไป', en:'Saturday–Sunday appointments must be booked before the appointment date. Same-day booking is unavailable. Please choose another date.', zh:'周六及周日须在预约日期之前预订，不接受当天预约。请选择其他日期。' },
   weekdayRuleNote:  { th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. ต้องให้บริการเสร็จภายใน 16:00 น. (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五当日预约：上午 10 点前确认 · 至少提前 6 小时 · 须在下午 4 点前结束' },
@@ -935,26 +931,6 @@ let BRANCHES = [];
 let SERVICES = [];
 let storageOK = true;
 let apiConfigured = !!API_URL;
-
-// iOS ต้องเปิด .ics จาก URL ที่ตอบกลับเป็น text/calendar จริง จึงใช้ Service Worker
-// ตัวเล็กที่วางคู่กับไฟล์ HTML (ทำงานเมื่อเว็บเปิดผ่าน HTTPS หรือ localhost)
-let calendarSWActive = false;
-let calendarSWReady = null;
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
-  calendarSWReady = navigator.serviceWorker
-    .register('./suitcube-calendar-sw.js', {scope:'./'})
-    .then(() => navigator.serviceWorker.ready)
-    .then(registration => { calendarSWActive = true; return registration; })
-    .catch(err => { console.warn('Calendar helper unavailable:', err); return null; });
-}
-
-function servedCalendarURL(ics, fileName){
-  if (!calendarSWActive) return null;
-  const url = new URL('./suitcube-calendar-event.ics', location.href);
-  url.searchParams.set('name', fileName);
-  url.searchParams.set('data', ics);
-  return url.href;
-}
 
 function lsGet(key, fallback){
   try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; }
@@ -1582,7 +1558,6 @@ function ticketHTML(bk, opts = {}){
       ${bk.status==='cancelled'?`<div class="sum__row"><span class="sum__k">${tt('kStatus')}</span><span class="sum__v" style="color:var(--closed)">${tt('cancelled')}</span></div>`:''}
       <div class="sum__row" style="gap:8px">
         <button class="btn btn--ghost btn--sm" data-map="${b.map}">${tt('openMap')}</button>
-        ${!past && bk.status==='active' ? `<button class="btn btn--ghost btn--sm" data-ics="${bk.code}">${tt('addCalendar')}</button>` : ''}
       </div>
       ${!past && bk.status==='active' && opts.cancel ? `<div class="sum__row"><button class="btn btn--danger btn--sm" data-cancel="${bk.code}">${tt('cancelBooking')}</button></div>` : ''}
     </div>`;
@@ -1933,7 +1908,7 @@ function adminBarHTML(){
    9. เหตุการณ์
    ═══════════════════════════════════════════════ */
 document.addEventListener('click', async (e) => {
-  const t = e.target.closest('[data-area],[data-branch],[data-service],[data-peopleminus],[data-peopleplus],[data-time],[data-map],[data-cancel],[data-ics],[data-adminopen],[data-adminnav],[data-toggleclose],[data-editbranch],[data-delbranch],[data-schedulebranch],[data-admdclearsched],[data-removephoto],[data-editservice],[data-delservice],[data-admincancel],[data-admdarea],[data-admdclosed],[data-footermine],#next,#confirm,#again,#mine,#adminLoginBtn,#adminAddBranch,#adminSaveBranch,#adminSaveSchedule,#adminAddService,#adminSaveService');
+  const t = e.target.closest('[data-area],[data-branch],[data-service],[data-peopleminus],[data-peopleplus],[data-time],[data-map],[data-cancel],[data-adminopen],[data-adminnav],[data-toggleclose],[data-editbranch],[data-delbranch],[data-schedulebranch],[data-admdclearsched],[data-removephoto],[data-editservice],[data-delservice],[data-admincancel],[data-admdarea],[data-admdclosed],[data-footermine],#next,#confirm,#again,#mine,#adminLoginBtn,#adminAddBranch,#adminSaveBranch,#adminSaveSchedule,#adminAddService,#adminSaveService');
   if (!t) return;
 
   if (t.dataset.map){ e.stopPropagation(); window.open(t.dataset.map, '_blank', 'noopener'); return; }
@@ -2145,8 +2120,6 @@ document.addEventListener('click', async (e) => {
 
   if (t.dataset.time){ S.time = (S.time === t.dataset.time) ? null : t.dataset.time; render(); return; }
 
-  if (t.dataset.ics){ await addToCalendar(bookings.find(b => b.code === t.dataset.ics)); return; }
-
   if (t.dataset.cancel){
     const bk = bookings.find(b => b.code === t.dataset.cancel);
     if (!bk) return;
@@ -2312,111 +2285,6 @@ function processPhotoFile(file){
     reader.onerror = () => reject(new Error('file read failed'));
     reader.readAsDataURL(file);
   });
-}
-
-async function addToCalendar(bk){
-  if (!bk) return;
-  const b = branchById(bk.branchId), sv = serviceById(bk.serviceId);
-  const pad = n => String(n).padStart(2,'0');
-  const fmt = (d) => d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
-  const icsEscape = value => String(value)
-    .replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,');
-  const foldICSLine = line => {
-    const parts = []; let current = ''; let bytes = 0;
-    for (const char of Array.from(line)){
-      const charBytes = new TextEncoder().encode(char).length;
-      const limit = parts.length ? 74 : 75;
-      if (current && bytes + charBytes > limit){
-        parts.push(current); current = ' ' + char; bytes = 1 + charBytes;
-      } else {
-        current += char; bytes += charBytes;
-      }
-    }
-    if (current) parts.push(current);
-    return parts.join('\r\n');
-  };
-  // เวลานัดของสาขาเป็นเวลาไทยเสมอ ป้องกันเวลาเลื่อนเมื่อผู้ใช้เปิดจากอุปกรณ์ต่างเขตเวลา
-  const start = new Date(bk.date + 'T' + bk.time + ':00+07:00');
-  const end = new Date(start.getTime() + svcMins(sv, bk.people)*60000);
-  const title = 'SUITCUBE ' + sname(sv) + ' (' + bk.code + ')';
-  const location = 'SUITCUBE ' + bname(b) + ' — ' + bloc(b);
-  const description = bloc(b) + ' - ' + b.map;
-  const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH',
-    'PRODID:-//SUITCUBE//Booking//TH','BEGIN:VEVENT',
-    'UID:' + bk.code + '@suitcube',
-    'DTSTAMP:' + fmt(new Date()),
-    'DTSTART:' + fmt(start),
-    'DTEND:' + fmt(end),
-    'SUMMARY:' + icsEscape(title),
-    'LOCATION:' + icsEscape(location),
-    'DESCRIPTION:' + icsEscape(description),
-    'STATUS:CONFIRMED','TRANSP:OPAQUE',
-    'END:VEVENT','END:VCALENDAR'
-  ].map(foldICSLine).join('\r\n') + '\r\n';
-  const fileName = bk.code + '.ics';
-  // ห้ามเติม BOM หน้า BEGIN:VCALENDAR เพราะ Apple Calendar บางรุ่นจะอ่านไม่ออก
-  const blob = new Blob([ics], {type:'text/calendar;charset=utf-8;method=PUBLISH'});
-  const ua = navigator.userAgent || '';
-  const isAndroid = /Android/i.test(ua);
-  const isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
-
-  // Android: ส่ง ACTION_INSERT ไปยัง Calendar app ที่ติดตั้งในเครื่องโดยตรง
-  // ถ้า Chrome/เครื่องไม่อนุญาต จึงค่อย fallback เป็นไฟล์ .ics (ไม่เปิดหน้า Google เว็บ)
-  if (isAndroid){
-    const params = new URLSearchParams({
-      action:'TEMPLATE',
-      text:title,
-      dates:fmt(start) + '/' + fmt(end),
-      details:description,
-      location:location,
-      ctz:'Asia/Bangkok'
-    });
-    const calendarUrl = 'https://calendar.google.com/calendar/render?' + params.toString();
-    const nativeFallbackUrl = servedCalendarURL(ics, fileName) || calendarUrl;
-    const intentUrl = 'intent://com.android.calendar/events#Intent;' +
-      'scheme=content;' +
-      'action=android.intent.action.INSERT;' +
-      'category=android.intent.category.BROWSABLE;' +
-      'type=vnd.android.cursor.dir/event;' +
-      'S.title=' + encodeURIComponent(title) + ';' +
-      'S.description=' + encodeURIComponent(description) + ';' +
-      'S.eventLocation=' + encodeURIComponent(location) + ';' +
-      'l.beginTime=' + start.getTime() + ';' +
-      'l.endTime=' + end.getTime() + ';' +
-      'S.browser_fallback_url=' + encodeURIComponent(nativeFallbackUrl) + ';end';
-    window.location.href = intentUrl;
-    toast(tt('calendarOpened'));
-    return;
-  }
-
-  const url = URL.createObjectURL(blob);
-
-  // iPhone/iPad: เปิดไฟล์ปฏิทินในแท็บปัจจุบัน เพื่อให้ iOS ส่งต่อให้
-  // Apple Calendar โดยไม่ผ่าน Share sheet
-  if (isIOS){
-    if (calendarSWReady) await calendarSWReady;
-    const iosCalendarUrl = servedCalendarURL(ics, fileName);
-    if (iosCalendarUrl){
-      URL.revokeObjectURL(url);
-      window.location.assign(iosCalendarUrl);
-      return;
-    }
-    // กรณีเปิดไฟล์ HTML ตรง ๆ หรือไม่ได้ใช้ HTTPS: ดาวน์โหลดไฟล์เป็นทางสำรอง
-    const a = document.createElement('a');
-    a.href = url; a.download = fileName; a.rel = 'noopener';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 120000);
-    toast(tt('calendarOpened'));
-    return;
-  }
-
-  // Windows และเบราว์เซอร์อื่น: ดาวน์โหลด .ics เพื่อเปิดด้วย Outlook/Calendar
-  const a = document.createElement('a');
-  a.href = url; a.download = fileName; a.rel = 'noopener';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 3000);
-  toast(tt('icsDownloaded'));
 }
 
 /* ── เริ่มทำงาน ── */
