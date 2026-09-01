@@ -694,9 +694,9 @@ const T = {
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
   icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
   calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
-  weekdayBookingRule:{ th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. เปิดคิวเข้ารับบริการถึง 16:00 น. เท่านั้น (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) for service times up to 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五的当日预约须在上午 10 点前确认，预约时间须至少提前 6 小时，且不得晚于下午 4 点开始。请选择其他日期或时间。' },
+  weekdayBookingRule:{ th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. ต้องให้บริการเสร็จภายใน 16:00 น. (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五的当日预约须在上午 10 点前确认，预约时间须至少提前 6 小时，且服务须在下午 4 点前结束。请选择其他日期或时间。' },
   weekendBookingRule:{ th:'วันเสาร์–อาทิตย์ต้องจองตั้งแต่วันก่อนวันนัด ไม่เปิดรับการจองภายในวันเดียวกัน กรุณาเลือกวันถัดไป', en:'Saturday–Sunday appointments must be booked before the appointment date. Same-day booking is unavailable. Please choose another date.', zh:'周六及周日须在预约日期之前预订，不接受当天预约。请选择其他日期。' },
-  weekdayRuleNote:  { th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. เปิดคิวเข้ารับบริการถึง 16:00 น. เท่านั้น (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) for service times up to 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五当日预约：上午 10 点前确认 · 至少提前 6 小时 · 最晚下午 4 点开始' },
+  weekdayRuleNote:  { th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. ต้องให้บริการเสร็จภายใน 16:00 น. (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五当日预约：上午 10 点前确认 · 至少提前 6 小时 · 须在下午 4 点前结束' },
   weekendRuleNote:  { th:'เสาร์–อาทิตย์: ต้องจองตั้งแต่วันก่อนวันนัด', en:'Saturday–Sunday: book before the appointment date', zh:'周六及周日：须在预约日期之前预订' },
   futureRuleNote:   { th:'จองล่วงหน้าก่อนวันนัด: เลือกเวลาได้ตามเวลาเปิด–ปิดของสาขาตามปกติ', en:'Booking before the appointment date: all regular branch hours are available', zh:'提前预约：可按分店正常营业时间选择时段' },
   noRuleSlots:      { th:'ไม่มีเวลาที่จองได้ตามเงื่อนไขในวันนี้', en:'No times meet the advance-booking rule for this day', zh:'当天没有符合提前预约规则的时段' },
@@ -755,7 +755,7 @@ const M_FULL_ZH = M_SHORT_ZH;
 const SLOT_STEP = 30;                 // นาทีต่อ 1 ช่วงคิว
 const WEEKDAY_LEAD_MIN = 6 * 60;      // เฉพาะคิวภายในวัน จ–ศ: ล่วงหน้าอย่างน้อย 6 ชั่วโมง
 const WEEKDAY_SAME_DAY_CUTOFF_MIN = 10 * 60; // จันทร์–ศุกร์: ยืนยันคิวภายในวันได้ช้าที่สุด 10:00 น.
-const WEEKDAY_LAST_START_MIN = 16 * 60; // เฉพาะคิวภายในวัน จ–ศ: เวลาเริ่มคิวช้าที่สุด 16:00 น.
+const WEEKDAY_LAST_END_MIN = 16 * 60;   // เฉพาะคิวภายในวัน จ–ศ: ต้องให้บริการเสร็จไม่เกิน 16:00 น.
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -820,7 +820,7 @@ function bookingRuleViolation(dateStr, timeStr, now = new Date()){
   const weekday = isWeekdayDate(dateStr);
   if (!weekday) return 'weekendBookingRule';
 
-  if (toMin(timeStr) > WEEKDAY_LAST_START_MIN) return 'weekdayBookingRule';
+  if (toMin(timeStr) >= WEEKDAY_LAST_END_MIN) return 'weekdayBookingRule';
   const bookingMinute = bookedAt.getHours() * 60 + bookedAt.getMinutes();
   if (bookingMinute > WEEKDAY_SAME_DAY_CUTOFF_MIN){
     return 'weekdayBookingRule';
@@ -855,11 +855,12 @@ function slotsFor(branch, dateStr, mins, now = new Date()){
   const date = parseYmd(dateStr);
   const [o,c] = hoursOf(branch, date);
   // เวลาจองอิงตามเวลาเปิด–ปิดของสาขา และต้องจบบริการก่อนร้านปิด
-  // จำกัดเริ่มคิว 16:00 น. เฉพาะการจองคิวภายในวัน จ–ศ เท่านั้น
+  // คิวภายในวัน จ–ศ ต้องจบบริการไม่เกิน 16:00 น.
+  // เช่น 1 ชม. = เริ่มได้ช้าที่สุด 15:00, 2 ชม. = เริ่มได้ช้าที่สุด 14:00
   const sameDayWeekday = dateStr === ymd(now) && isWeekdayDate(dateStr);
   const latestStart = Math.min(
     toMin(c) - mins,
-    sameDayWeekday ? WEEKDAY_LAST_START_MIN : Number.POSITIVE_INFINITY
+    sameDayWeekday ? WEEKDAY_LAST_END_MIN - mins : Number.POSITIVE_INFINITY
   );
   const out = [];
   for (let m = toMin(o); m <= latestStart; m += SLOT_STEP){
