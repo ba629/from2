@@ -603,6 +603,7 @@ const T = {
   detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
   peopleCount:       { th:'จำนวนคน', en:'Number of people', zh:'人数' },
   selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ใช้เวลาโดยประมาณ ${dur} / ท่าน`, en:(name,dur)=>`Selected service: ${name} · approx. ${dur} / person`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
+  totalDuration:     { th:(p,d)=>`เวลารวมสำหรับ ${p} คน: ${d}`, en:(p,d)=>`Total time for ${p} people: ${d}`, zh:(p,d)=>`${p} 人总时长：${d}` },
   chooseDatetime:    { th:'เลือกวันและเวลา', en:'Choose date & time', zh:'选择日期与时间' },
   datetimeSub:       { th:(b,s,m,p)=>`${b} · ${s} (${m} นาที/ท่าน) · ${p} คน`, en:(b,s,m,p)=>`${b} · ${s} (${m} min/person) · ${p} people`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
   today:             { th:'วันนี้', en:'Today', zh:'今天' },
@@ -614,10 +615,9 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  slotNote:          { th:(p,d)=>`เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · หากช่วงเวลาที่ท่านต้องการจองเต็ม ท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ
-                     {d}`,
-                        en:(p,d)=>`Available times follow this branch’s opening hours · If your desired booking time is fully booked, walk-ins are welcome as usual.{d}`,
-                        zh:(p,d)=>`可预约时间依分店营业时间显示` },
+  slotNote:          { th:(p,d)=>`เวลารวมสำหรับ ${p} คน: ${d} · เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · หากช่วงเวลาที่ท่านต้องการจองเต็ม ท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ`,
+                        en:(p,d)=>`Total time for ${p} people: ${d} · Available times follow this branch’s opening hours · If your desired booking time is fully booked, walk-ins are welcome as usual.`,
+                        zh:(p,d)=>`${p} 人总时长：${d} · 可预约时间依分店营业时间显示` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
   detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น <span style="color: red;">**กรุณาพิมพ์ข้อมูลให้ครบถ้วน**</span>', 
                          en:'Used only to confirm your booking and contact you <span style="color: red;">**Please fill in all information**</span>' },
@@ -1216,6 +1216,7 @@ function screenService(){
     ${sel ? `
       <div class="eyebrow">${tt('detailsHeading')}</div>
       <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(Number(sel.mins) || 0, S.lang))}</p>
+      <p class="sub" style="margin:0;font-weight:600;color:var(--wool)">${tt('totalDuration', S.people, fmtDuration(svcMins(sel, S.people), S.lang))}</p>
     ` : ''}
   `;
 }
@@ -1249,7 +1250,7 @@ function screenDatetime(){
   const [o,c] = hoursOf(b, sel);
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
-    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}</p>
+    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}<br><strong style="color:var(--wool)">${tt('totalDuration', S.people, fmtDuration(svcMins(sv, S.people), S.lang))}</strong></p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
     ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` : !hasRuleSlot ?
@@ -1321,8 +1322,10 @@ function ticketHTML(bk, opts = {}){
       </div>
       <div class="ticket__perf"></div>
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}</span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+svcMins(sv, bk.people))}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kBookedBy')}</span><span class="sum__v">${bk.name ? esc(bk.name) : '-'}${bk.phone ? `<small class="mono">${esc(bk.phone)}</small>` : ''}</span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', svcMins(sv, bk.people))}</small></span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kDate')}</span><span class="sum__v">${longDate(bk.date)}</span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kTime')}</span><span class="sum__v mono">${slotRange(bk.time, sv, bk.people)}</span></div>
       ${bk.people ? `<div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${bk.people}</span></div>` : ''}
       ${bk.status==='cancelled'?`<div class="sum__row"><span class="sum__k">${tt('kStatus')}</span><span class="sum__v" style="color:var(--closed)">${tt('cancelled')}</span></div>`:''}
       <div class="sum__row" style="gap:8px">
