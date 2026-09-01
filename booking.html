@@ -7,17 +7,17 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>SUITCUBE โ€” Booking</title>
+<title>SUITCUBE — Booking</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
-   SUITCUBE ยท Queue Booking
-   Palette: cream & gold โ€” white surfaces, gold-filled blocks, brass accents
+/* ─────────────────────────────────────────────
+   SUITCUBE · Queue Booking
+   Palette: cream & gold — white surfaces, gold-filled blocks, brass accents
    Type: Anuphan (UI + display) + Courier New (raw data: codes, times, phone)
    Signature: tailor's tape-measure progress rail
-   โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+   ───────────────────────────────────────────── */
 :root{
   --wool:#2A2117;
   --wool-soft:#6E5F49;
@@ -60,13 +60,13 @@ button{border:0;background:none;cursor:pointer;-webkit-appearance:none;appearanc
 a{color:inherit}
 .mono{font-family:'Courier New',ui-monospace,monospace;font-variant-numeric:tabular-nums}
 
-/* โ”€โ”€ shell โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── shell ───────────────────────────── */
 html,body{background:var(--bg)}
 .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative}
 @media (min-width:640px){ .app{max-width:760px} }
 @media (min-width:1024px){ .app{max-width:1080px} }
 @media (min-width:1440px){ .app{max-width:1320px} }
-/* โ”€โ”€ CI: เนเธ–เธเธ”เธณเธเธเธชเธธเธ” โ”€โ”€ */
+/* ── CI: แถบดำบนสุด ── */
 .topbar{
   background:var(--ci-black);color:var(--brass-ink);
   text-align:center;font-size:10.5px;font-weight:500;letter-spacing:.03em;
@@ -93,8 +93,8 @@ html,body{background:var(--bg)}
   background-repeat:no-repeat;background-position:right 6px center;
 }
 
-/* โ”€โ”€ signature: tape measure rail โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
-/* โ”€โ”€ hero banner (เธซเธเนเธฒเน€เธฅเธทเธญเธเธชเธฒเธเธฒเน€เธ—เนเธฒเธเธฑเนเธ) โ”€โ”€ */
+/* ── signature: tape measure rail ─────── */
+/* ── hero banner (หน้าเลือกสาขาเท่านั้น) ── */
 .hero{position:relative;height:186px;overflow:hidden;display:none}
 @media (min-width:640px){ .hero{height:240px} }
 @media (min-width:1024px){ .hero{height:300px} }
@@ -150,18 +150,18 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
 .eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:22px 2px 8px}
 
-/* โ”€โ”€ brand header โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── brand header ─────────────────────── */
 .brand{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 2px}
 .brand__mark{font-size:15px;font-weight:600;letter-spacing:.34em;text-transform:uppercase}
 .brand__rule{height:1px;background:var(--hairline);flex:1;margin:0 12px}
 .brand__tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
-/* โ”€โ”€ segmented control โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── segmented control ────────────────── */
 .seg{display:flex;background:var(--surface-2);border-radius:11px;padding:3px;gap:3px;margin:2px 0 12px}
 .seg button{flex:1;padding:7px 4px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);transition:.22s var(--ease)}
 .seg button.is-on{background:var(--surface);color:var(--wool);box-shadow:0 1px 3px rgba(21,23,28,.12);font-weight:600}
 
-/* โ”€โ”€ search โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── search ───────────────────────────── */
 .search{position:relative;margin-bottom:12px}
 .search input{
   width:100%;padding:11px 14px 11px 36px;border-radius:11px;
@@ -172,7 +172,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .search input:focus{box-shadow:0 0 0 2px var(--brass)}
 .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.45}
 
-/* โ”€โ”€ cards โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── cards ────────────────────────────── */
 .card{
   background:var(--surface);border-radius:var(--r-lg);
   padding:14px 15px;margin-bottom:8px;box-shadow:var(--shadow);
@@ -190,7 +190,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .dot{width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;background:currentColor}
 .maplink{font-size:12px;color:var(--brass-ink);font-weight:500;margin-left:auto;display:inline-flex;align-items:center;gap:3px}
 
-/* โ”€โ”€ branch photo-card โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── branch photo-card ─────────────────── */
 .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (min-width:640px){ .bgrid{grid-template-columns:repeat(3,1fr);gap:14px} }
 @media (min-width:1024px){ .bgrid{grid-template-columns:repeat(4,1fr);gap:16px} }
@@ -226,13 +226,13 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .bcard2__btn.is-open{color:var(--open)}
 .bcard2__btn.is-closed{color:var(--closed)}
 
-/* โ”€โ”€ service โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── service ──────────────────────────── */
 .svc{display:flex;align-items:center;gap:13px}
 .svc__ico{width:38px;height:38px;border-radius:11px;background:var(--brass-tint);color:var(--brass-ink);display:grid;place-items:center;flex:none}
 .svc > span:nth-child(2){flex:1;min-width:0}
 .svc__min{margin-left:auto;font-size:12px;color:var(--muted);text-align:right;flex:none}
 
-/* โ”€โ”€ service pills โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── service pills ─────────────────────── */
 .svcgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
 .svcpill{
   display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:var(--r-md);
@@ -250,7 +250,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .svcpill.is-on .svcpill__name{color:var(--bg)}
 .svcpill:active{transform:scale(.97)}
 
-/* โ”€โ”€ date picker: native date field โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── date picker: native date field ────── */
 .datefield{
   display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:var(--r-md);
   background:var(--surface);border:1px solid var(--hairline);box-shadow:var(--shadow);
@@ -264,7 +264,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
   filter:invert(56%) sepia(37%) saturate(500%) hue-rotate(1deg) brightness(95%);cursor:pointer;
 }
 
-/* โ”€โ”€ slots โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── slots ────────────────────────────── */
 .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .slot{
   padding:10px 2px;border-radius:var(--r-sm);background:var(--surface);border:1px solid var(--hairline);
@@ -278,7 +278,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 }
 .slot:not(:disabled):active{transform:scale(.94)}
 
-/* โ”€โ”€ form โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── form ─────────────────────────────── */
 .field{margin-bottom:13px}
 .field label{display:block;font-size:12.5px;font-weight:500;color:var(--wool-soft);margin:0 0 6px 2px}
 .field input,.field textarea{
@@ -292,7 +292,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .field.is-bad .err{display:block}
 .opt{color:var(--muted);font-weight:400}
 
-/* โ”€โ”€ summary โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── summary ──────────────────────────── */
 .sum{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
 .sum__row{display:flex;gap:14px;padding:12px 15px;border-bottom:.5px solid var(--hairline-2);font-size:14px}
 .sum__row:last-child{border-bottom:0}
@@ -300,7 +300,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .sum__v{font-weight:500;flex:1}
 .sum__v small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px;line-height:1.5}
 
-/* โ”€โ”€ ticket โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── ticket ───────────────────────────── */
 .ticket{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;margin-bottom:12px}
 .ticket__head{padding:16px 16px 14px;text-align:center;border-bottom:1px dashed var(--hairline)}
 .ticket__code{font-size:25px;font-weight:500;letter-spacing:.16em;margin-top:6px}
@@ -311,7 +311,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .ticket__perf::after{right:-10px;clip-path:inset(0 50% 0 0)}
 .ticket--past{opacity:.55}
 
-/* โ”€โ”€ buttons โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── buttons ──────────────────────────── */
 .bar{
   position:fixed;bottom:0;left:0;right:0;z-index:45;
   max-width:480px;margin:0 auto;padding:10px 16px calc(12px + env(safe-area-inset-bottom));
@@ -336,7 +336,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .btn--sm{padding:10px;font-size:14px;font-weight:500}
 .bar__hint{text-align:center;font-size:11.5px;color:var(--muted);margin:0 0 8px}
 
-/* โ”€โ”€ misc โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── misc ─────────────────────────────── */
 .empty{text-align:center;padding:56px 24px;color:var(--muted)}
 .footer{margin:28px -16px -132px;padding:32px 24px calc(160px + env(safe-area-inset-bottom));background:var(--ci-black);text-align:center}
 .footer__brand{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:.28em;color:#F2ECDD}
@@ -387,7 +387,7 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 body.popup-open{overflow:hidden}
 .skeleton{height:64px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow);margin-bottom:9px;animation:pulse 1.4s ease-in-out infinite}
 
-/* โ”€โ”€ admin (เธซเธฅเธฑเธเธเนเธฒเธ) โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€ */
+/* ── admin (หลังบ้าน) ─────────────────── */
 .arow{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-md);padding:12px 13px;margin-bottom:8px}
 .arow__main{flex:1;min-width:0}
 .arow__name{font-size:14px;font-weight:600;color:var(--wool)}
@@ -418,18 +418,18 @@ body.popup-open{overflow:hidden}
 </head>
 <body>
 <div class="app">
-  <div class="topbar">SUITCUBE ยท เธฃเนเธฒเธเธชเธนเธ—เธญเธฑเธเธ”เธฑเธ 1 เธเธญเธเนเธ—เธข เธกเธตเธ—เธฑเนเธเธชเธนเธ—เธชเธณเน€เธฃเนเธเธฃเธนเธเธเธฃเนเธญเธกเธเธฃเธฑเธเนเธเน เนเธฅเธฐเธชเธนเธ—เธชเธฑเนเธเธ•เธฑเธ”เน€เธเธทเนเธญเธเธงเธฒเธกเธเธญเธ”เธตเธ—เธตเนเน€เธเนเธเธเธธเธ“</div>
+  <div class="topbar">SUITCUBE · ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ</div>
   <div class="nav">
-    <button class="nav__btn" id="navBack" aria-label="เธขเนเธญเธเธเธฅเธฑเธ">
+    <button class="nav__btn" id="navBack" aria-label="ย้อนกลับ">
       <svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 1L1.5 8l7 7"/></svg>
     </button>
-    <div class="nav__title" id="navTitle">เธเธญเธเธเธดเธง</div>
+    <div class="nav__title" id="navTitle">จองคิว</div>
     <select class="nav__lang" id="navLang">
       <option value="th">TH</option>
       <option value="en">EN</option>
      
     </select>
-    <button class="nav__btn" id="navMine">เธเธดเธงเธเธญเธเธเธฑเธ</button>
+    <button class="nav__btn" id="navMine">คิวของฉัน</button>
   </div>
 
   <div class="hero" id="hero"></div>
@@ -437,7 +437,7 @@ body.popup-open{overflow:hidden}
   <div class="tape" id="tape">
     <div class="tape__strip"><div class="tape__fill" id="tapeFill"></div></div>
     <div class="tape__labels" id="tapeLabels">
-      <span data-i="0">เธชเธฒเธเธฒ</span><span data-i="1">เธเธฃเธดเธเธฒเธฃ</span><span data-i="2">เธงเธฑเธเน€เธงเธฅเธฒ</span><span data-i="3">เธเนเธญเธกเธนเธฅ</span><span data-i="4">เธขเธทเธเธขเธฑเธ</span>
+      <span data-i="0">สาขา</span><span data-i="1">บริการ</span><span data-i="2">วันเวลา</span><span data-i="3">ข้อมูล</span><span data-i="4">ยืนยัน</span>
     </div>
   </div>
 
@@ -481,123 +481,123 @@ body.popup-open{overflow:hidden}
 </div>
 
 <script>
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   1. เธเนเธญเธกเธนเธฅเธชเธฒเธเธฒ โ€” hours[0]=เธญเธฒเธ—เธดเธ•เธขเน โ€ฆ hours[6]=เน€เธชเธฒเธฃเน
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   1. ข้อมูลสาขา — hours[0]=อาทิตย์ … hours[6]=เสาร์
+   ═══════════════════════════════════════════════ */
 const every = (o, c) => Array.from({length:7}, () => [o, c]);
 
 const BRANCHES_SEED = [
-  // โ”€โ”€ เธเธฃเธธเธเน€เธ—เธเนเธฅเธฐเธเธฃเธดเธกเธ“เธ‘เธฅ โ”€โ”€
-  { id:'siam', name:'เธชเธขเธฒเธกเธชเนเธเธงเธฃเนเธงเธฑเธ', nameEn:'Siam Square One', nameZh:'ๆน็ฝ—ๅนฟๅบไธ€ๅท', area:'bkk', district:'เธเธ—เธธเธกเธงเธฑเธ', districtEn:'Pathumwan', districtZh:'ๅทดๅๆ—บ',
-    loc:'เธเธฑเนเธ 3 เธเนเธฒเธเธฃเนเธฒเธ Starbucks', locEn:'3rd floor, next to Starbucks', locZh:'3ๆฅผ๏ผๆๅทดๅ…ๆ—',
+  // ── กรุงเทพและปริมณฑล ──
+  { id:'siam', name:'สยามสแควร์วัน', nameEn:'Siam Square One', nameZh:'暹罗广场一号', area:'bkk', district:'ปทุมวัน', districtEn:'Pathumwan', districtZh:'巴吞旺',
+    loc:'ชั้น 3 ข้างร้าน Starbucks', locEn:'3rd floor, next to Starbucks', locZh:'3楼，星巴克旁',
     map:'https://maps.app.goo.gl/QX4bHVw8XXoNeWbN8', hours:every('10:00','22:00'),
     photo:'data:image/jpeg;base64,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' },
 
-  { id:'t21', name:'เน€เธ—เธญเธฃเนเธกเธดเธเธญเธฅ 21 เธญเนเธจเธ', nameEn:'Terminal 21 Asok', nameZh:'Terminal 21 ้ฟ็ดขๅ…', area:'bkk', district:'เธงเธฑเธ’เธเธฒ', districtEn:'Watthana', districtZh:'็“ฆๅก”็บณ',
-    loc:'เธเธฑเนเธ 2 เธ•เธดเธ”เธเธฑเธเนเธ”เน€เธฅเธทเนเธญเธ เธเธฑเนเธ H&M (เธซเนเธญเธ 2005โ€“2006)', locEn:'2nd floor, by the escalator near H&M (units 2005โ€“2006)', locZh:'2ๆฅผ๏ผๆถๆขฏๆ—๏ผH&M ้่ฟ‘๏ผ2005โ€“2006 ๅท้“บไฝ๏ผ',
+  { id:'t21', name:'เทอร์มินอล 21 อโศก', nameEn:'Terminal 21 Asok', nameZh:'Terminal 21 阿索克', area:'bkk', district:'วัฒนา', districtEn:'Watthana', districtZh:'瓦塔纳',
+    loc:'ชั้น 2 ติดบันไดเลื่อน ฝั่ง H&M (ห้อง 2005–2006)', locEn:'2nd floor, by the escalator near H&M (units 2005–2006)', locZh:'2楼，扶梯旁，H&M 附近（2005–2006 号铺位）',
     map:'https://maps.app.goo.gl/bMxkbD9P2dg4q1ov7', hours:every('10:00','22:00') },
 
-  { id:'sutthisan', name:'เธฃเธฑเธเธ”เธฒ โ€“ เธชเธธเธ—เธเธดเธชเธฒเธฃ', nameEn:'Ratchada โ€“ Sutthisan', nameZh:'ๆๅทฎ่พพ๏ผ็ด ๅ คๆฒ', area:'bkk', district:'เธซเนเธงเธขเธเธงเธฒเธ', districtEn:'Huai Khwang', districtZh:'ๆ ๅคธ',
-    loc:'เธ•เธดเธ” MRT เธชเธ–เธฒเธเธตเธชเธธเธ—เธเธดเธชเธฒเธฃ เธ—เธฒเธเธญเธญเธ 4', locEn:'Next to MRT Sutthisan, Exit 4', locZh:'็ดง้ปๅฐ้“็ด ๅ คๆฒ็ซ 4 ๅทๅบๅฃ',
+  { id:'sutthisan', name:'รัชดา – สุทธิสาร', nameEn:'Ratchada – Sutthisan', nameZh:'拉差达－素堤沙', area:'bkk', district:'ห้วยขวาง', districtEn:'Huai Khwang', districtZh:'惠夸',
+    loc:'ติด MRT สถานีสุทธิสาร ทางออก 4', locEn:'Next to MRT Sutthisan, Exit 4', locZh:'紧邻地铁素堤沙站 4 号出口',
     map:'https://maps.app.goo.gl/qbZe7ensCuN999U29', hours:every('10:00','21:00'),
-    parking:'เธเธญเธ”เธฃเธ–เธซเธเนเธฒเธฃเนเธฒเธ', parkingEn:'Parking in front of the store', parkingZh:'ๅบ—ๅ่ฎพๆๅ่ฝฆไฝ' },
+    parking:'จอดรถหน้าร้าน', parkingEn:'Parking in front of the store', parkingZh:'店前设有停车位' },
 
-  { id:'silom', name:'เธชเธตเธฅเธกเธเธญเธกเน€เธเธฅเนเธเธเน', nameEn:'Silom Complex', nameZh:'ๆฏ้่ดญ็ฉไธญๅฟ', area:'bkk', district:'เธเธฒเธเธฃเธฑเธ', districtEn:'Bang Rak', districtZh:'้ฆๅป',
-    loc:'เธเธฑเนเธ 3 เธ•เธดเธ”เธเธฑเธเนเธ”เน€เธฅเธทเนเธญเธ เธเนเธฒเธเธเธฅเธดเธเธดเธ Smile Seasons', locEn:'3rd floor, by the escalator, next to Smile Seasons clinic', locZh:'3ๆฅผ๏ผๆถๆขฏๆ—๏ผSmile Seasons ่ฏๆ€ๆ—',
+  { id:'silom', name:'สีลมคอมเพล็กซ์', nameEn:'Silom Complex', nameZh:'是隆购物中心', area:'bkk', district:'บางรัก', districtEn:'Bang Rak', districtZh:'邦叻',
+    loc:'ชั้น 3 ติดบันไดเลื่อน ข้างคลินิก Smile Seasons', locEn:'3rd floor, by the escalator, next to Smile Seasons clinic', locZh:'3楼，扶梯旁，Smile Seasons 诊所旁',
     map:'https://maps.app.goo.gl/pMpLr2gGxTdovj647', hours:every('10:30','20:30') },
 
-  { id:'rama3', name:'เธเธฃเธฐเธฃเธฒเธก 3', nameEn:'Rama III', nameZh:'ๆ็ไธไธ–่ทฏ', area:'bkk', district:'เธขเธฒเธเธเธฒเธงเธฒ', districtEn:'Yannawa', districtZh:'่€ถ้ฃ็“ฆ',
-    loc:'เธซเธกเธนเนเธเนเธฒเธเธญเธฃเธธเธ“เธเธฑเธ’เธเน เธ–.เธขเธฒเธเธเธฒเธงเธฒ (เธชเธฒเธเธธเธเธฃเธฐเธ”เธดเธฉเธเนเธ•เธฑเธ”เนเธซเธกเน) เนเธเธฅเน เธ.เธเธฃเธธเธเธจเธฃเธตเธญเธขเธธเธเธขเธฒ เธชเธณเธเธฑเธเธเธฒเธเนเธซเธเน โ€” เน€เธเนเธฒเธซเธกเธนเนเธเนเธฒเธเนเธฅเนเธงเน€เธฅเธตเนเธขเธงเธเธงเธฒ เธญเธฒเธเธฒเธฃเธชเธธเธ”เธ—เนเธฒเธข',
-    locEn:'Arunphat Village, Yannawa Rd. (new Sathupradit), near Krungsri Bank HQ โ€” turn right into the village, last building', locZh:'Arunphat ๆ‘๏ผ่€ถ้ฃ็“ฆ่ทฏ๏ผๆ–ฐๆฒ้ฝๅทดๆ่ฟช่ทฏ๏ผ๏ผ่ฟ‘ไบฌ้ฝ้“ถ่กๆ€ป้จโ€”โ€”่ฟๆ‘ๅๅณ่ฝฌ๏ผๆ€ๅไธ€ๆ ๆฅผ',
+  { id:'rama3', name:'พระราม 3', nameEn:'Rama III', nameZh:'拉玛三世路', area:'bkk', district:'ยานนาวา', districtEn:'Yannawa', districtZh:'耶那瓦',
+    loc:'หมู่บ้านอรุณพัฒน์ ถ.ยานนาวา (สาธุประดิษฐ์ตัดใหม่) ใกล้ ธ.กรุงศรีอยุธยา สำนักงานใหญ่ — เข้าหมู่บ้านแล้วเลี้ยวขวา อาคารสุดท้าย',
+    locEn:'Arunphat Village, Yannawa Rd. (new Sathupradit), near Krungsri Bank HQ — turn right into the village, last building', locZh:'Arunphat 村，耶那瓦路（新沙都巴拉迪路），近京都银行总部——进村后右转，最后一栋楼',
     map:'https://maps.app.goo.gl/yRApoKM7bpdphsjw6', hours:every('10:00','20:00'),
-    parking:'เธกเธตเธเธทเนเธเธ—เธตเนเธเธญเธ”เธฃเธ–เธซเธเนเธฒเธฃเนเธฒเธ', parkingEn:'Parking available in front of the store', parkingZh:'ๅบ—ๅ่ฎพๆๅ่ฝฆๅบ' },
+    parking:'มีพื้นที่จอดรถหน้าร้าน', parkingEn:'Parking available in front of the store', parkingZh:'店前设有停车场' },
 
-  { id:'circle', name:'เน€เธ”เธญเธฐเน€เธเธญเธฃเนเน€เธเธดเธฅ เธฃเธฒเธเธเธคเธเธฉเน', nameEn:'The Circle Ratchapruek', nameZh:'The Circle ๆๅทฎๅธ•้ฒ', area:'bkk', district:'เธ•เธฅเธดเนเธเธเธฑเธ', districtEn:'Taling Chan', districtZh:'ๅก”็ตๆฅ',
-    loc:'เธเธฑเนเธ 1 เนเธเธ South Trail Walk Way เธ•เธฃเธเธเนเธฒเธกเธฃเนเธฒเธ MK Restaurants', locEn:'1st floor, South Trail Walk Way, opposite MK Restaurants', locZh:'1ๆฅผ South Trail ๆญฅ้“ๅบ๏ผMK ้คๅ…ๅฏน้ข',
+  { id:'circle', name:'เดอะเซอร์เคิล ราชพฤกษ์', nameEn:'The Circle Ratchapruek', nameZh:'The Circle 拉差帕鲁', area:'bkk', district:'ตลิ่งชัน', districtEn:'Taling Chan', districtZh:'塔灵春',
+    loc:'ชั้น 1 โซน South Trail Walk Way ตรงข้ามร้าน MK Restaurants', locEn:'1st floor, South Trail Walk Way, opposite MK Restaurants', locZh:'1楼 South Trail 步道区，MK 餐厅对面',
     map:'https://maps.app.goo.gl/uKAvvv62UtbAu7AX7', hours:every('10:30','21:00') },
 
-  { id:'promenade', name:'เน€เธ”เธญเธฐเธเธฃเธญเธกเธฒเธเธฒเธ” เธฃเธฒเธกเธญเธดเธเธ—เธฃเธฒ', nameEn:'The Promenade Ramindra', nameZh:'The Promenade ๆๆฟๅก”', area:'bkk', district:'เธเธฑเธเธเธฒเธขเธฒเธง', districtEn:'Khan Na Yao', districtZh:'ๅ้ฃๅฐง',
-    loc:'เธเธฑเนเธ 1 เธซเนเธญเธ 1005 เนเธเธฅเนเธเธฑเธเนเธ”เธ—เธฒเธเน€เธเธทเนเธญเธกเนเธเนเธเธเธฑเนเธเนเธญเธชเนเนเธฅเธเธ”เน (เนเธเธฅเนเธฃเนเธฒเธเธเธฃเธฐเน€เธเนเธฒ only P)', locEn:'1st floor, unit 1005, near the walkway to Fashion Island (near only P bag shop)', locZh:'1ๆฅผ 1005 ๅท้“บไฝ๏ผ้ ่ฟ‘้€ๅพ€ Fashion Island ็ๅคฉๆกฅ๏ผ่ฟ‘ only P ๅ…่ขๅบ—๏ผ',
+  { id:'promenade', name:'เดอะพรอมานาด รามอินทรา', nameEn:'The Promenade Ramindra', nameZh:'The Promenade 拉抿塔', area:'bkk', district:'คันนายาว', districtEn:'Khan Na Yao', districtZh:'坎那尧',
+    loc:'ชั้น 1 ห้อง 1005 ใกล้บันไดทางเชื่อมไปแฟชั่นไอส์แลนด์ (ใกล้ร้านกระเป๋า only P)', locEn:'1st floor, unit 1005, near the walkway to Fashion Island (near only P bag shop)', locZh:'1楼 1005 号铺位，靠近通往 Fashion Island 的天桥（近 only P 包袋店）',
     map:'https://maps.app.goo.gl/KNZtsSBQLhGNtKiE9', hours:every('10:00','22:00') },
 
-  { id:'bangkapi', name:'เน€เธ”เธญเธฐเธกเธญเธฅเธฅเนเนเธฅเธเนเธชเนเธ•เธฃเน เธเธฒเธเธเธฐเธเธด', nameEn:'The Mall Lifestore Bangkapi', nameZh:'The Mall Lifestore ้ฆๅกๆฏ”', area:'bkk', district:'เธเธฒเธเธเธฐเธเธด', districtEn:'Bang Kapi', districtZh:'้ฆๅกๆฏ”',
-    loc:'เธเธฑเนเธ 1 เธเธฃเธดเน€เธงเธ“เธเธฑเธเนเธ”เน€เธฅเธทเนเธญเธเนเธเธเธเธฅเธฒเธ เธ•เธฃเธเธเนเธฒเธกเธฃเนเธฒเธ FOOT LOCKER', locEn:'1st floor, central escalator zone, opposite Foot Locker', locZh:'1ๆฅผไธญๅคฎๆถๆขฏๅบ๏ผFoot Locker ๅฏน้ข',
+  { id:'bangkapi', name:'เดอะมอลล์ไลฟ์สโตร์ บางกะปิ', nameEn:'The Mall Lifestore Bangkapi', nameZh:'The Mall Lifestore 邦卡比', area:'bkk', district:'บางกะปิ', districtEn:'Bang Kapi', districtZh:'邦卡比',
+    loc:'ชั้น 1 บริเวณบันไดเลื่อนโซนกลาง ตรงข้ามร้าน FOOT LOCKER', locEn:'1st floor, central escalator zone, opposite Foot Locker', locZh:'1楼中央扶梯区，Foot Locker 对面',
     map:'https://maps.app.goo.gl/FmFrAESQ8C3g7ViJ9',
     hours:[['10:00','21:30'],['10:30','21:30'],['10:30','21:30'],['10:30','21:30'],['10:30','21:30'],['10:00','22:00'],['10:00','22:00']],
-    holiday:'เธงเธฑเธเธซเธขเธธเธ”เธเธฑเธเธเธฑเธ•เธคเธเธฉเน 10.00 โ€“ 22.00 เธ.', holidayEn:'Public holidays: 10:00โ€“22:00', holidayZh:'ๅ…ฌๅ…ฑๅๆ—ฅ่ฅไธๆ—ถ้—ด๏ผ10:00โ€“22:00' },
+    holiday:'วันหยุดนักขัตฤกษ์ 10.00 – 22.00 น.', holidayEn:'Public holidays: 10:00–22:00', holidayZh:'公共假日营业时间：10:00–22:00' },
 
-  { id:'seacon', name:'เธเธตเธเธญเธเธชเนเธเธงเธฃเน เธจเธฃเธตเธเธเธฃเธดเธเธ—เธฃเน', nameEn:'Seacon Square Srinakarin', nameZh:'Seacon Square ่ฏ—็บณๅก็ณ', area:'bkk', district:'เธเธฃเธฐเน€เธงเธจ', districtEn:'Prawet', districtZh:'ๅทดๅจ',
-    loc:'เธเธฑเนเธ 2 เธซเนเธญเธ 2029 เนเธเธฅเนเธฃเนเธฒเธ Starbucks', locEn:'2nd floor, unit 2029, near Starbucks', locZh:'2ๆฅผ 2029 ๅท้“บไฝ๏ผๆๅทดๅ…้่ฟ‘',
+  { id:'seacon', name:'ซีคอนสแควร์ ศรีนครินทร์', nameEn:'Seacon Square Srinakarin', nameZh:'Seacon Square 诗纳卡琳', area:'bkk', district:'ประเวศ', districtEn:'Prawet', districtZh:'巴威',
+    loc:'ชั้น 2 ห้อง 2029 ใกล้ร้าน Starbucks', locEn:'2nd floor, unit 2029, near Starbucks', locZh:'2楼 2029 号铺位，星巴克附近',
     map:'https://maps.app.goo.gl/WWR92Rr8iHmnwy1K7',
     hours:[['10:00','21:00'],['10:30','21:00'],['10:30','21:00'],['10:30','21:00'],['10:30','21:00'],['10:30','21:00'],['10:00','21:00']] },
 
-  { id:'ngamwongwan', name:'เน€เธ”เธญเธฐเธกเธญเธฅเธฅเน เธเธฒเธกเธงเธเธจเนเธงเธฒเธ', nameEn:'The Mall Ngamwongwan', nameZh:'The Mall ๅฒฉๆ—บๆนพ', area:'bkk', district:'เน€เธกเธทเธญเธเธเธเธ—เธเธธเธฃเธต', districtEn:'Mueang Nonthaburi', districtZh:'ไฝ็ปไป–ๅฐผ',
-    loc:'เธเธฑเนเธ 1 เธ•เธดเธ”เธฃเนเธฒเธ Charles & Keith เธ•เธฃเธเธเนเธฒเธกเธฃเนเธฒเธ Pandora', locEn:'1st floor, next to Charles & Keith, opposite Pandora', locZh:'1ๆฅผ๏ผCharles & Keith ๆ—๏ผPandora ๅฏน้ข',
+  { id:'ngamwongwan', name:'เดอะมอลล์ งามวงศ์วาน', nameEn:'The Mall Ngamwongwan', nameZh:'The Mall 岩旺湾', area:'bkk', district:'เมืองนนทบุรี', districtEn:'Mueang Nonthaburi', districtZh:'佛统他尼',
+    loc:'ชั้น 1 ติดร้าน Charles & Keith ตรงข้ามร้าน Pandora', locEn:'1st floor, next to Charles & Keith, opposite Pandora', locZh:'1楼，Charles & Keith 旁，Pandora 对面',
     map:'https://maps.app.goo.gl/6qs1iTSnrthyeJU2A', hours:every('10:00','21:00'),
-    holiday:'เธงเธฑเธเธซเธขเธธเธ”เธเธฑเธเธเธฑเธ•เธคเธเธฉเน 10.00 โ€“ 22.00 เธ.', holidayEn:'Public holidays: 10:00โ€“22:00', holidayZh:'ๅ…ฌๅ…ฑๅๆ—ฅ่ฅไธๆ—ถ้—ด๏ผ10:00โ€“22:00' },
+    holiday:'วันหยุดนักขัตฤกษ์ 10.00 – 22.00 น.', holidayEn:'Public holidays: 10:00–22:00', holidayZh:'公共假日营业时间：10:00–22:00' },
 
-  { id:'futurepark', name:'เธเธดเธงเน€เธเธญเธฃเนเธเธฒเธฃเนเธ เธฃเธฑเธเธชเธดเธ•', nameEn:'Future Park Rangsit', nameZh:'Future Park ๅ…ฐๅฎ', area:'bkk', district:'เธเธฑเธเธเธธเธฃเธต', districtEn:'Thanyaburi', districtZh:'ๅก”ๅฐผๆญฆ้',
-    loc:'เธเธฑเนเธ G เธเธฃเธดเน€เธงเธ“เธฅเธฒเธเธเนเธณเธเธธ เนเธเธฅเนเธฃเนเธฒเธ Starbucks', locEn:'Ground floor, fountain plaza, near Starbucks', locZh:'ไธ€ๆฅผๅ–ทๆณๅนฟๅบ๏ผๆๅทดๅ…้่ฟ‘',
+  { id:'futurepark', name:'ฟิวเจอร์พาร์ค รังสิต', nameEn:'Future Park Rangsit', nameZh:'Future Park 兰实', area:'bkk', district:'ธัญบุรี', districtEn:'Thanyaburi', districtZh:'塔尼武里',
+    loc:'ชั้น G บริเวณลานน้ำพุ ใกล้ร้าน Starbucks', locEn:'Ground floor, fountain plaza, near Starbucks', locZh:'一楼喷泉广场，星巴克附近',
     map:'https://maps.app.goo.gl/AUpXdhahZvQnLsn38',
     hours:[['10:00','22:00'],['10:30','21:30'],['10:30','21:30'],['10:30','21:30'],['10:30','21:30'],['10:30','22:00'],['10:00','22:00']],
-    holiday:'เธงเธฑเธเธซเธขเธธเธ”เธเธฑเธเธเธฑเธ•เธคเธเธฉเน 10.00 โ€“ 22.00 เธ.', holidayEn:'Public holidays: 10:00โ€“22:00', holidayZh:'ๅ…ฌๅ…ฑๅๆ—ฅ่ฅไธๆ—ถ้—ด๏ผ10:00โ€“22:00' },
+    holiday:'วันหยุดนักขัตฤกษ์ 10.00 – 22.00 น.', holidayEn:'Public holidays: 10:00–22:00', holidayZh:'公共假日营业时间：10:00–22:00' },
 
-  { id:'megabangna', name:'เน€เธกเธเธฒเธเธฒเธเธเธฒ', nameEn:'MegaBangna', nameZh:'Mega Bangna', area:'bkk', district:'เธเธฒเธเธเธฅเธต', districtEn:'Bang Phli', districtZh:'้ฆไธฝ',
-    loc:'เนเธเธ Central Department Store เธเธฑเนเธ 2 เนเธเธ Men Wear', locEn:'Central Department Store zone, 2nd floor, Men\'s Wear', locZh:'Central ็พ่ดงๅบ 2 ๆฅผ็”ท่ฃ…ๅบ',
+  { id:'megabangna', name:'เมกาบางนา', nameEn:'MegaBangna', nameZh:'Mega Bangna', area:'bkk', district:'บางพลี', districtEn:'Bang Phli', districtZh:'邦丽',
+    loc:'โซน Central Department Store ชั้น 2 โซน Men Wear', locEn:'Central Department Store zone, 2nd floor, Men\'s Wear', locZh:'Central 百货区 2 楼男装区',
     map:'https://maps.app.goo.gl/JwCft8MR47ezFSAFA', hours:every('10:00','22:00') },
 
-  { id:'centralworld', name:'เน€เธเนเธเธ—เธฃเธฑเธฅเน€เธงเธดเธฅเธ”เน', nameEn:'CentralWorld', nameZh:'CentralWorld', area:'bkk', district:'เธเธ—เธธเธกเธงเธฑเธ', districtEn:'Pathumwan', districtZh:'ๅทดๅๆ—บ',
-    loc:'เนเธเธ Central Department Store เธเธฑเนเธ 5 เนเธเธ Men Wear', locEn:'Central Department Store zone, 5th floor, Men\'s Wear', locZh:'Central ็พ่ดงๅบ 5 ๆฅผ็”ท่ฃ…ๅบ',
+  { id:'centralworld', name:'เซ็นทรัลเวิลด์', nameEn:'CentralWorld', nameZh:'CentralWorld', area:'bkk', district:'ปทุมวัน', districtEn:'Pathumwan', districtZh:'巴吞旺',
+    loc:'โซน Central Department Store ชั้น 5 โซน Men Wear', locEn:'Central Department Store zone, 5th floor, Men\'s Wear', locZh:'Central 百货区 5 楼男装区',
     map:'https://maps.app.goo.gl/X4iMRq2FDEwGiShy7', hours:every('10:00','22:00') },
 
-  { id:'westgate', name:'เน€เธเนเธเธ—เธฃเธฑเธฅเน€เธงเธชเธ•เนเน€เธเธ•', nameEn:'Central Westgate', nameZh:'Central Westgate', area:'bkk', district:'เธเธฒเธเนเธซเธเน', districtEn:'Bang Yai', districtZh:'้ฆ่พ',
-    loc:'เนเธเธ Central Department Store เธเธฑเนเธ 3 เนเธเธ Men Wear เธ•เธฃเธเธเนเธฒเธกเธฃเนเธฒเธเธชเธ•เธฒเธฃเนเธเธฑเธเธชเน', locEn:'Central Department Store zone, 3rd floor, Men\'s Wear, opposite Starbucks', locZh:'Central ็พ่ดงๅบ 3 ๆฅผ็”ท่ฃ…ๅบ๏ผๆๅทดๅ…ๅฏน้ข',
+  { id:'westgate', name:'เซ็นทรัลเวสต์เกต', nameEn:'Central Westgate', nameZh:'Central Westgate', area:'bkk', district:'บางใหญ่', districtEn:'Bang Yai', districtZh:'邦艾',
+    loc:'โซน Central Department Store ชั้น 3 โซน Men Wear ตรงข้ามร้านสตาร์บัคส์', locEn:'Central Department Store zone, 3rd floor, Men\'s Wear, opposite Starbucks', locZh:'Central 百货区 3 楼男装区，星巴克对面',
     map:'https://maps.app.goo.gl/6PpyP2z2ry3FqTJfA', hours:every('10:00','22:00') },
 
-  // โ”€โ”€ เธ•เนเธฒเธเธเธฑเธเธซเธงเธฑเธ” โ”€โ”€
-  { id:'onenimman', name:'เธงเธฑเธเธเธดเธกเธกเธฒเธ เน€เธเธตเธขเธเนเธซเธกเน', nameEn:'One Nimman Chiang Mai', nameZh:'ๆธ…่ฟ One Nimman', area:'up', district:'เน€เธเธตเธขเธเนเธซเธกเน', districtEn:'Chiang Mai', districtZh:'ๆธ…่ฟ',
-    loc:'เนเธเธฃเธเธเธฒเธฃเธงเธฑเธเธเธดเธกเธกเธฒเธ เธเธฑเนเธ 1 เธเธญเธขเธเธฅเธฒเธ เธ•เธฃเธเธเนเธฒเธกเธซเธญเธเธฒเธฌเธดเธเธฒ (เธซเนเธญเธ D11) เธ•เธดเธ”เธฃเนเธฒเธ MUAK เธเนเธฒเธเธฃเนเธฒเธ Mamoris',
-    locEn:'One Nimman project, 1st floor, middle lane, opposite the clock tower (unit D11), next to MUAK and Mamoris', locZh:'One Nimman ้กน็ฎ๏ผ1ๆฅผไธญๅทท๏ผ้’ๆฅผๅฏน้ข๏ผD11 ๅท้“บไฝ๏ผ๏ผ็ดง้ป MUAK๏ผMamoris ๆ—',
+  // ── ต่างจังหวัด ──
+  { id:'onenimman', name:'วันนิมมาน เชียงใหม่', nameEn:'One Nimman Chiang Mai', nameZh:'清迈 One Nimman', area:'up', district:'เชียงใหม่', districtEn:'Chiang Mai', districtZh:'清迈',
+    loc:'โครงการวันนิมมาน ชั้น 1 ซอยกลาง ตรงข้ามหอนาฬิกา (ห้อง D11) ติดร้าน MUAK ข้างร้าน Mamoris',
+    locEn:'One Nimman project, 1st floor, middle lane, opposite the clock tower (unit D11), next to MUAK and Mamoris', locZh:'One Nimman 项目，1楼中巷，钟楼对面（D11 号铺位），紧邻 MUAK，Mamoris 旁',
     map:'https://maps.app.goo.gl/2YX42wSqnyfYM48p8', hours:every('11:00','22:00') },
 
-  { id:'korat', name:'เน€เธ”เธญเธฐเธกเธญเธฅเธฅเนเนเธเธฃเธฒเธ', nameEn:'The Mall Korat', nameZh:'The Mall ๅ‘ตๅป', area:'up', district:'เธเธเธฃเธฃเธฒเธเธชเธตเธกเธฒ', districtEn:'Nakhon Ratchasima', districtZh:'ๅ‘ตๅป',
-    loc:'เธเธฑเนเธ 1 เธ•เธถเธเนเธซเธกเนเธ•เธฃเธเธเนเธฒเธก CPS CHAPS', locEn:'1st floor, new building, opposite CPS CHAPS', locZh:'1ๆฅผๆ–ฐๆฅผ๏ผCPS CHAPS ๅฏน้ข',
+  { id:'korat', name:'เดอะมอลล์โคราช', nameEn:'The Mall Korat', nameZh:'The Mall 呵叻', area:'up', district:'นครราชสีมา', districtEn:'Nakhon Ratchasima', districtZh:'呵叻',
+    loc:'ชั้น 1 ตึกใหม่ตรงข้าม CPS CHAPS', locEn:'1st floor, new building, opposite CPS CHAPS', locZh:'1楼新楼，CPS CHAPS 对面',
     map:'https://maps.app.goo.gl/EGbX2knW4pw8cZL69', hours:every('10:00','21:00') },
 
-  { id:'phuket', name:'เธเธนเธเธดเธช เธ เธนเน€เธเนเธ•', nameEn:'Bukis Phuket', nameZh:'Bukis ๆฎๅ', area:'up', district:'เธ เธนเน€เธเนเธ•', districtEn:'Phuket', districtZh:'ๆฎๅ',
-    loc:'เนเธเธ A เธเธฑเนเธ 2 Bukis Phuket', locEn:'Zone A, 2nd floor, Bukis Phuket', locZh:'A ๅบ 2 ๆฅผ Bukis Phuket',
+  { id:'phuket', name:'บูกิส ภูเก็ต', nameEn:'Bukis Phuket', nameZh:'Bukis 普吉', area:'up', district:'ภูเก็ต', districtEn:'Phuket', districtZh:'普吉',
+    loc:'โซน A ชั้น 2 Bukis Phuket', locEn:'Zone A, 2nd floor, Bukis Phuket', locZh:'A 区 2 楼 Bukis Phuket',
     map:'https://maps.app.goo.gl/p2z2WwYexjvTh5Na6', hours:every('11:00','20:00') },
 
-  { id:'khonkaen', name:'เธเธญเธเนเธเนเธ', nameEn:'Khon Kaen', nameZh:'ๅญ”ๆ•ฌ', area:'up', district:'เธเธญเธเนเธเนเธ', districtEn:'Khon Kaen', districtZh:'ๅญ”ๆ•ฌ',
-    loc:'เธ–เธเธเน€เธ—เธเธฒเธฃเธฑเธเธฉเน', locEn:'Theparak Road', locZh:'Theparak ่ทฏ',
+  { id:'khonkaen', name:'ขอนแก่น', nameEn:'Khon Kaen', nameZh:'孔敬', area:'up', district:'ขอนแก่น', districtEn:'Khon Kaen', districtZh:'孔敬',
+    loc:'ถนนเทพารักษ์', locEn:'Theparak Road', locZh:'Theparak 路',
     map:'https://maps.app.goo.gl/ctVKHbnNc1sE179M8', hours:every('10:00','20:00') },
 ];
 
 const SERVICES_SEED = [
-  { id:'fitting', name:'เธเธฃเธดเธเธฒเธฃเน€เธฅเธทเธญเธเธเธกเธชเธดเธเธเนเธฒ', nameEn:'Product Viewing Service', nameZh:'้€่ดญๅ•ๅ“ๆๅก', desc:'เน€เธฅเธทเธญเธเธเธกเนเธฅเธฐเน€เธฅเธทเธญเธเธเธทเนเธญเธชเธดเธเธเนเธฒเธซเธเนเธฒเธฃเนเธฒเธ', descEn:'Browse and shop for products in-store', descZh:'ๅฐๅบ—ๆต่งๅ้€่ดญๅ•ๅ“', mins:60,
+  { id:'fitting', name:'บริการเลือกชมสินค้า', nameEn:'Product Viewing Service', nameZh:'选购商品服务', desc:'เลือกชมและเลือกซื้อสินค้าหน้าร้าน', descEn:'Browse and shop for products in-store', descZh:'到店浏览及选购商品', mins:60,
     ico:'<path d="M12 3l4 2 5 3-2 3-3-1v11H8V10L5 11 3 8l5-3 4-2zM9 3.5a3 3 0 006 0"/>' },
-  { id:'pickup', name:'เธเธฃเธดเธเธฒเธฃเธเธดเธ•เธ•เธดเนเธเธซเธฃเธทเธญเธฃเธฑเธเธชเธดเธเธเนเธฒ', nameEn:'Fitting or Pickup Service', nameZh:'่ฏ•่กฃๆ–ๅ–่ดงๆๅก', desc:'เธฅเธญเธเธเธดเธ•เธ•เธดเนเธเธซเธฃเธทเธญเธเธฑเธ”เธซเธกเธฒเธขเธกเธฒเธฃเธฑเธเธชเธดเธเธเนเธฒเธ—เธตเนเธเธญเธเนเธงเน', descEn:'Try on in-store, or pick up a reserved item', descZh:'ๅฐๅบ—่ฏ•็ฉฟ๏ผๆ–้ข็บฆๅ–ๅๅทฒ่ฎข่ดญ็ๅ•ๅ“', mins:30,
+  { id:'pickup', name:'บริการฟิตติ้งหรือรับสินค้า', nameEn:'Fitting or Pickup Service', nameZh:'试衣或取货服务', desc:'ลองฟิตติ้งหรือนัดหมายมารับสินค้าที่จองไว้', descEn:'Try on in-store, or pick up a reserved item', descZh:'到店试穿，或预约取回已订购的商品', mins:30,
     ico:'<path d="M4 8h16l-1 12H5L4 8zM8 8V6a4 4 0 018 0v2"/>' },
 ];
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   2. เธ เธฒเธฉเธฒ
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   2. ภาษา
+   ═══════════════════════════════════════════════ */
 function fmtDuration(mins, lang){
   const h = Math.floor(mins / 60), m = mins % 60;
   if (h && m){
     if (lang === 'en') return `${h} hr ${m} min`;
-    if (lang === 'zh') return `${h} ๅฐๆ—ถ ${m} ๅ้’`;
-    return `${h} เธเธฑเนเธงเนเธกเธ ${m} เธเธฒเธ—เธต`;
+    if (lang === 'zh') return `${h} 小时 ${m} 分钟`;
+    return `${h} ชั่วโมง ${m} นาที`;
   }
   if (h){
     if (lang === 'en') return `${h} hour${h>1?'s':''}`;
-    if (lang === 'zh') return `${h} ๅฐๆ—ถ`;
-    return `${h} เธเธฑเนเธงเนเธกเธ`;
+    if (lang === 'zh') return `${h} 小时`;
+    return `${h} ชั่วโมง`;
   }
   if (lang === 'en') return `${mins} min`;
-  if (lang === 'zh') return `${mins} ๅ้’`;
-  return `${mins} เธเธฒเธ—เธต`;
+  if (lang === 'zh') return `${mins} 分钟`;
+  return `${mins} นาที`;
 }
 function daysBetweenInclusive(fromStr, toStr){
   const f = parseYmd(fromStr), t = parseYmd(toStr);
@@ -610,145 +610,145 @@ function addDaysStr(dateStr, n){
 function fmtDateShort(dateStr, lang){
   const d = parseYmd(dateStr);
   if (lang === 'en') return `${M_SHORT_EN[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-  if (lang === 'zh') return `${d.getFullYear()}ๅนด${d.getMonth()+1}ๆ${d.getDate()}ๆ—ฅ`;
+  if (lang === 'zh') return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
   return `${d.getDate()} ${M_SHORT[d.getMonth()]} ${d.getFullYear()+543}`;
 }
 const T = {
-  heroTitle:         { th:'เธเธญเธเธเธดเธงเน€เธเนเธฒเธฃเธฑเธเธเธฃเธดเธเธฒเธฃ', en:'Book Your Appointment', zh:'้ข็บฆๅฐๅบ—ๆๅก' },
-  heroSub:           { th: 'เธฃเนเธฒเธเธชเธนเธ—เธญเธฑเธเธ”เธฑเธ 1 เธเธญเธเนเธ—เธข เธกเธตเธ—เธฑเนเธเธชเธนเธ—เธชเธณเน€เธฃเนเธเธฃเธนเธเธเธฃเนเธญเธกเธเธฃเธฑเธเนเธเน เนเธฅเธฐเธชเธนเธ—เธชเธฑเนเธเธ•เธฑเธ”เน€เธเธทเนเธญเธเธงเธฒเธกเธเธญเธ”เธตเธ—เธตเนเน€เธเนเธเธเธธเธ“', en: 'Thailandโ€s No. 1 Suit Brand Offering ready-to-wear suits with professional alterations, as well as bespoke tailoring for a fit thatโ€s uniquely yours.' },
-  chooseBranch:      { th:'เน€เธฅเธทเธญเธเธชเธฒเธเธฒเธ—เธตเนเธชเธฐเธ”เธงเธ', en:'Choose a branch'},
-  branchSub:          { th:n=>`เธ—เธฑเนเธเธซเธกเธ” ${n} เธชเธฒเธเธฒ ยท เน€เธฅเธทเธญเธเธเนเธฒเธเนเธฅเธฐเธเนเธงเธเน€เธงเธฅเธฒเธ—เธตเนเธ•เธฃเธเธเธฑเธเธเธธเธ“`, en:n=>`${n} branches in total ยท pick what suits you`, zh:n=>`ๅ…ฑ ${n} ๅฎถๅๅบ— ยท ้€ๆฉ้€ๅๆจ็ๆ—ถ้—ด` },
-  areaBkk:           { th:'เธเธฃเธธเธเน€เธ—เธเธฏ & เธเธฃเธดเธกเธ“เธ‘เธฅ', en:'Bangkok & Vicinity', zh:'ๆผ่ฐทๅๅ‘จ่พน' },
-  areaUp:            { th:'เธ•เนเธฒเธเธเธฑเธเธซเธงเธฑเธ”', en:'Upcountry', zh:'ๅค–ๅบ' },
-  walkin:            { th:'เธฃเธฐเธเธเธเธฒเธฃเธเธญเธเธชเธฃเนเธฒเธเธเธถเนเธเน€เธเธทเนเธญเธญเธณเธเธงเธขเธเธงเธฒเธกเธชเธฐเธ”เธงเธเนเธซเนเธเธฑเธเธฅเธนเธเธเนเธฒ เธซเธฒเธเน€เธงเธฅเธฒเนเธเธเนเธงเธเธ”เธฑเธเธเธฅเนเธฒเธงเน€เธ•เนเธก เธฅเธนเธเธเนเธฒเธขเธฑเธเธชเธฒเธกเธฒเธฃเธ– Walk-in เน€เธเธทเนเธญเธฃเธฑเธเธเธฃเธดเธเธฒเธฃเนเธ”เนเธ•เธฒเธกเธเธเธ•เธด',
+  heroTitle:         { th:'จองคิวเข้ารับบริการ', en:'Book Your Appointment', zh:'预约到店服务' },
+  heroSub:           { th: 'ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ', en: 'Thailand’s No. 1 Suit Brand Offering ready-to-wear suits with professional alterations, as well as bespoke tailoring for a fit that’s uniquely yours.' },
+  chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch'},
+  branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่างและช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
+  areaBkk:           { th:'กรุงเทพฯ & ปริมณฑล', en:'Bangkok & Vicinity', zh:'曼谷及周边' },
+  areaUp:            { th:'ต่างจังหวัด', en:'Upcountry', zh:'外府' },
+  walkin:            { th:'ระบบการจองสร้างขึ้นเพื่ออำนวยความสะดวกให้กับลูกค้า หากเวลาในช่วงดังกล่าวเต็ม ลูกค้ายังสามารถ Walk-in เพื่อรับบริการได้ตามปกติ',
                         en:'This booking system is here for your convenience. If a time slot is full, you can still walk in for service as usual.',
-                        zh:'้ข็บฆ็ณป็ปๆ—จๅจไธบ้กพๅฎขๆไพไพฟๅฉ๏ผๅฆๆ€้€ๆ—ถๆฎตๅทฒๆปก๏ผ้กพๅฎขไปๅฏ็ฐๅบๆ’้๏ผWalk-in๏ผๆญฃๅธธๆฅๅ—ๆๅก' },
-  searchPh:          { th:'เธเนเธเธซเธฒเธชเธฒเธเธฒ เน€เธเนเธ เธชเธขเธฒเธก, เธเธฃเธฐเธฃเธฒเธกเธชเธฒเธก', en:'Search branch, e.g. Siam, Rama3', zh:'ๆ็ดขๅๅบ—๏ผไพๅฆ ๆน็ฝ—ใ€ๆๆฅๅธ•' },
-  noBranch:          { th:'เนเธกเนเธเธเธชเธฒเธเธฒเธ—เธตเนเธเนเธเธซเธฒ', en:'No matching branch', zh:'ๆชๆพๅฐ่ฏฅๅๅบ—' },
-  noBranchSub:       { th:'เธฅเธญเธเธเธดเธกเธเนเธเธทเนเธญเธซเนเธฒเธเธซเธฃเธทเธญเธขเนเธฒเธเธ—เธตเนเนเธเธฅเนเธเธธเธ“', en:'Try the name of a mall or area near you', zh:'่ฏทๅฐ่ฏ•่พ“ๅ…ฅ้่ฟ‘ๅ•ๅบๆ–ๅฐๅบ็ๅ็งฐ' },
-  whatService:       { th:'เธเธฃเธดเธเธฒเธฃเธ—เธตเนเธเธธเธ“เน€เธฅเธทเธญเธ', en:'What service would you like?', zh:'้€่ฆไป€ไนๆๅก' },
-  serviceSub:        { th:name=>`เธ—เธตเนเธชเธฒเธเธฒ${name} ยท เน€เธงเธฅเธฒเธ—เธตเนเนเธเนเธเธฐเธเธณเธซเธเธ”เธเนเธงเธเธเธดเธงเนเธซเนเธญเธฑเธ•เนเธเธกเธฑเธ•เธด`, en:name=>`At ${name} ยท the duration sets your queue slot automatically`, zh:name=>`ไบ${name}ๅๅบ— ยท ๆๅกๆ—ถ้•ฟๅฐ่ชๅจๅณๅฎๆ’้ๆ—ถๆฎต` },
-  min:               { th:m=>`${m} เธเธฒเธ—เธต`, en:m=>`${m} min`, zh:m=>`${m} ๅ้’` },
-  detailsHeading:    { th:'เธฃเธฒเธขเธฅเธฐเน€เธญเธตเธขเธ”', en:'Details', zh:'่ฏฆๆ…' },
-  peopleCount:       { th:'เธเธณเธเธงเธเธเธ', en:'Number of people', zh:'ไบบๆ•ฐ' },
-  selectedService:   { th:(name,dur)=>`เธเธฃเธดเธเธฒเธฃเธ—เธตเนเน€เธฅเธทเธญเธ: ${name} เนเธเนเน€เธงเธฅเธฒเนเธ”เธขเธเธฃเธฐเธกเธฒเธ“ ${dur} / เธ—เนเธฒเธ`, en:(name,dur)=>`Selected service: ${name} ยท approx. ${dur} / person`, zh:(name,dur)=>`ๅทฒ้€ๆๅก๏ผ${name}๏ผ็บฆ ${dur}` },
-  totalDuration:     { th:(p,d)=>`เน€เธงเธฅเธฒเธฃเธงเธกเธชเธณเธซเธฃเธฑเธ ${p} เธเธ: ${d}`, en:(p,d)=>`Total time for ${p} people: ${d}`, zh:(p,d)=>`${p} ไบบๆ€ปๆ—ถ้•ฟ๏ผ${d}` },
-  chooseDatetime:    { th:'เน€เธฅเธทเธญเธเธงเธฑเธเนเธฅเธฐเน€เธงเธฅเธฒ', en:'Choose date & time', zh:'้€ๆฉๆ—ฅๆไธๆ—ถ้—ด' },
-  datetimeSub:       { th:(b,s,m,p)=>`${b} ยท ${s} (${m} เธเธฒเธ—เธต/เธ—เนเธฒเธ) ยท ${p} เธเธ`, en:(b,s,m,p)=>`${b} ยท ${s} (${m} min/person) ยท ${p} people`, zh:(b,s,m)=>`${b} ยท ${s}๏ผ${m} ๅ้’๏ผ` },
-  today:             { th:'เธงเธฑเธเธเธตเน', en:'Today', zh:'ไปๅคฉ' },
-  tomorrow:          { th:'เธเธฃเธธเนเธเธเธตเน', en:'Tomorrow', zh:'ๆๅคฉ' },
-  openUntil:         { th:(d,o,c)=>`${d} ยท เน€เธเธดเธ” ${o}โ€“${c} เธ.`, en:(d,o,c)=>`${d} ยท Open ${o}โ€“${c}`, zh:(d,o,c)=>`${d} ยท ่ฅไธๆ—ถ้—ด ${o}โ€“${c}` },
-  morning:           { th:'เธเนเธงเธเน€เธเนเธฒ', en:'Morning', zh:'ไธๅ' },
-  afternoon:         { th:'เธเนเธงเธเธเนเธฒเธข', en:'Afternoon', zh:'ไธๅ' },
-  evening:           { th:'เธเนเธงเธเน€เธขเนเธ', en:'Evening', zh:'ๅๆ' },
-  alreadyBooked:     { th:'เธเธธเธ“เธเธญเธเธเนเธงเธเธเธตเนเนเธงเนเนเธฅเนเธง', en:'You already booked this slot', zh:'ๆจๅทฒ้ข็บฆๆญคๆ—ถๆฎต' },
-  noSlots:           { th:'เธงเธฑเธเธเธตเนเนเธกเนเธกเธตเธเนเธงเธเน€เธงเธฅเธฒเธงเนเธฒเธเนเธฅเนเธง', en:'No time slots left today', zh:'ไปๆ—ฅๆ—ถๆฎตๅทฒๆปก' },
-  noSlotsSub:        { th:'เน€เธฅเธทเธญเธเธงเธฑเธเธ–เธฑเธ”เนเธเธ”เนเธฒเธเธเธเนเธ”เนเน€เธฅเธข', en:'Pick another day above', zh:'่ฏทๅจไธๆ–น้€ๆฉๅ…ถไป–ๆ—ฅๆ' },
-  slotNote:          { th:(p,d)=>`เน€เธงเธฅเธฒเธฃเธงเธกเธชเธณเธซเธฃเธฑเธ ${p} เธเธ: ${d} ยท เน€เธงเธฅเธฒเธเธญเธเนเธชเธ”เธเธ•เธฒเธกเน€เธงเธฅเธฒเน€เธเธดเธ”โ€“เธเธดเธ”เธเธญเธเธชเธฒเธเธฒ ยท เธซเธฒเธเธเนเธงเธเน€เธงเธฅเธฒเธ—เธตเนเธ—เนเธฒเธเธ•เนเธญเธเธเธฒเธฃเธเธญเธเน€เธ•เนเธก เธ—เนเธฒเธเธชเธฒเธกเธฒเธฃเธ– Walk-in เน€เธเธทเนเธญเธฃเธฑเธเธเธฃเธดเธเธฒเธฃเธ—เธตเนเธซเธเนเธฒเธฃเนเธฒเธเนเธ”เนเธ•เธฒเธกเธเธเธ•เธด`,
-                        en:(p,d)=>`Total time for ${p} people: ${d} ยท Available times follow this branchโ€s opening hours ยท If your desired booking time is fully booked, walk-ins are welcome as usual.`,
-                        zh:(p,d)=>`${p} ไบบๆ€ปๆ—ถ้•ฟ๏ผ${d} ยท ๅฏ้ข็บฆๆ—ถ้—ดไพๅๅบ—่ฅไธๆ—ถ้—ดๆพ็คบ` },
-  yourDetails:       { th:'เธเนเธญเธกเธนเธฅเธเธนเนเธเธญเธ', en:'Your details', zh:'้ข็บฆไบบไฟกๆฏ' },
-  detailsSub:        { th:'เนเธเนเธชเธณเธซเธฃเธฑเธเธขเธทเธเธขเธฑเธเธเธดเธงเนเธฅเธฐเธ•เธดเธ”เธ•เนเธญเธเธฅเธฑเธเน€เธ—เนเธฒเธเธฑเนเธ <span style="color: red;">**เธเธฃเธธเธ“เธฒเธเธดเธกเธเนเธเนเธญเธกเธนเธฅเนเธซเนเธเธฃเธเธ–เนเธงเธ**</span>', 
+                        zh:'预约系统旨在为顾客提供便利，如所需时段已满，顾客仍可现场排队（Walk-in）正常接受服务' },
+  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, พระรามสาม', en:'Search branch, e.g. Siam, Rama3', zh:'搜索分店，例如 暹罗、拉查帕' },
+  noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
+  noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
+  whatService:       { th:'บริการที่คุณเลือก', en:'What service would you like?', zh:'需要什么服务' },
+  serviceSub:        { th:name=>`ที่สาขา${name} · เวลาที่ใช้จะกำหนดช่วงคิวให้อัตโนมัติ`, en:name=>`At ${name} · the duration sets your queue slot automatically`, zh:name=>`于${name}分店 · 服务时长将自动决定排队时段` },
+  min:               { th:m=>`${m} นาที`, en:m=>`${m} min`, zh:m=>`${m} 分钟` },
+  detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
+  peopleCount:       { th:'จำนวนคน', en:'Number of people', zh:'人数' },
+  selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ใช้เวลาโดยประมาณ ${dur} / ท่าน`, en:(name,dur)=>`Selected service: ${name} · approx. ${dur} / person`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
+  totalDuration:     { th:(p,d)=>`เวลารวมสำหรับ ${p} คน: ${d}`, en:(p,d)=>`Total time for ${p} people: ${d}`, zh:(p,d)=>`${p} 人总时长：${d}` },
+  chooseDatetime:    { th:'เลือกวันและเวลา', en:'Choose date & time', zh:'选择日期与时间' },
+  datetimeSub:       { th:(b,s,m,p)=>`${b} · ${s} (${m} นาที/ท่าน) · ${p} คน`, en:(b,s,m,p)=>`${b} · ${s} (${m} min/person) · ${p} people`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
+  today:             { th:'วันนี้', en:'Today', zh:'今天' },
+  tomorrow:          { th:'พรุ่งนี้', en:'Tomorrow', zh:'明天' },
+  openUntil:         { th:(d,o,c)=>`${d} · เปิด ${o}–${c} น.`, en:(d,o,c)=>`${d} · Open ${o}–${c}`, zh:(d,o,c)=>`${d} · 营业时间 ${o}–${c}` },
+  morning:           { th:'ช่วงเช้า', en:'Morning', zh:'上午' },
+  afternoon:         { th:'ช่วงบ่าย', en:'Afternoon', zh:'下午' },
+  evening:           { th:'ช่วงเย็น', en:'Evening', zh:'傍晚' },
+  alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
+  noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
+  noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
+  slotNote:          { th:(p,d)=>`เวลารวมสำหรับ ${p} คน: ${d} · เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · หากช่วงเวลาที่ท่านต้องการจองเต็ม ท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ`,
+                        en:(p,d)=>`Total time for ${p} people: ${d} · Available times follow this branch’s opening hours · If your desired booking time is fully booked, walk-ins are welcome as usual.`,
+                        zh:(p,d)=>`${p} 人总时长：${d} · 可预约时间依分店营业时间显示` },
+  yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
+  detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น <span style="color: red;">**กรุณาพิมพ์ข้อมูลให้ครบถ้วน**</span>', 
                          en:'Used only to confirm your booking and contact you <span style="color: red;">**Please fill in all information**</span>' },
-  fullName:          { th:'เธเธทเนเธญเธเธนเนเธเธญเธ', en:'Full name', zh:'ๅง“ๅ' },
-  namePh:            { th:'เธเธฃเธธเธ“เธฒเธเธฃเธญเธเธเธทเนเธญ', en:'Please enter your name'},
-  nameErr:           { th:'เธเธฃเธธเธ“เธฒเธเธฃเธญเธเธเธทเนเธญเธเธนเนเธเธญเธ', en:'Please enter your name', zh:'่ฏท่พ“ๅ…ฅๅง“ๅ' },
-  phone:             { th:'เน€เธเธญเธฃเนเนเธ—เธฃเธจเธฑเธเธ—เน', en:'Phone number', zh:'็”ต่ฏๅท็ ' },
-  phoneErr:          { th:'เธเธฃเธญเธเน€เธเธญเธฃเน 9โ€“10 เธซเธฅเธฑเธ เธเธถเนเธเธ•เนเธเธ”เนเธงเธข 0', en:'Enter a 9โ€“10 digit number starting with 0', zh:'่ฏท่พ“ๅ…ฅไปฅ 0 ๅผ€ๅคด็ 9โ€“10 ไฝๆ•ฐๅญ—' },
-  optional:          { th:'โ€” เนเธกเนเธเธฑเธเธเธฑเธ', en:'โ€” optional', zh:'โ€” ๅฏ้€' },
-  notes:             { th:'เธฃเธฒเธขเธฅเธฐเน€เธญเธตเธขเธ”เน€เธเธดเนเธกเน€เธ•เธดเธก', en:'Additional notes', zh:'่กฅๅ……่ฏดๆ' },
-  notesPh:           { th:'เน€เธเนเธ เธ•เธฑเธ”เธชเธนเธ—เธเธฒเธเนเธ•เนเธ เธ•เนเธญเธเธเธฒเธฃเธฃเธฑเธเธเธธเธ”เธเนเธญเธเธชเธดเนเธเน€เธ”เธทเธญเธ', en:'e.g. Wedding suit, need it before month-end', zh:'ไพๅฆ๏ผๅฉ็คผ่ฅฟ่ฃ…๏ผ้€ๆๅบ•ๅๅ–ไปถ' },
-  reviewTitle:       { th:'เธ•เธฃเธงเธเธชเธญเธเธเนเธญเธเธขเธทเธเธขเธฑเธ', en:'Review your booking', zh:'็กฎ่ฎค้ข็บฆไฟกๆฏ' },
-  reviewSub:         { th:'เนเธเนเนเธเนเธ”เนเนเธ”เธขเนเธ•เธฐเธขเนเธญเธเธเธฅเธฑเธเธ”เนเธฒเธเธเธ', en:'Tap back above to edit', zh:'็นๅปไธๆ–น่ฟ”ๅๅฏไฟฎๆ”น' },
-  kBranch:           { th:'เธชเธฒเธเธฒ', en:'Branch', zh:'ๅๅบ—' },
-  kService:          { th:'เธเธฃเธดเธเธฒเธฃ', en:'Service', zh:'ๆๅก' },
-  kDate:             { th:'เธงเธฑเธเธ—เธตเน', en:'Date', zh:'ๆ—ฅๆ' },
-  kTime:             { th:'เน€เธงเธฅเธฒ', en:'Time', zh:'ๆ—ถ้—ด' },
-  kBookedBy:         { th:'เธเธนเนเธเธญเธ', en:'Booked by', zh:'้ข็บฆไบบ' },
-  kNotes:            { th:'เธซเธกเธฒเธขเน€เธซเธ•เธธ', en:'Notes', zh:'ๅคๆณจ' },
-  kAppt:             { th:'เธเธฑเธ”เธซเธกเธฒเธข', en:'Appointment', zh:'้ข็บฆๆ—ถ้—ด' },
-  kStatus:           { th:'เธชเธ–เธฒเธเธฐ', en:'Status', zh:'็ถๆ€' },
- takesAbout:         { th: (m) => `เนเธเนเน€เธงเธฅเธฒเธเธฃเธฐเธกเธฒเธ“ ${m} เธเธฒเธ—เธต`, en: (m) => `Takes about ${m} min`, zh: (m) => `็บฆ้€ ${m} ๅ้’` },
+  fullName:          { th:'ชื่อผู้จอง', en:'Full name', zh:'姓名' },
+  namePh:            { th:'กรุณากรอกชื่อ', en:'Please enter your name'},
+  nameErr:           { th:'กรุณากรอกชื่อผู้จอง', en:'Please enter your name', zh:'请输入姓名' },
+  phone:             { th:'เบอร์โทรศัพท์', en:'Phone number', zh:'电话号码' },
+  phoneErr:          { th:'กรอกเบอร์ 9–10 หลัก ขึ้นต้นด้วย 0', en:'Enter a 9–10 digit number starting with 0', zh:'请输入以 0 开头的 9–10 位数字' },
+  optional:          { th:'— ไม่บังคับ', en:'— optional', zh:'— 可选' },
+  notes:             { th:'รายละเอียดเพิ่มเติม', en:'Additional notes', zh:'补充说明' },
+  notesPh:           { th:'เช่น ตัดสูทงานแต่ง ต้องการรับชุดก่อนสิ้นเดือน', en:'e.g. Wedding suit, need it before month-end', zh:'例如：婚礼西装，需月底前取件' },
+  reviewTitle:       { th:'ตรวจสอบก่อนยืนยัน', en:'Review your booking', zh:'确认预约信息' },
+  reviewSub:         { th:'แก้ไขได้โดยแตะย้อนกลับด้านบน', en:'Tap back above to edit', zh:'点击上方返回可修改' },
+  kBranch:           { th:'สาขา', en:'Branch', zh:'分店' },
+  kService:          { th:'บริการ', en:'Service', zh:'服务' },
+  kDate:             { th:'วันที่', en:'Date', zh:'日期' },
+  kTime:             { th:'เวลา', en:'Time', zh:'时间' },
+  kBookedBy:         { th:'ผู้จอง', en:'Booked by', zh:'预约人' },
+  kNotes:            { th:'หมายเหตุ', en:'Notes', zh:'备注' },
+  kAppt:             { th:'นัดหมาย', en:'Appointment', zh:'预约时间' },
+  kStatus:           { th:'สถานะ', en:'Status', zh:'状态' },
+ takesAbout:         { th: (m) => `ใช้เวลาประมาณ ${m} นาที`, en: (m) => `Takes about ${m} min`, zh: (m) => `约需 ${m} 分钟` },
   reviewNote: [
     {
-      th: 'เธซเธฒเธเธ—เนเธฒเธเนเธกเนเธชเธฒเธกเธฒเธฃเธ–เน€เธเนเธฒเธฃเธฑเธเธเธฃเธดเธเธฒเธฃเนเธ”เนเธ•เธฃเธเธ•เธฒเธกเน€เธงเธฅเธฒเธ—เธตเนเธเธญเธเนเธงเน เธ—เธฒเธเธฃเนเธฒเธเธเธญเธชเธเธงเธเธชเธดเธ—เธเธดเนเนเธเธเธฒเธฃเนเธซเนเธเธฃเธดเธเธฒเธฃเธฅเธนเธเธเนเธฒเธเธดเธงเธ–เธฑเธ”เนเธ',
+      th: 'หากท่านไม่สามารถเข้ารับบริการได้ตรงตามเวลาที่จองไว้ ทางร้านขอสงวนสิทธิ์ในการให้บริการลูกค้าคิวถัดไป',
       en: 'If you are unable to arrive at your reserved time, the store reserves the right to serve the next customer in line.'
     },
     {
-      th: 'เธซเธฒเธเธซเธเนเธฒเธฃเนเธฒเธเนเธซเนเธเธฃเธดเธเธฒเธฃเธฅเธนเธเธเนเธฒเธ—เนเธฒเธเธญเธทเนเธเธญเธขเธนเนเนเธเธเธดเธงเธเนเธญเธเธซเธเนเธฒ เธ—เนเธฒเธเธเธฐเนเธ”เนเธฃเธฑเธเธเธฃเธดเธเธฒเธฃเน€เธเนเธเธเธดเธงเธ–เธฑเธ”เนเธเนเธ”เธขเน€เธฃเนเธงเธ—เธตเนเธชเธธเธ”เธเนเธฐ',
+      th: 'หากหน้าร้านให้บริการลูกค้าท่านอื่นอยู่ในคิวก่อนหน้า ท่านจะได้รับบริการเป็นคิวถัดไปโดยเร็วที่สุดค่ะ',
       en: 'If our staff are assisting another customer ahead of you, you will be served as soon as possible in the next available queue.'
     }
   ],
-  queueCode: { th: 'เธฃเธซเธฑเธชเธเธดเธง', en: 'Queue code', zh: 'ๆ’้ๅท็ ' },
-  cancelled:         { th:'เธขเธเน€เธฅเธดเธเนเธฅเนเธง', en:'Cancelled', zh:'ๅทฒๅ–ๆถ' },
-  openMap:           { th:'เน€เธเธดเธ”เนเธเธเธ—เธตเน', en:'Open map', zh:'ๆ“ๅผ€ๅฐๅพ' },
-  addCalendar:       { th:'เน€เธเธดเนเธกเธฅเธเธเธเธดเธ—เธดเธ', en:'Add to calendar', zh:'ๆทปๅ ๅฐๆ—ฅๅ' },
-  cancelBooking:     { th:'เธขเธเน€เธฅเธดเธเธเธดเธงเธเธตเน', en:'Cancel this booking', zh:'ๅ–ๆถๆญค้ข็บฆ' },
-  doneTitle:         { th:'เธขเธทเธเธขเธฑเธเธเธดเธงเน€เธฃเธตเธขเธเธฃเนเธญเธข', en:'Booking confirmed', zh:'้ข็บฆๆๅ' },
-  doneSub:           { th:'เธเธฃเธธเธ“เธฒเนเธชเธ”เธเธเธดเธงเธเธตเน เธซเธฃเธทเธญเนเธเนเธเธเธเธฑเธเธเธฒเธเธงเนเธฒเธฅเธนเธเธเนเธฒเธกเธตเธเธฒเธฃเธเธญเธเธเธดเธงเธเนเธฒเธเธฃเธฐเธเธเธกเธฒเนเธฅเนเธง', en:'Please show this booking, or tell our staff that you booked through the system.', zh:'ๅฐๅบ—ๅ่ฏทๅบ็คบๆญคๅท็ ็ปๅทฅไฝไบบๅ‘' },
-  successPopupTitle: { th:'เธเธญเธเธเธดเธงเน€เธฃเธตเธขเธเธฃเนเธญเธขเนเธฅเนเธง', en:'Your booking is confirmed', zh:'้ข็บฆๆๅ' },
-  successPopupMessage:{ th:'เธเธ” โ€เธเธฑเธเธ—เธถเธเน€เธเนเธเธฃเธนเธเธ เธฒเธโ€ เน€เธเธทเนเธญเน€เธเนเธเธฃเธฒเธขเธฅเธฐเน€เธญเธตเธขเธ”เธเธดเธงเนเธงเน เน€เธกเธทเนเธญเธ–เธถเธเธฃเนเธฒเธ เธเธฃเธธเธ“เธฒเนเธชเธ”เธเธฃเธนเธเธ เธฒเธเธเธตเนเธ—เธตเนเธซเธเนเธฒเน€เธเธฒเธเนเน€เธ•เธญเธฃเน เธซเธฃเธทเธญเนเธเนเธเธเธเธฑเธเธเธฒเธเธงเนเธฒเธ—เนเธฒเธเนเธ”เนเธเธญเธเธเธดเธงเธเนเธฒเธเธฃเธฐเธเธเนเธฅเนเธง', en:'Tap โ€Save as imageโ€ to keep your booking details. At the store, show this image at the counter or tell a staff member that you booked through the system.', zh:'็นๅปโ€ไฟๅญไธบๅพ็โ€ไฟๅญ้ข็บฆ่ฏฆๆ…ใ€ๅฐๅบ—ๅ๏ผ่ฏทๅจๆๅฐๅบ็คบๆญคๅพ็๏ผๆ–ๅ‘็ฅๅทฅไฝไบบๅ‘ๆจๅทฒ้€่ฟ็ณป็ป้ข็บฆใ€' },
-  popupQueueNumber: { th:'เธซเธกเธฒเธขเน€เธฅเธเธเธดเธง', en:'Queue number', zh:'ๆ’้ๅท็ ' },
-  saveAsImage:     { th:'เธเธฑเธเธ—เธถเธเน€เธเนเธเธฃเธนเธเธ เธฒเธ', en:'Save as image', zh:'ไฟๅญไธบๅพ็' },
-  savingImage:     { th:'เธเธณเธฅเธฑเธเธชเธฃเนเธฒเธเธฃเธนเธเธ เธฒเธ...', en:'Creating image...', zh:'ๆญฃๅจ็”ๆๅพ็โ€ฆ' },
-  imageSaved:      { th:'เธเธฑเธเธ—เธถเธเธฃเธนเธเธ เธฒเธเน€เธฃเธตเธขเธเธฃเนเธญเธขเนเธฅเนเธง', en:'Image saved', zh:'ๅพ็ๅทฒไฟๅญ' },
-  imageSaveFail:   { th:'เธเธฑเธเธ—เธถเธเธฃเธนเธเธ เธฒเธเนเธกเนเธชเธณเน€เธฃเนเธ เธเธฃเธธเธ“เธฒเธฅเธญเธเธญเธตเธเธเธฃเธฑเนเธ', en:'Could not save the image. Please try again.', zh:'ๅพ็ไฟๅญๅคฑ่ดฅ๏ผ่ฏท้่ฏ•ใ€' },
-  acknowledge:      { th:'เธฃเธฑเธเธ—เธฃเธฒเธ', en:'OK', zh:'็ฅ้“ไบ' },
-  ackSaving:        { th:'เธเธณเธฅเธฑเธเธเธฑเธเธ—เธถเธ...', en:'Saving...', zh:'ๆญฃๅจไฟๅญโ€ฆ' },
-  ackSaveFail:      { th:'เธเธฑเธเธ—เธถเธเธเธฒเธฃเธฃเธฑเธเธ—เธฃเธฒเธเนเธกเนเธชเธณเน€เธฃเนเธ เธเธฃเธธเธ“เธฒเธเธ”เธญเธตเธเธเธฃเธฑเนเธ', en:'Could not save your acknowledgement. Please try again.', zh:'ๆช่ฝไฟๅญ็กฎ่ฎค๏ผ่ฏท้่ฏ•ใ€' },
-  storageFail:       { th:'เธญเธธเธเธเธฃเธ“เนเธเธตเนเธเธฑเธเธ—เธถเธเธเธดเธงเนเธงเนเนเธกเนเนเธ”เน เธเธฃเธธเธ“เธฒเธเธฑเธเธ—เธถเธเธ เธฒเธเธซเธเนเธฒเธเธญเนเธงเนเน€เธเนเธเธซเธฅเธฑเธเธเธฒเธ', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'ๆญค่ฎพๅคๆ— ๆณ•ไฟๅญ้ข็บฆ๏ผ่ฏทๆชๅพไฝไธบๅญ่ฏ' },
-  myBookings:        { th:'เธเธดเธงเธเธญเธเธเธฑเธ', en:'My bookings', zh:'ๆ‘็้ข็บฆ' },
-  footerContact:     { th:'เธ•เธดเธ”เธ•เนเธญเน€เธฃเธฒ', en:'Contact us', zh:'่”็ณปๆ‘ไปฌ' },
-  mineSub:           { th:n=>`เธเธฑเธเธ—เธถเธเนเธงเนเนเธเน€เธเธฃเธทเนเธญเธเธเธตเน ยท ${n} เธเธดเธงเธ—เธตเนเธเธณเธฅเธฑเธเธเธฐเธ–เธถเธ`, en:n=>`Saved on this device ยท ${n} upcoming`, zh:n=>`ไฟๅญไบๆฌ่ฎพๅค ยท ๅณๅฐๅฐๆฅ ${n} ไธช้ข็บฆ` },
-  noBookings:        { th:'เธขเธฑเธเนเธกเนเธกเธตเธเธดเธง', en:'No bookings yet', zh:'ๆๆ— ้ข็บฆ' },
-  noBookingsSub:     { th:'เน€เธฅเธทเธญเธเธชเธฒเธเธฒเนเธฅเนเธงเธเธญเธเธเธดเธงเนเธฃเธเธเธญเธเธเธธเธ“เนเธ”เนเน€เธฅเธข', en:'Pick a branch and make your first booking', zh:'้€ๆฉๅๅบ—ๅณๅฏๅผ€ๅงๆจ็็ฌฌไธ€ไธช้ข็บฆ' },
-  upcoming:          { th:'เธเธณเธฅเธฑเธเธเธฐเธ–เธถเธ', en:'Upcoming', zh:'ๅณๅฐๅฐๆฅ' },
-  history:           { th:'เธเธฃเธฐเธงเธฑเธ•เธด', en:'History', zh:'ๅๅฒ่ฎฐๅฝ•' },
-  nextBranch:        { th:name=>`เธ–เธฑเธ”เนเธ ยท ${name}`, en:name=>`Next ยท ${name}`, zh:name=>`ไธไธ€ๆญฅ ยท ${name}` },
-  pickBranchFirst:   { th:'เน€เธฅเธทเธญเธเธชเธฒเธเธฒเน€เธเธทเนเธญเนเธเธ•เนเธญ', en:'Select a branch to continue', zh:'่ฏท้€ๆฉๅๅบ—ไปฅ็ปง็ปญ' },
-  next:              { th:'เธ–เธฑเธ”เนเธ', en:'Next', zh:'ไธไธ€ๆญฅ' },
-  hintDatetime:      { th:(d,t)=>`${d} เน€เธงเธฅเธฒ ${t} เธ.`, en:(d,t)=>`${d} at ${t}`, zh:(d,t)=>`${d} ${t}` },
-  pickTimeFirst:     { th:'เน€เธฅเธทเธญเธเน€เธงเธฅเธฒเน€เธเธทเนเธญเนเธเธ•เนเธญ', en:'Select a time to continue', zh:'่ฏท้€ๆฉๆ—ถ้—ดไปฅ็ปง็ปญ' },
-  reviewDetails:     { th:'เธ•เธฃเธงเธเธชเธญเธเธเนเธญเธกเธนเธฅ', en:'Review details', zh:'ๆ ธๅฏนไฟกๆฏ' },
-  confirmBooking:    { th:'เธขเธทเธเธขเธฑเธเธเธฒเธฃเธเธญเธเธเธดเธง', en:'Confirm booking', zh:'็กฎ่ฎค้ข็บฆ' },
-  viewMyBookings:    { th:'เธ”เธนเธเธดเธงเธเธญเธเธเธฑเธ', en:'View my bookings', zh:'ๆฅ็ๆ‘็้ข็บฆ' },
-  newBooking:        { th:'เธเธญเธเธเธดเธงเนเธซเธกเน', en:'New booking', zh:'ๆ–ฐๅปบ้ข็บฆ' },
-  bookAnother:       { th:'เธเธญเธเธเธดเธงเน€เธเธดเนเธก', en:'Book another', zh:'ๅ้ข็บฆไธ€ไธช' },
-  bookQueue:         { th:'เธเธญเธเธเธดเธง', en:'Book', zh:'้ข็บฆ' },
-  back:              { th:'เธขเนเธญเธเธเธฅเธฑเธ', en:'Back', zh:'่ฟ”ๅ' },
-  stepBranch:        { th:'เธชเธฒเธเธฒ', en:'Branch', zh:'ๅๅบ—' },
-  stepService:       { th:'เธเธฃเธดเธเธฒเธฃ', en:'Service', zh:'ๆๅก' },
-  stepDatetime:      { th:'เธงเธฑเธเน€เธงเธฅเธฒ', en:'Date/Time', zh:'ๆ—ฅๆๆ—ถ้—ด' },
-  stepForm:          { th:'เธเนเธญเธกเธนเธฅ', en:'Details', zh:'ไฟกๆฏ' },
-  stepReview:        { th:'เธขเธทเธเธขเธฑเธ', en:'Confirm', zh:'็กฎ่ฎค' },
-  cancelConfirm:     { th:(code,date,time)=>`เธขเธเน€เธฅเธดเธเธเธดเธง ${code} เธงเธฑเธ${date} เน€เธงเธฅเธฒ ${time} เธ.?`, en:(code,date,time)=>`Cancel booking ${code} on ${date} at ${time}?`, zh:(code,date,time)=>`็กฎๅฎๅ–ๆถ้ข็บฆ ${code}๏ผ${date} ${time}๏ผๅ—๏ผ` },
-  cancelledToast:    { th:'เธขเธเน€เธฅเธดเธเธเธดเธงเนเธฅเนเธง', en:'Booking cancelled', zh:'้ข็บฆๅทฒๅ–ๆถ' },
-  formIncomplete:    { th:'เธเธฃเธญเธเธเนเธญเธกเธนเธฅเนเธซเนเธเธฃเธเธเนเธญเธเนเธเธ•เนเธญ', en:'Please complete the form to continue', zh:'่ฏทๅกซๅๅฎๆ•ดไฟกๆฏๅๅ็ปง็ปญ' },
-  slotTaken:         { th:'เธเนเธงเธเน€เธงเธฅเธฒเธเธตเนเธ–เธนเธเธเธญเธเนเธเนเธฅเนเธง', en:'This time slot is already booked', zh:'่ฏฅๆ—ถๆฎตๅทฒ่ขซ้ข็บฆ' },
-  icsDownloaded:     { th:'เธ”เธฒเธงเธเนเนเธซเธฅเธ”เนเธเธฅเนเธเธเธดเธ—เธดเธเนเธฅเนเธง', en:'Calendar file downloaded', zh:'ๆ—ฅๅๆ–ไปถๅทฒไธ่ฝฝ' },
-  calendarOpened:    { th:'เน€เธเธดเธ”เธซเธเนเธฒเธชเธฃเนเธฒเธเธเธฑเธ”เธซเธกเธฒเธขเนเธซเนเนเธฅเนเธง เธเธฃเธธเธ“เธฒเธเธ”เน€เธเธดเนเธกเธซเธฃเธทเธญเธเธฑเธเธ—เธถเธ', en:'The event is ready. Tap Add or Save to finish.', zh:'้ข็บฆๅทฒๅๅคๅฅฝ๏ผ่ฏท็นๅปๆทปๅ ๆ–ไฟๅญใ€' },
-  weekdayBookingRule:{ th:'เธเธฒเธฃเธเธญเธเธเธดเธงเธ เธฒเธขเนเธเธงเธฑเธเน€เธ”เธตเธขเธงเธเธฑเธ เธ•เนเธญเธเธฅเนเธงเธเธซเธเนเธฒเธญเธขเนเธฒเธเธเนเธญเธข 6 เธเธก. เธ•เนเธญเธเนเธซเนเธเธฃเธดเธเธฒเธฃเน€เธชเธฃเนเธเธ เธฒเธขเนเธ 16:00 เธ. (เธเธญเธเธเธดเธงเธ เธฒเธขเนเธ 10.00 เธ.)  เธเธ“เธฐเธเธตเนเธเธดเธ”เธเธญเธเธเธดเธงเนเธเธงเธฑเธเนเธฅเนเธงเธเธฃเธธเธ“เธฒเน€เธฅเธทเธญเธเธงเธฑเธเธซเธฃเธทเธญเน€เธงเธฅเธฒเนเธซเธกเนเธซเธฃเธทเธญเธ—เนเธฒเธเธชเธฒเธกเธฒเธฃเธ– Walk-in เน€เธเธทเนเธญเธฃเธฑเธเธเธฃเธดเธเธฒเธฃเธ—เธตเนเธซเธเนเธฒเธฃเนเธฒเธเนเธ”เนเธ•เธฒเธกเธเธเธ•เธด', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'ๅ‘จไธ€่ณๅ‘จไบ”็ๅฝ“ๆ—ฅ้ข็บฆ้กปๅจไธๅ 10 ็นๅ็กฎ่ฎค๏ผ้ข็บฆๆ—ถ้—ด้กป่ณๅฐ‘ๆๅ 6 ๅฐๆ—ถ๏ผไธ”ๆๅก้กปๅจไธๅ 4 ็นๅ็ป“ๆใ€่ฏท้€ๆฉๅ…ถไป–ๆ—ฅๆๆ–ๆ—ถ้—ดใ€' },
-  weekendBookingRule:{ th:'เธงเธฑเธเน€เธชเธฒเธฃเนโ€“เธญเธฒเธ—เธดเธ•เธขเนเธ•เนเธญเธเธเธญเธเธ•เธฑเนเธเนเธ•เนเธงเธฑเธเธเนเธญเธเธงเธฑเธเธเธฑเธ” เนเธกเนเน€เธเธดเธ”เธฃเธฑเธเธเธฒเธฃเธเธญเธเธ เธฒเธขเนเธเธงเธฑเธเน€เธ”เธตเธขเธงเธเธฑเธ เธเธฃเธธเธ“เธฒเน€เธฅเธทเธญเธเธงเธฑเธเธ–เธฑเธ”เนเธ', en:'Saturdayโ€“Sunday appointments must be booked before the appointment date. Same-day booking is unavailable. Please choose another date.', zh:'ๅ‘จๅ…ญๅๅ‘จๆ—ฅ้กปๅจ้ข็บฆๆ—ฅๆไนๅ้ข่ฎข๏ผไธๆฅๅ—ๅฝ“ๅคฉ้ข็บฆใ€่ฏท้€ๆฉๅ…ถไป–ๆ—ฅๆใ€' },
-  weekdayRuleNote:  { th:'เธเธฒเธฃเธเธญเธเธเธดเธงเธ เธฒเธขเนเธเธงเธฑเธเน€เธ”เธตเธขเธงเธเธฑเธ เธ•เนเธญเธเธฅเนเธงเธเธซเธเนเธฒเธญเธขเนเธฒเธเธเนเธญเธข 6 เธเธก. เธ•เนเธญเธเนเธซเนเธเธฃเธดเธเธฒเธฃเน€เธชเธฃเนเธเธ เธฒเธขเนเธ 16:00 เธ. (เธเธญเธเธเธดเธงเธ เธฒเธขเนเธ 10.00 เธ.)  เธเธ“เธฐเธเธตเนเธเธดเธ”เธเธญเธเธเธดเธงเนเธเธงเธฑเธเนเธฅเนเธงเธเธฃเธธเธ“เธฒเน€เธฅเธทเธญเธเธงเธฑเธเธซเธฃเธทเธญเน€เธงเธฅเธฒเนเธซเธกเนเธซเธฃเธทเธญเธ—เนเธฒเธเธชเธฒเธกเธฒเธฃเธ– Walk-in เน€เธเธทเนเธญเธฃเธฑเธเธเธฃเธดเธเธฒเธฃเธ—เธตเนเธซเธเนเธฒเธฃเนเธฒเธเนเธ”เนเธ•เธฒเธกเธเธเธ•เธด', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'ๅ‘จไธ€่ณๅ‘จไบ”ๅฝ“ๆ—ฅ้ข็บฆ๏ผไธๅ 10 ็นๅ็กฎ่ฎค ยท ่ณๅฐ‘ๆๅ 6 ๅฐๆ—ถ ยท ้กปๅจไธๅ 4 ็นๅ็ป“ๆ' },
-  weekendRuleNote:  { th:'เน€เธชเธฒเธฃเนโ€“เธญเธฒเธ—เธดเธ•เธขเน: เธ•เนเธญเธเธเธญเธเธ•เธฑเนเธเนเธ•เนเธงเธฑเธเธเนเธญเธเธงเธฑเธเธเธฑเธ”', en:'Saturdayโ€“Sunday: book before the appointment date', zh:'ๅ‘จๅ…ญๅๅ‘จๆ—ฅ๏ผ้กปๅจ้ข็บฆๆ—ฅๆไนๅ้ข่ฎข' },
-  futureRuleNote:   { th:'เธเธญเธเธฅเนเธงเธเธซเธเนเธฒเธเนเธญเธเธงเธฑเธเธเธฑเธ”: เน€เธฅเธทเธญเธเน€เธงเธฅเธฒเนเธ”เนเธ•เธฒเธกเน€เธงเธฅเธฒเน€เธเธดเธ”โ€“เธเธดเธ”เธเธญเธเธชเธฒเธเธฒเธ•เธฒเธกเธเธเธ•เธด', en:'Booking before the appointment date: all regular branch hours are available', zh:'ๆๅ้ข็บฆ๏ผๅฏๆๅๅบ—ๆญฃๅธธ่ฅไธๆ—ถ้—ด้€ๆฉๆ—ถๆฎต' },
-  noRuleSlots:      { th:'เนเธกเนเธกเธตเน€เธงเธฅเธฒเธ—เธตเนเธเธญเธเนเธ”เนเธ•เธฒเธกเน€เธเธทเนเธญเธเนเธเนเธเธงเธฑเธเธเธตเน', en:'No times meet the advance-booking rule for this day', zh:'ๅฝ“ๅคฉๆฒกๆ็ฌฆๅๆๅ้ข็บฆ่งๅ็ๆ—ถๆฎต' },
-  timeUnavailable:  { th:'เน€เธงเธฅเธฒเธเธตเนเนเธกเนเธชเธฒเธกเธฒเธฃเธ–เธเธญเธเนเธ”เนเนเธฅเนเธง เธเธฃเธธเธ“เธฒเน€เธฅเธทเธญเธเน€เธงเธฅเธฒเนเธซเธกเน', en:'This time is no longer available. Please choose another time.', zh:'่ฏฅๆ—ถๆฎตๅทฒๆ— ๆณ•้ข็บฆ๏ผ่ฏท้€ๆฉๅ…ถไป–ๆ—ถ้—ดใ€' },
-  openAt:            { th:o=>`เน€เธเธดเธ” ${o} เธ.`, en:o=>`Opens ${o}`, zh:o=>`${o} ๅผ€ๅง่ฅไธ` },
-  closedToday:       { th:'เธเธดเธ”เนเธฅเนเธงเธงเธฑเธเธเธตเน', en:'Closed for today', zh:'ไปๆ—ฅๅทฒๆ“็' },
-  closedForBooking:  { th:'เธเธดเธ”เธฃเธฑเธเธเธญเธเธเธฑเนเธงเธเธฃเธฒเธง', en:'Booking temporarily closed', zh:'ๆๅๆฅๅ—้ข็บฆ' },
-  closedIndefiniteNote: { th:'เธชเธฒเธเธฒเธเธตเนเธเธดเธ”เธฃเธฑเธเธเธญเธเธเธฑเนเธงเธเธฃเธฒเธงเธเธเธเธงเนเธฒเธเธฐเนเธเนเธเน€เธเธฅเธตเนเธขเธเนเธเธฅเธ เธเธฃเธธเธ“เธฒเธ•เธดเธ”เธ•เนเธญเธชเธฒเธเธฒเธซเธฃเธทเธญเน€เธฅเธทเธญเธเธชเธฒเธเธฒเธญเธทเนเธ', en:'This branch is closed for booking until further notice. Please contact the branch or choose another branch.', zh:'่ฏฅๅๅบ—ๆๅๆฅๅ—้ข็บฆ๏ผๆขๅคๆ—ถ้—ดๅฆ่ก้€็ฅ๏ผ่ฏท่”็ณปๅๅบ—ๆ–้€ๆฉๅ…ถไป–ๅๅบ—' },
-  closedRangeNote:   { th:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `เธชเธฒเธเธฒเธเธตเนเธเธดเธ”เธฃเธฑเธเธเธญเธเธ–เธถเธเธงเธฑเธเธ—เธตเน ${fmtDateShort(t,'th')} (เธฃเธงเธก ${days} เธงเธฑเธ) เน€เธเธดเธ”เธฃเธฑเธเธเธญเธเธญเธตเธเธเธฃเธฑเนเธเธงเธฑเธเธ—เธตเน ${fmtDateShort(reopen,'th')}`; }, en:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `This branch is closed until ${fmtDateShort(t,'en')} (${days} day${days>1?'s':''}). Reopens ${fmtDateShort(reopen,'en')}.`; }, zh:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `่ฏฅๅๅบ—ๆๅๆฅๅ—้ข็บฆ่ณ ${fmtDateShort(t,'zh')}๏ผๅ…ฑ ${days} ๅคฉ๏ผ๏ผๅฐไบ ${fmtDateShort(reopen,'zh')} ๆขๅคๆฅๅ—้ข็บฆ`; } },
-  willCloseSoon:     { th:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `โ  เธเธฐเธเธดเธ”เธฃเธฑเธเธเธญเธ ${fmtDateShort(f,'th')} โ€“ ${fmtDateShort(t,'th')} (${days} เธงเธฑเธ) เน€เธเธดเธ”เธญเธตเธเธเธฃเธฑเนเธ ${fmtDateShort(reopen,'th')}`; }, en:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `โ  Closing ${fmtDateShort(f,'en')} โ€“ ${fmtDateShort(t,'en')} (${days}d). Reopens ${fmtDateShort(reopen,'en')}`; }, zh:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `โ  ๅณๅฐๆๅ้ข็บฆ ${fmtDateShort(f,'zh')} โ€“ ${fmtDateShort(t,'zh')}๏ผ${days} ๅคฉ๏ผๅฐไบ ${fmtDateShort(reopen,'zh')} ๆขๅค`; } },
-  staffLink:         { th:'เธชเธณเธซเธฃเธฑเธเธเธเธฑเธเธเธฒเธ', en:'Staff access', zh:'ๅ‘ๅทฅๅ…ฅๅฃ' },
-  closingSoon:       { th:c=>`เนเธเธฅเนเธเธดเธ” ยท ${c} เธ.`, en:c=>`Closing soon ยท ${c}`, zh:c=>`ๅณๅฐๆ“็ ยท ${c}` },
-  openUntilTime:     { th:c=>`เน€เธเธดเธ”เธญเธขเธนเน ยท เธ–เธถเธ ${c} เธ.`, en:c=>`Open ยท until ${c}`, zh:c=>`่ฅไธไธญ ยท ่ณ ${c}` },
-  quickToday:        { th:'เธงเธฑเธเธเธตเน', en:'Today', zh:'ไปๅคฉ' },
-  quickTomorrow:     { th:'เธเธฃเธธเนเธเธเธตเน', en:'Tomorrow', zh:'ๆๅคฉ' },
-  fullyBooked:       { th:'เน€เธ•เนเธกเธ—เธฑเนเธเธงเธฑเธ', en:'Fully booked', zh:'ๅทฒ็บฆๆปก' },
-  pastDay:           { th:'เธงเธฑเธเธ—เธตเนเธเนเธฒเธเธกเธฒเนเธฅเนเธง', en:'This date has passed', zh:'่ฏฅๆ—ฅๆๅทฒ่ฟ' },
-  pickOtherDate:     { th:'เน€เธฅเธทเธญเธเธงเธฑเธเธ—เธตเนเธญเธทเนเธ (เธเธญเธเธฅเนเธงเธเธซเธเนเธฒเธซเธฅเธฒเธขเน€เธ”เธทเธญเธ)', en:'Pick another date (book months ahead)', zh:'้€ๆฉๅ…ถไป–ๆ—ฅๆ๏ผๅฏๆๅๆ•ฐๆ้ข็บฆ๏ผ' },
-  dateLabel:         { th:'เธงเธฑเธเธ—เธตเนเธเธญเธ', en:'Booking date', zh:'้ข็บฆๆ—ฅๆ' },
+  queueCode: { th: 'รหัสคิว', en: 'Queue code', zh: '排队号码' },
+  cancelled:         { th:'ยกเลิกแล้ว', en:'Cancelled', zh:'已取消' },
+  openMap:           { th:'เปิดแผนที่', en:'Open map', zh:'打开地图' },
+  addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
+  cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
+  doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
+  doneSub:           { th:'กรุณาแสดงคิวนี้ หรือแจ้งพนักงานว่าลูกค้ามีการจองคิวผ่านระบบมาแล้ว', en:'Please show this booking, or tell our staff that you booked through the system.', zh:'到店后请出示此号码给工作人员' },
+  successPopupTitle: { th:'จองคิวเรียบร้อยแล้ว', en:'Your booking is confirmed', zh:'预约成功' },
+  successPopupMessage:{ th:'กด “บันทึกเป็นรูปภาพ” เพื่อเก็บรายละเอียดคิวไว้ เมื่อถึงร้าน กรุณาแสดงรูปภาพนี้ที่หน้าเคาน์เตอร์ หรือแจ้งพนักงานว่าท่านได้จองคิวผ่านระบบแล้ว', en:'Tap “Save as image” to keep your booking details. At the store, show this image at the counter or tell a staff member that you booked through the system.', zh:'点击“保存为图片”保存预约详情。到店后，请在柜台出示此图片，或告知工作人员您已通过系统预约。' },
+  popupQueueNumber: { th:'หมายเลขคิว', en:'Queue number', zh:'排队号码' },
+  saveAsImage:     { th:'บันทึกเป็นรูปภาพ', en:'Save as image', zh:'保存为图片' },
+  savingImage:     { th:'กำลังสร้างรูปภาพ...', en:'Creating image...', zh:'正在生成图片…' },
+  imageSaved:      { th:'บันทึกรูปภาพเรียบร้อยแล้ว', en:'Image saved', zh:'图片已保存' },
+  imageSaveFail:   { th:'บันทึกรูปภาพไม่สำเร็จ กรุณาลองอีกครั้ง', en:'Could not save the image. Please try again.', zh:'图片保存失败，请重试。' },
+  acknowledge:      { th:'รับทราบ', en:'OK', zh:'知道了' },
+  ackSaving:        { th:'กำลังบันทึก...', en:'Saving...', zh:'正在保存…' },
+  ackSaveFail:      { th:'บันทึกการรับทราบไม่สำเร็จ กรุณากดอีกครั้ง', en:'Could not save your acknowledgement. Please try again.', zh:'未能保存确认，请重试。' },
+  storageFail:       { th:'อุปกรณ์นี้บันทึกคิวไว้ไม่ได้ กรุณาบันทึกภาพหน้าจอไว้เป็นหลักฐาน', en:'This device couldn\'t save your booking. Please screenshot this as proof.', zh:'此设备无法保存预约，请截图作为凭证' },
+  myBookings:        { th:'คิวของฉัน', en:'My bookings', zh:'我的预约' },
+  footerContact:     { th:'ติดต่อเรา', en:'Contact us', zh:'联系我们' },
+  mineSub:           { th:n=>`บันทึกไว้ในเครื่องนี้ · ${n} คิวที่กำลังจะถึง`, en:n=>`Saved on this device · ${n} upcoming`, zh:n=>`保存于本设备 · 即将到来 ${n} 个预约` },
+  noBookings:        { th:'ยังไม่มีคิว', en:'No bookings yet', zh:'暂无预约' },
+  noBookingsSub:     { th:'เลือกสาขาแล้วจองคิวแรกของคุณได้เลย', en:'Pick a branch and make your first booking', zh:'选择分店即可开始您的第一个预约' },
+  upcoming:          { th:'กำลังจะถึง', en:'Upcoming', zh:'即将到来' },
+  history:           { th:'ประวัติ', en:'History', zh:'历史记录' },
+  nextBranch:        { th:name=>`ถัดไป · ${name}`, en:name=>`Next · ${name}`, zh:name=>`下一步 · ${name}` },
+  pickBranchFirst:   { th:'เลือกสาขาเพื่อไปต่อ', en:'Select a branch to continue', zh:'请选择分店以继续' },
+  next:              { th:'ถัดไป', en:'Next', zh:'下一步' },
+  hintDatetime:      { th:(d,t)=>`${d} เวลา ${t} น.`, en:(d,t)=>`${d} at ${t}`, zh:(d,t)=>`${d} ${t}` },
+  pickTimeFirst:     { th:'เลือกเวลาเพื่อไปต่อ', en:'Select a time to continue', zh:'请选择时间以继续' },
+  reviewDetails:     { th:'ตรวจสอบข้อมูล', en:'Review details', zh:'核对信息' },
+  confirmBooking:    { th:'ยืนยันการจองคิว', en:'Confirm booking', zh:'确认预约' },
+  viewMyBookings:    { th:'ดูคิวของฉัน', en:'View my bookings', zh:'查看我的预约' },
+  newBooking:        { th:'จองคิวใหม่', en:'New booking', zh:'新建预约' },
+  bookAnother:       { th:'จองคิวเพิ่ม', en:'Book another', zh:'再预约一个' },
+  bookQueue:         { th:'จองคิว', en:'Book', zh:'预约' },
+  back:              { th:'ย้อนกลับ', en:'Back', zh:'返回' },
+  stepBranch:        { th:'สาขา', en:'Branch', zh:'分店' },
+  stepService:       { th:'บริการ', en:'Service', zh:'服务' },
+  stepDatetime:      { th:'วันเวลา', en:'Date/Time', zh:'日期时间' },
+  stepForm:          { th:'ข้อมูล', en:'Details', zh:'信息' },
+  stepReview:        { th:'ยืนยัน', en:'Confirm', zh:'确认' },
+  cancelConfirm:     { th:(code,date,time)=>`ยกเลิกคิว ${code} วัน${date} เวลา ${time} น.?`, en:(code,date,time)=>`Cancel booking ${code} on ${date} at ${time}?`, zh:(code,date,time)=>`确定取消预约 ${code}（${date} ${time}）吗？` },
+  cancelledToast:    { th:'ยกเลิกคิวแล้ว', en:'Booking cancelled', zh:'预约已取消' },
+  formIncomplete:    { th:'กรอกข้อมูลให้ครบก่อนไปต่อ', en:'Please complete the form to continue', zh:'请填写完整信息后再继续' },
+  slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
+  icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
+  calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
+  weekdayBookingRule:{ th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. ต้องให้บริการเสร็จภายใน 16:00 น. (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五的当日预约须在上午 10 点前确认，预约时间须至少提前 6 小时，且服务须在下午 4 点前结束。请选择其他日期或时间。' },
+  weekendBookingRule:{ th:'วันเสาร์–อาทิตย์ต้องจองตั้งแต่วันก่อนวันนัด ไม่เปิดรับการจองภายในวันเดียวกัน กรุณาเลือกวันถัดไป', en:'Saturday–Sunday appointments must be booked before the appointment date. Same-day booking is unavailable. Please choose another date.', zh:'周六及周日须在预约日期之前预订，不接受当天预约。请选择其他日期。' },
+  weekdayRuleNote:  { th:'การจองคิวภายในวันเดียวกัน ต้องล่วงหน้าอย่างน้อย 6 ชม. ต้องให้บริการเสร็จภายใน 16:00 น. (จองคิวภายใน 10.00 น.)  ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Same-day booking notice: Bookings must be placed at least 6 hours ahead (by 10:00 AM) and the service must finish by 4:00 PM. Online bookings for today are now closed. Please choose another date/time or feel free to walk in.', zh:'周一至周五当日预约：上午 10 点前确认 · 至少提前 6 小时 · 须在下午 4 点前结束' },
+  weekendRuleNote:  { th:'เสาร์–อาทิตย์: ต้องจองตั้งแต่วันก่อนวันนัด', en:'Saturday–Sunday: book before the appointment date', zh:'周六及周日：须在预约日期之前预订' },
+  futureRuleNote:   { th:'จองล่วงหน้าก่อนวันนัด: เลือกเวลาได้ตามเวลาเปิด–ปิดของสาขาตามปกติ', en:'Booking before the appointment date: all regular branch hours are available', zh:'提前预约：可按分店正常营业时间选择时段' },
+  noRuleSlots:      { th:'ไม่มีเวลาที่จองได้ตามเงื่อนไขในวันนี้', en:'No times meet the advance-booking rule for this day', zh:'当天没有符合提前预约规则的时段' },
+  timeUnavailable:  { th:'เวลานี้ไม่สามารถจองได้แล้ว กรุณาเลือกเวลาใหม่', en:'This time is no longer available. Please choose another time.', zh:'该时段已无法预约，请选择其他时间。' },
+  openAt:            { th:o=>`เปิด ${o} น.`, en:o=>`Opens ${o}`, zh:o=>`${o} 开始营业` },
+  closedToday:       { th:'ปิดแล้ววันนี้', en:'Closed for today', zh:'今日已打烊' },
+  closedForBooking:  { th:'ปิดรับจองชั่วคราว', en:'Booking temporarily closed', zh:'暂停接受预约' },
+  closedIndefiniteNote: { th:'สาขานี้ปิดรับจองชั่วคราวจนกว่าจะแจ้งเปลี่ยนแปลง กรุณาติดต่อสาขาหรือเลือกสาขาอื่น', en:'This branch is closed for booking until further notice. Please contact the branch or choose another branch.', zh:'该分店暂停接受预约，恢复时间另行通知，请联系分店或选择其他分店' },
+  closedRangeNote:   { th:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `สาขานี้ปิดรับจองถึงวันที่ ${fmtDateShort(t,'th')} (รวม ${days} วัน) เปิดรับจองอีกครั้งวันที่ ${fmtDateShort(reopen,'th')}`; }, en:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `This branch is closed until ${fmtDateShort(t,'en')} (${days} day${days>1?'s':''}). Reopens ${fmtDateShort(reopen,'en')}.`; }, zh:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `该分店暂停接受预约至 ${fmtDateShort(t,'zh')}（共 ${days} 天），将于 ${fmtDateShort(reopen,'zh')} 恢复接受预约`; } },
+  willCloseSoon:     { th:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `⚠ จะปิดรับจอง ${fmtDateShort(f,'th')} – ${fmtDateShort(t,'th')} (${days} วัน) เปิดอีกครั้ง ${fmtDateShort(reopen,'th')}`; }, en:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `⚠ Closing ${fmtDateShort(f,'en')} – ${fmtDateShort(t,'en')} (${days}d). Reopens ${fmtDateShort(reopen,'en')}`; }, zh:(f,t)=>{ const days=daysBetweenInclusive(f,t), reopen=addDaysStr(t,1); return `⚠ 即将暂停预约 ${fmtDateShort(f,'zh')} – ${fmtDateShort(t,'zh')}（${days} 天）将于 ${fmtDateShort(reopen,'zh')} 恢复`; } },
+  staffLink:         { th:'สำหรับพนักงาน', en:'Staff access', zh:'员工入口' },
+  closingSoon:       { th:c=>`ใกล้ปิด · ${c} น.`, en:c=>`Closing soon · ${c}`, zh:c=>`即将打烊 · ${c}` },
+  openUntilTime:     { th:c=>`เปิดอยู่ · ถึง ${c} น.`, en:c=>`Open · until ${c}`, zh:c=>`营业中 · 至 ${c}` },
+  quickToday:        { th:'วันนี้', en:'Today', zh:'今天' },
+  quickTomorrow:     { th:'พรุ่งนี้', en:'Tomorrow', zh:'明天' },
+  fullyBooked:       { th:'เต็มทั้งวัน', en:'Fully booked', zh:'已约满' },
+  pastDay:           { th:'วันที่ผ่านมาแล้ว', en:'This date has passed', zh:'该日期已过' },
+  pickOtherDate:     { th:'เลือกวันที่อื่น (จองล่วงหน้าหลายเดือน)', en:'Pick another date (book months ahead)', zh:'选择其他日期（可提前数月预约）' },
+  dateLabel:         { th:'วันที่จอง', en:'Booking date', zh:'预约日期' },
 };
 function tt(key, ...args){
   const source = T[key];
@@ -770,25 +770,25 @@ function bholiday(b){ return S.lang==='zh' ? (b.holidayZh||b.holidayEn||b.holida
 function sname(s){ return S.lang==='zh' ? (s.nameZh||s.nameEn||s.name) : S.lang==='en' ? (s.nameEn||s.name) : s.name; }
 function sdesc(s){ return S.lang==='zh' ? (s.descZh||s.descEn||s.desc) : S.lang==='en' ? (s.descEn||s.desc) : s.desc; }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   3. เธ•เธฑเธงเธเนเธงเธขเธงเธฑเธเน€เธงเธฅเธฒ
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
-const D_FULL = ['เธงเธฑเธเธญเธฒเธ—เธดเธ•เธขเน','เธงเธฑเธเธเธฑเธเธ—เธฃเน','เธงเธฑเธเธญเธฑเธเธเธฒเธฃ','เธงเธฑเธเธเธธเธ','เธงเธฑเธเธเธคเธซเธฑเธชเธเธ”เธต','เธงเธฑเธเธจเธธเธเธฃเน','เธงเธฑเธเน€เธชเธฒเธฃเน'];
+/* ═══════════════════════════════════════════════
+   3. ตัวช่วยวันเวลา
+   ═══════════════════════════════════════════════ */
+const D_FULL = ['วันอาทิตย์','วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์','วันเสาร์'];
 const D_FULL_EN = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const D_FULL_ZH = ['ๆๆๆ—ฅ','ๆๆไธ€','ๆๆไบ','ๆๆไธ','ๆๆๅ','ๆๆไบ”','ๆๆๅ…ญ'];
-const D_SHORT = ['เธญเธฒ','เธ','เธญ','เธ','เธเธค','เธจ','เธช'];
+const D_FULL_ZH = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+const D_SHORT = ['อา','จ','อ','พ','พฤ','ศ','ส'];
 const D_SHORT_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const D_SHORT_ZH = ['ๅ‘จๆ—ฅ','ๅ‘จไธ€','ๅ‘จไบ','ๅ‘จไธ','ๅ‘จๅ','ๅ‘จไบ”','ๅ‘จๅ…ญ'];
-const M_SHORT = ['เธก.เธ.','เธ.เธ.','เธกเธต.เธ.','เน€เธก.เธข.','เธ.เธ.','เธกเธด.เธข.','เธ.เธ.','เธช.เธ.','เธ.เธข.','เธ•.เธ.','เธ.เธข.','เธ.เธ.'];
+const D_SHORT_ZH = ['周日','周一','周二','周三','周四','周五','周六'];
+const M_SHORT = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const M_SHORT_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const M_SHORT_ZH = ['1ๆ','2ๆ','3ๆ','4ๆ','5ๆ','6ๆ','7ๆ','8ๆ','9ๆ','10ๆ','11ๆ','12ๆ'];
-const M_FULL = ['เธกเธเธฃเธฒเธเธก','เธเธธเธกเธ เธฒเธเธฑเธเธเน','เธกเธตเธเธฒเธเธก','เน€เธกเธฉเธฒเธขเธ','เธเธคเธฉเธ เธฒเธเธก','เธกเธดเธ–เธธเธเธฒเธขเธ','เธเธฃเธเธเธฒเธเธก','เธชเธดเธเธซเธฒเธเธก','เธเธฑเธเธขเธฒเธขเธ','เธ•เธธเธฅเธฒเธเธก','เธเธคเธจเธเธดเธเธฒเธขเธ','เธเธฑเธเธงเธฒเธเธก'];
+const M_SHORT_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const M_FULL = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const M_FULL_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const M_FULL_ZH = M_SHORT_ZH;
-const SLOT_STEP = 30;                 // เธเธฒเธ—เธตเธ•เนเธญ 1 เธเนเธงเธเธเธดเธง
-const WEEKDAY_LEAD_MIN = 6 * 60;      // เน€เธเธเธฒเธฐเธเธดเธงเธ เธฒเธขเนเธเธงเธฑเธ เธโ€“เธจ: เธฅเนเธงเธเธซเธเนเธฒเธญเธขเนเธฒเธเธเนเธญเธข 6 เธเธฑเนเธงเนเธกเธ
-const WEEKDAY_SAME_DAY_CUTOFF_MIN = 10 * 60; // เธเธฑเธเธ—เธฃเนโ€“เธจเธธเธเธฃเน: เธขเธทเธเธขเธฑเธเธเธดเธงเธ เธฒเธขเนเธเธงเธฑเธเนเธ”เนเธเนเธฒเธ—เธตเนเธชเธธเธ” 10:00 เธ.
-const WEEKDAY_LAST_END_MIN = 16 * 60;   // เน€เธเธเธฒเธฐเธเธดเธงเธ เธฒเธขเนเธเธงเธฑเธ เธโ€“เธจ: เธ•เนเธญเธเนเธซเนเธเธฃเธดเธเธฒเธฃเน€เธชเธฃเนเธเนเธกเนเน€เธเธดเธ 16:00 เธ.
+const SLOT_STEP = 30;                 // นาทีต่อ 1 ช่วงคิว
+const WEEKDAY_LEAD_MIN = 6 * 60;      // เฉพาะคิวภายในวัน จ–ศ: ล่วงหน้าอย่างน้อย 6 ชั่วโมง
+const WEEKDAY_SAME_DAY_CUTOFF_MIN = 10 * 60; // จันทร์–ศุกร์: ยืนยันคิวภายในวันได้ช้าที่สุด 10:00 น.
+const WEEKDAY_LAST_END_MIN = 16 * 60;   // เฉพาะคิวภายในวัน จ–ศ: ต้องให้บริการเสร็จไม่เกิน 16:00 น.
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -798,32 +798,32 @@ const dayShort = d => S.lang==='zh' ? D_SHORT_ZH[d.getDay()] : S.lang==='en' ? D
 const monShort = d => S.lang==='zh' ? M_SHORT_ZH[d.getMonth()] : S.lang==='en' ? M_SHORT_EN[d.getMonth()] : M_SHORT[d.getMonth()];
 const longDate = s => {
   const d = parseYmd(s);
-  if (S.lang==='zh') return `${d.getFullYear()}ๅนด${d.getMonth()+1}ๆ${d.getDate()}ๆ—ฅ ${D_FULL_ZH[d.getDay()]}`;
+  if (S.lang==='zh') return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 ${D_FULL_ZH[d.getDay()]}`;
   if (S.lang==='en') return `${D_FULL_EN[d.getDay()]}, ${monShort(d)} ${d.getDate()}, ${d.getFullYear()}`;
-  return `${D_FULL[d.getDay()]}เธ—เธตเน ${d.getDate()} ${M_SHORT[d.getMonth()]} ${d.getFullYear()+543}`;
+  return `${D_FULL[d.getDay()]}ที่ ${d.getDate()} ${M_SHORT[d.getMonth()]} ${d.getFullYear()+543}`;
 };
 const branchById = id => BRANCHES.find(b => b.id === id);
 const serviceById = id => SERVICES.find(s => s.id === id);
-// เธเนเธญเธเธเธฑเธเนเธญเธเธญเธเธเธฃเธดเธเธฒเธฃเธเนเธณ เนเธ”เธขเน€เธฅเธทเธญเธเนเธญเธเธญเธเธ•เธฒเธกเธเธฃเธฐเน€เธ เธ—เธเธฃเธดเธเธฒเธฃเธเนเธญเธ เนเธฅเนเธงเธเนเธญเธข fallback เนเธเนเธเน ico เธเธฒเธ Lark
+// ป้องกันไอคอนบริการซ้ำ โดยเลือกไอคอนตามประเภทบริการก่อน แล้วค่อย fallback ไปใช้ ico จาก Lark
 function serviceIcon(s){
   const label = `${s?.id || ''} ${s?.name || ''} ${s?.nameEn || ''}`.toLowerCase();
-  if (/เธงเธฑเธ”เธ•เธฑเธง|measure|measurement|tailor/.test(label)){
-    // เธชเธฒเธขเธงเธฑเธ”
+  if (/วัดตัว|measure|measurement|tailor/.test(label)){
+    // สายวัด
     return '<path d="M4 7.5A3.5 3.5 0 017.5 4h9A3.5 3.5 0 0120 7.5v9a3.5 3.5 0 01-3.5 3.5h-9A3.5 3.5 0 014 16.5v-9z"/><path d="M7 8h2M7 11h4M7 14h2M7 17h4M16 7v10"/>';
   }
-  if (/เธฃเธฑเธเธชเธดเธเธเนเธฒ|pickup|เธเธดเธ•เธ•เธดเนเธ|fitting/.test(label)){
-    // เธ–เธธเธเธชเธดเธเธเนเธฒ
+  if (/รับสินค้า|pickup|ฟิตติ้ง|fitting/.test(label)){
+    // ถุงสินค้า
     return '<path d="M4 8h16l-1 12H5L4 8zM8 8V6a4 4 0 018 0v2"/>';
   }
-  if (/เน€เธฅเธทเธญเธเธเธก|product|view|browse/.test(label)){
-    // เน€เธชเธทเนเธญ
+  if (/เลือกชม|product|view|browse/.test(label)){
+    // เสื้อ
     return '<path d="M12 3l4 2 5 3-2 3-3-1v11H8V10L5 11 3 8l5-3 4-2zM9 3.5a3 3 0 006 0"/>';
   }
   return s?.ico || '<circle cx="12" cy="12" r="8"/><path d="M8 12h8"/>';
 }
-// เน€เธงเธฅเธฒเธ—เธตเนเนเธเนเธเธฃเธดเธ = เน€เธงเธฅเธฒเธ•เนเธญเธเธ ร— เธเธณเธเธงเธเธเธ (เน€เธเนเธ 1 เธเธก./เธเธ, 2 เธเธ = 2 เธเธก.)
+// เวลาที่ใช้จริง = เวลาต่อคน × จำนวนคน (เช่น 1 ชม./คน, 2 คน = 2 ชม.)
 const svcMins = (s, people) => (s ? Number(s.mins) || 0 : 0) * Math.max(1, Number(people) || 1);
-const slotRange = (time, s, people) => `${time} โ€“ ${toHHMM(toMin(time) + svcMins(s, people))}`;
+const slotRange = (time, s, people) => `${time} – ${toHHMM(toMin(time) + svcMins(s, people))}`;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 function isWeekdayDate(dateStr){
@@ -838,18 +838,18 @@ function appointmentDateTime(dateStr, timeStr){
   return d;
 }
 
-// เธเธทเธ key เธเธญเธเธเนเธญเธเธงเธฒเธกเธเธดเธ”เน€เธเธทเนเธญเธเนเธ เธซเธฃเธทเธญ null เน€เธกเธทเนเธญเน€เธงเธฅเธฒเธเธฑเธ”เธเธญเธเนเธ”เน
+// คืน key ของข้อความผิดเงื่อนไข หรือ null เมื่อเวลานัดจองได้
 function bookingRuleViolation(dateStr, timeStr, now = new Date()){
   if (!dateStr || !timeStr) return null;
   const bookedAt = new Date(now);
   bookedAt.setSeconds(0, 0);
   const todayStr = ymd(bookedAt);
 
-  // เธซเธฒเธเน€เธฅเธทเธญเธเธงเธฑเธเธเธฑเธ”เธฅเนเธงเธเธซเธเนเธฒ เนเธซเนเธเธญเธเธ•เธฒเธกเน€เธงเธฅเธฒเน€เธเธดเธ”โ€“เธเธดเธ”เธชเธฒเธเธฒเนเธ”เนเธ•เธฒเธกเธเธเธ•เธด
+  // หากเลือกวันนัดล่วงหน้า ให้จองตามเวลาเปิด–ปิดสาขาได้ตามปกติ
   if (dateStr > todayStr) return null;
   if (dateStr < todayStr) return 'timeUnavailable';
 
-  // เน€เธชเธฒเธฃเนโ€“เธญเธฒเธ—เธดเธ•เธขเนเธ•เนเธญเธเธเธญเธเธเธฒเธเธงเธฑเธเธเนเธญเธเธซเธเนเธฒ เธเธถเธเนเธกเนเน€เธเธดเธ”เธเธดเธงเธ เธฒเธขเนเธเธงเธฑเธเน€เธ”เธตเธขเธงเธเธฑเธ
+  // เสาร์–อาทิตย์ต้องจองจากวันก่อนหน้า จึงไม่เปิดคิวภายในวันเดียวกัน
   const weekday = isWeekdayDate(dateStr);
   if (!weekday) return 'weekendBookingRule';
 
@@ -887,9 +887,9 @@ function openStatus(branch){
 function slotsFor(branch, dateStr, mins, now = new Date()){
   const date = parseYmd(dateStr);
   const [o,c] = hoursOf(branch, date);
-  // เน€เธงเธฅเธฒเธเธญเธเธญเธดเธเธ•เธฒเธกเน€เธงเธฅเธฒเน€เธเธดเธ”โ€“เธเธดเธ”เธเธญเธเธชเธฒเธเธฒ เนเธฅเธฐเธ•เนเธญเธเธเธเธเธฃเธดเธเธฒเธฃเธเนเธญเธเธฃเนเธฒเธเธเธดเธ”
-  // เธเธดเธงเธ เธฒเธขเนเธเธงเธฑเธ เธโ€“เธจ เธ•เนเธญเธเธเธเธเธฃเธดเธเธฒเธฃเนเธกเนเน€เธเธดเธ 16:00 เธ.
-  // เน€เธเนเธ 1 เธเธก. = เน€เธฃเธดเนเธกเนเธ”เนเธเนเธฒเธ—เธตเนเธชเธธเธ” 15:00, 2 เธเธก. = เน€เธฃเธดเนเธกเนเธ”เนเธเนเธฒเธ—เธตเนเธชเธธเธ” 14:00
+  // เวลาจองอิงตามเวลาเปิด–ปิดของสาขา และต้องจบบริการก่อนร้านปิด
+  // คิวภายในวัน จ–ศ ต้องจบบริการไม่เกิน 16:00 น.
+  // เช่น 1 ชม. = เริ่มได้ช้าที่สุด 15:00, 2 ชม. = เริ่มได้ช้าที่สุด 14:00
   const sameDayWeekday = dateStr === ymd(now) && isWeekdayDate(dateStr);
   const latestStart = Math.min(
     toMin(c) - mins,
@@ -910,22 +910,22 @@ function bookingSelectionViolation(branch, dateStr, timeStr, mins, now = new Dat
   return slot && slot.ok ? null : 'timeUnavailable';
 }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   4. เธ—เธตเนเน€เธเนเธเธเนเธญเธกเธนเธฅ
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   เธชเธฒเธกเนเธซเธกเธ” เน€เธฅเธทเธญเธเธญเธฑเธ•เนเธเธกเธฑเธ•เธดเธ•เธฒเธก API_URL เธ”เนเธฒเธเธฅเนเธฒเธ:
-   1) เนเธกเนเธ•เธฑเนเธเธเนเธฒ API_URL เน€เธฅเธข โ’ เนเธเน localStorage เธเธญเธเน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเนเธฅเนเธงเธเน
-      เนเธกเนเธ•เนเธญเธเธกเธต backend เนเธ”เน เธ—เธณเธเธฒเธเนเธ”เนเธ—เธฑเธเธ—เธตเธเธ GitHub Pages
-      เธเนเธญเธเธณเธเธฑเธ”: เธเนเธญเธกเธนเธฅ (เธเธฒเธฃเธเธญเธ/เธชเธฒเธเธฒ/เธเธฃเธดเธเธฒเธฃ) เธญเธขเธนเนเนเธเนเน€เธเธฃเธทเนเธญเธ/เน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเนเธเธฑเนเธ
-      เนเธกเน sync เธเนเธฒเธกเธญเธธเธเธเธฃเธ“เน เนเธญเธ”เธกเธดเธเธเนเน€เธซเนเธเนเธเนเธเนเธญเธกเธนเธฅเธ—เธตเนเธเธญเธเธเธฒเธเน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเนเน€เธ”เธตเธขเธงเธเธฑเธ
-   2) เธ•เธฑเนเธเธเนเธฒ API_URL เน€เธเนเธ n8n webhook โ’ เธเนเธญเธกเธนเธฅเธญเธขเธนเน Lark Base เธชเนเธงเธเธเธฅเธฒเธ
-      เธ—เธธเธเธเธเน€เธซเนเธเธ•เธฃเธเธเธฑเธ เนเธญเธ”เธกเธดเธเน€เธซเนเธเธ เธฒเธเธฃเธงเธกเธเธฃเธดเธ เธ•เนเธญเธเธ•เธฑเนเธเธเนเธฒ n8n (เธ”เธน setup-n8n-lark.md)
-   เนเธกเนเนเธ”เนเนเธเน window.storage เธญเธตเธเธ•เนเธญเนเธ (เนเธเนเนเธ”เนเนเธเนเนเธ Claude.ai เน€เธ—เนเธฒเธเธฑเนเธ)
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
-const API_URL = '/api/suitcube'; // เน€เธงเนเธเธงเนเธฒเธเนเธงเน = เนเธเน localStorage เธญเธขเนเธฒเธเน€เธ”เธตเธขเธง | เนเธชเน path/URL เธเธญเธ backend (n8n เธซเธฃเธทเธญ Express) เน€เธเธทเนเธญเธเนเธญเธกเธนเธฅเธฃเธงเธกเธจเธนเธเธขเนเธเนเธฒเธ Lark Base
-// TODO: เนเธชเน path เธงเธดเธ”เธตเนเธญ Hero เธ•เธฃเธเธเธตเนเธ เธฒเธขเธซเธฅเธฑเธ เน€เธเนเธ '/assets/suitcube-booking.mp4'
+/* ═══════════════════════════════════════════════
+   4. ที่เก็บข้อมูล
+   ═══════════════════════════════════════════════
+   สามโหมด เลือกอัตโนมัติตาม API_URL ด้านล่าง:
+   1) ไม่ตั้งค่า API_URL เลย → ใช้ localStorage ของเบราว์เซอร์ล้วนๆ
+      ไม่ต้องมี backend ใดๆ ทำงานได้ทันทีบน GitHub Pages
+      ข้อจำกัด: ข้อมูล (การจอง/สาขา/บริการ) อยู่แค่เครื่อง/เบราว์เซอร์นั้น
+      ไม่ sync ข้ามอุปกรณ์ แอดมินก็เห็นแค่ข้อมูลที่จองจากเบราว์เซอร์เดียวกัน
+   2) ตั้งค่า API_URL เป็น n8n webhook → ข้อมูลอยู่ Lark Base ส่วนกลาง
+      ทุกคนเห็นตรงกัน แอดมินเห็นภาพรวมจริง ต้องตั้งค่า n8n (ดู setup-n8n-lark.md)
+   ไม่ได้ใช้ window.storage อีกต่อไป (ใช้ได้แค่ใน Claude.ai เท่านั้น)
+   ═══════════════════════════════════════════════ */
+const API_URL = '/api/suitcube'; // เว้นว่างไว้ = ใช้ localStorage อย่างเดียว | ใส่ path/URL ของ backend (n8n หรือ Express) เพื่อข้อมูลรวมศูนย์ผ่าน Lark Base
+// TODO: ใส่ path วิดีโอ Hero ตรงนี้ภายหลัง เช่น '/assets/suitcube-booking.mp4'
 const HERO_VIDEO_PATH = '/Video/1440x240.mp4';
-const ADMIN_PIN = '1234'; // PIN เธซเธฅเธฑเธเธเนเธฒเธเนเธเธเธเนเธฒเธข โ€” เธ—เธณเธเธฒเธเธเธฑเนเธ client เน€เธ—เนเธฒเธเธฑเนเธ เนเธกเนเนเธเนเธฃเธฐเธเธเธเธงเธฒเธกเธเธฅเธญเธ”เธ เธฑเธขเธเธฃเธดเธ
+const ADMIN_PIN = '1234'; // PIN หลังบ้านแบบง่าย — ทำงานฝั่ง client เท่านั้น ไม่ใช่ระบบความปลอดภัยจริง
 const LS = { my:'suitcube:my-codes', bookings:'suitcube:bookings-local', branches:'suitcube:branches-local', services:'suitcube:services-local' };
 
 let bookings = [];
@@ -935,8 +935,8 @@ let SERVICES = [];
 let storageOK = true;
 let apiConfigured = !!API_URL;
 
-// iOS เธ•เนเธญเธเน€เธเธดเธ” .ics เธเธฒเธ URL เธ—เธตเนเธ•เธญเธเธเธฅเธฑเธเน€เธเนเธ text/calendar เธเธฃเธดเธ เธเธถเธเนเธเน Service Worker
-// เธ•เธฑเธงเน€เธฅเนเธเธ—เธตเนเธงเธฒเธเธเธนเนเธเธฑเธเนเธเธฅเน HTML (เธ—เธณเธเธฒเธเน€เธกเธทเนเธญเน€เธงเนเธเน€เธเธดเธ”เธเนเธฒเธ HTTPS เธซเธฃเธทเธญ localhost)
+// iOS ต้องเปิด .ics จาก URL ที่ตอบกลับเป็น text/calendar จริง จึงใช้ Service Worker
+// ตัวเล็กที่วางคู่กับไฟล์ HTML (ทำงานเมื่อเว็บเปิดผ่าน HTTPS หรือ localhost)
 let calendarSWActive = false;
 let calendarSWReady = null;
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
@@ -994,7 +994,7 @@ async function loadBookings(){
       saveBookingsLocal();
       storageOK = true;
     } else {
-      // เธ–เนเธฒ API เธฅเนเธกเธเธฑเนเธงเธเธฃเธฒเธง เนเธซเนเธขเธฑเธเน€เธซเนเธเธเธดเธงเธ—เธตเนเน€เธเธขเนเธซเธฅเธ”/เธเธญเธเนเธงเนเนเธเน€เธเธฃเธทเนเธญเธ
+      // ถ้า API ล่มชั่วคราว ให้ยังเห็นคิวที่เคยโหลด/จองไว้ในเครื่อง
       bookings = cached;
       storageOK = cached.length > 0;
     }
@@ -1012,7 +1012,7 @@ async function refreshBookings(){
   }
 }
 async function goMine(){
-  // เน€เธเธดเธ”เธซเธเนเธฒเธเธดเธงเธ—เธฑเธเธ—เธตเธเธฒเธเธเนเธญเธกเธนเธฅเนเธเน€เธเธฃเธทเนเธญเธเธเนเธญเธ เน€เธเธทเนเธญเนเธซเนเธเธธเนเธกเธ•เธญเธเธชเธเธญเธเน€เธชเธกเธญ
+  // เปิดหน้าคิวทันทีจากข้อมูลในเครื่องก่อน เพื่อให้ปุ่มตอบสนองเสมอ
   go('mine');
   await refreshBookings();
   if (S.step === 'mine') render();
@@ -1031,8 +1031,8 @@ async function loadBranchesServices(){
   }
 }
 
-// เน€เธเนเธเธงเนเธฒเธเนเธงเธเน€เธงเธฅเธฒเธ—เธตเนเธเธฐเธเธญเธเธ—เธฑเธเธเธฑเธเธเธดเธงเน€เธ”เธดเธกเธซเธฃเธทเธญเนเธกเน
-// (เน€เธ”เธดเธกเน€เธเนเธเนเธเนเน€เธงเธฅเธฒเน€เธฃเธดเนเธกเธ•เธฃเธเธเธฑเธเน€เธเนเธฐ โ€” เธเธญเธเธดเธงเธขเธฒเธงเธซเธฅเธฒเธขเธเธฑเนเธงเนเธกเธเธเธฐเธเธญเธเธเนเธญเธเธ—เธฑเธเธเธฑเธเนเธ”เน)
+// เช็คว่าช่วงเวลาที่จะจองทับกับคิวเดิมหรือไม่
+// (เดิมเช็คแค่เวลาเริ่มตรงกันเป๊ะ — พอคิวยาวหลายชั่วโมงจะจองซ้อนทับกันได้)
 function isTaken(branchId, date, time, mins){
   const startNew = toMin(time);
   const endNew = startNew + (mins || 0);
@@ -1041,8 +1041,8 @@ function isTaken(branchId, date, time, mins){
     const sv = serviceById(b.serviceId);
     const startOld = toMin(b.time);
     const endOld = startOld + (svcMins(sv, b.people) || SLOT_STEP);
-    if (!mins) return startOld === startNew;      // เน€เธเธทเนเธญเธเธฃเธ“เธตเนเธกเนเธฃเธนเนเธเธงเธฒเธกเธขเธฒเธง เนเธเนเนเธเธเน€เธ”เธดเธก
-    return startOld < endNew && startNew < endOld; // เธ—เธฑเธเธเธฑเธเธเธฃเธดเธเธซเธฃเธทเธญเนเธกเน
+    if (!mins) return startOld === startNew;      // เผื่อกรณีไม่รู้ความยาว ใช้แบบเดิม
+    return startOld < endNew && startNew < endOld; // ทับกันจริงหรือไม่
   });
 }
 function makeCode(){
@@ -1052,9 +1052,9 @@ function makeCode(){
   return 'SC-' + out;
 }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   5. เธชเธ–เธฒเธเธฐเธซเธเนเธฒเธเธญ
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   5. สถานะหน้าจอ
+   ═══════════════════════════════════════════════ */
 const STEPS = ['branch','service','datetime','form','review'];
 const _today0 = new Date();
 let S = { step:'branch', lang:'th', area:'bkk', q:'', branchId:null, serviceId:null,
@@ -1096,7 +1096,7 @@ function bookingPopupDetails(booking){
   return {
     name: booking && booking.name ? booking.name : '-',
     service: service ? sname(service) : (booking && (booking.serviceName || booking.serviceId) ? (booking.serviceName || booking.serviceId) : '-'),
-    time: [dateText, timeText].filter(Boolean).join(' ยท ')
+    time: [dateText, timeText].filter(Boolean).join(' · ')
   };
 }
 
@@ -1163,8 +1163,8 @@ function canvasWrappedLines(ctx, value, maxWidth, maxLines){
   }
   if (truncated && lines.length){
     let last = lines[maxLines - 1] || '';
-    while (last && ctx.measureText(last + 'โ€ฆ').width > maxWidth) last = Array.from(last).slice(0, -1).join('');
-    lines[maxLines - 1] = last.replace(/[\s,.;:โ€“-]+$/u, '') + 'โ€ฆ';
+    while (last && ctx.measureText(last + '…').width > maxWidth) last = Array.from(last).slice(0, -1).join('');
+    lines[maxLines - 1] = last.replace(/[\s,.;:–-]+$/u, '') + '…';
   }
   return lines.length ? lines : ['-'];
 }
@@ -1353,9 +1353,9 @@ function go(step){
   window.scrollTo({ top:0, behavior:'instant' in window ? 'instant' : 'auto' });
 }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   6. เธซเธเนเธฒเธเธญ
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   6. หน้าจอ
+   ═══════════════════════════════════════════════ */
 function heroHTML(){
   const video = HERO_VIDEO_PATH && !HERO_VIDEO_PATH.startsWith('VIDEO_PATH_HERE')
     ? `<video class="hero__video" autoplay muted loop playsinline preload="metadata" src="${esc(HERO_VIDEO_PATH)}" onerror="this.hidden=true"></video>`
@@ -1437,7 +1437,7 @@ function footerHTML(){
            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
          </a>
          </div>
-         <div class="footer__copy">SUITCUBE โ€” เธชเธเธงเธเธฅเธดเธเธชเธดเธ—เธเธดเนเธ—เธธเธเธเธฃเธฐเธเธฒเธฃ</div>
+         <div class="footer__copy">SUITCUBE — สงวนลิขสิทธิ์ทุกประการ</div>
     </footer>`;
 }
 
@@ -1553,7 +1553,7 @@ function screenReview(){
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', svcMins(sv, S.people))}</small></span></div>
       <div class="sum__row"><span class="sum__k">${tt('kDate')}</span><span class="sum__v">${longDate(S.date)}</span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kTime')}</span><span class="sum__v mono">${S.time} โ€“ ${end}</span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kTime')}</span><span class="sum__v mono">${S.time} – ${end}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${S.people}</span></div>
       <div class="sum__row"><span class="sum__k">${tt('kBookedBy')}</span><span class="sum__v">${esc(S.name)}<small class="mono">${esc(S.phone)}</small></span></div>
       ${S.note?`<div class="sum__row"><span class="sum__k">${tt('kNotes')}</span><span class="sum__v" style="font-weight:400">${esc(S.note)}</span></div>`:''}
@@ -1610,9 +1610,9 @@ function screenMine(){
   `;
 }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   7. เนเธ–เธเธเธธเนเธกเธ”เนเธฒเธเธฅเนเธฒเธ
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   7. แถบปุ่มด้านล่าง
+   ═══════════════════════════════════════════════ */
 function barHTML(){
   switch(S.step){
     case 'branch':
@@ -1635,9 +1635,9 @@ function barHTML(){
   return '';
 }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   8. เน€เธฃเธเน€เธ”เธญเธฃเน
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   8. เรนเดอร์
+   ═══════════════════════════════════════════════ */
 function TITLES(){
   return { branch:'Suitcube', service:tt('whatService'), datetime:tt('chooseDatetime'), form:tt('yourDetails'), review:tt('reviewTitle'), done:tt('doneTitle'), mine:tt('myBookings') };
 }
@@ -1677,22 +1677,22 @@ function render(){
   bar.innerHTML = barHTML();
 }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   9. เธซเธฅเธฑเธเธเนเธฒเธ (Admin)
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   9. หลังบ้าน (Admin)
+   ═══════════════════════════════════════════════ */
 const ADMIN_TITLES = {
-  login:'เน€เธเนเธฒเธชเธนเนเธฃเธฐเธเธเธซเธฅเธฑเธเธเนเธฒเธ', home:'เธซเธฅเธฑเธเธเนเธฒเธ', branches:'เธเธฑเธ”เธเธฒเธฃเธชเธฒเธเธฒ', 'branch-edit':'เธเนเธญเธกเธนเธฅเธชเธฒเธเธฒ',
-  'branch-schedule':'เธ•เธฑเนเธเน€เธงเธฅเธฒเธเธดเธ”-เน€เธเธดเธ”',
-  services:'เธเธฑเธ”เธเธฒเธฃเธเธฃเธดเธเธฒเธฃ', 'service-edit':'เธเนเธญเธกเธนเธฅเธเธฃเธดเธเธฒเธฃ', bookings:'เธ เธฒเธเธฃเธงเธกเธเธฒเธฃเธเธญเธ',
+  login:'เข้าสู่ระบบหลังบ้าน', home:'หลังบ้าน', branches:'จัดการสาขา', 'branch-edit':'ข้อมูลสาขา',
+  'branch-schedule':'ตั้งเวลาปิด-เปิด',
+  services:'จัดการบริการ', 'service-edit':'ข้อมูลบริการ', bookings:'ภาพรวมการจอง',
 };
 
 function renderAdmin(){
   document.documentElement.lang = 'th';
-  navTitle.textContent = ADMIN_TITLES[S.adminStep] || 'เธซเธฅเธฑเธเธเนเธฒเธ';
+  navTitle.textContent = ADMIN_TITLES[S.adminStep] || 'หลังบ้าน';
   navBack.setAttribute('aria-label', tt('back'));
   navBack.disabled = (S.adminStep === 'home');
   navLang.style.visibility = 'hidden';
-  navMine.textContent = 'เธญเธญเธ';
+  navMine.textContent = 'ออก';
   tape.style.display = 'none';
   hero.classList.remove('is-on'); hero.innerHTML = '';
 
@@ -1711,32 +1711,32 @@ function renderAdmin(){
 
 function adminLogin(){
   return `
-    <h1 class="h1">เน€เธเนเธฒเธชเธนเนเธฃเธฐเธเธเธซเธฅเธฑเธเธเนเธฒเธ</h1>
-    <p class="sub">เธชเธณเธซเธฃเธฑเธเธเธเธฑเธเธเธฒเธเน€เธ—เนเธฒเธเธฑเนเธ โ€” เนเธชเน PIN เน€เธเธทเนเธญเธเธฑเธ”เธเธฒเธฃเธชเธฒเธเธฒ เธเธฃเธดเธเธฒเธฃ เนเธฅเธฐเธ”เธนเธ เธฒเธเธฃเธงเธกเธเธฒเธฃเธเธญเธ</p>
+    <h1 class="h1">เข้าสู่ระบบหลังบ้าน</h1>
+    <p class="sub">สำหรับพนักงานเท่านั้น — ใส่ PIN เพื่อจัดการสาขา บริการ และดูภาพรวมการจอง</p>
     <div class="field ${S.adminPinErr?'is-bad':''}">
       <label for="f-pin">PIN</label>
-      <input id="f-pin" data-admink="adminPin" type="password" inputmode="numeric" value="${esc(S.adminPin)}" placeholder="โ€ขโ€ขโ€ขโ€ข" autocomplete="off">
-      <p class="err">PIN เนเธกเนเธ–เธนเธเธ•เนเธญเธ</p>
+      <input id="f-pin" data-admink="adminPin" type="password" inputmode="numeric" value="${esc(S.adminPin)}" placeholder="••••" autocomplete="off">
+      <p class="err">PIN ไม่ถูกต้อง</p>
     </div>
-    <div class="note">เนเธชเน Password เธชเธณเธซเธฃเธฑเธเธเธฒเธฃเน€เธเนเธฒเธ–เธถเธเธเธฒเธฃเธเธฑเธ”เธเธฒเธฃเธซเธเนเธฒเน€เธงเนเธเนเธเธ•เน</div>
+    <div class="note">ใส่ Password สำหรับการเข้าถึงการจัดการหน้าเว็บไซต์</div>
   `;
 }
 
 function adminHome(){
   return `
-    <h1 class="h1">เธชเธงเธฑเธชเธ”เธตเธเธฃเธฑเธ ๐‘</h1>
-    <p class="sub">เน€เธฅเธทเธญเธเธชเธดเนเธเธ—เธตเนเธ•เนเธญเธเธเธฒเธฃเธเธฑเธ”เธเธฒเธฃ</p>
+    <h1 class="h1">สวัสดีครับ 👋</h1>
+    <p class="sub">เลือกสิ่งที่ต้องการจัดการ</p>
     <button class="card" data-adminnav="branches">
       <div class="svc"><span class="svc__ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1V10.5z"/></svg></span>
-      <span><span class="card__name">เธเธฑเธ”เธเธฒเธฃเธชเธฒเธเธฒ</span><span class="card__loc" style="display:block">เน€เธเธดเนเธก เนเธเนเนเธ เธซเธฃเธทเธญเธเธดเธ”เธฃเธฑเธเธเธญเธเธฃเธฒเธขเธชเธฒเธเธฒ</span></span></div>
+      <span><span class="card__name">จัดการสาขา</span><span class="card__loc" style="display:block">เพิ่ม แก้ไข หรือปิดรับจองรายสาขา</span></span></div>
     </button>
     <button class="card" data-adminnav="services">
       <div class="svc"><span class="svc__ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l4 2 5 3-2 3-3-1v11H8V10L5 11 3 8l5-3 4-2zM9 3.5a3 3 0 006 0"/></svg></span>
-      <span><span class="card__name">เธเธฑเธ”เธเธฒเธฃเธเธฃเธดเธเธฒเธฃ</span><span class="card__loc" style="display:block">เน€เธเธดเนเธก เนเธเนเนเธ เธซเธฃเธทเธญเธฅเธเธเธฃเธฐเน€เธ เธ—เธเธฃเธดเธเธฒเธฃ</span></span></div>
+      <span><span class="card__name">จัดการบริการ</span><span class="card__loc" style="display:block">เพิ่ม แก้ไข หรือลบประเภทบริการ</span></span></div>
     </button>
     <button class="card" data-adminnav="bookings">
       <div class="svc"><span class="svc__ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span>
-      <span><span class="card__name">เธ เธฒเธเธฃเธงเธกเธเธฒเธฃเธเธญเธ</span><span class="card__loc" style="display:block">เธ”เธนเนเธฅเธฐเธเธฑเธ”เธเธฒเธฃเธเธดเธงเธ—เธฑเนเธเธซเธกเธ”เธเธญเธเธ—เธธเธเธชเธฒเธเธฒ</span></span></div>
+      <span><span class="card__name">ภาพรวมการจอง</span><span class="card__loc" style="display:block">ดูและจัดการคิวทั้งหมดของทุกสาขา</span></span></div>
     </button>
   `;
 }
@@ -1754,37 +1754,37 @@ function sortedBranchesForAdmin(){
                         const cb = isBranchClosed(b, ymd(new Date())) ? 1 : 0;
                         return ca === cb ? byName(a,b) : ca - cb;
                       });
-    default:          return list; // 'custom' = เธ•เธฒเธกเธฅเธณเธ”เธฑเธเธ—เธตเนเธเธฑเธเธ—เธถเธเนเธงเนเน€เธ”เธดเธก
+    default:          return list; // 'custom' = ตามลำดับที่บันทึกไว้เดิม
   }
 }
 
 function adminBranches(){
   const list = sortedBranchesForAdmin();
   return `
-    <h1 class="h1">เธเธฑเธ”เธเธฒเธฃเธชเธฒเธเธฒ</h1>
-    <p class="sub">${BRANCHES.length} เธชเธฒเธเธฒเธ—เธฑเนเธเธซเธกเธ”</p>
+    <h1 class="h1">จัดการสาขา</h1>
+    <p class="sub">${BRANCHES.length} สาขาทั้งหมด</p>
     <div class="field" style="margin-bottom:14px">
-      <label for="admBSort">เธเธฑเธ”เน€เธฃเธตเธขเธเธ•เธฒเธก</label>
+      <label for="admBSort">จัดเรียงตาม</label>
       <select id="admBSort" data-admbsort="1" style="width:100%;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2);border:none;outline:0;font-size:16px">
-        <option value="custom"   ${S.adminBSort==='custom'?'selected':''}>เธฅเธณเธ”เธฑเธเน€เธ”เธดเธก (เธ•เธฒเธกเธ—เธตเนเน€เธเธดเนเธกเนเธงเน)</option>
-        <option value="name"     ${S.adminBSort==='name'?'selected':''}>เธเธทเนเธญเธชเธฒเธเธฒ เธ โ’ เธฎ</option>
-        <option value="nameDesc" ${S.adminBSort==='nameDesc'?'selected':''}>เธเธทเนเธญเธชเธฒเธเธฒ เธฎ โ’ เธ</option>
-        <option value="area"     ${S.adminBSort==='area'?'selected':''}>เนเธเธ (เธเธฃเธธเธเน€เธ—เธเธฏ เธเนเธญเธ)</option>
-        <option value="status"   ${S.adminBSort==='status'?'selected':''}>เธชเธ–เธฒเธเธฐ (เน€เธเธดเธ”เธฃเธฑเธเธเธญเธเธเนเธญเธ)</option>
+        <option value="custom"   ${S.adminBSort==='custom'?'selected':''}>ลำดับเดิม (ตามที่เพิ่มไว้)</option>
+        <option value="name"     ${S.adminBSort==='name'?'selected':''}>ชื่อสาขา ก → ฮ</option>
+        <option value="nameDesc" ${S.adminBSort==='nameDesc'?'selected':''}>ชื่อสาขา ฮ → ก</option>
+        <option value="area"     ${S.adminBSort==='area'?'selected':''}>โซน (กรุงเทพฯ ก่อน)</option>
+        <option value="status"   ${S.adminBSort==='status'?'selected':''}>สถานะ (เปิดรับจองก่อน)</option>
       </select>
     </div>
     ${list.map(b => `
       <div class="arow">
         <div class="arow__main">
-          <div class="arow__name">${esc(b.name)}${b.closed?' <span class="arow__tag">เธเธดเธ”เธฃเธฑเธเธเธญเธ</span>':''}${(b.closedFrom && b.closedTo)?` <span class="arow__tag arow__tag--sched">เธเธดเธ”เธญเธฑเธ•เนเธเธกเธฑเธ•เธด ${b.closedFrom.slice(5)} โ€“ ${b.closedTo.slice(5)}</span>`:''}</div>
-          <div class="arow__sub">${esc(b.district||'')} ยท ${b.area==='bkk'?'เธเธฃเธธเธเน€เธ—เธเธฏ':'เธ•เนเธฒเธเธเธฑเธเธซเธงเธฑเธ”'}</div>
+          <div class="arow__name">${esc(b.name)}${b.closed?' <span class="arow__tag">ปิดรับจอง</span>':''}${(b.closedFrom && b.closedTo)?` <span class="arow__tag arow__tag--sched">ปิดอัตโนมัติ ${b.closedFrom.slice(5)} – ${b.closedTo.slice(5)}</span>`:''}</div>
+          <div class="arow__sub">${esc(b.district||'')} · ${b.area==='bkk'?'กรุงเทพฯ':'ต่างจังหวัด'}</div>
         </div>
-        <button class="toggle ${b.closed?'':'is-on'}" data-toggleclose="${b.id}" title="เน€เธเธดเธ”/เธเธดเธ”เธฃเธฑเธเธเธญเธเธ—เธฑเธเธ—เธต"><span></span></button>
-        <button class="arow__sched" data-schedulebranch="${b.id}" title="เธ•เธฑเนเธเน€เธงเธฅเธฒเธเธดเธ”-เน€เธเธดเธ”เธญเธฑเธ•เนเธเธกเธฑเธ•เธด">
+        <button class="toggle ${b.closed?'':'is-on'}" data-toggleclose="${b.id}" title="เปิด/ปิดรับจองทันที"><span></span></button>
+        <button class="arow__sched" data-schedulebranch="${b.id}" title="ตั้งเวลาปิด-เปิดอัตโนมัติ">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
         </button>
-        <button class="arow__edit" data-editbranch="${b.id}">เนเธเนเนเธ</button>
-        <button class="arow__del" data-delbranch="${b.id}" title="เธฅเธเธชเธฒเธเธฒ">
+        <button class="arow__edit" data-editbranch="${b.id}">แก้ไข</button>
+        <button class="arow__del" data-delbranch="${b.id}" title="ลบสาขา">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0-1 14a1 1 0 01-1 1H7a1 1 0 01-1-1L5 6"/></svg>
         </button>
       </div>`).join('')}
@@ -1795,44 +1795,44 @@ function adminBranchEdit(){
   const d = S.adminDraft;
   const isNew = S.adminEditId === 'new';
   return `
-    <h1 class="h1">${isNew?'เน€เธเธดเนเธกเธชเธฒเธเธฒเนเธซเธกเน':'เนเธเนเนเธเธชเธฒเธเธฒ'}</h1>
+    <h1 class="h1">${isNew?'เพิ่มสาขาใหม่':'แก้ไขสาขา'}</h1>
     <div class="field">
-      <label>เธฃเธนเธเธ เธฒเธเธชเธฒเธเธฒ (เนเธกเนเธเธฑเธเธเธฑเธ)</label>
+      <label>รูปภาพสาขา (ไม่บังคับ)</label>
       ${d.photo ? `
         <div class="photoprev">
           <img src="${d.photo}" alt="">
-          <button type="button" class="photoprev__x" data-removephoto="1" title="เธฅเธเธฃเธนเธ">
+          <button type="button" class="photoprev__x" data-removephoto="1" title="ลบรูป">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
           </button>
         </div>` : `
         <label class="photoupload">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg>
-          <span>เธญเธฑเธเนเธซเธฅเธ”เธฃเธนเธเธ เธฒเธ</span>
+          <span>อัปโหลดรูปภาพ</span>
           <input type="file" accept="image/*" data-photoupload="1" style="display:none">
         </label>`}
     </div>
-    <div class="field"><label>เธเธทเนเธญเธชเธฒเธเธฒ (เนเธ—เธข)</label><input data-admd="name" value="${esc(d.name||'')}"></div>
-    <div class="field"><label>เธเธทเนเธญเธชเธฒเธเธฒ (English)</label><input data-admd="nameEn" value="${esc(d.nameEn||'')}"></div>
-    <div class="field"><label>เน€เธเธ•/เธญเธณเน€เธ เธญ (เนเธ—เธข)</label><input data-admd="district" value="${esc(d.district||'')}"></div>
-    <div class="field"><label>เน€เธเธ•/เธญเธณเน€เธ เธญ (English)</label><input data-admd="districtEn" value="${esc(d.districtEn||'')}"></div>
-    <div class="field"><label>เธ—เธตเนเธ•เธฑเนเธ (เนเธ—เธข)</label><input data-admd="loc" value="${esc(d.loc||'')}"></div>
-    <div class="field"><label>เธ—เธตเนเธ•เธฑเนเธ (English)</label><input data-admd="locEn" value="${esc(d.locEn||'')}"></div>
-    <div class="field"><label>เธฅเธดเธเธเน Google Map</label><input data-admd="map" value="${esc(d.map||'')}"></div>
-    <div class="field"><label>เนเธเธ</label>
+    <div class="field"><label>ชื่อสาขา (ไทย)</label><input data-admd="name" value="${esc(d.name||'')}"></div>
+    <div class="field"><label>ชื่อสาขา (English)</label><input data-admd="nameEn" value="${esc(d.nameEn||'')}"></div>
+    <div class="field"><label>เขต/อำเภอ (ไทย)</label><input data-admd="district" value="${esc(d.district||'')}"></div>
+    <div class="field"><label>เขต/อำเภอ (English)</label><input data-admd="districtEn" value="${esc(d.districtEn||'')}"></div>
+    <div class="field"><label>ที่ตั้ง (ไทย)</label><input data-admd="loc" value="${esc(d.loc||'')}"></div>
+    <div class="field"><label>ที่ตั้ง (English)</label><input data-admd="locEn" value="${esc(d.locEn||'')}"></div>
+    <div class="field"><label>ลิงก์ Google Map</label><input data-admd="map" value="${esc(d.map||'')}"></div>
+    <div class="field"><label>โซน</label>
       <div class="seg" style="margin:0">
-        <button type="button" data-admdarea="bkk" class="${d.area==='bkk'?'is-on':''}">เธเธฃเธธเธเน€เธ—เธเธฏ & เธเธฃเธดเธกเธ“เธ‘เธฅ</button>
-        <button type="button" data-admdarea="up" class="${d.area==='up'?'is-on':''}">เธ•เนเธฒเธเธเธฑเธเธซเธงเธฑเธ”</button>
+        <button type="button" data-admdarea="bkk" class="${d.area==='bkk'?'is-on':''}">กรุงเทพฯ & ปริมณฑล</button>
+        <button type="button" data-admdarea="up" class="${d.area==='up'?'is-on':''}">ต่างจังหวัด</button>
       </div>
     </div>
-    <div class="field"><label>เน€เธงเธฅเธฒเน€เธเธดเธ” (เนเธเนเธ—เธธเธเธงเธฑเธ)</label><input data-admd="hOpen" type="time" value="${esc(d.hOpen||'10:00')}"></div>
-    <div class="field"><label>เน€เธงเธฅเธฒเธเธดเธ” (เนเธเนเธ—เธธเธเธงเธฑเธ)</label><input data-admd="hClose" type="time" value="${esc(d.hClose||'21:00')}"></div>
-    <div class="field"><label>เธ—เธตเนเธเธญเธ”เธฃเธ– (เนเธกเนเธเธฑเธเธเธฑเธ)</label><input data-admd="parking" value="${esc(d.parking||'')}"></div>
-    <div class="eyebrow" style="margin-top:18px">เธ•เธฑเนเธเน€เธงเธฅเธฒเธเธดเธ”เธฃเธฑเธเธเธญเธเธญเธฑเธ•เนเธเธกเธฑเธ•เธด (เนเธกเนเธเธฑเธเธเธฑเธ)</div>
-    <p class="sub" style="margin:0 0 10px">เธฃเธฐเธเธเธเธฐเธเธดเธ”เธฃเธฑเธเธเธญเธเธชเธฒเธเธฒเธเธตเนเธญเธฑเธ•เนเธเธกเธฑเธ•เธดเนเธเธเนเธงเธเธงเธฑเธเธ—เธตเนเธเธณเธซเธเธ” เนเธฅเนเธงเน€เธเธดเธ”เธเธฅเธฑเธเนเธซเนเน€เธญเธเธ—เธฑเธเธ—เธตเธ—เธตเนเธเนเธเธเนเธงเธ</p>
-    <div class="field"><label>เธเธดเธ”เธ•เธฑเนเธเนเธ•เนเธงเธฑเธเธ—เธตเน</label><input data-admd="closedFrom" type="date" value="${esc(d.closedFrom||'')}"></div>
-    <div class="field"><label>เธ–เธถเธเธงเธฑเธเธ—เธตเน (เน€เธเธดเธ”เธเธเธ•เธดเธงเธฑเธเธ–เธฑเธ”เนเธ)</label><input data-admd="closedTo" type="date" value="${esc(d.closedTo||'')}"></div>
-    ${(d.closedFrom && d.closedTo) ? `<button type="button" class="btn btn--ghost btn--sm" style="width:auto;padding:8px 14px;margin-bottom:14px" data-admdclearsched="1">เธฅเนเธฒเธเธเธณเธซเธเธ”เธเธฒเธฃ</button>` : ''}
-    ${!isNew ? `<div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer" data-admdclosed="1"><span class="toggle ${d.closed?'':'is-on'}" style="pointer-events:none"><span></span></span> เธเธดเธ”เธฃเธฑเธเธเธญเธเธ—เธฑเธเธ—เธต (เนเธกเนเธกเธตเธเธณเธซเธเธ”)</label></div>` : ''}
+    <div class="field"><label>เวลาเปิด (ใช้ทุกวัน)</label><input data-admd="hOpen" type="time" value="${esc(d.hOpen||'10:00')}"></div>
+    <div class="field"><label>เวลาปิด (ใช้ทุกวัน)</label><input data-admd="hClose" type="time" value="${esc(d.hClose||'21:00')}"></div>
+    <div class="field"><label>ที่จอดรถ (ไม่บังคับ)</label><input data-admd="parking" value="${esc(d.parking||'')}"></div>
+    <div class="eyebrow" style="margin-top:18px">ตั้งเวลาปิดรับจองอัตโนมัติ (ไม่บังคับ)</div>
+    <p class="sub" style="margin:0 0 10px">ระบบจะปิดรับจองสาขานี้อัตโนมัติในช่วงวันที่กำหนด แล้วเปิดกลับให้เองทันทีที่พ้นช่วง</p>
+    <div class="field"><label>ปิดตั้งแต่วันที่</label><input data-admd="closedFrom" type="date" value="${esc(d.closedFrom||'')}"></div>
+    <div class="field"><label>ถึงวันที่ (เปิดปกติวันถัดไป)</label><input data-admd="closedTo" type="date" value="${esc(d.closedTo||'')}"></div>
+    ${(d.closedFrom && d.closedTo) ? `<button type="button" class="btn btn--ghost btn--sm" style="width:auto;padding:8px 14px;margin-bottom:14px" data-admdclearsched="1">ล้างกำหนดการ</button>` : ''}
+    ${!isNew ? `<div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer" data-admdclosed="1"><span class="toggle ${d.closed?'':'is-on'}" style="pointer-events:none"><span></span></span> ปิดรับจองทันที (ไม่มีกำหนด)</label></div>` : ''}
   `;
 }
 
@@ -1840,27 +1840,27 @@ function adminBranchSchedule(){
   const d = S.adminDraft;
   const b = branchById(S.adminEditId);
   return `
-    <h1 class="h1">เธ•เธฑเนเธเน€เธงเธฅเธฒเธเธดเธ”-เน€เธเธดเธ”เธญเธฑเธ•เนเธเธกเธฑเธ•เธด</h1>
+    <h1 class="h1">ตั้งเวลาปิด-เปิดอัตโนมัติ</h1>
     <p class="sub">${esc(b ? b.name : '')}</p>
-    <p class="sub" style="margin-top:-8px">เธฃเธฐเธเธเธเธฐเธเธดเธ”เธฃเธฑเธเธเธญเธเธชเธฒเธเธฒเธเธตเนเธญเธฑเธ•เนเธเธกเธฑเธ•เธดเธ•เธฅเธญเธ”เธเนเธงเธเธงเธฑเธเธ—เธตเนเธเธณเธซเธเธ” เนเธฅเนเธงเน€เธเธดเธ”เธเธฅเธฑเธเน€เธเนเธเธเธเธ•เธดเน€เธญเธเธ—เธฑเธเธ—เธตเธ—เธตเนเธเนเธเธเนเธงเธ เนเธ”เธขเนเธกเนเธ•เนเธญเธเธกเธฒเน€เธเธดเธ”-เธเธดเธ”เน€เธญเธ</p>
-    <div class="field"><label>เธเธดเธ”เธ•เธฑเนเธเนเธ•เนเธงเธฑเธเธ—เธตเน</label><input data-admd="closedFrom" type="date" value="${esc(d.closedFrom||'')}"></div>
-    <div class="field"><label>เธ–เธถเธเธงเธฑเธเธ—เธตเน (เน€เธเธดเธ”เธเธเธ•เธดเธงเธฑเธเธ–เธฑเธ”เนเธ)</label><input data-admd="closedTo" type="date" value="${esc(d.closedTo||'')}"></div>
-    ${(d.closedFrom && d.closedTo) ? `<button type="button" class="btn btn--ghost btn--sm" style="width:auto;padding:8px 14px" data-admdclearsched="1">เธฅเนเธฒเธเธเธณเธซเธเธ”เธเธฒเธฃ</button>` : ''}
+    <p class="sub" style="margin-top:-8px">ระบบจะปิดรับจองสาขานี้อัตโนมัติตลอดช่วงวันที่กำหนด แล้วเปิดกลับเป็นปกติเองทันทีที่พ้นช่วง โดยไม่ต้องมาเปิด-ปิดเอง</p>
+    <div class="field"><label>ปิดตั้งแต่วันที่</label><input data-admd="closedFrom" type="date" value="${esc(d.closedFrom||'')}"></div>
+    <div class="field"><label>ถึงวันที่ (เปิดปกติวันถัดไป)</label><input data-admd="closedTo" type="date" value="${esc(d.closedTo||'')}"></div>
+    ${(d.closedFrom && d.closedTo) ? `<button type="button" class="btn btn--ghost btn--sm" style="width:auto;padding:8px 14px" data-admdclearsched="1">ล้างกำหนดการ</button>` : ''}
   `;
 }
 
 function adminServices(){
   return `
-    <h1 class="h1">เธเธฑเธ”เธเธฒเธฃเธเธฃเธดเธเธฒเธฃ</h1>
-    <p class="sub">${SERVICES.length} เธเธฃเธดเธเธฒเธฃเธ—เธฑเนเธเธซเธกเธ”</p>
+    <h1 class="h1">จัดการบริการ</h1>
+    <p class="sub">${SERVICES.length} บริการทั้งหมด</p>
     ${SERVICES.map(s => `
       <div class="arow">
         <div class="arow__main">
           <div class="arow__name">${esc(s.name)}</div>
           <div class="arow__sub">${fmtDuration(s.mins,'th')}</div>
         </div>
-        <button class="arow__edit" data-editservice="${s.id}">เนเธเนเนเธ</button>
-        <button class="arow__del" data-delservice="${s.id}" title="เธฅเธ">
+        <button class="arow__edit" data-editservice="${s.id}">แก้ไข</button>
+        <button class="arow__del" data-delservice="${s.id}" title="ลบ">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0-1 14a1 1 0 01-1 1H7a1 1 0 01-1-1L5 6"/></svg>
         </button>
       </div>`).join('')}
@@ -1871,12 +1871,12 @@ function adminServiceEdit(){
   const d = S.adminDraft;
   const isNew = S.adminEditId === 'new';
   return `
-    <h1 class="h1">${isNew?'เน€เธเธดเนเธกเธเธฃเธดเธเธฒเธฃเนเธซเธกเน':'เนเธเนเนเธเธเธฃเธดเธเธฒเธฃ'}</h1>
-    <div class="field"><label>เธเธทเนเธญเธเธฃเธดเธเธฒเธฃ (เนเธ—เธข)</label><input data-admd="name" value="${esc(d.name||'')}"></div>
-    <div class="field"><label>เธเธทเนเธญเธเธฃเธดเธเธฒเธฃ (English)</label><input data-admd="nameEn" value="${esc(d.nameEn||'')}"></div>
-    <div class="field"><label>เธฃเธฒเธขเธฅเธฐเน€เธญเธตเธขเธ” (เนเธ—เธข)</label><input data-admd="desc" value="${esc(d.desc||'')}"></div>
-    <div class="field"><label>เธฃเธฒเธขเธฅเธฐเน€เธญเธตเธขเธ” (English)</label><input data-admd="descEn" value="${esc(d.descEn||'')}"></div>
-    <div class="field"><label>เธฃเธฐเธขเธฐเน€เธงเธฅเธฒ (เธเธฒเธ—เธต)</label><input data-admd="mins" type="number" min="5" step="5" value="${d.mins||30}"></div>
+    <h1 class="h1">${isNew?'เพิ่มบริการใหม่':'แก้ไขบริการ'}</h1>
+    <div class="field"><label>ชื่อบริการ (ไทย)</label><input data-admd="name" value="${esc(d.name||'')}"></div>
+    <div class="field"><label>ชื่อบริการ (English)</label><input data-admd="nameEn" value="${esc(d.nameEn||'')}"></div>
+    <div class="field"><label>รายละเอียด (ไทย)</label><input data-admd="desc" value="${esc(d.desc||'')}"></div>
+    <div class="field"><label>รายละเอียด (English)</label><input data-admd="descEn" value="${esc(d.descEn||'')}"></div>
+    <div class="field"><label>ระยะเวลา (นาที)</label><input data-admd="mins" type="number" min="5" step="5" value="${d.mins||30}"></div>
   `;
 }
 
@@ -1888,49 +1888,49 @@ function adminBookings(){
   const totalActive = bookings.filter(b => b.status==='active').length;
   const todayActive = bookings.filter(b => b.status==='active' && b.date===today).length;
   return `
-    <h1 class="h1">เธ เธฒเธเธฃเธงเธกเธเธฒเธฃเธเธญเธ</h1>
+    <h1 class="h1">ภาพรวมการจอง</h1>
     <div class="sum" style="margin-bottom:14px">
-      <div class="sum__row"><span class="sum__k">เธเธดเธงเธ—เธฑเนเธเธซเธกเธ”</span><span class="sum__v mono">${totalActive}</span></div>
-      <div class="sum__row"><span class="sum__k">เธงเธฑเธเธเธตเน</span><span class="sum__v mono">${todayActive}</span></div>
+      <div class="sum__row"><span class="sum__k">คิวทั้งหมด</span><span class="sum__v mono">${totalActive}</span></div>
+      <div class="sum__row"><span class="sum__k">วันนี้</span><span class="sum__v mono">${todayActive}</span></div>
     </div>
-    <div class="field"><label>เธเธฃเธญเธเธ•เธฒเธกเธชเธฒเธเธฒ</label>
+    <div class="field"><label>กรองตามสาขา</label>
       <select data-admfilter="branch" style="width:100%;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2);border:none;outline:0;font-size:16px">
-        <option value="">เธ—เธธเธเธชเธฒเธเธฒ</option>
+        <option value="">ทุกสาขา</option>
         ${BRANCHES.map(b => `<option value="${b.id}" ${S.adminBFilter===b.id?'selected':''}>${esc(b.name)}</option>`).join('')}
       </select>
     </div>
-    <div class="field"><label>เธเธฃเธญเธเธ•เธฒเธกเธงเธฑเธเธ—เธตเน</label><input type="date" data-admfilter="date" value="${S.adminDFilter}"></div>
+    <div class="field"><label>กรองตามวันที่</label><input type="date" data-admfilter="date" value="${S.adminDFilter}"></div>
     ${list.length ? list.map(bk => {
       const b = branchById(bk.branchId), sv = serviceById(bk.serviceId);
       return `
       <div class="arow" style="align-items:flex-start;flex-direction:column;gap:6px">
         <div style="display:flex;justify-content:space-between;width:100%">
           <span class="mono" style="font-weight:600">${bk.code}</span>
-          <span style="font-size:11px;color:${bk.status==='active'?'var(--open)':'var(--closed)'}">${bk.status==='active'?'เนเธเนเธเธฒเธเธญเธขเธนเน':'เธขเธเน€เธฅเธดเธเนเธฅเนเธง'}</span>
+          <span style="font-size:11px;color:${bk.status==='active'?'var(--open)':'var(--closed)'}">${bk.status==='active'?'ใช้งานอยู่':'ยกเลิกแล้ว'}</span>
         </div>
-        <div style="font-size:13px">${esc(bk.name)} ยท <span class="mono">${esc(bk.phone)}</span>${bk.people?` ยท ${bk.people} เธเธ`:''}</div>
-        <div style="font-size:12px;color:var(--muted)">${b?esc(b.name):'-'} ยท ${sv?esc(sv.name):'-'} ยท ${bk.date} ${slotRange(bk.time, sv, bk.people)}</div>
-        ${bk.status==='active' ? `<button class="btn btn--danger btn--sm" style="width:auto;padding:6px 12px" data-admincancel="${bk.code}">เธขเธเน€เธฅเธดเธเธเธดเธงเธเธตเน</button>` : ''}
+        <div style="font-size:13px">${esc(bk.name)} · <span class="mono">${esc(bk.phone)}</span>${bk.people?` · ${bk.people} คน`:''}</div>
+        <div style="font-size:12px;color:var(--muted)">${b?esc(b.name):'-'} · ${sv?esc(sv.name):'-'} · ${bk.date} ${slotRange(bk.time, sv, bk.people)}</div>
+        ${bk.status==='active' ? `<button class="btn btn--danger btn--sm" style="width:auto;padding:6px 12px" data-admincancel="${bk.code}">ยกเลิกคิวนี้</button>` : ''}
       </div>`;
-    }).join('') : `<div class="empty"><b>เนเธกเนเธเธเธฃเธฒเธขเธเธฒเธฃเธเธญเธ</b>เธฅเธญเธเน€เธเธฅเธตเนเธขเธเธ•เธฑเธงเธเธฃเธญเธเธ”เนเธฒเธเธเธ</div>`}
+    }).join('') : `<div class="empty"><b>ไม่พบรายการจอง</b>ลองเปลี่ยนตัวกรองด้านบน</div>`}
   `;
 }
 
 function adminBarHTML(){
   switch(S.adminStep){
-    case 'login': return `<button class="btn btn--brass" id="adminLoginBtn">เน€เธเนเธฒเธชเธนเนเธฃเธฐเธเธ</button>`;
-    case 'branches': return `<button class="btn" id="adminAddBranch">+ เน€เธเธดเนเธกเธชเธฒเธเธฒ</button>`;
-    case 'branch-edit': return `<button class="btn btn--brass" id="adminSaveBranch">เธเธฑเธเธ—เธถเธ</button>`;
-    case 'branch-schedule': return `<button class="btn btn--brass" id="adminSaveSchedule">เธเธฑเธเธ—เธถเธเธเธณเธซเธเธ”เธเธฒเธฃ</button>`;
-    case 'services': return `<button class="btn" id="adminAddService">+ เน€เธเธดเนเธกเธเธฃเธดเธเธฒเธฃ</button>`;
-    case 'service-edit': return `<button class="btn btn--brass" id="adminSaveService">เธเธฑเธเธ—เธถเธ</button>`;
+    case 'login': return `<button class="btn btn--brass" id="adminLoginBtn">เข้าสู่ระบบ</button>`;
+    case 'branches': return `<button class="btn" id="adminAddBranch">+ เพิ่มสาขา</button>`;
+    case 'branch-edit': return `<button class="btn btn--brass" id="adminSaveBranch">บันทึก</button>`;
+    case 'branch-schedule': return `<button class="btn btn--brass" id="adminSaveSchedule">บันทึกกำหนดการ</button>`;
+    case 'services': return `<button class="btn" id="adminAddService">+ เพิ่มบริการ</button>`;
+    case 'service-edit': return `<button class="btn btn--brass" id="adminSaveService">บันทึก</button>`;
     default: return '';
   }
 }
 
-/* โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•
-   9. เน€เธซเธ•เธธเธเธฒเธฃเธ“เน
-   โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ• */
+/* ═══════════════════════════════════════════════
+   9. เหตุการณ์
+   ═══════════════════════════════════════════════ */
 document.addEventListener('click', async (e) => {
   const t = e.target.closest('[data-area],[data-branch],[data-service],[data-peopleminus],[data-peopleplus],[data-time],[data-map],[data-cancel],[data-ics],[data-adminopen],[data-adminnav],[data-toggleclose],[data-editbranch],[data-delbranch],[data-schedulebranch],[data-admdclearsched],[data-removephoto],[data-editservice],[data-delservice],[data-admincancel],[data-admdarea],[data-admdclosed],[data-footermine],#next,#confirm,#again,#mine,#adminLoginBtn,#adminAddBranch,#adminSaveBranch,#adminSaveSchedule,#adminAddService,#adminSaveService');
   if (!t) return;
@@ -1946,10 +1946,10 @@ document.addEventListener('click', async (e) => {
     if (b){
       const newClosed = !b.closed;
       const r = await apiCall('saveBranch', { id:b.id, closed:newClosed });
-      if (r === null && apiConfigured){ toast('เธเธฑเธเธ—เธถเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+      if (r === null && apiConfigured){ toast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
       b.closed = newClosed;
       saveBranchesLocal();
-      render(); toast(b.closed?'เธเธดเธ”เธฃเธฑเธเธเธญเธเธชเธฒเธเธฒเธเธตเนเนเธฅเนเธง':'เน€เธเธดเธ”เธฃเธฑเธเธเธญเธเธชเธฒเธเธฒเธเธตเนเนเธฅเนเธง');
+      render(); toast(b.closed?'ปิดรับจองสาขานี้แล้ว':'เปิดรับจองสาขานี้แล้ว');
     }
     return;
   }
@@ -1994,41 +1994,41 @@ document.addEventListener('click', async (e) => {
   if (t.dataset.delbranch){
     const b = branchById(t.dataset.delbranch);
     if (!b) return;
-    if (BRANCHES.length <= 1){ toast('เธ•เนเธญเธเธกเธตเธชเธฒเธเธฒเธญเธขเนเธฒเธเธเนเธญเธข 1 เธชเธฒเธเธฒ'); return; }
+    if (BRANCHES.length <= 1){ toast('ต้องมีสาขาอย่างน้อย 1 สาขา'); return; }
     const active = bookings.filter(x => x.branchId === b.id && x.status === 'active').length;
     const warn = active
-      ? `\n\nโ  เธชเธฒเธเธฒเธเธตเนเธกเธตเธเธดเธงเธ—เธตเนเธขเธฑเธเนเธกเนเธ–เธนเธเธขเธเน€เธฅเธดเธเธญเธขเธนเน ${active} เธเธดเธง เธเธฒเธฃเธฅเธเธเธฐเธ—เธณเนเธซเนเธเธดเธงเน€เธซเธฅเนเธฒเธเธฑเนเธเธซเธฒเธชเธฒเธเธฒเนเธกเนเน€เธเธญ\nเธซเธฒเธเธ•เนเธญเธเธเธฒเธฃเนเธเนเธซเธขเธธเธ”เธฃเธฑเธเธเธญเธเธเธฑเนเธงเธเธฃเธฒเธง เนเธเธฐเธเธณเนเธซเนเนเธเนเธชเธงเธดเธ•เธเนเธเธดเธ”เธฃเธฑเธเธเธญเธเนเธ—เธ`
+      ? `\n\n⚠ สาขานี้มีคิวที่ยังไม่ถูกยกเลิกอยู่ ${active} คิว การลบจะทำให้คิวเหล่านั้นหาสาขาไม่เจอ\nหากต้องการแค่หยุดรับจองชั่วคราว แนะนำให้ใช้สวิตช์ปิดรับจองแทน`
       : '';
-    if (!confirm(`เธฅเธเธชเธฒเธเธฒ "${b.name}" เนเธเนเธซเธฃเธทเธญเนเธกเน?${warn}`)) return;
+    if (!confirm(`ลบสาขา "${b.name}" ใช่หรือไม่?${warn}`)) return;
     const r = await apiCall('deleteBranch', { id:b.id });
-    if (r === null && apiConfigured){ toast('เธฅเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+    if (r === null && apiConfigured){ toast('ลบไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     BRANCHES = BRANCHES.filter(x => x.id !== b.id);
     if (S.branchId === b.id) S.branchId = null;
     saveBranchesLocal();
-    render(); toast('เธฅเธเธชเธฒเธเธฒเนเธฅเนเธง');
+    render(); toast('ลบสาขาแล้ว');
     return;
   }
 
   if (t.dataset.delservice){
-    if (SERVICES.length <= 1){ toast('เธ•เนเธญเธเธกเธตเธเธฃเธดเธเธฒเธฃเธญเธขเนเธฒเธเธเนเธญเธข 1 เธฃเธฒเธขเธเธฒเธฃ'); return; }
-    if (!confirm('เธฅเธเธเธฃเธดเธเธฒเธฃเธเธตเนเนเธเนเธซเธฃเธทเธญเนเธกเน?')) return;
+    if (SERVICES.length <= 1){ toast('ต้องมีบริการอย่างน้อย 1 รายการ'); return; }
+    if (!confirm('ลบบริการนี้ใช่หรือไม่?')) return;
     const r = await apiCall('deleteService', { id:t.dataset.delservice });
-    if (r === null && apiConfigured){ toast('เธฅเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+    if (r === null && apiConfigured){ toast('ลบไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     SERVICES = SERVICES.filter(s => s.id !== t.dataset.delservice);
     saveServicesLocal();
-    render(); toast('เธฅเธเธเธฃเธดเธเธฒเธฃเนเธฅเนเธง');
+    render(); toast('ลบบริการแล้ว');
     return;
   }
 
   if (t.dataset.admincancel){
     const bk = bookings.find(b => b.code === t.dataset.admincancel);
     if (!bk) return;
-    if (!confirm(`เธขเธเน€เธฅเธดเธเธเธดเธง ${bk.code}?`)) return;
+    if (!confirm(`ยกเลิกคิว ${bk.code}?`)) return;
     const r = await apiCall('cancelBooking', { code:bk.code });
-    if (r === null && apiConfigured){ toast('เธขเธเน€เธฅเธดเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+    if (r === null && apiConfigured){ toast('ยกเลิกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     bk.status = 'cancelled';
     saveBookingsLocal();
-    render(); toast('เธขเธเน€เธฅเธดเธเธเธดเธงเนเธฅเนเธง');
+    render(); toast('ยกเลิกคิวแล้ว');
     return;
   }
 
@@ -2037,7 +2037,7 @@ document.addEventListener('click', async (e) => {
 
   if (t.id === 'adminLoginBtn'){
     if (S.adminPin === ADMIN_PIN){ S.adminPinErr = false; S.adminStep = 'home'; render(); }
-    else { S.adminPinErr = true; render(); toast('PIN เนเธกเนเธ–เธนเธเธ•เนเธญเธ'); }
+    else { S.adminPinErr = true; render(); toast('PIN ไม่ถูกต้อง'); }
     return;
   }
 
@@ -2049,10 +2049,10 @@ document.addEventListener('click', async (e) => {
 
   if (t.id === 'adminSaveBranch'){
     const d = S.adminDraft;
-    const sv = (x) => String(x == null ? '' : x).trim();   // เธเธฅเธญเธ”เธ เธฑเธขเนเธกเนเธเนเธฒเน€เธเนเธ undefined
-    if (!sv(d.name)){ toast('เธเธฃเธธเธ“เธฒเธเธฃเธญเธเธเธทเนเธญเธชเธฒเธเธฒ'); return; }
-    if ((d.closedFrom && !d.closedTo) || (!d.closedFrom && d.closedTo)){ toast('เธเธฃเธธเธ“เธฒเธเธฃเธญเธเธงเธฑเธเธ—เธตเนเธเธดเธ”-เน€เธเธดเธ”เนเธซเนเธเธฃเธเธ—เธฑเนเธเธชเธญเธเธเนเธญเธ เธซเธฃเธทเธญเน€เธงเนเธเธงเนเธฒเธเธ—เธฑเนเธเธเธนเน'); return; }
-    if (d.closedFrom && d.closedTo && d.closedTo < d.closedFrom){ toast('เธงเธฑเธเธ—เธตเนเธชเธดเนเธเธชเธธเธ”เธ•เนเธญเธเนเธกเนเธเนเธญเธเธงเธฑเธเธ—เธตเนเน€เธฃเธดเนเธกเธเธดเธ”'); return; }
+    const sv = (x) => String(x == null ? '' : x).trim();   // ปลอดภัยแม้ค่าเป็น undefined
+    if (!sv(d.name)){ toast('กรุณากรอกชื่อสาขา'); return; }
+    if ((d.closedFrom && !d.closedTo) || (!d.closedFrom && d.closedTo)){ toast('กรุณากรอกวันที่ปิด-เปิดให้ครบทั้งสองช่อง หรือเว้นว่างทั้งคู่'); return; }
+    if (d.closedFrom && d.closedTo && d.closedTo < d.closedFrom){ toast('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่มปิด'); return; }
     const hours = every(d.hOpen || '10:00', d.hClose || '21:00');
     const closedFrom = d.closedFrom || null, closedTo = d.closedTo || null;
     const photo = d.photo || null;
@@ -2060,11 +2060,11 @@ document.addEventListener('click', async (e) => {
     const fields = { name:sv(d.name), nameEn:sv(d.nameEn), district:sv(d.district), districtEn:sv(d.districtEn),
       loc:sv(d.loc), locEn:sv(d.locEn), map:sv(d.map), area:d.area || 'bkk', parking:sv(d.parking) || null,
       closed: isNew ? false : !!d.closed, closedFrom, closedTo, photo, hours };
-    // เธเธดเธฅเธ”เนเธ เธฒเธฉเธฒเธเธตเธเนเธกเนเธกเธตเธเนเธญเธเนเธซเนเธเธฃเธญเธเนเธเธเธญเธฃเนเธก โ€” เธชเนเธเธเนเธฒเน€เธ”เธดเธกเธเธฅเธฑเธเนเธเธ”เนเธงเธข เนเธกเนเธเธฑเนเธเธเธฐเธ–เธนเธเธฅเธเธ—เธดเนเธเธ—เธธเธเธเธฃเธฑเนเธเธ—เธตเนเนเธเนเนเธ
+    // ฟิลด์ภาษาจีนไม่มีช่องให้กรอกในฟอร์ม — ส่งค่าเดิมกลับไปด้วย ไม่งั้นจะถูกลบทิ้งทุกครั้งที่แก้ไข
     ['nameZh','districtZh','locZh','parkingZh'].forEach(k => { if (d[k]) fields[k] = d[k]; });
     if (!isNew) fields.id = S.adminEditId;
     const r = await apiCall('saveBranch', fields);
-    if (r === null && apiConfigured){ toast('เธเธฑเธเธ—เธถเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+    if (r === null && apiConfigured){ toast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     const saved = (r && r.branch) ? r.branch : { id: isNew ? ('b' + Date.now()) : S.adminEditId, ...fields };
     if (isNew){
       BRANCHES.push(saved);
@@ -2076,23 +2076,23 @@ document.addEventListener('click', async (e) => {
       if (photo) b.photo = photo; else delete b.photo;
     }
     saveBranchesLocal();
-    S.adminStep = 'branches'; render(); toast('เธเธฑเธเธ—เธถเธเนเธฅเนเธง');
+    S.adminStep = 'branches'; render(); toast('บันทึกแล้ว');
     return;
   }
 
   if (t.id === 'adminSaveSchedule'){
     const d = S.adminDraft;
-    if ((d.closedFrom && !d.closedTo) || (!d.closedFrom && d.closedTo)){ toast('เธเธฃเธธเธ“เธฒเธเธฃเธญเธเธงเธฑเธเธ—เธตเนเธเธดเธ”-เน€เธเธดเธ”เนเธซเนเธเธฃเธเธ—เธฑเนเธเธชเธญเธเธเนเธญเธ เธซเธฃเธทเธญเน€เธงเนเธเธงเนเธฒเธเธ—เธฑเนเธเธเธนเน'); return; }
-    if (d.closedFrom && d.closedTo && d.closedTo < d.closedFrom){ toast('เธงเธฑเธเธ—เธตเนเธชเธดเนเธเธชเธธเธ”เธ•เนเธญเธเนเธกเนเธเนเธญเธเธงเธฑเธเธ—เธตเนเน€เธฃเธดเนเธกเธเธดเธ”'); return; }
+    if ((d.closedFrom && !d.closedTo) || (!d.closedFrom && d.closedTo)){ toast('กรุณากรอกวันที่ปิด-เปิดให้ครบทั้งสองช่อง หรือเว้นว่างทั้งคู่'); return; }
+    if (d.closedFrom && d.closedTo && d.closedTo < d.closedFrom){ toast('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่มปิด'); return; }
     const b = branchById(S.adminEditId);
     const r = await apiCall('saveBranch', { id:S.adminEditId, closedFrom:d.closedFrom||null, closedTo:d.closedTo||null });
-    if (r === null && apiConfigured){ toast('เธเธฑเธเธ—เธถเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+    if (r === null && apiConfigured){ toast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     if (b){
       if (d.closedFrom && d.closedTo){ b.closedFrom = d.closedFrom; b.closedTo = d.closedTo; }
       else { delete b.closedFrom; delete b.closedTo; }
     }
     saveBranchesLocal();
-    S.adminStep = 'branches'; render(); toast('เธเธฑเธเธ—เธถเธเธเธณเธซเธเธ”เธเธฒเธฃเนเธฅเนเธง');
+    S.adminStep = 'branches'; render(); toast('บันทึกกำหนดการแล้ว');
     return;
   }
 
@@ -2105,7 +2105,7 @@ document.addEventListener('click', async (e) => {
   if (t.id === 'adminSaveService'){
     const d = S.adminDraft;
     const sv = (x) => String(x == null ? '' : x).trim();
-    if (!sv(d.name)){ toast('เธเธฃเธธเธ“เธฒเธเธฃเธญเธเธเธทเนเธญเธเธฃเธดเธเธฒเธฃ'); return; }
+    if (!sv(d.name)){ toast('กรุณากรอกชื่อบริการ'); return; }
     const mins = Math.max(5, parseInt(d.mins, 10) || 30);
     const isNew = S.adminEditId === 'new';
     const ico = '<path d="M12 3l4 2 5 3-2 3-3-1v11H8V10L5 11 3 8l5-3 4-2zM9 3.5a3 3 0 006 0"/>';
@@ -2113,7 +2113,7 @@ document.addEventListener('click', async (e) => {
     ['nameZh','descZh'].forEach(k => { if (d[k]) fields[k] = d[k]; });
     if (!isNew) fields.id = S.adminEditId;
     const r = await apiCall('saveService', fields);
-    if (r === null && apiConfigured){ toast('เธเธฑเธเธ—เธถเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+    if (r === null && apiConfigured){ toast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     const saved = (r && r.service) ? r.service : { id: isNew ? ('s' + Date.now()) : S.adminEditId, ...fields };
     if (isNew){
       SERVICES.push(saved);
@@ -2121,7 +2121,7 @@ document.addEventListener('click', async (e) => {
       Object.assign(serviceById(S.adminEditId), saved);
     }
     saveServicesLocal();
-    S.adminStep = 'services'; render(); toast('เธเธฑเธเธ—เธถเธเนเธฅเนเธง');
+    S.adminStep = 'services'; render(); toast('บันทึกแล้ว');
     return;
   }
 
@@ -2151,7 +2151,7 @@ document.addEventListener('click', async (e) => {
     if (!bk) return;
     if (!confirm(tt('cancelConfirm', bk.code, longDate(bk.date), bk.time))) return;
     const r = await apiCall('cancelBooking', { code:bk.code });
-    if (r === null && apiConfigured){ toast('เธขเธเน€เธฅเธดเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
+    if (r === null && apiConfigured){ toast('ยกเลิกไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
     bk.status = 'cancelled';
     saveBookingsLocal();
     render(); toast(tt('cancelledToast'));
@@ -2196,9 +2196,9 @@ document.addEventListener('click', async (e) => {
       status:'active', acknowledged:false, createdAt:new Date().toISOString()
     };
     const r = await apiCall('createBooking', draft);
-    if (r === null && apiConfigured){ toast('เธเธญเธเนเธกเนเธชเธณเน€เธฃเนเธ เธฅเธญเธเนเธซเธกเนเธญเธตเธเธเธฃเธฑเนเธ'); return; }
-    // เธเธชเธฒเธเธเนเธญเธกเธนเธฅเธ—เธตเนเธเธฃเธญเธเนเธงเนเธ”เนเธงเธข เน€เธเธทเนเธญเนเธซเนเธเนเธญเธเธญเธฑเธเธกเธตเธเธทเนเธญ/เธเธฃเธดเธเธฒเธฃ/เน€เธงเธฅเธฒเน€เธชเธกเธญ
-    // เนเธกเน API เธเธฐเธ•เธญเธเธเธฅเธฑเธเธกเธฒเน€เธเธเธฒเธฐเธฃเธซเธฑเธชเธเธดเธงเธซเธฃเธทเธญเธเนเธญเธกเธนเธฅเธเธฒเธเธเธดเธฅเธ”เน
+    if (r === null && apiConfigured){ toast('จองไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
+    // ผสานข้อมูลที่กรอกไว้ด้วย เพื่อให้ป๊อปอัพมีชื่อ/บริการ/เวลาเสมอ
+    // แม้ API จะตอบกลับมาเฉพาะรหัสคิวหรือข้อมูลบางฟิลด์
     const bk = (r && r.booking) ? { ...draft, ...r.booking } : { code: makeCode(), ...draft };
     bookings.push(bk);
     saveBookingsLocal();
@@ -2237,10 +2237,10 @@ document.addEventListener('change', (e) => {
   if (e.target.dataset.admfilter === 'date'){ S.adminDFilter = e.target.value; render(); }
   if (e.target.dataset.photoupload && e.target.files && e.target.files[0]){
     const file = e.target.files[0];
-    toast('เธเธณเธฅเธฑเธเธญเธฑเธเนเธซเธฅเธ”เธฃเธนเธ...');
+    toast('กำลังอัปโหลดรูป...');
     processPhotoFile(file).then(dataUrl => {
-      S.adminDraft.photo = dataUrl; render(); toast('เธญเธฑเธเนเธซเธฅเธ”เธฃเธนเธเนเธฅเนเธง');
-    }).catch(() => toast('เธญเธฑเธเนเธซเธฅเธ”เธฃเธนเธเนเธกเนเธชเธณเน€เธฃเนเธ'));
+      S.adminDraft.photo = dataUrl; render(); toast('อัปโหลดรูปแล้ว');
+    }).catch(() => toast('อัปโหลดรูปไม่สำเร็จ'));
   }
 });
 
@@ -2261,7 +2261,7 @@ navMine.addEventListener('click', async () => {
 });
 navLang.addEventListener('change', () => { S.lang = navLang.value; render(); });
 
-/* โ”€โ”€ เธ—เธฒเธเน€เธเนเธฒเธซเธฅเธฑเธเธเนเธฒเธเนเธเธเธเนเธญเธ: เนเธ•เธฐเนเธฅเนเธเน 5 เธเธฃเธฑเนเธเธ•เธดเธ”เธเธฑเธ โ”€โ”€ */
+/* ── ทางเข้าหลังบ้านแบบซ่อน: แตะโลโก้ 5 ครั้งติดกัน ── */
 let brandTapCount = 0, brandTapTimer = null;
 document.addEventListener('click', (e) => {
   if (!e.target.closest('[data-brandtap]')) return;
@@ -2275,11 +2275,11 @@ document.addEventListener('click', (e) => {
   }
 });
 
-/* โ”€โ”€ เนเธเธฅเนเธเธเธดเธ—เธดเธ (.ics) โ”€โ”€ */
-/* โ”€โ”€ เธเธฃเธฐเธกเธงเธฅเธเธฅเธฃเธนเธเธ เธฒเธเธชเธฒเธเธฒเธ—เธตเนเธญเธฑเธเนเธซเธฅเธ” (เธขเนเธญเธเธเธฒเธ” + เธเธตเธเธญเธฑเธ”) โ”€โ”€
-   เธเธฃเธฑเธเธเธเธฒเธ”/เธเธธเธ“เธ เธฒเธเธญเธฑเธ•เนเธเธกเธฑเธ•เธดเธเธเธเธงเนเธฒเนเธเธฅเนเธเธฐเน€เธฅเนเธเธเธญเน€เธเนเธเธฅเธ Lark เนเธ”เน
-   (เธเนเธญเธเธเนเธญเธเธงเธฒเธกเธเธญเธ Lark เธกเธตเธเธตเธ”เธเธณเธเธฑเธ”เธเธงเธฒเธกเธขเธฒเธง เธฃเธนเธเนเธซเธเนเน€เธเธดเธเธเธฐเธเธฑเธเธ—เธถเธเนเธกเนเธเนเธฒเธ)   */
-const PHOTO_MAX_BYTES = 92000; // ~92 KB เธซเธฅเธฑเธเนเธเธฅเธ base64 โ€” เน€เธเธทเนเธญเนเธงเนเนเธซเนเธเธฅเธญเธ”เธ เธฑเธข
+/* ── ไฟล์ปฏิทิน (.ics) ── */
+/* ── ประมวลผลรูปภาพสาขาที่อัปโหลด (ย่อขนาด + บีบอัด) ──
+   ปรับขนาด/คุณภาพอัตโนมัติจนกว่าไฟล์จะเล็กพอเก็บลง Lark ได้
+   (ช่องข้อความของ Lark มีขีดจำกัดความยาว รูปใหญ่เกินจะบันทึกไม่ผ่าน)   */
+const PHOTO_MAX_BYTES = 92000; // ~92 KB หลังแปลง base64 — เผื่อไว้ให้ปลอดภัย
 
 function processPhotoFile(file){
   return new Promise((resolve, reject) => {
@@ -2287,7 +2287,7 @@ function processPhotoFile(file){
     reader.onload = () => {
       const img = new Image();
       img.onload = () => {
-        // เนเธฅเนเธฅเธญเธเธเธฒเธเธเธกเธเธฑเธ”เธชเธธเธ”เนเธเน€เธฅเนเธเธชเธธเธ” เธซเธขเธธเธ”เธ—เธฑเธเธ—เธตเธ—เธตเนเนเธ”เนเธเธเธฒเธ”เธ—เธตเนเธเธญเธ”เธต
+        // ไล่ลองจากคมชัดสุดไปเล็กสุด หยุดทันทีที่ได้ขนาดที่พอดี
         const attempts = [[700,0.80],[700,0.70],[600,0.78],[600,0.68],[480,0.72],[400,0.65]];
         let last = null;
         for (const [maxW, q] of attempts){
@@ -2302,7 +2302,7 @@ function processPhotoFile(file){
           last = dataUrl;
           if (dataUrl.length <= PHOTO_MAX_BYTES) return resolve(dataUrl);
         }
-        // เธ–เนเธฒเธขเธฑเธเนเธซเธเนเน€เธเธดเธเธ—เธธเธเธฃเธฐเธ”เธฑเธ เนเธซเนเนเธเนเธ•เธฑเธงเน€เธฅเนเธเธชเธธเธ”เธ—เธตเนเนเธ”เน
+        // ถ้ายังใหญ่เกินทุกระดับ ให้ใช้ตัวเล็กสุดที่ได้
         resolve(last);
       };
       img.onerror = () => reject(new Error('image load failed'));
@@ -2334,11 +2334,11 @@ async function addToCalendar(bk){
     if (current) parts.push(current);
     return parts.join('\r\n');
   };
-  // เน€เธงเธฅเธฒเธเธฑเธ”เธเธญเธเธชเธฒเธเธฒเน€เธเนเธเน€เธงเธฅเธฒเนเธ—เธขเน€เธชเธกเธญ เธเนเธญเธเธเธฑเธเน€เธงเธฅเธฒเน€เธฅเธทเนเธญเธเน€เธกเธทเนเธญเธเธนเนเนเธเนเน€เธเธดเธ”เธเธฒเธเธญเธธเธเธเธฃเธ“เนเธ•เนเธฒเธเน€เธเธ•เน€เธงเธฅเธฒ
+  // เวลานัดของสาขาเป็นเวลาไทยเสมอ ป้องกันเวลาเลื่อนเมื่อผู้ใช้เปิดจากอุปกรณ์ต่างเขตเวลา
   const start = new Date(bk.date + 'T' + bk.time + ':00+07:00');
   const end = new Date(start.getTime() + svcMins(sv, bk.people)*60000);
   const title = 'SUITCUBE ' + sname(sv) + ' (' + bk.code + ')';
-  const location = 'SUITCUBE ' + bname(b) + ' โ€” ' + bloc(b);
+  const location = 'SUITCUBE ' + bname(b) + ' — ' + bloc(b);
   const description = bloc(b) + ' - ' + b.map;
   const ics = [
     'BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH',
@@ -2354,14 +2354,14 @@ async function addToCalendar(bk){
     'END:VEVENT','END:VCALENDAR'
   ].map(foldICSLine).join('\r\n') + '\r\n';
   const fileName = bk.code + '.ics';
-  // เธซเนเธฒเธกเน€เธ•เธดเธก BOM เธซเธเนเธฒ BEGIN:VCALENDAR เน€เธเธฃเธฒเธฐ Apple Calendar เธเธฒเธเธฃเธธเนเธเธเธฐเธญเนเธฒเธเนเธกเนเธญเธญเธ
+  // ห้ามเติม BOM หน้า BEGIN:VCALENDAR เพราะ Apple Calendar บางรุ่นจะอ่านไม่ออก
   const blob = new Blob([ics], {type:'text/calendar;charset=utf-8;method=PUBLISH'});
   const ua = navigator.userAgent || '';
   const isAndroid = /Android/i.test(ua);
   const isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
 
-  // Android: เธชเนเธ ACTION_INSERT เนเธเธขเธฑเธ Calendar app เธ—เธตเนเธ•เธดเธ”เธ•เธฑเนเธเนเธเน€เธเธฃเธทเนเธญเธเนเธ”เธขเธ•เธฃเธ
-  // เธ–เนเธฒ Chrome/เน€เธเธฃเธทเนเธญเธเนเธกเนเธญเธเธธเธเธฒเธ• เธเธถเธเธเนเธญเธข fallback เน€เธเนเธเนเธเธฅเน .ics (เนเธกเนเน€เธเธดเธ”เธซเธเนเธฒ Google เน€เธงเนเธ)
+  // Android: ส่ง ACTION_INSERT ไปยัง Calendar app ที่ติดตั้งในเครื่องโดยตรง
+  // ถ้า Chrome/เครื่องไม่อนุญาต จึงค่อย fallback เป็นไฟล์ .ics (ไม่เปิดหน้า Google เว็บ)
   if (isAndroid){
     const params = new URLSearchParams({
       action:'TEMPLATE',
@@ -2391,8 +2391,8 @@ async function addToCalendar(bk){
 
   const url = URL.createObjectURL(blob);
 
-  // iPhone/iPad: เน€เธเธดเธ”เนเธเธฅเนเธเธเธดเธ—เธดเธเนเธเนเธ—เนเธเธเธฑเธเธเธธเธเธฑเธ เน€เธเธทเนเธญเนเธซเน iOS เธชเนเธเธ•เนเธญเนเธซเน
-  // Apple Calendar เนเธ”เธขเนเธกเนเธเนเธฒเธ Share sheet
+  // iPhone/iPad: เปิดไฟล์ปฏิทินในแท็บปัจจุบัน เพื่อให้ iOS ส่งต่อให้
+  // Apple Calendar โดยไม่ผ่าน Share sheet
   if (isIOS){
     if (calendarSWReady) await calendarSWReady;
     const iosCalendarUrl = servedCalendarURL(ics, fileName);
@@ -2401,7 +2401,7 @@ async function addToCalendar(bk){
       window.location.assign(iosCalendarUrl);
       return;
     }
-    // เธเธฃเธ“เธตเน€เธเธดเธ”เนเธเธฅเน HTML เธ•เธฃเธ เน เธซเธฃเธทเธญเนเธกเนเนเธ”เนเนเธเน HTTPS: เธ”เธฒเธงเธเนเนเธซเธฅเธ”เนเธเธฅเนเน€เธเนเธเธ—เธฒเธเธชเธณเธฃเธญเธ
+    // กรณีเปิดไฟล์ HTML ตรง ๆ หรือไม่ได้ใช้ HTTPS: ดาวน์โหลดไฟล์เป็นทางสำรอง
     const a = document.createElement('a');
     a.href = url; a.download = fileName; a.rel = 'noopener';
     document.body.appendChild(a); a.click(); a.remove();
@@ -2410,7 +2410,7 @@ async function addToCalendar(bk){
     return;
   }
 
-  // Windows เนเธฅเธฐเน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเนเธญเธทเนเธ: เธ”เธฒเธงเธเนเนเธซเธฅเธ” .ics เน€เธเธทเนเธญเน€เธเธดเธ”เธ”เนเธงเธข Outlook/Calendar
+  // Windows และเบราว์เซอร์อื่น: ดาวน์โหลด .ics เพื่อเปิดด้วย Outlook/Calendar
   const a = document.createElement('a');
   a.href = url; a.download = fileName; a.rel = 'noopener';
   document.body.appendChild(a); a.click(); a.remove();
@@ -2418,7 +2418,7 @@ async function addToCalendar(bk){
   toast(tt('icsDownloaded'));
 }
 
-/* โ”€โ”€ เน€เธฃเธดเนเธกเธ—เธณเธเธฒเธ โ”€โ”€ */
+/* ── เริ่มทำงาน ── */
 view.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
 Promise.all([loadBranchesServices(), loadBookings()]).then(render);
 </script>
