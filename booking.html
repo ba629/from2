@@ -1167,6 +1167,56 @@ function canvasWrappedLines(ctx, value, maxWidth, maxLines){
   return lines.length ? lines : ['-'];
 }
 
+function drawSuitcubeCanvasLogo(ctx, centerX, baselineY){
+  const wordFont = "700 38px 'Anuphan','Helvetica Neue',Arial,sans-serif";
+  ctx.save();
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#2A2117';
+  ctx.font = wordFont;
+
+  const leftText = 'SUIT';
+  const rightText = 'CUBE';
+  const leftW = ctx.measureText(leftText).width;
+  const rightW = ctx.measureText(rightText).width;
+  const cubeW = 34;
+  const gap = 12;
+  const totalW = leftW + gap + cubeW + gap + rightW;
+  let x = centerX - totalW / 2;
+
+  ctx.fillText(leftText, x, baselineY);
+  x += leftW + gap;
+
+  const cubeX = x;
+  const cubeY = baselineY - 32;
+  ctx.beginPath();
+  ctx.moveTo(cubeX + 17, cubeY + 0);
+  ctx.lineTo(cubeX + 34, cubeY + 10);
+  ctx.lineTo(cubeX + 17, cubeY + 20);
+  ctx.lineTo(cubeX + 0, cubeY + 10);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(cubeX + 0, cubeY + 13);
+  ctx.lineTo(cubeX + 15.5, cubeY + 22.5);
+  ctx.lineTo(cubeX + 15.5, cubeY + 38);
+  ctx.lineTo(cubeX + 0, cubeY + 28.5);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(cubeX + 34, cubeY + 13);
+  ctx.lineTo(cubeX + 18.5, cubeY + 22.5);
+  ctx.lineTo(cubeX + 18.5, cubeY + 38);
+  ctx.lineTo(cubeX + 34, cubeY + 28.5);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillText(rightText, cubeX + cubeW + gap, baselineY);
+  ctx.restore();
+}
+
 function createBookingConfirmationCanvas(booking){
   const details = bookingPopupDetails(booking);
   const canvas = document.createElement('canvas');
@@ -1182,9 +1232,7 @@ function createBookingConfirmationCanvas(booking){
   ctx.fill();
 
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#2A2117';
-  ctx.font = `700 38px ${font}`;
-  ctx.fillText('SUITCUBE', 540, 132);
+  drawSuitcubeCanvasLogo(ctx, 540, 132);
   ctx.fillStyle = '#AC842E';
   ctx.font = `600 22px ${font}`;
   ctx.fillText('BOOKING CONFIRMATION', 540, 174);
