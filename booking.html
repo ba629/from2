@@ -1237,30 +1237,16 @@ function createBookingConfirmationCanvas(booking){
   ctx.font = `600 22px ${font}`;
   ctx.fillText('BOOKING CONFIRMATION', 540, 174);
 
-  ctx.fillStyle = '#F7EED8';
-  ctx.beginPath();
-  ctx.arc(540, 258, 58, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.strokeStyle = '#AC842E';
-  ctx.lineWidth = 10;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.beginPath();
-  ctx.moveTo(509, 258);
-  ctx.lineTo(531, 280);
-  ctx.lineTo(574, 234);
-  ctx.stroke();
-
   ctx.fillStyle = '#2A2117';
   ctx.font = `700 48px ${font}`;
-  ctx.fillText(tt('successPopupTitle'), 540, 368);
+  ctx.fillText(tt('popupQueueNumber'), 540, 292);
 
   ctx.fillStyle = '#F3F0E8';
-  canvasRoundedRect(ctx, 120, 414, 840, 202, 28);
+  canvasRoundedRect(ctx, 120, 338, 840, 202, 28);
   ctx.fill();
   ctx.fillStyle = '#AB9873';
   ctx.font = `500 28px ${font}`;
-  ctx.fillText(tt('popupQueueNumber'), 540, 476);
+  ctx.fillText(tt('popupQueueNumber'), 540, 400);
   ctx.fillStyle = '#2A2117';
   const queueCode = booking && booking.code ? booking.code : '-';
   let queueFontSize = 72;
@@ -1269,12 +1255,12 @@ function createBookingConfirmationCanvas(booking){
     if (ctx.measureText(queueCode).width <= 760) break;
     queueFontSize -= 4;
   }while(queueFontSize > 44);
-  ctx.fillText(queueCode, 540, 565);
+  ctx.fillText(queueCode, 540, 489);
 
   const rows = [
-    { label:tt('fullName'), value:details.name, y:660, height:170, maxLines:2 },
-    { label:tt('kService'), value:details.service, y:830, height:190, maxLines:2 },
-    { label:tt('kTime'), value:details.time, y:1020, height:210, maxLines:3 }
+    { label:tt('fullName'), value:details.name, y:590, height:170, maxLines:2 },
+    { label:tt('kService'), value:details.service, y:780, height:190, maxLines:2 },
+    { label:tt('kTime'), value:details.time, y:970, height:210, maxLines:3 }
   ];
   rows.forEach((row, index) => {
     if (index){
@@ -1299,7 +1285,7 @@ function createBookingConfirmationCanvas(booking){
   ctx.fillStyle = '#6E5F49';
   ctx.font = `400 25px ${font}`;
   const footerLines = canvasWrappedLines(ctx, tt('doneSub'), 790, 3);
-  footerLines.forEach((line, index) => ctx.fillText(line, 540, 1300 + index * 34));
+  footerLines.forEach((line, index) => ctx.fillText(line, 540, 1260 + index * 34));
   return canvas;
 }
 
