@@ -152,9 +152,11 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 
 /* ── brand header ─────────────────────── */
 .brand{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 2px}
-.brand__mark{font-size:15px;font-weight:600;letter-spacing:.34em;text-transform:uppercase}
-.brand__rule{height:1px;background:var(--hairline);flex:1;margin:0 12px}
-.brand__tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.brand__mark{display:inline-flex;align-items:center;flex:none;color:var(--ci-black);line-height:0}
+.brand__logo{display:block;width:150px;height:34px;overflow:visible}
+.brand__rule{height:1px;background:var(--hairline);flex:1;margin:0 14px}
+.brand__tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+@media (max-width:420px){.brand__logo{width:132px;height:31px}.brand__rule{margin:0 10px}.brand__tag{font-size:9.5px}}
 
 /* ── segmented control ────────────────── */
 .seg{display:flex;background:var(--surface-2);border-radius:11px;padding:3px;gap:3px;margin:2px 0 12px}
@@ -171,6 +173,8 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
 .search input:focus{box-shadow:0 0 0 2px var(--brass)}
 .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.45}
+.search-nearby{font-size:11.5px;color:var(--muted);margin:-4px 2px 12px;line-height:1.5}
+.search-nearby b{color:var(--brass-ink);font-weight:600}
 
 /* ── cards ────────────────────────────── */
 .card{
@@ -623,7 +627,8 @@ const T = {
   walkin:            { th:'ระบบการจองสร้างขึ้นเพื่ออำนวยความสะดวกให้กับลูกค้า หากเวลาในช่วงดังกล่าวเต็ม ลูกค้ายังสามารถ Walk-in เพื่อรับบริการได้ตามปกติ',
                         en:'This booking system is here for your convenience. If a time slot is full, you can still walk in for service as usual.',
                         zh:'预约系统旨在为顾客提供便利，如所需时段已满，顾客仍可现场排队（Walk-in）正常接受服务' },
-  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, พระรามสาม', en:'Search branch, e.g. Siam, Rama3', zh:'搜索分店，例如 暹罗、拉查帕' },
+  searchPh:          { th:'ค้นหาสาขาหรือย่าน เช่น พระราม 3, สยาม, สีลม', en:'Search branch or area, e.g. Rama 3, Siam, Silom', zh:'搜索分店或地区，例如 拉玛三世、暹罗、是隆' },
+  nearbySearch:      { th:q=>`แสดงสาขาที่ตรงกับ “${q}” และสาขาใกล้เคียง`, en:q=>`Showing matches for “${q}” and nearby branches`, zh:q=>`显示与“${q}”匹配及附近的分店` },
   noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
   noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
   whatService:       { th:'บริการที่คุณเลือก', en:'What service would you like?', zh:'需要什么服务' },
@@ -1349,15 +1354,114 @@ function heroHTML(){
   `;
 }
 
+/* ── ค้นหาสาขาแบบแสดงพื้นที่ใกล้เคียง ─────────────
+   หลักการ: หา "สาขาที่ตรงคำค้น" ก่อน แล้วเติมสาขาใกล้เคียงตามลำดับ
+   เพื่อให้ค้นหา "พระราม 3" แล้วเห็น พระราม 3 + สีลม + สยาม เป็นต้น */
+const BRANCH_SEARCH_ALIASES = {
+  siam:['สยาม','siam','ปทุมวัน','pathumwan'],
+  centralworld:['เซ็นทรัลเวิลด์','centralworld','central world','ราชประสงค์','ชิดลม','ปทุมวัน'],
+  t21:['อโศก','asok','asoke','สุขุมวิท','sukhumvit','เทอร์มินอล21','terminal21','terminal 21','วัฒนา'],
+  silom:['สีลม','silom','ศาลาแดง','saladaeng','บางรัก','bangrak','สาทร','sathorn','sathon'],
+  rama3:['พระราม3','พระราม 3','พระรามสาม','rama3','rama 3','rama iii','สาธุประดิษฐ์','ยานนาวา','yannawa','ช่องนนทรี'],
+  sutthisan:['รัชดา','ratchada','สุทธิสาร','sutthisan','ห้วยขวาง','huaikhwang'],
+  circle:['ราชพฤกษ์','ratchapruek','ratchapruk','เดอะเซอร์เคิล','thecircle','ตลิ่งชัน'],
+  promenade:['รามอินทรา','ramintra','ramindra','พรอมานาด','promenade','คันนายาว','แฟชั่นไอส์แลนด์'],
+  bangkapi:['บางกะปิ','bangkapi','bang kapi','เดอะมอลล์บางกะปิ'],
+  seacon:['ศรีนครินทร์','srinakarin','seacon','ซีคอน','ประเวศ','prawet'],
+  ngamwongwan:['งามวงศ์วาน','ngamwongwan','นนทบุรี','nonthaburi'],
+  futurepark:['รังสิต','rangsit','futurepark','future park','ธัญบุรี'],
+  megabangna:['เมกาบางนา','mega bangna','megabangna','บางนา','bangna','บางพลี'],
+  westgate:['เวสต์เกต','westgate','centralwestgate','เซ็นทรัลเวสต์เกต','บางใหญ่'],
+  onenimman:['วันนิมมาน','one nimman','onenimman','นิมมาน','เชียงใหม่','chiangmai','chiang mai'],
+  korat:['โคราช','korat','นครราชสีมา','nakhon ratchasima'],
+  phuket:['ภูเก็ต','phuket','บูกิส','bukis'],
+  khonkaen:['ขอนแก่น','khonkaen','khon kaen']
+};
+
+const BRANCH_NEARBY = {
+  // ใจกลางเมือง / ฝั่งพระราม 3 — ตั้งใจให้พระราม 3 เห็นสีลมและสยามตามโจทย์
+  rama3:['silom','siam','centralworld','t21'],
+  silom:['rama3','siam','centralworld','t21'],
+  siam:['centralworld','silom','t21','rama3'],
+  centralworld:['siam','t21','silom','rama3'],
+  t21:['centralworld','siam','sutthisan','silom'],
+  sutthisan:['t21','bangkapi','centralworld','siam'],
+
+  // กรุงเทพฝั่งตะวันออก
+  bangkapi:['sutthisan','promenade','seacon','t21'],
+  promenade:['bangkapi','sutthisan','seacon','t21'],
+  seacon:['megabangna','bangkapi','t21','promenade'],
+  megabangna:['seacon','bangkapi','t21','promenade'],
+
+  // กรุงเทพฝั่งตะวันตก / เหนือ
+  circle:['siam','silom','ngamwongwan','westgate'],
+  ngamwongwan:['westgate','circle','futurepark','sutthisan'],
+  westgate:['ngamwongwan','circle','futurepark','siam'],
+  futurepark:['ngamwongwan','westgate','promenade','sutthisan']
+};
+
+function normalizeBranchSearch(v){
+  return String(v || '')
+    .toLowerCase()
+    .replace(/[‐‑‒–—−-]/g,'')
+    .replace(/[\s._,/\\()]+/g,'')
+    .replace(/พระรามสาม/g,'พระราม3')
+    .replace(/ramaiii/g,'rama3');
+}
+
+function branchSearchHaystack(b){
+  const aliases = BRANCH_SEARCH_ALIASES[b.id] || [];
+  return normalizeBranchSearch([
+    b.name,b.nameEn,b.nameZh,b.district,b.districtEn,b.districtZh,
+    b.loc,b.locEn,b.locZh,...aliases
+  ].filter(Boolean).join(' '));
+}
+
+function branchesForSearch(area, rawQuery){
+  const areaBranches = BRANCHES.filter(b => b.area === area);
+  const q = normalizeBranchSearch(rawQuery);
+  if (!q) return areaBranches;
+
+  const direct = areaBranches.filter(b => branchSearchHaystack(b).includes(q));
+  if (!direct.length) return [];
+
+  const wanted = [];
+  const add = id => {
+    if (!id || wanted.includes(id)) return;
+    const b = areaBranches.find(x => x.id === id);
+    if (b) wanted.push(id);
+  };
+
+  // ผลตรงคำค้นขึ้นก่อนเสมอ
+  direct.forEach(b => add(b.id));
+  // จากนั้นค่อยเติมสาขาใกล้เคียง (สูงสุดรวม 6 สาขา เพื่อไม่ให้ผลค้นหายาวเกิน)
+  direct.forEach(b => (BRANCH_NEARBY[b.id] || []).forEach(add));
+
+  return wanted.slice(0, 6).map(id => areaBranches.find(b => b.id === id)).filter(Boolean);
+}
+
 function screenBranch(){
-  const q = S.q.trim().toLowerCase();
-  const list = BRANCHES.filter(b => b.area === S.area)
-    .filter(b => !q || (bname(b) + ' ' + b.name + ' ' + bloc(b)).toLowerCase().includes(q));
+  const q = S.q.trim();
+  const list = branchesForSearch(S.area, q);
   const nBkk = BRANCHES.filter(b => b.area === 'bkk').length;
   const nUp = BRANCHES.filter(b => b.area === 'up').length;
 
   return `
-    <div class="brand"><span class="brand__mark" data-brandtap="1">Suitcube</span><span class="brand__rule"></span><span class="brand__tag">Made to measure</span></div>
+    <div class="brand">
+      <span class="brand__mark" data-brandtap="1" aria-label="SUITCUBE">
+        <svg class="brand__logo" viewBox="0 0 170 38" role="img" aria-hidden="true">
+          <text x="0" y="29" fill="currentColor" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="500" letter-spacing=".7">SUIT</text>
+          <g transform="translate(78 4)" fill="currentColor">
+            <path d="M14 0 28 8 14 16 0 8 14 0Z"/>
+            <path d="M0 10 13 17.5V32L0 24.5V10Z"/>
+            <path d="M28 10 15 17.5V32L28 24.5V10Z"/>
+          </g>
+          <text x="109" y="29" fill="currentColor" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="500" letter-spacing=".7">BE</text>
+        </svg>
+      </span>
+      <span class="brand__rule"></span>
+      <span class="brand__tag">Made to measure</span>
+    </div>
     <h1 class="h1">${tt('chooseBranch')}</h1>
     <p class="sub">${tt('branchSub', nBkk + nUp)}</p>
     <div class="seg">
@@ -1369,6 +1473,7 @@ function screenBranch(){
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="${tt('searchPh')}" value="${esc(S.q)}" autocomplete="off">
     </div>
+    ${q && list.length ? `<div class="search-nearby">${tt('nearbySearch', esc(S.q))}</div>` : ''}
     ${list.length ? `<div class="bgrid">${list.map(b => {
       const st = openStatus(b);
       const todayStr = ymd(new Date());
