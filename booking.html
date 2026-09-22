@@ -1,3 +1,30 @@
+
+a0bf61d3-05dc-4e13-a0ff-17656f37f611.png
+
+ข้อความที่วาง (1)(20260922-044906).txt
+เอกสาร
+แก้ logo ใหม่หน่อย ให้เป็นเหมือนในรูป และก็เวลาคลิกที่โลโก้ให้ไปที่เว็บ https://www.suitcube.com/
+
+แก้ให้แล้วครับ โดยเปลี่ยนโลโก้เดิมใน suitcubeNavLogo() ที่เป็น SVG 
+
+ ให้ใช้โลโก้ตามรูปที่ส่งมา และฝังรูปไว้ในไฟล์ HTML โดยตรง จึงไม่ต้องมีไฟล์รูปแยก
+
+พร้อมตั้งให้คลิกโลโก้แล้วไปที่ https://www.suitcube.com/ ได้ทันที
+
+ดาวน์โหลดไฟล์ HTML ที่แก้แล้ว
+
+
+
+suitcube-booking-logo-updated.html
+HTML
+
+
+เปลี่ยนโลโก้ตอนบันทึกรูปภาพตอนจองคิวเสร็จด้วยสิ
+
+แก้ให้แล้วครับ ตอนกด “บันทึกเป็นรูปภาพ” หลังจองคิวสำเร็จ โลโก้บนรูป Booking Confirmation จะใช้โลโก้แบบเดียวกับที่ส่งมาแล้ว ไม่ใช่ตัวอักษร/ไอคอนที่วาดขึ้นใหม่
+
+ดาวน์โหลดไฟล์ HTML เวอร์ชันอัปเดต
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -82,8 +109,10 @@ html,body{background:var(--bg)}
   border-bottom:.5px solid var(--hairline-2);
 }
 .nav__title{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;min-width:0;text-align:center;font-size:15px;font-weight:600;letter-spacing:.01em;z-index:1;pointer-events:none}
-.nav__logo{display:inline-flex;align-items:center;justify-content:center;width:132px;height:28px;color:var(--ci-black);line-height:0;white-space:nowrap}
-.nav__logo svg{display:block;width:100%;height:100%;overflow:visible}
+.nav__logo-link{display:inline-flex;align-items:center;justify-content:center;pointer-events:auto;text-decoration:none;border-radius:6px}
+.nav__logo-link:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.nav__logo{display:inline-flex;align-items:center;justify-content:center;width:132px;height:40px;line-height:0;white-space:nowrap}
+.nav__logo img{display:block;width:100%;height:100%;object-fit:contain}
 .nav__btn{position:relative;z-index:2;font-size:14px;color:var(--brass-ink);font-weight:500;padding:8px;display:flex;align-items:center;gap:3px}
 #navBack{grid-column:1}
 .nav__btn:last-child{grid-column:4;justify-content:flex-end;white-space:nowrap}
@@ -1035,19 +1064,14 @@ function makeCode(){
   return 'SC-' + out;
 }
 
+const SUITCUBE_NAV_LOGO = 'data:image/png;base64,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';
 function suitcubeNavLogo(){
   return `
-    <span class="nav__logo" aria-label="SUITCUBE">
-      <svg viewBox="0 0 170 38" role="img" aria-hidden="true">
-        <text x="0" y="29" fill="currentColor" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="600" letter-spacing=".7">SUIT</text>
-        <g transform="translate(78 4)" fill="currentColor">
-          <path d="M14 0 28 8 14 16 0 8 14 0Z"/>
-          <path d="M0 10 13 17.5V32L0 24.5V10Z"/>
-          <path d="M28 10 15 17.5V32L28 24.5V10Z"/>
-        </g>
-        <text x="109" y="29" fill="currentColor" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="600" letter-spacing=".7">BE</text>
-      </svg>
-    </span>`;
+    <a class="nav__logo-link" href="https://www.suitcube.com/" aria-label="ไปที่เว็บไซต์ SUITCUBE">
+      <span class="nav__logo">
+        <img src="${SUITCUBE_NAV_LOGO}" alt="SUITCUBE">
+      </span>
+    </a>`;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1167,8 +1191,33 @@ function canvasWrappedLines(ctx, value, maxWidth, maxLines){
   return lines.length ? lines : ['-'];
 }
 
-function drawSuitcubeCanvasLogo(ctx, centerX, baselineY){
+let suitcubeCanvasLogoImagePromise = null;
+function loadSuitcubeCanvasLogoImage(){
+  if (!suitcubeCanvasLogoImagePromise){
+    suitcubeCanvasLogoImagePromise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = SUITCUBE_NAV_LOGO;
+    });
+  }
+  return suitcubeCanvasLogoImagePromise;
+}
+
+async function drawSuitcubeCanvasLogo(ctx, centerX, topY){
+  try{
+    const img = await loadSuitcubeCanvasLogoImage();
+    const drawW = 300;
+    const drawH = drawW * (img.naturalHeight || img.height) / (img.naturalWidth || img.width);
+    ctx.drawImage(img, centerX - drawW / 2, topY, drawW, drawH);
+    return;
+  }catch(error){
+    console.warn('SUITCUBE logo image could not be loaded for booking image:', error);
+  }
+
+  // Fallback: simple vector logo if the embedded image cannot be loaded.
   const wordFont = "700 38px 'Anuphan','Helvetica Neue',Arial,sans-serif";
+  const baselineY = topY + 50;
   ctx.save();
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
@@ -1217,7 +1266,7 @@ function drawSuitcubeCanvasLogo(ctx, centerX, baselineY){
   ctx.restore();
 }
 
-function createBookingConfirmationCanvas(booking){
+async function createBookingConfirmationCanvas(booking){
   const details = bookingPopupDetails(booking);
   const canvas = document.createElement('canvas');
   canvas.width = 1080;
@@ -1232,7 +1281,7 @@ function createBookingConfirmationCanvas(booking){
   ctx.fill();
 
   ctx.textAlign = 'center';
-  drawSuitcubeCanvasLogo(ctx, 540, 132);
+  await drawSuitcubeCanvasLogo(ctx, 540, 64);
   ctx.fillStyle = '#AC842E';
   ctx.font = `600 22px ${font}`;
   ctx.fillText('BOOKING CONFIRMATION', 540, 174);
@@ -1299,7 +1348,7 @@ async function saveBookingSuccessImage(){
     if (document.fonts && document.fonts.ready){
       await Promise.race([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 1800))]);
     }
-    const canvas = createBookingConfirmationCanvas(booking);
+    const canvas = await createBookingConfirmationCanvas(booking);
     const blob = await new Promise((resolve, reject) => {
       canvas.toBlob(result => result ? resolve(result) : reject(new Error('PNG export failed')), 'image/png');
     });
@@ -2458,3 +2507,8 @@ Promise.all([loadBranchesServices(), loadBookings()]).then(render);
 </script>
 </body>
 </html>
+
+suitcube-booking-logo-updated-v2.html
+HTML
+
+
