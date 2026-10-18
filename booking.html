@@ -81,17 +81,12 @@ html,body{background:var(--bg)}
   backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:.5px solid var(--hairline-2);
 }
-.nav__title{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;min-width:0;text-align:center;font-size:15px;font-weight:600;letter-spacing:.01em;z-index:1;pointer-events:none}
-.nav__logo-link{display:inline-flex;align-items:center;justify-content:center;pointer-events:auto;text-decoration:none;border-radius:6px}
-.nav__logo-link:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
-.nav__logo{display:inline-flex;align-items:center;justify-content:center;width:132px;height:40px;line-height:0;white-space:nowrap}
-.nav__logo img{display:block;width:100%;height:100%;object-fit:contain;background:transparent}
-.nav__btn{position:relative;z-index:2;font-size:14px;color:var(--brass-ink);font-weight:500;padding:8px;display:flex;align-items:center;gap:3px}
-#navBack{grid-column:1}
-.nav__btn:last-child{grid-column:4;justify-content:flex-end;white-space:nowrap}
+.nav__title{text-align:center;font-size:15px;font-weight:600;letter-spacing:.01em}
+.nav__btn{font-size:14px;color:var(--brass-ink);font-weight:500;padding:8px;display:flex;align-items:center;gap:3px}
+.nav__btn:last-child{justify-content:flex-end;white-space:nowrap}
 .nav__btn:disabled{opacity:0;pointer-events:none}
 .nav__lang{
-  grid-column:3;position:relative;z-index:2;justify-self:center;font-size:10.5px;font-weight:600;letter-spacing:.03em;color:var(--brass-ink);
+  justify-self:center;font-size:10.5px;font-weight:600;letter-spacing:.03em;color:var(--brass-ink);
   padding:5px 16px 5px 7px;border:1px solid var(--hairline);border-radius:999px;background:var(--surface);
   -webkit-appearance:none;appearance:none;text-align:center;text-align-last:center;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1l3 3 3-3' fill='none' stroke='%23AC842E' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -157,9 +152,9 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 
 /* ── brand header ─────────────────────── */
 .brand{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 2px}
-.brand__mark{font-size:15px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;white-space:nowrap}
+.brand__mark{font-size:15px;font-weight:600;letter-spacing:.34em;text-transform:uppercase}
 .brand__rule{height:1px;background:var(--hairline);flex:1;margin:0 12px}
-.brand__tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.brand__tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
 /* ── segmented control ────────────────── */
 .seg{display:flex;background:var(--surface-2);border-radius:11px;padding:3px;gap:3px;margin:2px 0 12px}
@@ -176,8 +171,6 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
 .search input:focus{box-shadow:0 0 0 2px var(--brass)}
 .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.45}
-.search-nearby{font-size:11.5px;color:var(--muted);margin:-4px 2px 12px;line-height:1.5}
-.search-nearby b{color:var(--brass-ink);font-weight:600}
 
 /* ── cards ────────────────────────────── */
 .card{
@@ -371,7 +364,6 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .booking-popup[hidden]{display:none}
 .booking-popup__card{
   width:min(100%,430px);padding:26px 22px 22px;border-radius:22px;background:var(--bg);
-  max-height:calc(100dvh - 40px);overflow-y:auto;
   border:1px solid var(--hairline);box-shadow:0 22px 70px rgba(0,0,0,.32);text-align:center;
 }
 .booking-popup__icon{
@@ -383,14 +375,6 @@ main{padding:14px 16px 132px;animation:rise .34s var(--ease) both}
 .booking-popup__queue{margin:0 0 18px;padding:13px;border-radius:var(--r-md);background:var(--surface-2)}
 .booking-popup__queue-label{display:block;margin-bottom:3px;color:var(--muted);font-size:11px}
 .booking-popup__queue-code{display:block;color:var(--wool);font-family:var(--font-display);font-size:25px;font-weight:700;letter-spacing:.08em}
-.booking-popup__details{margin:0 0 18px;padding:0 14px;border:1px solid var(--hairline);border-radius:var(--r-md);text-align:left}
-.booking-popup__detail{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:11px 0;border-bottom:1px solid var(--hairline-2)}
-.booking-popup__detail:last-child{border-bottom:0}
-.booking-popup__detail dt{margin:0;color:var(--muted);font-size:12px}
-.booking-popup__detail dd{margin:0;color:var(--wool);font-size:13.5px;font-weight:600;text-align:right;overflow-wrap:anywhere}
-.booking-popup__actions{display:grid;gap:9px}
-.booking-popup__save{display:flex;align-items:center;justify-content:center;gap:8px}
-.booking-popup__save svg{flex:none}
 body.popup-open{overflow:hidden}
 .skeleton{height:64px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow);margin-bottom:9px;animation:pulse 1.4s ease-in-out infinite}
 
@@ -420,12 +404,19 @@ body.popup-open{overflow:hidden}
 .toggle span{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:.18s var(--ease)}
 .toggle.is-on{background:var(--open)}
 .toggle.is-on span{transform:translateX(16px)}
+.sms-vars{display:flex;flex-wrap:wrap;gap:7px;margin:7px 0 14px}
+.sms-token{padding:7px 10px;border-radius:999px;background:var(--brass-tint);color:var(--brass-ink);font-size:12px;font-weight:600;border:1px solid color-mix(in srgb,var(--brass) 25%,transparent)}
+.sms-preview{padding:14px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--hairline);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.sms-meta{display:flex;align-items:center;gap:7px;margin:0 0 14px;color:var(--muted);font-size:12px}
+.sms-dot{width:8px;height:8px;border-radius:50%;background:var(--closed);flex:none}
+.sms-dot.is-on{background:var(--open)}
+.bar__actions{display:grid;grid-template-columns:1fr 1.25fr;gap:8px}
 @keyframes pulse{50%{opacity:.55}}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="topbar">SUITCUBE · ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ</div>
+  <div class="topbar">SUITCUBE · งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ</div>
   <div class="nav">
     <button class="nav__btn" id="navBack" aria-label="ย้อนกลับ">
       <svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 1L1.5 8l7 7"/></svg>
@@ -463,27 +454,7 @@ body.popup-open{overflow:hidden}
       <span class="booking-popup__queue-label" id="bookingSuccessQueueLabel"></span>
       <strong class="booking-popup__queue-code" id="bookingSuccessQueueCode"></strong>
     </div>
-    <dl class="booking-popup__details">
-      <div class="booking-popup__detail">
-        <dt id="bookingSuccessNameLabel"></dt>
-        <dd id="bookingSuccessName"></dd>
-      </div>
-      <div class="booking-popup__detail">
-        <dt id="bookingSuccessServiceLabel"></dt>
-        <dd id="bookingSuccessService"></dd>
-      </div>
-      <div class="booking-popup__detail">
-        <dt id="bookingSuccessTimeLabel"></dt>
-        <dd id="bookingSuccessTime"></dd>
-      </div>
-    </dl>
-    <div class="booking-popup__actions">
-      <button type="button" class="btn btn--brass booking-popup__save" id="bookingSuccessSave">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-        <span id="bookingSuccessSaveText"></span>
-      </button>
-      <button type="button" class="btn btn--ci" id="bookingSuccessAck"></button>
-    </div>
+    <button type="button" class="btn btn--ci" id="bookingSuccessAck"></button>
   </div>
 </div>
 
@@ -555,7 +526,7 @@ const BRANCHES_SEED = [
 
   { id:'centralworld', name:'เซ็นทรัลเวิลด์', nameEn:'CentralWorld', nameZh:'CentralWorld', area:'bkk', district:'ปทุมวัน', districtEn:'Pathumwan', districtZh:'巴吞旺',
     loc:'โซน Central Department Store ชั้น 5 โซน Men Wear', locEn:'Central Department Store zone, 5th floor, Men\'s Wear', locZh:'Central 百货区 5 楼男装区',
-    map:'https://maps.app.goo.gl/X4iMRq2FDEwGiShy7', hours:every('10:00','22:00') },
+    map:'https://maps.app.goo.gl/X4iMRq2FDEwGiShy7', hours:every('10:00','21:00') },
 
   { id:'westgate', name:'เซ็นทรัลเวสต์เกต', nameEn:'Central Westgate', nameZh:'Central Westgate', area:'bkk', district:'บางใหญ่', districtEn:'Bang Yai', districtZh:'邦艾',
     loc:'โซน Central Department Store ชั้น 3 โซน Men Wear ตรงข้ามร้านสตาร์บัคส์', locEn:'Central Department Store zone, 3rd floor, Men\'s Wear, opposite Starbucks', locZh:'Central 百货区 3 楼男装区，星巴克对面',
@@ -622,16 +593,15 @@ function fmtDateShort(dateStr, lang){
 }
 const T = {
   heroTitle:         { th:'จองคิวเข้ารับบริการ', en:'Book Your Appointment', zh:'预约到店服务' },
-  heroSub:           { th: 'ร้านสูทอันดับ 1 ของไทย มีทั้งสูทสำเร็จรูปพร้อมปรับแก้ และสูทสั่งตัดเพื่อความพอดีที่เป็นคุณ', en: 'Thailand’s No. 1 Suit Brand Offering ready-to-wear suits with professional alterations, as well as bespoke tailoring for a fit that’s uniquely yours.' },
-  chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch'},
+  heroSub:           { th:'งานตัดเย็บสูทตามสั่ง เพื่อความพอดีที่เป็นคุณ', en:'Bespoke tailoring, made to measure', zh:'定制西装工艺，为您量身打造' },
+  chooseBranch:      { th:'เลือกสาขาที่สะดวก', en:'Choose a branch', zh:'选择方便的分店' },
   branchSub:          { th:n=>`ทั้งหมด ${n} สาขา · เลือกช่างและช่วงเวลาที่ตรงกับคุณ`, en:n=>`${n} branches in total · pick what suits you`, zh:n=>`共 ${n} 家分店 · 选择适合您的时间` },
   areaBkk:           { th:'กรุงเทพฯ & ปริมณฑล', en:'Bangkok & Vicinity', zh:'曼谷及周边' },
   areaUp:            { th:'ต่างจังหวัด', en:'Upcountry', zh:'外府' },
   walkin:            { th:'ระบบการจองสร้างขึ้นเพื่ออำนวยความสะดวกให้กับลูกค้า หากเวลาในช่วงดังกล่าวเต็ม ลูกค้ายังสามารถ Walk-in เพื่อรับบริการได้ตามปกติ',
                         en:'This booking system is here for your convenience. If a time slot is full, you can still walk in for service as usual.',
                         zh:'预约系统旨在为顾客提供便利，如所需时段已满，顾客仍可现场排队（Walk-in）正常接受服务' },
-  searchPh:          { th:'ค้นหาสาขาหรือย่าน เช่น พระราม 3, สยาม, สีลม', en:'Search branch or area, e.g. Rama 3, Siam, Silom', zh:'搜索分店或地区，例如 拉玛三世、暹罗、是隆' },
-  nearbySearch:      { th:q=>`แสดงสาขาที่ตรงกับ “${q}” และสาขาในรัศมี 7 กม.`, en:q=>`Showing matches for “${q}” and branches within 7 km`, zh:q=>`显示与“${q}”匹配及 7 公里范围内的分店` },
+  searchPh:          { th:'ค้นหาสาขา เช่น สยาม, ราชพฤกษ์', en:'Search branch, e.g. Siam, Ratchapruek', zh:'搜索分店，例如 暹罗、拉查帕' },
   noBranch:          { th:'ไม่พบสาขาที่ค้นหา', en:'No matching branch', zh:'未找到该分店' },
   noBranchSub:       { th:'ลองพิมพ์ชื่อห้างหรือย่านที่ใกล้คุณ', en:'Try the name of a mall or area near you', zh:'请尝试输入附近商场或地区的名称' },
   whatService:       { th:'บริการที่คุณเลือก', en:'What service would you like?', zh:'需要什么服务' },
@@ -640,7 +610,6 @@ const T = {
   detailsHeading:    { th:'รายละเอียด', en:'Details', zh:'详情' },
   peopleCount:       { th:'จำนวนคน', en:'Number of people', zh:'人数' },
   selectedService:   { th:(name,dur)=>`บริการที่เลือก: ${name} ใช้เวลาโดยประมาณ ${dur} / ท่าน`, en:(name,dur)=>`Selected service: ${name} · approx. ${dur} / person`, zh:(name,dur)=>`已选服务：${name}，约 ${dur}` },
-  totalDuration:     { th:(p,d)=>`เวลารวมสำหรับ ${p} คน: ${d}`, en:(p,d)=>`Total time for ${p} people: ${d}`, zh:(p,d)=>`${p} 人总时长：${d}` },
   chooseDatetime:    { th:'เลือกวันและเวลา', en:'Choose date & time', zh:'选择日期与时间' },
   datetimeSub:       { th:(b,s,m,p)=>`${b} · ${s} (${m} นาที/ท่าน) · ${p} คน`, en:(b,s,m,p)=>`${b} · ${s} (${m} min/person) · ${p} people`, zh:(b,s,m)=>`${b} · ${s}（${m} 分钟）` },
   today:             { th:'วันนี้', en:'Today', zh:'今天' },
@@ -652,14 +621,13 @@ const T = {
   alreadyBooked:     { th:'คุณจองช่วงนี้ไว้แล้ว', en:'You already booked this slot', zh:'您已预约此时段' },
   noSlots:           { th:'วันนี้ไม่มีช่วงเวลาว่างแล้ว', en:'No time slots left today', zh:'今日时段已满' },
   noSlotsSub:        { th:'เลือกวันถัดไปด้านบนได้เลย', en:'Pick another day above', zh:'请在上方选择其他日期' },
-  slotNote:          { th:(p,d)=>`เวลารวมสำหรับ ${p} คน: ${d} · เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · หากช่วงเวลาที่ท่านต้องการจองเต็ม ท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ`,
-                        en:(p,d)=>`Total time for ${p} people: ${d} · Available times follow this branch’s opening hours · If your desired booking time is fully booked, walk-ins are welcome as usual.`,
-                        zh:(p,d)=>`${p} 人总时长：${d} · 可预约时间依分店营业时间显示` },
+  slotNote:          { th:(p,d)=>`เวลาจองแสดงตามเวลาเปิด–ปิดของสาขา · เลือก ${p} คน · ระยะเวลารวมโดยประมาณ ${d}`,
+                        en:(p,d)=>`Available times follow this branch’s opening hours · ${p} people · approx. total duration ${d}`,
+                        zh:(p,d)=>`可预约时间依分店营业时间显示` },
   yourDetails:       { th:'ข้อมูลผู้จอง', en:'Your details', zh:'预约人信息' },
-  detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น <span style="color: red;">**กรุณาพิมพ์ข้อมูลให้ครบถ้วน**</span>', 
-                         en:'Used only to confirm your booking and contact you <span style="color: red;">**Please fill in all information**</span>' },
-  fullName:          { th:'ชื่อผู้จอง', en:'Full name', zh:'姓名' },
-  namePh:            { th:'กรุณากรอกชื่อ', en:'Please enter your name'},
+  detailsSub:        { th:'ใช้สำหรับยืนยันคิวและติดต่อกลับเท่านั้น', en:'Used only to confirm your booking and contact you', zh:'仅用于确认预约及联系您' },
+  fullName:          { th:'ชื่อ – นามสกุล', en:'Full name', zh:'姓名' },
+  namePh:            { th:'เช่น ภูมิรินทร์ ใจดี', en:'e.g. John Doe', zh:'例如：李明' },
   nameErr:           { th:'กรุณากรอกชื่อผู้จอง', en:'Please enter your name', zh:'请输入姓名' },
   phone:             { th:'เบอร์โทรศัพท์', en:'Phone number', zh:'电话号码' },
   phoneErr:          { th:'กรอกเบอร์ 9–10 หลัก ขึ้นต้นด้วย 0', en:'Enter a 9–10 digit number starting with 0', zh:'请输入以 0 开头的 9–10 位数字' },
@@ -676,30 +644,20 @@ const T = {
   kNotes:            { th:'หมายเหตุ', en:'Notes', zh:'备注' },
   kAppt:             { th:'นัดหมาย', en:'Appointment', zh:'预约时间' },
   kStatus:           { th:'สถานะ', en:'Status', zh:'状态' },
- takesAbout:         { th: (m) => `ใช้เวลาประมาณ ${m} นาที`, en: (m) => `Takes about ${m} min`, zh: (m) => `约需 ${m} 分钟` },
-  reviewNote: [
-    {
-      th: 'หากท่านไม่สามารถเข้ารับบริการได้ตรงตามเวลาที่จองไว้ ทางร้านขอสงวนสิทธิ์ในการให้บริการลูกค้าคิวถัดไป',
-      en: 'If you are unable to arrive at your reserved time, the store reserves the right to serve the next customer in line.'
-    },
-    {
-      th: 'หากหน้าร้านให้บริการลูกค้าท่านอื่นอยู่ในคิวก่อนหน้า ท่านจะได้รับบริการเป็นคิวถัดไปโดยเร็วที่สุดค่ะ',
-      en: 'If our staff are assisting another customer ahead of you, you will be served as soon as possible in the next available queue.'
-    }
-  ],
-  queueCode: { th: 'รหัสคิว', en: 'Queue code', zh: '排队号码' },
+  takesAbout:        { th:m=>`ใช้เวลาประมาณ ${m} นาที`, en:m=>`Takes about ${m} min`, zh:m=>`约需 ${m} 分钟` },
+  reviewNote:        { th:'กรณี Walk-in หรือลูกค้ามาไม่ตรงเวลาที่ได้จองไว้ หากพนักงานกำลังให้บริการลูกค้าท่านอื่นอยู่ อาจมีระยะเวลารอคิวเล็กน้อย โดยพนักงานจะรีบเข้ามาดูแลคุณลูกค้าโดยเร็วที่สุดค่ะ',
+                        en:'For walk-ins, or if you arrive outside your booked time, staff may be assisting another customer and there could be a short wait. Our team will attend to you as quickly as possible.',
+                        zh:'如为现场排队（Walk-in），或您到店时间与预约时段不符，若工作人员正在为其他顾客服务，可能需要稍作等候，我们会尽快为您提供服务' },
+  queueCode:         { th:'รหัสคิว', en:'Queue code', zh:'排队号码' },
   cancelled:         { th:'ยกเลิกแล้ว', en:'Cancelled', zh:'已取消' },
   openMap:           { th:'เปิดแผนที่', en:'Open map', zh:'打开地图' },
+  addCalendar:       { th:'เพิ่มลงปฏิทิน', en:'Add to calendar', zh:'添加到日历' },
   cancelBooking:     { th:'ยกเลิกคิวนี้', en:'Cancel this booking', zh:'取消此预约' },
   doneTitle:         { th:'ยืนยันคิวเรียบร้อย', en:'Booking confirmed', zh:'预约成功' },
   doneSub:           { th:'กรุณาแสดงคิวนี้ หรือแจ้งพนักงานว่าลูกค้ามีการจองคิวผ่านระบบมาแล้ว', en:'Please show this booking, or tell our staff that you booked through the system.', zh:'到店后请出示此号码给工作人员' },
   successPopupTitle: { th:'จองคิวเรียบร้อยแล้ว', en:'Your booking is confirmed', zh:'预约成功' },
-  successPopupMessage:{ th:'กด “บันทึกเป็นรูปภาพ” เพื่อเก็บรายละเอียดคิวไว้ เมื่อถึงร้าน กรุณาแสดงรูปภาพนี้ที่หน้าเคาน์เตอร์ หรือแจ้งพนักงานว่าท่านได้จองคิวผ่านระบบแล้ว', en:'Tap “Save as image” to keep your booking details. At the store, show this image at the counter or tell a staff member that you booked through the system.', zh:'点击“保存为图片”保存预约详情。到店后，请在柜台出示此图片，或告知工作人员您已通过系统预约。' },
+  successPopupMessage:{ th:'กรุณาบันทึกหน้าจอหมายเลขคิวไว้ เพื่อใช้ยืนยันการจองเมื่อมาถึงร้าน เมื่อถึงร้าน กรุณาแสดงหมายเลขคิวที่หน้าเคาน์เตอร์ หรือแจ้งพนักงานว่าท่านได้จองคิวผ่านระบบแล้ว', en:'Please take a screenshot of your queue number and keep it to verify your booking when you arrive. At the store, please show the queue number at the counter or tell a staff member that you booked through the system.', zh:'请截屏保存排队号码，以便到店时确认预约。到店后，请在柜台出示排队号码，或告知工作人员您已通过系统预约。' },
   popupQueueNumber: { th:'หมายเลขคิว', en:'Queue number', zh:'排队号码' },
-  saveAsImage:     { th:'บันทึกเป็นรูปภาพ', en:'Save as image', zh:'保存为图片' },
-  savingImage:     { th:'กำลังสร้างรูปภาพ...', en:'Creating image...', zh:'正在生成图片…' },
-  imageSaved:      { th:'บันทึกรูปภาพเรียบร้อยแล้ว', en:'Image saved', zh:'图片已保存' },
-  imageSaveFail:   { th:'บันทึกรูปภาพไม่สำเร็จ กรุณาลองอีกครั้ง', en:'Could not save the image. Please try again.', zh:'图片保存失败，请重试。' },
   acknowledge:      { th:'รับทราบ', en:'OK', zh:'知道了' },
   ackSaving:        { th:'กำลังบันทึก...', en:'Saving...', zh:'正在保存…' },
   ackSaveFail:      { th:'บันทึกการรับทราบไม่สำเร็จ กรุณากดอีกครั้ง', en:'Could not save your acknowledgement. Please try again.', zh:'未能保存确认，请重试。' },
@@ -732,9 +690,11 @@ const T = {
   cancelledToast:    { th:'ยกเลิกคิวแล้ว', en:'Booking cancelled', zh:'预约已取消' },
   formIncomplete:    { th:'กรอกข้อมูลให้ครบก่อนไปต่อ', en:'Please complete the form to continue', zh:'请填写完整信息后再继续' },
   slotTaken:         { th:'ช่วงเวลานี้ถูกจองไปแล้ว', en:'This time slot is already booked', zh:'该时段已被预约' },
-  weekdayBookingRule:{ th:'ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:' Today is online bookings are closed. Please choose a new date/time or walk in as usual.', zh:'周一至周五的当日预约须在上午 10 点前确认，预约时间须至少提前 6 小时，且服务须在下午 4 点前结束。请选择其他日期或时间。' },
+  icsDownloaded:     { th:'ดาวน์โหลดไฟล์ปฏิทินแล้ว', en:'Calendar file downloaded', zh:'日历文件已下载' },
+  calendarOpened:    { th:'เปิดหน้าสร้างนัดหมายให้แล้ว กรุณากดเพิ่มหรือบันทึก', en:'The event is ready. Tap Add or Save to finish.', zh:'预约已准备好，请点击添加或保存。' },
+  weekdayBookingRule:{ th:'คิวภายในวันจันทร์–ศุกร์ต้องยืนยันไม่เกิน 10:00 น. เวลานัดต้องห่างอย่างน้อย 6 ชั่วโมง และเริ่มคิวไม่เกิน 16:00 น. กรุณาเลือกวันหรือเวลาใหม่', en:'Same-day Monday–Friday bookings must be confirmed by 10:00 AM, at least 6 hours before the appointment, with the appointment starting no later than 4:00 PM. Please choose another date or time.', zh:'周一至周五的当日预约须在上午 10 点前确认，预约时间须至少提前 6 小时，且不得晚于下午 4 点开始。请选择其他日期或时间。' },
   weekendBookingRule:{ th:'วันเสาร์–อาทิตย์ต้องจองตั้งแต่วันก่อนวันนัด ไม่เปิดรับการจองภายในวันเดียวกัน กรุณาเลือกวันถัดไป', en:'Saturday–Sunday appointments must be booked before the appointment date. Same-day booking is unavailable. Please choose another date.', zh:'周六及周日须在预约日期之前预订，不接受当天预约。请选择其他日期。' },
-  weekdayRuleNote:  { th:'ขณะนี้ปิดจองคิวในวันแล้วกรุณาเลือกวันหรือเวลาใหม่หรือท่านสามารถ Walk-in เพื่อรับบริการที่หน้าร้านได้ตามปกติ', en:'Today is online bookings are closed. Please choose a new date/time or walk in as usual.', zh:'周一至周五当日预约：上午 10 点前确认 · 至少提前 6 小时 · 须在下午 4 点前结束' },
+  weekdayRuleNote:  { th:'คิวภายในวัน จ–ศ: ยืนยันได้ถึง 10:00 น. · ห่างจากเวลานัดอย่างน้อย 6 ชั่วโมง · เริ่มคิวช้าที่สุด 16:00 น.', en:'Same-day Mon–Fri: confirm by 10:00 AM · at least 6 hours ahead · latest appointment start 4:00 PM', zh:'周一至周五当日预约：上午 10 点前确认 · 至少提前 6 小时 · 最晚下午 4 点开始' },
   weekendRuleNote:  { th:'เสาร์–อาทิตย์: ต้องจองตั้งแต่วันก่อนวันนัด', en:'Saturday–Sunday: book before the appointment date', zh:'周六及周日：须在预约日期之前预订' },
   futureRuleNote:   { th:'จองล่วงหน้าก่อนวันนัด: เลือกเวลาได้ตามเวลาเปิด–ปิดของสาขาตามปกติ', en:'Booking before the appointment date: all regular branch hours are available', zh:'提前预约：可按分店正常营业时间选择时段' },
   noRuleSlots:      { th:'ไม่มีเวลาที่จองได้ตามเงื่อนไขในวันนี้', en:'No times meet the advance-booking rule for this day', zh:'当天没有符合提前预约规则的时段' },
@@ -756,15 +716,7 @@ const T = {
   dateLabel:         { th:'วันที่จอง', en:'Booking date', zh:'预约日期' },
 };
 function tt(key, ...args){
-  const source = T[key];
-
-  if (Array.isArray(source)) {
-    return source
-      .map(item => item[S.lang] || item.en || item.th || '')
-      .join('<br><br>');
-  }
-
-  const entry = source?.[S.lang] || source?.en || source?.th || '';
+  const entry = T[key][S.lang];
   return typeof entry === 'function' ? entry(...args) : entry;
 }
 function bname(b){ return S.lang==='zh' ? (b.nameZh||b.nameEn||b.name) : S.lang==='en' ? (b.nameEn||b.name) : b.name; }
@@ -793,7 +745,7 @@ const M_FULL_ZH = M_SHORT_ZH;
 const SLOT_STEP = 30;                 // นาทีต่อ 1 ช่วงคิว
 const WEEKDAY_LEAD_MIN = 6 * 60;      // เฉพาะคิวภายในวัน จ–ศ: ล่วงหน้าอย่างน้อย 6 ชั่วโมง
 const WEEKDAY_SAME_DAY_CUTOFF_MIN = 10 * 60; // จันทร์–ศุกร์: ยืนยันคิวภายในวันได้ช้าที่สุด 10:00 น.
-const WEEKDAY_LAST_END_MIN = 16 * 60;   // เฉพาะคิวภายในวัน จ–ศ: ต้องให้บริการเสร็จไม่เกิน 16:00 น.
+const WEEKDAY_LAST_START_MIN = 16 * 60; // เฉพาะคิวภายในวัน จ–ศ: เวลาเริ่มคิวช้าที่สุด 16:00 น.
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
@@ -858,7 +810,7 @@ function bookingRuleViolation(dateStr, timeStr, now = new Date()){
   const weekday = isWeekdayDate(dateStr);
   if (!weekday) return 'weekendBookingRule';
 
-  if (toMin(timeStr) >= WEEKDAY_LAST_END_MIN) return 'weekdayBookingRule';
+  if (toMin(timeStr) > WEEKDAY_LAST_START_MIN) return 'weekdayBookingRule';
   const bookingMinute = bookedAt.getHours() * 60 + bookedAt.getMinutes();
   if (bookingMinute > WEEKDAY_SAME_DAY_CUTOFF_MIN){
     return 'weekdayBookingRule';
@@ -893,12 +845,11 @@ function slotsFor(branch, dateStr, mins, now = new Date()){
   const date = parseYmd(dateStr);
   const [o,c] = hoursOf(branch, date);
   // เวลาจองอิงตามเวลาเปิด–ปิดของสาขา และต้องจบบริการก่อนร้านปิด
-  // คิวภายในวัน จ–ศ ต้องจบบริการไม่เกิน 16:00 น.
-  // เช่น 1 ชม. = เริ่มได้ช้าที่สุด 15:00, 2 ชม. = เริ่มได้ช้าที่สุด 14:00
+  // จำกัดเริ่มคิว 16:00 น. เฉพาะการจองคิวภายในวัน จ–ศ เท่านั้น
   const sameDayWeekday = dateStr === ymd(now) && isWeekdayDate(dateStr);
   const latestStart = Math.min(
     toMin(c) - mins,
-    sameDayWeekday ? WEEKDAY_LAST_END_MIN - mins : Number.POSITIVE_INFINITY
+    sameDayWeekday ? WEEKDAY_LAST_START_MIN : Number.POSITIVE_INFINITY
   );
   const out = [];
   for (let m = toMin(o); m <= latestStart; m += SLOT_STEP){
@@ -930,7 +881,8 @@ function bookingSelectionViolation(branch, dateStr, timeStr, mins, now = new Dat
 const API_URL = '/api/suitcube'; // เว้นว่างไว้ = ใช้ localStorage อย่างเดียว | ใส่ path/URL ของ backend (n8n หรือ Express) เพื่อข้อมูลรวมศูนย์ผ่าน Lark Base
 // TODO: ใส่ path วิดีโอ Hero ตรงนี้ภายหลัง เช่น '/assets/suitcube-booking.mp4'
 const HERO_VIDEO_PATH = '/Video/1440x240.mp4';
-const ADMIN_PIN = '1234'; // PIN หลังบ้านแบบง่าย — ทำงานฝั่ง client เท่านั้น ไม่ใช่ระบบความปลอดภัยจริง
+const ADMIN_PIN = '1234'; // fallback เฉพาะโหมด local; เมื่อใช้ API เซิร์ฟเวอร์จะตรวจ SUITCUBE_ADMIN_PIN
+const SMS_TEMPLATE_DEFAULT = 'SUITCUBE แจ้งเตือนนัดหมาย คุณ{name} วันที่ {date} เวลา {time} น. ณ สาขา{branch} กรุณาแสดงข้อมูลการจองแก่พนักงานเมื่อถึงสาขา ขอบคุณค่ะ';
 const LS = { my:'suitcube:my-codes', bookings:'suitcube:bookings-local', branches:'suitcube:branches-local', services:'suitcube:services-local' };
 
 let bookings = [];
@@ -939,6 +891,27 @@ let BRANCHES = [];
 let SERVICES = [];
 let storageOK = true;
 let apiConfigured = !!API_URL;
+let lastApiError = '';
+
+// iOS ต้องเปิด .ics จาก URL ที่ตอบกลับเป็น text/calendar จริง จึงใช้ Service Worker
+// ตัวเล็กที่วางคู่กับไฟล์ HTML (ทำงานเมื่อเว็บเปิดผ่าน HTTPS หรือ localhost)
+let calendarSWActive = false;
+let calendarSWReady = null;
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
+  calendarSWReady = navigator.serviceWorker
+    .register('./suitcube-calendar-sw.js', {scope:'./'})
+    .then(() => navigator.serviceWorker.ready)
+    .then(registration => { calendarSWActive = true; return registration; })
+    .catch(err => { console.warn('Calendar helper unavailable:', err); return null; });
+}
+
+function servedCalendarURL(ics, fileName){
+  if (!calendarSWActive) return null;
+  const url = new URL('./suitcube-calendar-event.ics', location.href);
+  url.searchParams.set('name', fileName);
+  url.searchParams.set('data', ics);
+  return url.href;
+}
 
 function lsGet(key, fallback){
   try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; }
@@ -949,15 +922,18 @@ function lsSet(key, value){
 
 async function apiCall(action, payload = {}){
   if (!apiConfigured) return null;
+  lastApiError = '';
   try{
     const res = await fetch(API_URL, {
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
       body: JSON.stringify({ action, ...payload })
     });
-    if (!res.ok) throw new Error('API ' + res.status);
-    return await res.json();
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || ('API ' + res.status));
+    return data;
   }catch(e){
+    lastApiError = e && e.message ? e.message : 'เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ';
     console.error('apiCall failed:', action, e);
     return null;
   }
@@ -1037,16 +1013,6 @@ function makeCode(){
   return 'SC-' + out;
 }
 
-const SUITCUBE_NAV_LOGO = 'data:image/png;base64,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';
-function suitcubeNavLogo(){
-  return `
-    <a class="nav__logo-link" href="https://www.suitcube.com/" aria-label="ไปที่เว็บไซต์ SUITCUBE">
-      <span class="nav__logo">
-        <img src="${SUITCUBE_NAV_LOGO}" alt="SUITCUBE">
-      </span>
-    </a>`;
-}
-
 /* ═══════════════════════════════════════════════
    5. สถานะหน้าจอ
    ═══════════════════════════════════════════════ */
@@ -1055,7 +1021,10 @@ const _today0 = new Date();
 let S = { step:'branch', lang:'th', area:'bkk', q:'', branchId:null, serviceId:null,
           date:ymd(_today0), time:null, name:'', phone:'', note:'', last:null, touched:false, people:1,
           admin:false, adminStep:'login', adminPin:'', adminEditId:null, adminDraft:null,
-          adminBFilter:'', adminDFilter:'', adminPinErr:false, adminBSort:'custom' };
+          adminBFilter:'', adminDFilter:'', adminPinErr:false, adminBSort:'custom',
+          adminSmsTemplate:SMS_TEMPLATE_DEFAULT, adminSmsPhone:'', adminSmsTestName:'สมประสงค์',
+          adminSmsTestDate:ymd(_today0), adminSmsTestTime:'10:00', adminSmsTestBranch:'',
+          adminSmsSender:'', adminSmsConfigured:false };
 
 const view = document.getElementById('view');
 const bar = document.getElementById('bar');
@@ -1071,295 +1040,20 @@ const bookingSuccessTitle = document.getElementById('bookingSuccessTitle');
 const bookingSuccessMessage = document.getElementById('bookingSuccessMessage');
 const bookingSuccessQueueLabel = document.getElementById('bookingSuccessQueueLabel');
 const bookingSuccessQueueCode = document.getElementById('bookingSuccessQueueCode');
-const bookingSuccessNameLabel = document.getElementById('bookingSuccessNameLabel');
-const bookingSuccessName = document.getElementById('bookingSuccessName');
-const bookingSuccessServiceLabel = document.getElementById('bookingSuccessServiceLabel');
-const bookingSuccessService = document.getElementById('bookingSuccessService');
-const bookingSuccessTimeLabel = document.getElementById('bookingSuccessTimeLabel');
-const bookingSuccessTime = document.getElementById('bookingSuccessTime');
-const bookingSuccessSave = document.getElementById('bookingSuccessSave');
-const bookingSuccessSaveText = document.getElementById('bookingSuccessSaveText');
 const bookingSuccessAck = document.getElementById('bookingSuccessAck');
 let bookingAckBusy = false;
-let bookingImageBusy = false;
-
-function bookingPopupDetails(booking){
-  const service = booking ? serviceById(booking.serviceId) : null;
-  const dateText = booking && booking.date ? longDate(booking.date) : '';
-  let timeText = booking && booking.time ? booking.time : '-';
-  if (booking && booking.time && service) timeText = slotRange(booking.time, service, booking.people);
-  return {
-    name: booking && booking.name ? booking.name : '-',
-    service: service ? sname(service) : (booking && (booking.serviceName || booking.serviceId) ? (booking.serviceName || booking.serviceId) : '-'),
-    time: [dateText, timeText].filter(Boolean).join(' · ')
-  };
-}
 
 function showBookingSuccessPopup(booking){
-  const details = bookingPopupDetails(booking);
   bookingSuccessTitle.textContent = tt('successPopupTitle');
   bookingSuccessMessage.textContent = tt('successPopupMessage');
   bookingSuccessQueueLabel.textContent = tt('popupQueueNumber');
   bookingSuccessQueueCode.textContent = booking && booking.code ? booking.code : '-';
-  bookingSuccessNameLabel.textContent = tt('fullName');
-  bookingSuccessName.textContent = details.name;
-  bookingSuccessServiceLabel.textContent = tt('kService');
-  bookingSuccessService.textContent = details.service;
-  bookingSuccessTimeLabel.textContent = tt('kTime');
-  bookingSuccessTime.textContent = details.time;
-  bookingSuccessSaveText.textContent = tt('saveAsImage');
-  bookingSuccessSave.disabled = false;
   bookingSuccessAck.textContent = tt('acknowledge');
   bookingSuccessAck.disabled = false;
   bookingAckBusy = false;
-  bookingImageBusy = false;
   bookingSuccessPopup.hidden = false;
   document.body.classList.add('popup-open');
   bookingSuccessAck.focus();
-}
-
-function canvasRoundedRect(ctx, x, y, width, height, radius){
-  const r = Math.min(radius, width / 2, height / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + width, y, x + width, y + height, r);
-  ctx.arcTo(x + width, y + height, x, y + height, r);
-  ctx.arcTo(x, y + height, x, y, r);
-  ctx.arcTo(x, y, x + width, y, r);
-  ctx.closePath();
-}
-
-function canvasWrappedLines(ctx, value, maxWidth, maxLines){
-  const text = String(value || '-');
-  let units;
-  try{
-    const locale = S.lang === 'zh' ? 'zh' : S.lang === 'en' ? 'en' : 'th';
-    units = Array.from(new Intl.Segmenter(locale, { granularity:'word' }).segment(text), part => part.segment);
-  }catch(e){
-    units = Array.from(text);
-  }
-  const lines = [];
-  let line = '';
-  let truncated = false;
-  for (const unit of units){
-    const candidate = line + unit;
-    if (!line || ctx.measureText(candidate).width <= maxWidth){
-      line = candidate;
-      continue;
-    }
-    lines.push(line.trim());
-    line = unit.trimStart();
-    if (lines.length === maxLines){ truncated = true; break; }
-  }
-  if (!truncated && line) lines.push(line.trim());
-  if (lines.length > maxLines){
-    lines.length = maxLines;
-    truncated = true;
-  }
-  if (truncated && lines.length){
-    let last = lines[maxLines - 1] || '';
-    while (last && ctx.measureText(last + '…').width > maxWidth) last = Array.from(last).slice(0, -1).join('');
-    lines[maxLines - 1] = last.replace(/[\s,.;:–-]+$/u, '') + '…';
-  }
-  return lines.length ? lines : ['-'];
-}
-
-let suitcubeCanvasLogoImagePromise = null;
-function loadSuitcubeCanvasLogoImage(){
-  if (!suitcubeCanvasLogoImagePromise){
-    suitcubeCanvasLogoImagePromise = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = reject;
-      img.src = SUITCUBE_NAV_LOGO;
-    });
-  }
-  return suitcubeCanvasLogoImagePromise;
-}
-
-async function drawSuitcubeCanvasLogo(ctx, centerX, topY){
-  try{
-    const img = await loadSuitcubeCanvasLogoImage();
-    const drawW = 300;
-    const drawH = drawW * (img.naturalHeight || img.height) / (img.naturalWidth || img.width);
-    ctx.drawImage(img, centerX - drawW / 2, topY, drawW, drawH);
-    return;
-  }catch(error){
-    console.warn('SUITCUBE logo image could not be loaded for booking image:', error);
-  }
-
-  // Fallback: simple vector logo if the embedded image cannot be loaded.
-  const wordFont = "700 38px 'Anuphan','Helvetica Neue',Arial,sans-serif";
-  const baselineY = topY + 50;
-  ctx.save();
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = '#2A2117';
-  ctx.font = wordFont;
-
-  const leftText = 'SUIT';
-  const rightText = 'CUBE';
-  const leftW = ctx.measureText(leftText).width;
-  const rightW = ctx.measureText(rightText).width;
-  const cubeW = 34;
-  const gap = 12;
-  const totalW = leftW + gap + cubeW + gap + rightW;
-  let x = centerX - totalW / 2;
-
-  ctx.fillText(leftText, x, baselineY);
-  x += leftW + gap;
-
-  const cubeX = x;
-  const cubeY = baselineY - 32;
-  ctx.beginPath();
-  ctx.moveTo(cubeX + 17, cubeY + 0);
-  ctx.lineTo(cubeX + 34, cubeY + 10);
-  ctx.lineTo(cubeX + 17, cubeY + 20);
-  ctx.lineTo(cubeX + 0, cubeY + 10);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.moveTo(cubeX + 0, cubeY + 13);
-  ctx.lineTo(cubeX + 15.5, cubeY + 22.5);
-  ctx.lineTo(cubeX + 15.5, cubeY + 38);
-  ctx.lineTo(cubeX + 0, cubeY + 28.5);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.moveTo(cubeX + 34, cubeY + 13);
-  ctx.lineTo(cubeX + 18.5, cubeY + 22.5);
-  ctx.lineTo(cubeX + 18.5, cubeY + 38);
-  ctx.lineTo(cubeX + 34, cubeY + 28.5);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillText(rightText, cubeX + cubeW + gap, baselineY);
-  ctx.restore();
-}
-
-async function createBookingConfirmationCanvas(booking){
-  const details = bookingPopupDetails(booking);
-  const canvas = document.createElement('canvas');
-  canvas.width = 1080;
-  canvas.height = 1440;
-  const ctx = canvas.getContext('2d');
-  const font = "'Anuphan','Helvetica Neue',Arial,sans-serif";
-
-  ctx.fillStyle = '#F3F0E8';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#FFFFFF';
-  canvasRoundedRect(ctx, 60, 50, 960, 1340, 44);
-  ctx.fill();
-
-  ctx.textAlign = 'center';
-  await drawSuitcubeCanvasLogo(ctx, 540, 64);
-  ctx.fillStyle = '#AC842E';
-  ctx.font = `600 22px ${font}`;
-  ctx.fillText('BOOKING CONFIRMATION', 540, 174);
-
-  ctx.fillStyle = '#2A2117';
-  ctx.font = `700 48px ${font}`;
-  ctx.fillText(tt('popupQueueNumber'), 540, 292);
-
-  ctx.fillStyle = '#F3F0E8';
-  canvasRoundedRect(ctx, 120, 338, 840, 202, 28);
-  ctx.fill();
-  ctx.fillStyle = '#AB9873';
-  ctx.font = `500 28px ${font}`;
-  ctx.fillText(tt('popupQueueNumber'), 540, 400);
-  ctx.fillStyle = '#2A2117';
-  const queueCode = booking && booking.code ? booking.code : '-';
-  let queueFontSize = 72;
-  do{
-    ctx.font = `700 ${queueFontSize}px ${font}`;
-    if (ctx.measureText(queueCode).width <= 760) break;
-    queueFontSize -= 4;
-  }while(queueFontSize > 44);
-  ctx.fillText(queueCode, 540, 489);
-
-  const rows = [
-    { label:tt('fullName'), value:details.name, y:590, height:170, maxLines:2 },
-    { label:tt('kService'), value:details.service, y:780, height:190, maxLines:2 },
-    { label:tt('kTime'), value:details.time, y:970, height:210, maxLines:3 }
-  ];
-  rows.forEach((row, index) => {
-    if (index){
-      ctx.strokeStyle = 'rgba(120,90,35,.13)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(135, row.y);
-      ctx.lineTo(945, row.y);
-      ctx.stroke();
-    }
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#AB9873';
-    ctx.font = `500 27px ${font}`;
-    ctx.fillText(row.label, 145, row.y + 43);
-    ctx.fillStyle = '#2A2117';
-    ctx.font = `600 40px ${font}`;
-    const lines = canvasWrappedLines(ctx, row.value, 790, row.maxLines);
-    lines.forEach((line, lineIndex) => ctx.fillText(line, 145, row.y + 98 + lineIndex * 51));
-  });
-
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#6E5F49';
-  ctx.font = `400 25px ${font}`;
-  const footerLines = canvasWrappedLines(ctx, tt('doneSub'), 790, 3);
-  footerLines.forEach((line, index) => ctx.fillText(line, 540, 1260 + index * 34));
-  return canvas;
-}
-
-async function saveBookingSuccessImage(){
-  const booking = S.last;
-  if (!booking || bookingImageBusy) return;
-  bookingImageBusy = true;
-  bookingSuccessSave.disabled = true;
-  bookingSuccessSaveText.textContent = tt('savingImage');
-  try{
-    if (document.fonts && document.fonts.ready){
-      await Promise.race([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 1800))]);
-    }
-    const canvas = await createBookingConfirmationCanvas(booking);
-    const blob = await new Promise((resolve, reject) => {
-      canvas.toBlob(result => result ? resolve(result) : reject(new Error('PNG export failed')), 'image/png');
-    });
-    const safeCode = String(booking.code || 'BOOKING').replace(/[^a-z0-9_-]/gi, '-');
-    const fileName = `SUITCUBE-${safeCode}.png`;
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent || '') || (/Macintosh/i.test(navigator.userAgent || '') && navigator.maxTouchPoints > 1);
-
-    if (isIOS && typeof File === 'function' && navigator.share && navigator.canShare){
-      const imageFile = new File([blob], fileName, { type:'image/png' });
-      if (navigator.canShare({ files:[imageFile] })){
-        try{
-          await navigator.share({ files:[imageFile], title:tt('successPopupTitle') });
-          toast(tt('imageSaved'));
-          return;
-        }catch(error){
-          if (error && error.name === 'AbortError') return;
-        }
-      }
-    }
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    link.rel = 'noopener';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-    toast(tt('imageSaved'));
-  }catch(error){
-    console.error('saveBookingSuccessImage failed:', error);
-    toast(tt('imageSaveFail'));
-  }finally{
-    bookingImageBusy = false;
-    bookingSuccessSave.disabled = false;
-    bookingSuccessSaveText.textContent = tt('saveAsImage');
-  }
 }
 
 async function acknowledgeBookingSuccess(){
@@ -1391,7 +1085,6 @@ async function acknowledgeBookingSuccess(){
   await goMine();
 }
 
-bookingSuccessSave.addEventListener('click', saveBookingSuccessImage);
 bookingSuccessAck.addEventListener('click', acknowledgeBookingSuccess);
 
 function toast(msg){
@@ -1426,123 +1119,15 @@ function heroHTML(){
   `;
 }
 
-/* ── ค้นหาสาขาแบบรัศมีใกล้เคียง ─────────────
-   หลักการ: หา "สาขาที่ตรงคำค้น" ก่อน แล้วเติมสาขาอื่นที่อยู่ในรัศมีไม่เกิน 7 กม. */
-const BRANCH_SEARCH_ALIASES = {
-  siam:['สยาม','siam','ปทุมวัน','pathumwan'],
-  centralworld:['เซ็นทรัลเวิลด์','centralworld','central world','ราชประสงค์','ชิดลม','ปทุมวัน'],
-  t21:['อโศก','asok','asoke','สุขุมวิท','sukhumvit','เทอร์มินอล21','terminal21','terminal 21','วัฒนา'],
-  silom:['สีลม','silom','ศาลาแดง','saladaeng','บางรัก','bangrak','สาทร','sathorn','sathon'],
-  rama3:['พระราม3','พระราม 3','พระรามสาม','rama3','rama 3','rama iii','สาธุประดิษฐ์','ยานนาวา','yannawa','ช่องนนทรี'],
-  sutthisan:['รัชดา','ratchada','สุทธิสาร','sutthisan','ห้วยขวาง','huaikhwang'],
-  circle:['ราชพฤกษ์','ratchapruek','ratchapruk','เดอะเซอร์เคิล','thecircle','ตลิ่งชัน'],
-  promenade:['รามอินทรา','ramintra','ramindra','พรอมานาด','promenade','คันนายาว','แฟชั่นไอส์แลนด์'],
-  bangkapi:['บางกะปิ','bangkapi','bang kapi','เดอะมอลล์บางกะปิ'],
-  seacon:['ศรีนครินทร์','srinakarin','seacon','ซีคอน','ประเวศ','prawet'],
-  ngamwongwan:['งามวงศ์วาน','ngamwongwan','นนทบุรี','nonthaburi'],
-  futurepark:['รังสิต','rangsit','futurepark','future park','ธัญบุรี'],
-  megabangna:['เมกาบางนา','mega bangna','megabangna','บางนา','bangna','บางพลี'],
-  westgate:['เวสต์เกต','westgate','centralwestgate','เซ็นทรัลเวสต์เกต','บางใหญ่'],
-  onenimman:['วันนิมมาน','one nimman','onenimman','นิมมาน','เชียงใหม่','chiangmai','chiang mai'],
-  korat:['โคราช','korat','นครราชสีมา','nakhon ratchasima'],
-  phuket:['ภูเก็ต','phuket','บูกิส','bukis'],
-  khonkaen:['ขอนแก่น','khonkaen','khon kaen']
-};
-
-const BRANCH_COORDS = {
-  siam:[13.7466,100.5331],
-  centralworld:[13.7463,100.5395],
-  silom:[13.7294,100.5340],
-  rama3:[13.6979,100.5406],
-  t21:[13.7372,100.5606],
-  sutthisan:[13.7937,100.5751],
-  circle:[13.7805,100.4449],
-  promenade:[13.8256,100.6777],
-  bangkapi:[13.7663,100.6428],
-  seacon:[13.6946,100.6473],
-  ngamwongwan:[13.8550,100.5413],
-  futurepark:[13.9879,100.6180],
-  megabangna:[13.6463,100.6809],
-  westgate:[13.8768,100.4114],
-  onenimman:[18.7966,98.9678],
-  korat:[14.9799,102.0870],
-  phuket:[7.8890,98.3670],
-  khonkaen:[16.4322,102.8236]
-};
-const SEARCH_RADIUS_KM = 7;
-
-function haversineKm(a, b){
-  if (!a || !b) return Infinity;
-  const [lat1, lon1] = a;
-  const [lat2, lon2] = b;
-  const toRad = d => d * Math.PI / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const aa = Math.sin(dLat/2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) ** 2;
-  return 6371 * 2 * Math.atan2(Math.sqrt(aa), Math.sqrt(1-aa));
-}
-
-function normalizeBranchSearch(v){
-  return String(v || '')
-    .toLowerCase()
-    .replace(/[‐‑‒–—−-]/g,'')
-    .replace(/[\s._,/\\()]+/g,'')
-    .replace(/พระรามสาม/g,'พระราม3')
-    .replace(/ramaiii/g,'rama3');
-}
-
-function branchSearchHaystack(b){
-  const aliases = BRANCH_SEARCH_ALIASES[b.id] || [];
-  return normalizeBranchSearch([
-    b.name,b.nameEn,b.nameZh,b.district,b.districtEn,b.districtZh,
-    b.loc,b.locEn,b.locZh,...aliases
-  ].filter(Boolean).join(' '));
-}
-
-function branchesForSearch(area, rawQuery){
-  const areaBranches = BRANCHES.filter(b => b.area === area);
-  const q = normalizeBranchSearch(rawQuery);
-  if (!q) return areaBranches;
-
-  const direct = areaBranches.filter(b => branchSearchHaystack(b).includes(q));
-  if (!direct.length) return [];
-
-  const directIds = direct.map(b => b.id);
-  const wanted = [];
-  const add = id => {
-    if (!id || wanted.includes(id)) return;
-    const b = areaBranches.find(x => x.id === id);
-    if (b) wanted.push(id);
-  };
-
-  direct.forEach(b => add(b.id));
-
-  const nearby = areaBranches
-    .filter(b => !directIds.includes(b.id))
-    .map(b => {
-      const distance = Math.min(...direct.map(d => haversineKm(BRANCH_COORDS[d.id], BRANCH_COORDS[b.id])));
-      return { branch:b, distance };
-    })
-    .filter(x => Number.isFinite(x.distance) && x.distance <= SEARCH_RADIUS_KM)
-    .sort((a,b) => a.distance - b.distance || sname(a.branch).localeCompare(sname(b.branch)));
-
-  nearby.forEach(x => add(x.branch.id));
-
-  return wanted.slice(0, 5).map(id => areaBranches.find(b => b.id === id)).filter(Boolean);
-}
-
 function screenBranch(){
-  const q = S.q.trim();
-  const list = branchesForSearch(S.area, q);
+  const q = S.q.trim().toLowerCase();
+  const list = BRANCHES.filter(b => b.area === S.area)
+    .filter(b => !q || (bname(b) + ' ' + b.name + ' ' + bloc(b)).toLowerCase().includes(q));
   const nBkk = BRANCHES.filter(b => b.area === 'bkk').length;
   const nUp = BRANCHES.filter(b => b.area === 'up').length;
 
   return `
-    <div class="brand">
-      <span class="brand__mark">SUITCUBE</span>
-      <span class="brand__rule"></span>
-      <span class="brand__tag">Made to measure</span>
-    </div>
+    <div class="brand"><span class="brand__mark" data-brandtap="1">Suitcube</span><span class="brand__rule"></span><span class="brand__tag">Made to measure</span></div>
     <h1 class="h1">${tt('chooseBranch')}</h1>
     <p class="sub">${tt('branchSub', nBkk + nUp)}</p>
     <div class="seg">
@@ -1554,7 +1139,6 @@ function screenBranch(){
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="${tt('searchPh')}" value="${esc(S.q)}" autocomplete="off">
     </div>
-    ${q && list.length ? `<div class="search-nearby">${tt('nearbySearch', esc(S.q))}</div>` : ''}
     ${list.length ? `<div class="bgrid">${list.map(b => {
       const st = openStatus(b);
       const todayStr = ymd(new Date());
@@ -1630,7 +1214,6 @@ function screenService(){
     ${sel ? `
       <div class="eyebrow">${tt('detailsHeading')}</div>
       <p class="sub" style="margin:0 0 4px">${tt('selectedService', esc(sname(sel)), fmtDuration(Number(sel.mins) || 0, S.lang))}</p>
-      <p class="sub" style="margin:0;font-weight:600;color:var(--wool)">${tt('totalDuration', S.people, fmtDuration(svcMins(sel, S.people), S.lang))}</p>
     ` : ''}
   `;
 }
@@ -1664,7 +1247,7 @@ function screenDatetime(){
   const [o,c] = hoursOf(b, sel);
   return `
     <h1 class="h1">${tt('chooseDatetime')}</h1>
-    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}<br><strong style="color:var(--wool)">${tt('totalDuration', S.people, fmtDuration(svcMins(sv, S.people), S.lang))}</strong></p>
+    <p class="sub">${tt('datetimeSub', esc(bname(b)), esc(sname(sv)), Number(sv.mins) || 0, S.people)}</p>
     ${dateFieldHTML}
     <div class="eyebrow" style="margin-top:14px">${tt('openUntil', longDate(S.date), o, c)}</div>
     ${dateClosed ? `<div class="empty"><b>${tt('closedForBooking')}</b>${(!b.closed && b.closedFrom && b.closedTo) ? tt('closedRangeNote', b.closedFrom, b.closedTo) : tt('closedIndefiniteNote')}</div>` : !hasRuleSlot ?
@@ -1736,14 +1319,13 @@ function ticketHTML(bk, opts = {}){
       </div>
       <div class="ticket__perf"></div>
       <div class="sum__row"><span class="sum__k">${tt('kBranch')}</span><span class="sum__v">${esc(bname(b))}<small>${esc(bloc(b))}</small></span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kBookedBy')}</span><span class="sum__v">${bk.name ? esc(bk.name) : '-'}${bk.phone ? `<small class="mono">${esc(bk.phone)}</small>` : ''}</span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}<small>${tt('takesAbout', svcMins(sv, bk.people))}</small></span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kDate')}</span><span class="sum__v">${longDate(bk.date)}</span></div>
-      <div class="sum__row"><span class="sum__k">${tt('kTime')}</span><span class="sum__v mono">${slotRange(bk.time, sv, bk.people)}</span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kService')}</span><span class="sum__v">${esc(sname(sv))}</span></div>
+      <div class="sum__row"><span class="sum__k">${tt('kAppt')}</span><span class="sum__v">${longDate(bk.date)}<small class="mono">${bk.time} – ${toHHMM(toMin(bk.time)+svcMins(sv, bk.people))}</small></span></div>
       ${bk.people ? `<div class="sum__row"><span class="sum__k">${tt('peopleCount')}</span><span class="sum__v mono">${bk.people}</span></div>` : ''}
       ${bk.status==='cancelled'?`<div class="sum__row"><span class="sum__k">${tt('kStatus')}</span><span class="sum__v" style="color:var(--closed)">${tt('cancelled')}</span></div>`:''}
       <div class="sum__row" style="gap:8px">
         <button class="btn btn--ghost btn--sm" data-map="${b.map}">${tt('openMap')}</button>
+        ${!past && bk.status==='active' ? `<button class="btn btn--ghost btn--sm" data-ics="${bk.code}">${tt('addCalendar')}</button>` : ''}
       </div>
       ${!past && bk.status==='active' && opts.cancel ? `<div class="sum__row"><button class="btn btn--danger btn--sm" data-cancel="${bk.code}">${tt('cancelBooking')}</button></div>` : ''}
     </div>`;
@@ -1810,8 +1392,7 @@ function render(){
   const flow = i >= 0;
 
   document.documentElement.lang = S.lang === 'zh' ? 'zh-CN' : S.lang;
-  if (S.step === 'branch') navTitle.innerHTML = suitcubeNavLogo();
-  else navTitle.textContent = TITLES()[S.step];
+  navTitle.textContent = TITLES()[S.step];
   navBack.setAttribute('aria-label', tt('back'));
   navBack.disabled = (S.step === 'branch');
   navLang.style.visibility = '';
@@ -1843,10 +1424,47 @@ function render(){
 /* ═══════════════════════════════════════════════
    9. หลังบ้าน (Admin)
    ═══════════════════════════════════════════════ */
+function smsAdminDateText(dateStr){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateStr||''));
+  if (!m) return String(dateStr||'');
+  const year2 = String((Number(m[1]) + 543) % 100).padStart(2,'0');
+  return `${Number(m[3])} ${M_SHORT[Number(m[2])-1]||''} ${year2}`.trim();
+}
+
+function smsAdminPreview(){
+  const values = {
+    name:String(S.adminSmsTestName||'').trim(),
+    date:smsAdminDateText(S.adminSmsTestDate),
+    time:String(S.adminSmsTestTime||'').replace(':','.'),
+    branch:String(S.adminSmsTestBranch||'').replace(/^สาขา\s*/u,'').trim(),
+    code:'SC-TEST01'
+  };
+  return String(S.adminSmsTemplate||'').replace(/\{(name|date|time|branch|code)\}/g, (_,key) => values[key]);
+}
+
+function updateSmsAdminPreview(){
+  const preview = document.getElementById('smsAdminPreview');
+  if (preview) preview.textContent = smsAdminPreview();
+}
+
+async function openAdminSmsSettings(){
+  if (!apiConfigured){ toast('ตั้งค่า SMS ต้องเชื่อมต่อเซิร์ฟเวอร์'); return; }
+  toast('กำลังโหลดการตั้งค่า SMS...');
+  const r = await apiCall('getSmsSettings', { adminPin:S.adminPin });
+  if (!r){ toast(lastApiError || 'โหลดการตั้งค่า SMS ไม่สำเร็จ'); return; }
+  S.adminSmsTemplate = r.template || SMS_TEMPLATE_DEFAULT;
+  S.adminSmsSender = r.sender || '';
+  S.adminSmsConfigured = !!r.configured;
+  if (!S.adminSmsTestBranch) S.adminSmsTestBranch = (BRANCHES[0] && BRANCHES[0].name) || 'สาขาทดลอง';
+  S.adminStep = 'sms-settings';
+  render();
+}
+
 const ADMIN_TITLES = {
   login:'เข้าสู่ระบบหลังบ้าน', home:'หลังบ้าน', branches:'จัดการสาขา', 'branch-edit':'ข้อมูลสาขา',
   'branch-schedule':'ตั้งเวลาปิด-เปิด',
   services:'จัดการบริการ', 'service-edit':'ข้อมูลบริการ', bookings:'ภาพรวมการจอง',
+  'sms-settings':'ตั้งค่า SMS',
 };
 
 function renderAdmin(){
@@ -1867,7 +1485,8 @@ function renderAdmin(){
     S.adminStep === 'branch-schedule' ? adminBranchSchedule() :
     S.adminStep === 'services'     ? adminServices()     :
     S.adminStep === 'service-edit' ? adminServiceEdit()  :
-    S.adminStep === 'bookings'     ? adminBookings()     : '';
+    S.adminStep === 'bookings'     ? adminBookings()     :
+    S.adminStep === 'sms-settings' ? adminSmsSettings()  : '';
 
   bar.innerHTML = adminBarHTML();
 }
@@ -1900,6 +1519,10 @@ function adminHome(){
     <button class="card" data-adminnav="bookings">
       <div class="svc"><span class="svc__ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span>
       <span><span class="card__name">ภาพรวมการจอง</span><span class="card__loc" style="display:block">ดูและจัดการคิวทั้งหมดของทุกสาขา</span></span></div>
+    </button>
+    <button class="card" data-adminnav="sms-settings">
+      <div class="svc"><span class="svc__ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 9h10M7 13h7"/></svg></span>
+      <span><span class="card__name">ตั้งค่า SMS</span><span class="card__loc" style="display:block">แก้ไขข้อความ ดูตัวอย่าง และทดลองส่ง</span></span></div>
     </button>
   `;
 }
@@ -2043,6 +1666,39 @@ function adminServiceEdit(){
   `;
 }
 
+function adminSmsSettings(){
+  return `
+    <h1 class="h1">ตั้งค่า SMS</h1>
+    <p class="sub">แก้ไขข้อความแจ้งเตือนและทดลองส่งก่อนนำไปใช้งานจริง</p>
+    <div class="sms-meta">
+      <span class="sms-dot ${S.adminSmsConfigured?'is-on':''}"></span>
+      <span>${S.adminSmsConfigured ? `พร้อมส่ง · Sender: ${esc(S.adminSmsSender||'-')}` : 'ยังไม่ได้ตั้งค่า API Key หรือ Sender ที่เซิร์ฟเวอร์'}</span>
+    </div>
+
+    <div class="field">
+      <label for="sms-template">ข้อความ SMS <span class="opt" id="smsCharCount">(${String(S.adminSmsTemplate||'').length}/1000)</span></label>
+      <textarea id="sms-template" data-admink="adminSmsTemplate" maxlength="1000" rows="7">${esc(S.adminSmsTemplate||SMS_TEMPLATE_DEFAULT)}</textarea>
+    </div>
+    <div class="note">แตะตัวแปรเพื่อเพิ่มท้ายข้อความ ระบบจะแทนค่าจากรายการจองจริงอัตโนมัติ</div>
+    <div class="sms-vars">
+      ${['{name}','{date}','{time}','{branch}','{code}'].map(token => `<button type="button" class="sms-token" data-smstoken="${token}">${token}</button>`).join('')}
+    </div>
+
+    <div class="eyebrow">ข้อมูลสำหรับทดลองส่ง</div>
+    <div class="field"><label>เบอร์โทรศัพท์ผู้รับ</label><input data-admink="adminSmsPhone" inputmode="tel" placeholder="08xxxxxxxx" value="${esc(S.adminSmsPhone||'')}"></div>
+    <div class="field"><label>ชื่อลูกค้าทดลอง</label><input data-admink="adminSmsTestName" value="${esc(S.adminSmsTestName||'')}"></div>
+    <div class="field"><label>ชื่อสาขาทดลอง</label><input data-admink="adminSmsTestBranch" value="${esc(S.adminSmsTestBranch||'')}"></div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:9px">
+      <div class="field"><label>วันที่นัด</label><input data-admink="adminSmsTestDate" type="date" value="${esc(S.adminSmsTestDate||'')}"></div>
+      <div class="field"><label>เวลานัด</label><input data-admink="adminSmsTestTime" type="time" value="${esc(S.adminSmsTestTime||'10:00')}"></div>
+    </div>
+
+    <div class="eyebrow">ตัวอย่างข้อความ</div>
+    <div class="sms-preview" id="smsAdminPreview">${esc(smsAdminPreview())}</div>
+    <div class="note" style="margin-top:10px">ปุ่ม “ทดลองส่ง” ใช้ข้อความที่กำลังแก้ไขได้ทันที แม้ยังไม่ได้กดบันทึก</div>
+  `;
+}
+
 function adminBookings(){
   const today = ymd(new Date());
   let list = [...bookings].sort((a,b) => (b.date+b.time).localeCompare(a.date+a.time));
@@ -2087,6 +1743,7 @@ function adminBarHTML(){
     case 'branch-schedule': return `<button class="btn btn--brass" id="adminSaveSchedule">บันทึกกำหนดการ</button>`;
     case 'services': return `<button class="btn" id="adminAddService">+ เพิ่มบริการ</button>`;
     case 'service-edit': return `<button class="btn btn--brass" id="adminSaveService">บันทึก</button>`;
+    case 'sms-settings': return `<div class="bar__actions"><button class="btn btn--ghost" id="adminTestSms">ทดลองส่ง</button><button class="btn btn--brass" id="adminSaveSms">บันทึกข้อความ</button></div>`;
     default: return '';
   }
 }
@@ -2095,14 +1752,33 @@ function adminBarHTML(){
    9. เหตุการณ์
    ═══════════════════════════════════════════════ */
 document.addEventListener('click', async (e) => {
-  const t = e.target.closest('[data-area],[data-branch],[data-service],[data-peopleminus],[data-peopleplus],[data-time],[data-map],[data-cancel],[data-adminopen],[data-adminnav],[data-toggleclose],[data-editbranch],[data-delbranch],[data-schedulebranch],[data-admdclearsched],[data-removephoto],[data-editservice],[data-delservice],[data-admincancel],[data-admdarea],[data-admdclosed],[data-footermine],#next,#confirm,#again,#mine,#adminLoginBtn,#adminAddBranch,#adminSaveBranch,#adminSaveSchedule,#adminAddService,#adminSaveService');
+  const t = e.target.closest('[data-area],[data-branch],[data-service],[data-peopleminus],[data-peopleplus],[data-time],[data-map],[data-cancel],[data-ics],[data-adminopen],[data-adminnav],[data-toggleclose],[data-editbranch],[data-delbranch],[data-schedulebranch],[data-admdclearsched],[data-removephoto],[data-editservice],[data-delservice],[data-admincancel],[data-admdarea],[data-admdclosed],[data-smstoken],[data-footermine],#next,#confirm,#again,#mine,#adminLoginBtn,#adminAddBranch,#adminSaveBranch,#adminSaveSchedule,#adminAddService,#adminSaveService,#adminTestSms,#adminSaveSms');
   if (!t) return;
 
   if (t.dataset.map){ e.stopPropagation(); window.open(t.dataset.map, '_blank', 'noopener'); return; }
 
   if (t.dataset.adminopen){ S.admin = true; S.adminStep = 'login'; S.adminPin = ''; render(); return; }
 
-  if (t.dataset.adminnav){ S.adminStep = t.dataset.adminnav; render(); return; }
+  if (t.dataset.adminnav){
+    if (t.dataset.adminnav === 'sms-settings') await openAdminSmsSettings();
+    else { S.adminStep = t.dataset.adminnav; render(); }
+    return;
+  }
+
+  if (t.dataset.smstoken){
+    const token = t.dataset.smstoken;
+    const textarea = document.getElementById('sms-template');
+    const current = String(S.adminSmsTemplate||'');
+    const start = textarea && Number.isInteger(textarea.selectionStart) ? textarea.selectionStart : current.length;
+    const end = textarea && Number.isInteger(textarea.selectionEnd) ? textarea.selectionEnd : start;
+    S.adminSmsTemplate = current.slice(0,start) + token + current.slice(end);
+    render();
+    requestAnimationFrame(() => {
+      const next = document.getElementById('sms-template');
+      if (next){ next.focus(); next.setSelectionRange(start + token.length, start + token.length); }
+    });
+    return;
+  }
 
   if (t.dataset.toggleclose){
     const b = branchById(t.dataset.toggleclose);
@@ -2199,8 +1875,45 @@ document.addEventListener('click', async (e) => {
   if (t.dataset.admdclosed){ S.adminDraft.closed = !S.adminDraft.closed; render(); return; }
 
   if (t.id === 'adminLoginBtn'){
-    if (S.adminPin === ADMIN_PIN){ S.adminPinErr = false; S.adminStep = 'home'; render(); }
-    else { S.adminPinErr = true; render(); toast('PIN ไม่ถูกต้อง'); }
+    let valid = false;
+    if (apiConfigured){
+      const r = await apiCall('verifyAdminPin', { adminPin:S.adminPin });
+      valid = !!(r && r.ok);
+    } else {
+      valid = S.adminPin === ADMIN_PIN;
+    }
+    if (valid){ S.adminPinErr = false; S.adminStep = 'home'; render(); }
+    else { S.adminPinErr = true; render(); toast(lastApiError || 'PIN ไม่ถูกต้อง'); }
+    return;
+  }
+
+  if (t.id === 'adminSaveSms'){
+    const template = String(S.adminSmsTemplate||'').trim();
+    if (!template){ toast('กรุณากรอกข้อความ SMS'); return; }
+    if (template.length > 1000){ toast('ข้อความ SMS ต้องไม่เกิน 1000 ตัวอักษร'); return; }
+    const r = await apiCall('saveSmsSettings', { adminPin:S.adminPin, template });
+    if (!r){ toast(lastApiError || 'บันทึกข้อความไม่สำเร็จ'); return; }
+    S.adminSmsTemplate = r.template || template;
+    render(); toast('บันทึกข้อความ SMS แล้ว');
+    return;
+  }
+
+  if (t.id === 'adminTestSms'){
+    const phone = String(S.adminSmsPhone||'').replace(/[-\s]/g,'');
+    if (!/^0\d{8,9}$/.test(phone)){ toast('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง'); return; }
+    if (!String(S.adminSmsTemplate||'').trim()){ toast('กรุณากรอกข้อความ SMS'); return; }
+    const r = await apiCall('sendTestSms', {
+      adminPin:S.adminPin,
+      phone,
+      template:S.adminSmsTemplate,
+      name:S.adminSmsTestName,
+      date:S.adminSmsTestDate,
+      time:S.adminSmsTestTime,
+      branch:S.adminSmsTestBranch,
+      code:'SC-TEST01'
+    });
+    if (!r){ toast(lastApiError || 'ทดลองส่งไม่สำเร็จ'); return; }
+    toast(`ส่งข้อความทดลองแล้ว (${r.to||phone})`);
     return;
   }
 
@@ -2307,6 +2020,8 @@ document.addEventListener('click', async (e) => {
 
   if (t.dataset.time){ S.time = (S.time === t.dataset.time) ? null : t.dataset.time; render(); return; }
 
+  if (t.dataset.ics){ await addToCalendar(bookings.find(b => b.code === t.dataset.ics)); return; }
+
   if (t.dataset.cancel){
     const bk = bookings.find(b => b.code === t.dataset.cancel);
     if (!bk) return;
@@ -2358,9 +2073,7 @@ document.addEventListener('click', async (e) => {
     };
     const r = await apiCall('createBooking', draft);
     if (r === null && apiConfigured){ toast('จองไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
-    // ผสานข้อมูลที่กรอกไว้ด้วย เพื่อให้ป๊อปอัพมีชื่อ/บริการ/เวลาเสมอ
-    // แม้ API จะตอบกลับมาเฉพาะรหัสคิวหรือข้อมูลบางฟิลด์
-    const bk = (r && r.booking) ? { ...draft, ...r.booking } : { code: makeCode(), ...draft };
+    const bk = (r && r.booking) ? r.booking : { code: makeCode(), ...draft };
     bookings.push(bk);
     saveBookingsLocal();
     if (bk.code && !myCodes.includes(bk.code)) myCodes.push(bk.code);
@@ -2385,7 +2098,15 @@ document.addEventListener('input', (e) => {
   if (e.target.id === 'q'){ S.q = e.target.value; const p = e.target.selectionStart; render();
     const el = document.getElementById('q'); if (el){ el.focus(); el.setSelectionRange(p, p); } return; }
   if (e.target.dataset.k) S[e.target.dataset.k] = e.target.value;
-  if (e.target.dataset.admink) S[e.target.dataset.admink] = e.target.value;
+  if (e.target.dataset.admink){
+    const key = e.target.dataset.admink;
+    S[key] = e.target.value;
+    if (key.startsWith('adminSms')){
+      updateSmsAdminPreview();
+      const count = document.getElementById('smsCharCount');
+      if (count) count.textContent = `(${String(S.adminSmsTemplate||'').length}/1000)`;
+    }
+  }
   if (e.target.dataset.admd && S.adminDraft) S.adminDraft[e.target.dataset.admd] = e.target.value;
 });
 
@@ -2407,7 +2128,7 @@ document.addEventListener('change', (e) => {
 
 navBack.addEventListener('click', () => {
   if (S.admin){
-    const adminOrder = { home:'login', branches:'home', 'branch-edit':'branches', 'branch-schedule':'branches', services:'home', 'service-edit':'services', bookings:'home' };
+    const adminOrder = { home:'login', branches:'home', 'branch-edit':'branches', 'branch-schedule':'branches', services:'home', 'service-edit':'services', bookings:'home', 'sms-settings':'home' };
     if (S.adminStep === 'login'){ S.admin = false; render(); return; }
     S.adminStep = adminOrder[S.adminStep] || 'home';
     render(); return;
@@ -2472,6 +2193,111 @@ function processPhotoFile(file){
     reader.onerror = () => reject(new Error('file read failed'));
     reader.readAsDataURL(file);
   });
+}
+
+async function addToCalendar(bk){
+  if (!bk) return;
+  const b = branchById(bk.branchId), sv = serviceById(bk.serviceId);
+  const pad = n => String(n).padStart(2,'0');
+  const fmt = (d) => d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
+  const icsEscape = value => String(value)
+    .replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,');
+  const foldICSLine = line => {
+    const parts = []; let current = ''; let bytes = 0;
+    for (const char of Array.from(line)){
+      const charBytes = new TextEncoder().encode(char).length;
+      const limit = parts.length ? 74 : 75;
+      if (current && bytes + charBytes > limit){
+        parts.push(current); current = ' ' + char; bytes = 1 + charBytes;
+      } else {
+        current += char; bytes += charBytes;
+      }
+    }
+    if (current) parts.push(current);
+    return parts.join('\r\n');
+  };
+  // เวลานัดของสาขาเป็นเวลาไทยเสมอ ป้องกันเวลาเลื่อนเมื่อผู้ใช้เปิดจากอุปกรณ์ต่างเขตเวลา
+  const start = new Date(bk.date + 'T' + bk.time + ':00+07:00');
+  const end = new Date(start.getTime() + svcMins(sv, bk.people)*60000);
+  const title = 'SUITCUBE ' + sname(sv) + ' (' + bk.code + ')';
+  const location = 'SUITCUBE ' + bname(b) + ' — ' + bloc(b);
+  const description = bloc(b) + ' - ' + b.map;
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH',
+    'PRODID:-//SUITCUBE//Booking//TH','BEGIN:VEVENT',
+    'UID:' + bk.code + '@suitcube',
+    'DTSTAMP:' + fmt(new Date()),
+    'DTSTART:' + fmt(start),
+    'DTEND:' + fmt(end),
+    'SUMMARY:' + icsEscape(title),
+    'LOCATION:' + icsEscape(location),
+    'DESCRIPTION:' + icsEscape(description),
+    'STATUS:CONFIRMED','TRANSP:OPAQUE',
+    'END:VEVENT','END:VCALENDAR'
+  ].map(foldICSLine).join('\r\n') + '\r\n';
+  const fileName = bk.code + '.ics';
+  // ห้ามเติม BOM หน้า BEGIN:VCALENDAR เพราะ Apple Calendar บางรุ่นจะอ่านไม่ออก
+  const blob = new Blob([ics], {type:'text/calendar;charset=utf-8;method=PUBLISH'});
+  const ua = navigator.userAgent || '';
+  const isAndroid = /Android/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+
+  // Android: ส่ง ACTION_INSERT ไปยัง Calendar app ที่ติดตั้งในเครื่องโดยตรง
+  // ถ้า Chrome/เครื่องไม่อนุญาต จึงค่อย fallback เป็นไฟล์ .ics (ไม่เปิดหน้า Google เว็บ)
+  if (isAndroid){
+    const params = new URLSearchParams({
+      action:'TEMPLATE',
+      text:title,
+      dates:fmt(start) + '/' + fmt(end),
+      details:description,
+      location:location,
+      ctz:'Asia/Bangkok'
+    });
+    const calendarUrl = 'https://calendar.google.com/calendar/render?' + params.toString();
+    const nativeFallbackUrl = servedCalendarURL(ics, fileName) || calendarUrl;
+    const intentUrl = 'intent://com.android.calendar/events#Intent;' +
+      'scheme=content;' +
+      'action=android.intent.action.INSERT;' +
+      'category=android.intent.category.BROWSABLE;' +
+      'type=vnd.android.cursor.dir/event;' +
+      'S.title=' + encodeURIComponent(title) + ';' +
+      'S.description=' + encodeURIComponent(description) + ';' +
+      'S.eventLocation=' + encodeURIComponent(location) + ';' +
+      'l.beginTime=' + start.getTime() + ';' +
+      'l.endTime=' + end.getTime() + ';' +
+      'S.browser_fallback_url=' + encodeURIComponent(nativeFallbackUrl) + ';end';
+    window.location.href = intentUrl;
+    toast(tt('calendarOpened'));
+    return;
+  }
+
+  const url = URL.createObjectURL(blob);
+
+  // iPhone/iPad: เปิดไฟล์ปฏิทินในแท็บปัจจุบัน เพื่อให้ iOS ส่งต่อให้
+  // Apple Calendar โดยไม่ผ่าน Share sheet
+  if (isIOS){
+    if (calendarSWReady) await calendarSWReady;
+    const iosCalendarUrl = servedCalendarURL(ics, fileName);
+    if (iosCalendarUrl){
+      URL.revokeObjectURL(url);
+      window.location.assign(iosCalendarUrl);
+      return;
+    }
+    // กรณีเปิดไฟล์ HTML ตรง ๆ หรือไม่ได้ใช้ HTTPS: ดาวน์โหลดไฟล์เป็นทางสำรอง
+    const a = document.createElement('a');
+    a.href = url; a.download = fileName; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 120000);
+    toast(tt('calendarOpened'));
+    return;
+  }
+
+  // Windows และเบราว์เซอร์อื่น: ดาวน์โหลด .ics เพื่อเปิดด้วย Outlook/Calendar
+  const a = document.createElement('a');
+  a.href = url; a.download = fileName; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+  toast(tt('icsDownloaded'));
 }
 
 /* ── เริ่มทำงาน ── */
