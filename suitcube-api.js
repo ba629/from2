@@ -30,6 +30,8 @@
  *   SMS_REMINDER_INTERVAL_MS=300000
  *   SMS_REMINDER_RETRY_MINUTES=60
  *   SMS_REMINDER_MAX_ATTEMPTS=3
+ *   SUITCUBE_ADMIN_PIN=           ← PIN สำหรับตั้งค่า/ทดลองส่ง SMS ในหลังบ้าน
+ *   SMS_SETTINGS_FILE=            ← ไม่บังคับ; path ไฟล์เก็บข้อความ SMS
  *
  * ตาราง Booking ต้องมีคอลัมน์เพิ่ม:
  *   ลูกค้ารับทราบ  → ชนิด Checkbox (จำเป็น)
@@ -48,6 +50,8 @@
 
 const lark = require('@larksuiteoapi/node-sdk');
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = function registerSuitcubeApi(app, larkClientOverride, options = {}) {
   // ใช้ larkClient ที่ส่งเข้ามา (ถ้ามี) หรือสร้างตัวใหม่ของตัวเองจาก LARK_SUITCUBE_APP_ID/SECRET
@@ -74,6 +78,63 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
   const SMS_REMINDER_INTERVAL_MS = Math.max(60 * 1000, Number(process.env.SMS_REMINDER_INTERVAL_MS) || 5 * 60 * 1000);
   const SMS_REMINDER_RETRY_MS = Math.max(5 * 60 * 1000, (Number(process.env.SMS_REMINDER_RETRY_MINUTES) || 60) * 60 * 1000);
   const SMS_REMINDER_MAX_ATTEMPTS = Math.max(1, Number(process.env.SMS_REMINDER_MAX_ATTEMPTS) || 3);
+  const SUITCUBE_ADMIN_PIN = String(process.env.SUITCUBE_ADMIN_PIN || '1234').trim();
+  const SMS_TEMPLATE_MAX_LENGTH = 1000;
+  const DEFAULT_SMS_TEMPLATE = 'SUITCUBE แจ้งเตือนนัดหมาย คุณ{name} วันที่ {date} เวลา {time} น. ณ สาขา{branch} กรุณาแสดงข้อมูลการจองแก่พนักงานเมื่อถึงสาขา ขอบคุณค่ะ';
+  const SMS_SETTINGS_FILE = path.resolve(
+    String(process.env.SMS_SETTINGS_FILE || path.join(__dirname, 'suitcube-sms-settings.json')).trim()
+  );
+
+  function normalizeSmsTemplate(value) {
+    const template = String(value == null ? '' : value).replace(/\0/g, '').trim();
+    if (!template) {
+      const err = new Error('กรุณากรอกข้อความ SMS');
+      err.statusCode = 400;
+      throw err;
+    }
+    if (template.length > SMS_TEMPLATE_MAX_LENGTH) {
+      const err = new Error(`ข้อความ SMS ต้องไม่เกิน ${SMS_TEMPLATE_MAX_LENGTH} ตัวอักษร`);
+      err.statusCode = 400;
+      throw err;
+    }
+    return template;
+  }
+
+  function loadSmsSettings() {
+    try {
+      if (!fs.existsSync(SMS_SETTINGS_FILE)) return { template: DEFAULT_SMS_TEMPLATE };
+      const parsed = JSON.parse(fs.readFileSync(SMS_SETTINGS_FILE, 'utf8'));
+      return { ...parsed, template: normalizeSmsTemplate(parsed.template) };
+    } catch (err) {
+      console.warn('[suitcube-api] อ่านการตั้งค่า SMS ไม่สำเร็จ ใช้ข้อความมาตรฐานแทน:', err.message);
+      return { template: DEFAULT_SMS_TEMPLATE };
+    }
+  }
+
+  let smsSettings = loadSmsSettings();
+  let smsSettingsWrite = Promise.resolve();
+
+  function saveSmsSettings(template) {
+    const next = { template: normalizeSmsTemplate(template), updatedAt: new Date().toISOString() };
+    smsSettingsWrite = smsSettingsWrite.catch(() => {}).then(async () => {
+      await fs.promises.mkdir(path.dirname(SMS_SETTINGS_FILE), { recursive: true });
+      await fs.promises.writeFile(SMS_SETTINGS_FILE, JSON.stringify(next, null, 2) + '\n', {
+        encoding: 'utf8',
+        mode: 0o600,
+      });
+      smsSettings = next;
+      return next;
+    });
+    return smsSettingsWrite;
+  }
+
+  function requireAdminPin(payload) {
+    if (!SUITCUBE_ADMIN_PIN || String(payload?.adminPin || '') !== SUITCUBE_ADMIN_PIN) {
+      const err = new Error('PIN หลังบ้านไม่ถูกต้อง');
+      err.statusCode = 401;
+      throw err;
+    }
+  }
 
   /* ═══════════════════════════════════════════════
      แผนที่ชื่อคอลัมน์ (Field Name Mapping)
@@ -562,14 +623,29 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
     return phone;
   }
 
-  function buildSmsReminderMessage(booking) {
+  function smsTemplateValues(booking) {
     const customerName = String(booking.name || '').replace(/\s+/g, ' ').trim();
     const time = String(booking.time || '').replace(':', '.');
     const branchName = String(booking.branchName || booking.branchId || '')
       .replace(/^สาขา\s*/u, '')
       .replace(/\s+/g, ' ')
       .trim();
-    return `SUITCUBE แจ้งเตือนนัดหมาย คุณ${customerName} วันที่ ${formatThaiSmsDate(booking.date)} เวลา ${time} น. ณ สาขา${branchName} กรุณาแสดงข้อมูลการจองแก่พนักงานเมื่อถึงสาขา ขอบคุณค่ะ`;
+    return {
+      name: customerName,
+      date: formatThaiSmsDate(booking.date),
+      time,
+      branch: branchName,
+      code: String(booking.code || '').trim(),
+    };
+  }
+
+  function renderSmsTemplate(template, booking) {
+    const values = smsTemplateValues(booking);
+    return normalizeSmsTemplate(template).replace(/\{(name|date|time|branch|code)\}/g, (_, key) => values[key]);
+  }
+
+  function buildSmsReminderMessage(booking) {
+    return renderSmsTemplate(smsSettings.template, booking);
   }
 
   function maskPhone(phone) {
@@ -624,6 +700,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
   }
 
   let smsSweepRunning = false;
+  let lastTestSmsAt = 0;
   const smsBookingLocks = new Set();
 
   async function sendSmsReminderForBooking(booking, nowMs = Date.now(), { ignoreLeadWindow = false } = {}) {
@@ -725,6 +802,62 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
   // action handlers
   // ═══════════════════════════════════════════════
   const handlers = {
+    async verifyAdminPin(payload) {
+      requireAdminPin(payload);
+      return { ok: true };
+    },
+
+    async getSmsSettings(payload) {
+      requireAdminPin(payload);
+      return {
+        template: smsSettings.template,
+        defaultTemplate: DEFAULT_SMS_TEMPLATE,
+        variables: ['{name}', '{date}', '{time}', '{branch}', '{code}'],
+        sender: SMS_KUB_SENDER,
+        configured: !!(SMS_KUB_API_KEY && SMS_KUB_SENDER),
+        reminderEnabled: SMS_REMINDER_ENABLED,
+      };
+    },
+
+    async saveSmsSettings(payload) {
+      requireAdminPin(payload);
+      const saved = await saveSmsSettings(payload.template);
+      return { ok: true, template: saved.template, updatedAt: saved.updatedAt };
+    },
+
+    async sendTestSms(payload) {
+      requireAdminPin(payload);
+      if (!SMS_KUB_API_KEY || !SMS_KUB_SENDER) {
+        const err = new Error('ยังไม่ได้ตั้งค่า SMS_KUB_API_KEY หรือ SMS_KUB_SENDER');
+        err.statusCode = 503;
+        throw err;
+      }
+      const nowMs = Date.now();
+      if (nowMs - lastTestSmsAt < 5000) {
+        const err = new Error('กรุณารอ 5 วินาทีก่อนทดลองส่งอีกครั้ง');
+        err.statusCode = 429;
+        throw err;
+      }
+      let phone;
+      try {
+        phone = normalizeSmsPhone(payload.phone);
+      } catch (error) {
+        error.statusCode = 400;
+        throw error;
+      }
+      const message = renderSmsTemplate(payload.template || smsSettings.template, {
+        name: String(payload.name || 'ลูกค้าทดลอง').trim(),
+        date: String(payload.date || thaiDateStrFromTimestamp(nowMs)),
+        time: String(payload.time || '10:00'),
+        branchName: String(payload.branch || 'สาขาทดลอง').trim(),
+        code: String(payload.code || 'SC-TEST01').trim(),
+      });
+      lastTestSmsAt = nowMs;
+      await sendSmsKub(phone, message);
+      console.log(`[suitcube-api] ✅ ทดลองส่ง SMS → ${maskPhone(phone)}`);
+      return { ok: true, to: maskPhone(phone), message };
+    },
+
     async listBranches() {
       const items = await listRecords('branches');
       return { branches: await Promise.all(items.map(branchFromRecord)) };
@@ -864,12 +997,16 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
       if (!handler) {
         return res.status(400).json({ error: 'unknown action: ' + action });
       }
-      console.log('[suitcube-api]', action, JSON.stringify(payload).slice(0, 300));
+      const safePayload = { ...payload };
+      if ('adminPin' in safePayload) safePayload.adminPin = '***';
+      if (action === 'sendTestSms' && safePayload.phone) safePayload.phone = maskPhone(safePayload.phone);
+      console.log('[suitcube-api]', action, JSON.stringify(safePayload).slice(0, 300));
       const result = await handler(payload);
       res.json(result);
     } catch (err) {
       console.error('[suitcube-api] error:', err.message);
-      res.status(500).json({ error: err.message });
+      const statusCode = Number(err.statusCode) || 500;
+      res.status(statusCode).json({ error: err.message });
     }
   });
 
