@@ -41,6 +41,8 @@
  *   SMS Reminder Error           → Text
  * ระบบจะพยายามสร้าง 5 คอลัมน์ SMS ให้อัตโนมัติเมื่อเปิดใช้งาน
  * (Lark App ต้องมีสิทธิ์จัดการโครงสร้าง Base)
+ * คิวที่จองในวันเดียวกัน (เวลาไทย) จะส่ง SMS ทันทีหลังสร้างคิวสำเร็จ
+ * คิววันถัดไปจะส่งเมื่อเหลือเวลาไม่เกิน 24 ชั่วโมง
  * ─────────────────────────────────────────────
  */
 
@@ -424,6 +426,16 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
     return { byId, byName };
   }
 
+  async function loadBranchLookups() {
+    const records = await listRecords('branches');
+    const branches = await Promise.all(records.map(branchFromRecord));
+    const byId = new Map();
+    branches.forEach((branch) => {
+      if (branch.id) byId.set(String(branch.id), branch);
+    });
+    return { byId };
+  }
+
   function applyServiceLookupToBooking(out, lookups) {
     if (!lookups) return out;
     const rawId = out.serviceId ? String(out.serviceId) : '';
@@ -442,7 +454,16 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
     return out;
   }
 
-  async function bookingFromRecord(rec, serviceLookups) {
+  function applyBranchLookupToBooking(out, lookups) {
+    if (!lookups) return out;
+    const branch = lookups.byId.get(String(out.branchId || ''));
+    if (branch) {
+      out.branchName = branch.name || branch.nameEn || branch.nameZh || out.branchId;
+    }
+    return out;
+  }
+
+  async function bookingFromRecord(rec, serviceLookups, branchLookups) {
     const f = await fromLarkFields('bookings', rec.fields,
       [
         ...BOOKING_STR_FIELDS, 'people', 'date', 'createdAt', 'acknowledged',
@@ -462,7 +483,8 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
     out.smsReminderSentAt = smsSentTs !== null ? new Date(smsSentTs).toISOString() : undefined;
     out.smsReminderLastAttemptAt = smsAttemptTs !== null ? new Date(smsAttemptTs).toISOString() : undefined;
     out._recordId = rec.record_id;
-    return applyServiceLookupToBooking(out, serviceLookups);
+    applyServiceLookupToBooking(out, serviceLookups);
+    return applyBranchLookupToBooking(out, branchLookups);
   }
 
   // สร้าง fields object สำหรับเขียนเข้า Lark — ใส่เฉพาะ key ที่มีอยู่จริงใน payload
@@ -497,7 +519,7 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
   }
 
   // ═══════════════════════════════════════════════
-  // SMS-KUB: แจ้งเตือนก่อนเวลานัด 24 ชั่วโมง
+  // SMS-KUB: คิววันนี้ส่งทันที / คิววันถัดไปแจ้งเตือนก่อนเวลานัด 24 ชั่วโมง
   // ═══════════════════════════════════════════════
   const TH_MONTH_SHORT = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
@@ -519,6 +541,18 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
     return `${day} ${TH_MONTH_SHORT[month - 1] || ''} ${buddhistYear2}`.trim();
   }
 
+  function thaiDateStrFromTimestamp(timestamp = Date.now()) {
+    const thailand = new Date(Number(timestamp) + 7 * 60 * 60 * 1000);
+    const year = thailand.getUTCFullYear();
+    const month = String(thailand.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(thailand.getUTCDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function isSameThaiBookingDay(dateStr, nowMs = Date.now()) {
+    return String(dateStr || '') === thaiDateStrFromTimestamp(nowMs);
+  }
+
   function normalizeSmsPhone(value) {
     let phone = String(value || '').replace(/[^\d+]/g, '');
     if (phone.startsWith('+66')) phone = '0' + phone.slice(3);
@@ -530,7 +564,12 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
 
   function buildSmsReminderMessage(booking) {
     const customerName = String(booking.name || '').replace(/\s+/g, ' ').trim();
-    return `แจ้งเตือนคิวเข้ารับบริการคุณ ${customerName} วันที่ ${formatThaiSmsDate(booking.date)} เวลา ${booking.time} น. กรุณาแสดงข้อความนี้ที่หน้าร้าน`;
+    const time = String(booking.time || '').replace(':', '.');
+    const branchName = String(booking.branchName || booking.branchId || '')
+      .replace(/^สาขา\s*/u, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return `SUITCUBE แจ้งเตือนนัดหมาย คุณ${customerName} วันที่ ${formatThaiSmsDate(booking.date)} เวลา ${time} น. ณ สาขา${branchName} กรุณาแสดงข้อมูลการจองแก่พนักงานเมื่อถึงสาขา ขอบคุณค่ะ`;
   }
 
   function maskPhone(phone) {
@@ -585,6 +624,70 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
   }
 
   let smsSweepRunning = false;
+  const smsBookingLocks = new Set();
+
+  async function sendSmsReminderForBooking(booking, nowMs = Date.now(), { ignoreLeadWindow = false } = {}) {
+    if (booking.status !== 'active' || booking.smsReminderSent) return { status: 'skipped' };
+
+    const appointmentMs = bookingStartTimestamp(booking.date, booking.time);
+    if (appointmentMs === null) return { status: 'skipped' };
+    const remainingMs = appointmentMs - nowMs;
+    if (remainingMs <= 0 || (!ignoreLeadWindow && remainingMs > SMS_REMINDER_LEAD_MS)) {
+      return { status: 'skipped' };
+    }
+
+    const attempts = Number(booking.smsReminderAttempts) || 0;
+    if (attempts >= SMS_REMINDER_MAX_ATTEMPTS) return { status: 'skipped' };
+    const lastAttemptMs = booking.smsReminderLastAttemptAt
+      ? new Date(booking.smsReminderLastAttemptAt).getTime()
+      : 0;
+    if (lastAttemptMs && nowMs - lastAttemptMs < SMS_REMINDER_RETRY_MS) return { status: 'skipped' };
+
+    const lockKey = String(booking._recordId || booking.code || '');
+    if (!lockKey || smsBookingLocks.has(lockKey)) return { status: 'skipped' };
+    smsBookingLocks.add(lockKey);
+
+    let phone = '';
+    let attemptRecorded = false;
+    try {
+      phone = normalizeSmsPhone(booking.phone);
+      const message = buildSmsReminderMessage(booking);
+
+      // บันทึก attempt ก่อนเรียกผู้ให้บริการ หากเขียน Lark ไม่ได้จะไม่ส่ง เพื่อกัน SMS ซ้ำ
+      await updateRecord('bookings', booking._recordId, {
+        smsReminderAttempts: attempts + 1,
+        smsReminderLastAttemptAt: nowMs,
+        smsReminderError: '',
+      });
+      attemptRecorded = true;
+
+      await sendSmsKub(phone, message);
+      await updateRecord('bookings', booking._recordId, {
+        smsReminderSent: true,
+        smsReminderSentAt: nowMs,
+        smsReminderError: '',
+      });
+      console.log(`[suitcube-api] ✅ SMS reminder ${booking.code || booking._recordId} → ${maskPhone(phone)}`);
+      return { status: 'sent' };
+    } catch (err) {
+      const reason = String(err.message || err).slice(0, 500);
+      try {
+        await updateRecord('bookings', booking._recordId, attemptRecorded
+          ? { smsReminderError: reason }
+          : {
+              smsReminderAttempts: attempts + 1,
+              smsReminderLastAttemptAt: nowMs,
+              smsReminderError: reason,
+            });
+      } catch (updateErr) {
+        console.error(`[suitcube-api] บันทึกสถานะ SMS ไม่สำเร็จ ${booking.code || booking._recordId}:`, updateErr.message);
+      }
+      console.error(`[suitcube-api] SMS reminder failed ${booking.code || booking._recordId}:`, reason);
+      return { status: 'failed' };
+    } finally {
+      smsBookingLocks.delete(lockKey);
+    }
+  }
 
   async function runSmsReminderSweep(nowMs = Date.now()) {
     if (!SMS_REMINDER_ENABLED) return { skipped: 'disabled', checked: 0, sent: 0, failed: 0 };
@@ -598,63 +701,19 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
       // ถ้าสร้างคอลัมน์ไม่ได้ หยุดก่อนส่ง เพื่อป้องกันการส่ง SMS ซ้ำโดยไม่มีสถานะบันทึก
       await ensureBookingSmsReminderFields();
 
-      const records = await listRecords('bookings');
-      const bookings = await Promise.all(records.map((rec) => bookingFromRecord(rec)));
+      const [records, branchLookups] = await Promise.all([
+        listRecords('bookings'),
+        loadBranchLookups(),
+      ]);
+      const bookings = await Promise.all(records.map((rec) => bookingFromRecord(rec, undefined, branchLookups)));
       summary.checked = bookings.length;
 
       for (const booking of bookings) {
-        if (booking.status !== 'active' || booking.smsReminderSent) continue;
-        const appointmentMs = bookingStartTimestamp(booking.date, booking.time);
-        if (appointmentMs === null) continue;
-        const remainingMs = appointmentMs - nowMs;
-        if (remainingMs <= 0 || remainingMs > SMS_REMINDER_LEAD_MS) continue;
-
-        const attempts = Number(booking.smsReminderAttempts) || 0;
-        if (attempts >= SMS_REMINDER_MAX_ATTEMPTS) continue;
-        const lastAttemptMs = booking.smsReminderLastAttemptAt
-          ? new Date(booking.smsReminderLastAttemptAt).getTime()
-          : 0;
-        if (lastAttemptMs && nowMs - lastAttemptMs < SMS_REMINDER_RETRY_MS) continue;
-
+        const result = await sendSmsReminderForBooking(booking, nowMs);
+        if (result.status === 'skipped') continue;
         summary.eligible += 1;
-        let phone = '';
-        let attemptRecorded = false;
-        try {
-          phone = normalizeSmsPhone(booking.phone);
-          const message = buildSmsReminderMessage(booking);
-
-          // บันทึก attempt ก่อนเรียกผู้ให้บริการ หากเขียน Lark ไม่ได้จะไม่ส่ง เพื่อกัน SMS ซ้ำ
-          await updateRecord('bookings', booking._recordId, {
-            smsReminderAttempts: attempts + 1,
-            smsReminderLastAttemptAt: nowMs,
-            smsReminderError: '',
-          });
-          attemptRecorded = true;
-
-          await sendSmsKub(phone, message);
-          await updateRecord('bookings', booking._recordId, {
-            smsReminderSent: true,
-            smsReminderSentAt: nowMs,
-            smsReminderError: '',
-          });
-          summary.sent += 1;
-          console.log(`[suitcube-api] ✅ SMS reminder ${booking.code || booking._recordId} → ${maskPhone(phone)}`);
-        } catch (err) {
-          summary.failed += 1;
-          const reason = String(err.message || err).slice(0, 500);
-          try {
-            await updateRecord('bookings', booking._recordId, attemptRecorded
-              ? { smsReminderError: reason }
-              : {
-                  smsReminderAttempts: attempts + 1,
-                  smsReminderLastAttemptAt: nowMs,
-                  smsReminderError: reason,
-                });
-          } catch (updateErr) {
-            console.error(`[suitcube-api] บันทึกสถานะ SMS ไม่สำเร็จ ${booking.code || booking._recordId}:`, updateErr.message);
-          }
-          console.error(`[suitcube-api] SMS reminder failed ${booking.code || booking._recordId}:`, reason);
-        }
+        if (result.status === 'sent') summary.sent += 1;
+        if (result.status === 'failed') summary.failed += 1;
       }
       return summary;
     } finally {
@@ -677,11 +736,12 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
     },
 
     async listBookings() {
-      const [items, serviceLookups] = await Promise.all([
+      const [items, serviceLookups, branchLookups] = await Promise.all([
         listRecords('bookings'),
         loadServiceLookups(),
+        loadBranchLookups(),
       ]);
-      return { bookings: await Promise.all(items.map((rec) => bookingFromRecord(rec, serviceLookups))) };
+      return { bookings: await Promise.all(items.map((rec) => bookingFromRecord(rec, serviceLookups, branchLookups))) };
     },
 
     async createBooking(payload) {
@@ -692,7 +752,10 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
       } catch (err) {
         console.warn('[suitcube-api] ยังสร้างคอลัมน์ "ลูกค้ารับทราบ" ไม่ได้:', err.message);
       }
-      const serviceLookups = await loadServiceLookups();
+      const [serviceLookups, branchLookups] = await Promise.all([
+        loadServiceLookups(),
+        loadBranchLookups(),
+      ]);
       const selectedService = serviceLookups.byId.get(String(payload.serviceId || ''))
         || serviceLookups.byName.get(serviceLookupKey(payload.serviceName));
       if (!selectedService) throw new Error('ไม่พบบริการที่เลือก: ' + (payload.serviceId || payload.serviceName || '-'));
@@ -707,7 +770,23 @@ module.exports = function registerSuitcubeApi(app, larkClientOverride, options =
       fields.createdAt = payload.createdAt ? new Date(payload.createdAt).getTime() : Date.now();
       fields.acknowledged = false;
       const rec = await createRecord('bookings', fields);
-      return { booking: await bookingFromRecord(rec, serviceLookups) };
+      const booking = await bookingFromRecord(rec, serviceLookups, branchLookups);
+
+      // คิววันนี้ต้องส่งทันทีหลังสร้างคิว แต่ความผิดพลาดของ SMS ต้องไม่ทำให้การจองล้มเหลว
+      if (isSameThaiBookingDay(booking.date)) {
+        if (SMS_REMINDER_ENABLED && SMS_KUB_API_KEY && SMS_KUB_SENDER) {
+          try {
+            await ensureBookingSmsReminderFields();
+            await sendSmsReminderForBooking(booking, Date.now(), { ignoreLeadWindow: true });
+          } catch (err) {
+            console.error(`[suitcube-api] ส่ง SMS คิววันนี้ไม่สำเร็จ ${booking.code || booking._recordId}:`, err.message);
+          }
+        } else {
+          console.warn(`[suitcube-api] ยังไม่ส่ง SMS คิววันนี้ ${booking.code || booking._recordId}: ยังไม่ได้ตั้งค่า SMS-KUB`);
+        }
+      }
+
+      return { booking };
     },
 
     async acknowledgeBooking(payload) {
