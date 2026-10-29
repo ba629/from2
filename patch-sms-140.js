@@ -22,33 +22,36 @@ function patchBookingHtml() {
   text = replaceOnce(
     text,
     "(${String(S.adminSmsTemplate||'').length}/1000)",
-    `(${String(S.adminSmsTemplate||'').length}/${SMS_MAX_LENGTH})`,
+    "(${String(S.adminSmsTemplate||'').length}/" + SMS_MAX_LENGTH + ")",
     'ตัวนับ SMS ในฟอร์ม'
   );
 
   text = replaceOnce(
     text,
     'maxlength="1000"',
-    `maxlength="${SMS_MAX_LENGTH}"`,
+    'maxlength="' + SMS_MAX_LENGTH + '"',
     'maxlength ของ textarea SMS'
   );
 
   text = replaceOnce(
     text,
     "if (template.length > 1000){ toast('ข้อความ SMS ต้องไม่เกิน 1000 ตัวอักษร'); return; }",
-    `if (template.length > ${SMS_MAX_LENGTH}){ toast('ข้อความ SMS ต้องไม่เกิน ${SMS_MAX_LENGTH} ตัวอักษร'); return; }`,
+    "if (template.length > " + SMS_MAX_LENGTH + "){ toast('ข้อความ SMS ต้องไม่เกิน " + SMS_MAX_LENGTH + " ตัวอักษร'); return; }",
     'validation ตอนบันทึก SMS'
   );
 
   text = replaceOnce(
     text,
     "if (count) count.textContent = `(${String(S.adminSmsTemplate||'').length}/1000)`;",
-    `if (count) count.textContent = \`(${String(S.adminSmsTemplate||'').length}/${SMS_MAX_LENGTH})\`;`,
+    "if (count) count.textContent = `(${String(S.adminSmsTemplate||'').length}/" + SMS_MAX_LENGTH + ")`;",
     'ตัวนับ SMS ตอนพิมพ์'
   );
 
   const oldTokenInsert = "    S.adminSmsTemplate = current.slice(0,start) + token + current.slice(end);\n    render();";
-  const newTokenInsert = `    const nextTemplate = current.slice(0,start) + token + current.slice(end);\n    if (nextTemplate.length > ${SMS_MAX_LENGTH}){ toast('ข้อความ SMS ต้องไม่เกิน ${SMS_MAX_LENGTH} ตัวอักษร'); return; }\n    S.adminSmsTemplate = nextTemplate;\n    render();`;
+  const newTokenInsert = "    const nextTemplate = current.slice(0,start) + token + current.slice(end);\n" +
+    "    if (nextTemplate.length > " + SMS_MAX_LENGTH + "){ toast('ข้อความ SMS ต้องไม่เกิน " + SMS_MAX_LENGTH + " ตัวอักษร'); return; }\n" +
+    "    S.adminSmsTemplate = nextTemplate;\n" +
+    "    render();";
 
   text = replaceOnce(
     text,
@@ -73,7 +76,7 @@ function patchSmsApi() {
   text = replaceOnce(
     text,
     'const SMS_TEMPLATE_MAX_LENGTH = 1000;',
-    `const SMS_TEMPLATE_MAX_LENGTH = ${SMS_MAX_LENGTH};`,
+    'const SMS_TEMPLATE_MAX_LENGTH = ' + SMS_MAX_LENGTH + ';',
     'SMS_TEMPLATE_MAX_LENGTH ฝั่ง API'
   );
 
