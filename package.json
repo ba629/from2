@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "prestart": "node patch-sms-140.js",
     "start": "node server.js",
+    "predev": "node patch-sms-140.js",
     "dev": "node server.js"
   },
   "dependencies": {
